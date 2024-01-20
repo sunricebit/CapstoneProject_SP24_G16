@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32825.248
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoolComVnWebClient", "PoolComVnWebClient\PoolComVnWebClient.csproj", "{033D2ABA-238F-4779-9D5A-F920B6DE2E45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoolComVnWebAPI", "PoolComVnWebAPI\PoolComVnWebAPI.csproj", "{0D5C5C51-B339-497F-845F-9BBC0F05C9C7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{033D2ABA-238F-4779-9D5A-F920B6DE2E45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{033D2ABA-238F-4779-9D5A-F920B6DE2E45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{033D2ABA-238F-4779-9D5A-F920B6DE2E45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{033D2ABA-238F-4779-9D5A-F920B6DE2E45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D5C5C51-B339-497F-845F-9BBC0F05C9C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D5C5C51-B339-497F-845F-9BBC0F05C9C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D5C5C51-B339-497F-845F-9BBC0F05C9C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D5C5C51-B339-497F-845F-9BBC0F05C9C7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D382E37-F7E6-4A02-B63E-D8DC579DBB5B}
+	EndGlobalSection
+EndGlobal
