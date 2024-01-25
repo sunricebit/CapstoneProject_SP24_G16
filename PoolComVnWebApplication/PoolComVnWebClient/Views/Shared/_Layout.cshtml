@@ -5,40 +5,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - PoolComVnWebClient</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PoolComVnWebClient.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" asp-append-version="true">
 </head>
 <body>
+    <div class="main-background"></div>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PoolComVnWebClient</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+        <nav class="d-flex row">
+            <div class="logo-image col-2 px-0">
+                <a href="home.html" class="d-flex align-items-center">
+                    <img src="~/images/logo.png" alt="PoolCom" />
+                    <span class="">PoolCom.</span>
+                </a>
+            </div>
+            <div class="large-user col-xl-10 px-0 mx-0 d-none d-xl-flex row">
+                <ul class="nav-menu col-10 px-0">
+                    <li><a href="">Tin tức</a></li>
+                    <li><a href="">Giải đấu</a></li>
+                    <li><a href="">Giao lưu</a></li>
+                    <li><a href="">Câu lạc bộ</a></li>
+                    <li><a href="">Xếp hạng</a></li>
+                    <li><a href="">Dịch vụ</a></li>
+                    <li><a href="">Luật chơi</a></li>
+                    <li><a href="">Liên hệ</a></li>
+                </ul>
+                <div class="login col-2 text-center d-none">
+                    <a href="#">Đăng nhập</a>
+                </div>
+                <div class="user col-2 d-flex justify-content-end">
+                    <div class="user-name text-center">
+                        <span>Vu Hoai Nam</span>
+                        <i class="fa-solid fa-caret-left"></i>
+                    </div>
+                    <ul class="user-menu justify-content-between">
+                        <li><a href="">Setting</a></li>
+                        <li><a href="">Logout</a></li>
                     </ul>
                 </div>
             </div>
+            <div class="option-btn col-10 d-flex d-xl-none justify-content-end">
+                <i class="fa-solid fa-bars"></i>
+            </div>
         </nav>
+        <div class="small-user d-xl-none justify-content-end">
+            <div class="option-menu row">
+                <div class="col-lg-3"></div>
+                <ul class="option-items col-lg-3 col-6">
+                    <li><a href="">Tin tức</a></li>
+                    <li><a href="">Giải đấu</a></li>
+                    <li><a href="">Giao lưu</a></li>
+                    <li><a href="">Câu lạc bộ</a></li>
+                </ul>
+                <ul class="option-items col-lg-3 col-6">
+                    <li><a href="#">Xếp hạng</a></li>
+                    <li><a href="#">Dịch vụ</a></li>
+                    <li><a href="#">Luật chơi</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                </ul>
+                <div class="col-lg-3"></div>
+            </div>
+        </div>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    @RenderBody()
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - PoolComVnWebClient - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer>
+        <div class="d-flex mt-3">
+            <div class="col-6 footer-logo">
+                PoolCom.
+                <ul class="footer-contact">
+                    <li>
+                        T: +84 09 2345 9456<br />
+                        E: comunity@poolcom.com
+                    </li>
+                </ul>
+            </div>
+            <div class="col-3 footer-content">
+                <ul class="footer-menu">
+                    <li><a href="#">Tin tức</a></li>
+                    <li><a href="#">Giải đấu</a></li>
+                    <li><a href="#">Giao lưu</a></li>
+                    <li><a href="#">Câu lạc bộ</a></li>
+                </ul>
+            </div>
+            <div class="col-3 footer-content">
+                <ul class="footer-menu">
+                    <li><a href="#">Xếp hạng</a></li>
+                    <li><a href="#">Dịch vụ</a></li>
+                    <li><a href="#">Luật chơi</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                </ul>
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -46,4 +102,20 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+<script type="text/javascript">
+    const optionBtn = document.querySelector('.option-btn');
+    const smallUser = document.querySelector('.small-user');
+
+    let isMenuVisible = false;
+
+    optionBtn.addEventListener('click', () => {
+        if (isMenuVisible) {
+            smallUser.style.display = 'none';
+        } else {
+            smallUser.style.display = 'flex';
+        }
+
+        isMenuVisible = !isMenuVisible;
+    });
+</script>
 </html>

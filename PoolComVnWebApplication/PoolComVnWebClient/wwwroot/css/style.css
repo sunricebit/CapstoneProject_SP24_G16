@@ -1,0 +1,339 @@
+﻿* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.main-background {
+    background: linear-gradient(90deg, #346585, #47BC9A, #346585);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+nav {
+    background: linear-gradient(#000000 0%, #00000077 75%, #00000000 100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    padding: 20px;
+}
+
+.logo-image a {
+    text-decoration: none;
+    color: white;
+    font-size: 28px;
+    font-weight: 700;
+    font-style: italic;
+}
+
+    .logo-image a img {
+        width: 80px;
+        height: 80px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+
+.nav-menu {
+    margin: 0;
+    list-style: none;
+    display: flex;
+    line-height: 80px;
+}
+
+    .nav-menu li {
+        display: flex;
+        justify-content: center;
+        width: 100px;
+    }
+
+    .nav-menu a {
+        line-height: 80px;
+        text-decoration: none;
+        color: #fff;
+        transition: transform 0.5s;
+        transition: line-height 0.3s ease;
+    }
+
+nav .login a,
+nav .large-user .user-name,
+nav .large-user .user-menu li {
+    line-height: 80px;
+    color: #fff;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 800px;
+    text-decoration: none;
+}
+
+nav .large-user {
+    position: relative;
+    line-height: 80px;
+}
+
+    nav .large-user .user-name {
+        width: 100%;
+    }
+
+    nav .large-user .user-menu {
+        display: none;
+        position: absolute;
+        z-index: 98;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+.small-user {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 98;
+    padding: 100px;
+    display: none;
+}
+
+nav .fa-bars {
+    font-size: 48px;
+    color: #fff;
+    padding: 0 20px;
+}
+
+.small-user .option-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: linear-gradient(#000000 50%, #0b08318d 95%, #34658500 100%);
+    padding: 100px;
+    margin: 0;
+}
+
+    .small-user .option-menu .option-items {
+        list-style: none;
+    }
+
+    .small-user .option-menu li {
+        padding: 20px;
+    }
+
+    .small-user .option-menu a {
+        text-decoration: none;
+        font-size: 20px;
+        color: #fff;
+        font-weight: 500;
+    }
+
+
+
+/* Home page */
+.news-header {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center 30%;
+    height: 100vh;
+    position: relative;
+    z-index: 10;
+}
+
+    .news-header .news-description {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        font-weight: 500;
+        font-size: 28px;
+        text-transform: uppercase;
+        color: white;
+        text-align: center;
+        padding: 25px 10%;
+        background: linear-gradient(#0f020200 30%, #000000);
+    }
+
+.container {
+    padding: 50px 2%;
+    z-index: 2;
+    position: relative;
+}
+
+    .container .news-item {
+        padding: 20px;
+        text-align: center;
+        position: relative;
+        text-decoration: none;
+    }
+
+    .container .news-date {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        height: 28px;
+        width: 100px;
+        background-color: rgb(0, 255, 204);
+        border-top-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        color: #0b0831;
+        font-weight: 400;
+        z-index: 2;
+        text-align: center;
+    }
+
+    .container .news-image {
+        overflow: hidden;
+        border-radius: 20px;
+    }
+
+    .container .news-item img {
+        display: block;
+        width: 100%;
+        transition: transform 0.3s;
+    }
+
+        .container .news-item img:hover {
+            transform: scale(1.1);
+        }
+
+    .container .news-items .news-title {
+        color: white;
+        padding: 10px;
+    }
+
+.latest-new {
+    color: white;
+    font-size: 32px;
+    text-align: center;
+    padding: 20px 0;
+    font-style: italic;
+    font-weight: 900;
+}
+
+.news-load {
+    width: 400px;
+    font-weight: 700;
+    font-size: 48px;
+    text-align: center;
+    text-decoration: none;
+    color: rgb(79, 111, 111);
+    font-style: italic;
+    transition: color 0.3s, font-weight 0.3s;
+}
+
+    .news-load:hover {
+        color: rgb(222, 222, 222);
+        font-weight: 900;
+    }
+
+footer {
+    position: relative;
+    border-top: rgb(163, 163, 163) solid 1px;
+    display: block;
+    margin-top: 50px;
+    z-index: 2;
+    margin: 50px 10%;
+}
+
+.footer-logo {
+    font-size: 48px;
+    font-weight: 700;
+    color: rgb(222, 222, 222);
+}
+
+.footer-menu {
+    list-style: none;
+}
+
+    .footer-menu li {
+        padding: 10px 0;
+    }
+
+        .footer-menu li a {
+            text-decoration: none;
+            color: rgb(222, 222, 222);
+            font-size: 18px;
+        }
+
+        .footer-menu li:hover a {
+            color: white;
+        }
+
+.footer-contact {
+    padding: 0;
+}
+
+    .footer-contact li {
+        padding: 10px 0;
+        color: rgb(222, 222, 222);
+        font-size: 18px;
+        list-style: none;
+    }
+
+
+
+
+
+/* Mobile: width <740px */
+@media only screen and (max-width: 739px) {
+
+    .news-header .news-description {
+        font-size: 20px;
+    }
+}
+
+/* Tablet: width >= 740px and width <1024 */
+@media only screen and (min-width:740px) and (max-width: 1023px) {
+
+    .large-screen {
+        display: none;
+    }
+}
+
+/* PC: width>=1024px */
+@media only screen and (min-width: 1024px) {
+
+    .large-screen {
+        display: contents;
+    }
+
+
+
+    .nav-menu li:hover a,
+    nav .login:hover a {
+        font-size: 20px;
+        transform: scale(0.9);
+        font-weight: 700;
+        line-height: 70px;
+    }
+
+    nav .user:hover .user-name {
+        display: none;
+    }
+
+    nav .user:hover .user-menu {
+        display: flex;
+    }
+
+    nav .user .user-menu li {
+        padding: 0 10px;
+    }
+
+        nav .user .user-menu li:hover a {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+    nav .user .user-menu a {
+        text-decoration: none;
+        color: white;
+    }
+}
