@@ -135,5 +135,20 @@
 
         prevScrollpos = currentScrollPos;
     }
+
+    // check window width to set position of load button
+    window.addEventListener('resize', checkLoadButtonPosition)
+    function checkLoadButtonPosition() {
+        var pageWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        var loadBtn = document.getElementById("load-btn");
+        var threshold = 0.2 * pageWidth;
+        loadBtn.classList.add('col-md-6', 'col-lg-4');
+        loadBtn.classList.remove('col-12');
+        if (loadBtn.offsetLeft < threshold) {
+            loadBtn.classList.remove('col-md-6', 'col-lg-4');
+            loadBtn.classList.add('col-12');
+        }
+    }
+    checkLoadButtonPosition();
 </script>
 </html>
