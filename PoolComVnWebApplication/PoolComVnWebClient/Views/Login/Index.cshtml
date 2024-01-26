@@ -12,6 +12,21 @@
                         <div class="input-form">
                             <i class="fa-solid fa-key col-12"></i>
                             <input class="password-input col-12" type="password" placeholder="Mật khẩu">
+                            <button type="button" class="show-pass" onclick="togglePassword(this)">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                            <button type="button" class="hidden-pass d-none" onclick="togglePassword(this)">
+                                <i class="fa-solid fa-eye-slash"></i>
+                            </button>
+                        </div>
+                        <div class="input-form row">
+                            <div class="col-6 d-flex">
+                                <input type="checkbox" />
+                                <span class="mx-2">Nhớ mật khẩu</span>
+                            </div>
+                            <div class="col-6 d-flex justify-content-end">
+                                <a href="">Quên mật khẩu?</a>
+                            </div>
                         </div>
                         <div class="input-form d-flex justify-content-center">
                             <input class="submit-btn" type="submit" value="Đăng nhập">
@@ -52,9 +67,21 @@
                         <div class="input-form">
                             <i class="fa-solid fa-key col-12"></i>
                             <input class="password-input col-12" type="password" placeholder="Mật khẩu">
+                            <button type="button" class="show-pass" onclick="togglePassword(this)">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                            <button type="button" class="hidden-pass d-none" onclick="togglePassword(this)">
+                                <i class="fa-solid fa-eye-slash"></i>
+                            </button>
                         </div>
                         <div class="input-form">
                             <input class="password-input col-12" type="password" placeholder="Nhập lại mật khẩu">
+                            <button type="button" class="show-pass" onclick="togglePassword(this)">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                            <button type="button" class="hidden-pass d-none" onclick="togglePassword(this)">
+                                <i class="fa-solid fa-eye-slash"></i>
+                            </button>
                         </div>
                         <div class="input-form d-flex justify-content-center">
                             <input class="submit-btn" type="submit" value="Đăng kí">
@@ -96,5 +123,22 @@
         }, 300);
     }
 
+    // show/hidden password
+    function togglePassword(e) {
+        const parent = e.closest('.input-form');
+        const showPass = parent.querySelector('.show-pass');
+        const hiddenPass = parent.querySelector('.hidden-pass');
+        const passInput = parent.querySelector('.password-input');
+
+        if (!showPass.classList.contains('d-none')) {
+            showPass.classList.add('d-none');
+            hiddenPass.classList.remove('d-none');
+            passInput.type = 'text';
+        } else {
+            showPass.classList.remove('d-none');
+            hiddenPass.classList.add('d-none');
+            passInput.type = 'password';
+        }
+    }
 
 </script>

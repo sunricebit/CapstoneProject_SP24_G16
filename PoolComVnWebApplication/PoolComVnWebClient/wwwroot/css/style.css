@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+a {
+    text-decoration: none;
+}
+
 .main-background {
     background: linear-gradient(90deg, #346585, #47BC9A, #346585);
     background-size: cover;
@@ -29,7 +33,6 @@ nav {
 }
 
 .logo-image a {
-    text-decoration: none;
     color: white;
     font-size: 28px;
     font-weight: 700;
@@ -59,7 +62,6 @@ nav {
 
     .nav-menu a {
         line-height: 80px;
-        text-decoration: none;
         color: #fff;
         transition: transform 0.5s;
         transition: line-height 0.3s ease;
@@ -73,7 +75,6 @@ nav .large-user .user-menu li {
     font-size: 16px;
     font-style: italic;
     font-weight: 800px;
-    text-decoration: none;
 }
 
 nav .large-user {
@@ -130,7 +131,6 @@ nav .fa-bars {
     }
 
     .small-user .option-menu a {
-        text-decoration: none;
         font-size: 20px;
         color: #fff;
         font-weight: 500;
@@ -172,7 +172,6 @@ nav .fa-bars {
         padding: 20px;
         text-align: center;
         position: relative;
-        text-decoration: none;
     }
 
     .container .news-date {
@@ -224,7 +223,6 @@ nav .fa-bars {
     font-weight: 700;
     font-size: 48px;
     text-align: center;
-    text-decoration: none;
     color: rgb(79, 111, 111);
     font-style: italic;
     transition: color 0.3s, font-weight 0.3s;
@@ -259,7 +257,6 @@ footer {
     }
 
         .footer-menu li a {
-            text-decoration: none;
             color: rgb(222, 222, 222);
             font-size: 18px;
         }
@@ -312,7 +309,18 @@ footer {
 
     .container .login-form .input-form {
         padding: 10px 0;
+        position: relative;
     }
+
+        .container .login-form .input-form .show-pass,
+        .container .login-form .input-form .hidden-pass {
+            border: none;
+            background: none;
+            padding: 0;
+            position: absolute;
+            bottom: 12px;
+            right: 0;
+        }
 
     .container .login-form .username-input,
     .container .login-form .password-input {
@@ -434,7 +442,6 @@ footer {
         }
 
     nav .user .user-menu a {
-        text-decoration: none;
         color: white;
     }
 }
