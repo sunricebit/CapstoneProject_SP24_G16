@@ -279,7 +279,107 @@ footer {
         list-style: none;
     }
 
+/* login page */
 
+.container .login-page {
+    height: 100vh;
+    width: 100%;
+}
+
+.container .form-content {
+    box-shadow: 0 0 50px #41f3c0;
+    border-radius: 39px;
+    overflow: hidden;
+}
+
+.container .login-form {
+    width: 100%;
+    background-color: #ffffff79;
+    height: 70vh;
+    padding: 0px;
+}
+
+    .container .login-form .login-title {
+        text-align: center;
+        font-size: 28px;
+        font-weight: 500;
+        margin-top: 20px;
+    }
+
+    .container .login-form form {
+        padding: 30px 20px 20px 20px;
+    }
+
+    .container .login-form .input-form {
+        padding: 10px 0;
+    }
+
+    .container .login-form .username-input,
+    .container .login-form .password-input {
+        border: none;
+        outline: none;
+        background: none;
+        border-bottom: solid 1px #000;
+        padding-top: 5px;
+    }
+
+    .container .login-form .submit-btn {
+        background-color: #00000079;
+        border: none;
+        border-radius: 20px;
+        padding: 5px;
+        margin-top: 20px;
+        width: 80%;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 400;
+        transition: transform 0.5s ease;
+    }
+
+        .container .login-form .submit-btn:hover {
+            box-shadow: 0 0 20px #0091ff;
+            transform: scale(1.05);
+        }
+
+    .container .login-form .login-other {
+        width: 100px;
+        height: 40px;
+        border-radius: 10px;
+        border: 1px solid #47BC9A;
+        background: none;
+        transition: background-color 0.5s ease;
+    }
+
+        .container .login-form .login-other:hover {
+            background-color: #47BC9A;
+            color: #fff;
+        }
+
+.container .exchange-form {
+    width: 20%;
+    background-color: #0e70599e;
+    border: none;
+    color: #fff;
+    transition: background-color 0.5s ease;
+}
+
+    .container .exchange-form:hover {
+        box-shadow: 0 0 50px #0091ff;
+        background-color: #0e7059e6;
+        cursor: pointer;
+    }
+
+    .container .exchange-form .exchange-btn {
+        font-size: 20px;
+    }
+
+.container .login-change {
+    transform: rotateY(0deg);
+}
+
+.container .register-change {
+    transform: rotateY(180deg);
+}
 
 
 
