@@ -10,8 +10,11 @@ namespace BusinessObject.Models
     public class Role
     {
         [Key]
+        [Required]
         public int RoleID { get; set; }
+        [Required]
         public string RoleName { get; set; }
+        public List<Account> Account { get; set; }
 
     }
 }

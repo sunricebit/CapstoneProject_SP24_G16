@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    public class Category
+    public class GameRule
     {
         [Key]
-        public int CategoryId { get; set; }
-        public string CategoryName { get; set; }
+        [Required]
+        public int GameRuleID { get; set; }
+        [Required]
+        public string RuleName { get; set; }
         public string Description { get; set; }
-        public List<Product> Products { get; set; }
-
     }
 }

@@ -8,12 +8,16 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    public class Match
+    public class MatchOfTournament
     {
         [Key]
-        public int MatchID { get; set; }
+        public int TourMatchID { get; set; }
+        [Required]
+        public Tournament tournament { get; set; }
+
         public int TourID { get; set; }
         public int MatchNumber { get; set; }
+        public Player player { get; set; }
         public int PlayerID { get; set; }
         public int Score { get; set; }
 

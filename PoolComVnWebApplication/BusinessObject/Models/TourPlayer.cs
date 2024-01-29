@@ -11,7 +11,11 @@ namespace BusinessObject.Models
     {
         [Key]
         public int Id { get; set; }
+        [Required]
+        public Tournament Tournament { get; set; }
         public int TourID { get; set; }
+        [Required]
+        public Player Player { get; set; }
         public int PlayerID { get; set; }
     }
 }
