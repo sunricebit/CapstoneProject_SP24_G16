@@ -279,20 +279,19 @@ footer {
 /* login page */
 
 .container .login-page {
-    height: 100vh;
     width: 100%;
+    margin-top: 100px;
 }
 
-.container .form-content {
-    box-shadow: 0 0 50px #41f3c0;
-    border-radius: 39px;
-    overflow: hidden;
-}
+    .container .login-page .form-content {
+        box-shadow: 0 0 50px #41f3c0;
+        border-radius: 39px;
+        overflow: hidden;
+    }
 
 .container .login-form {
     width: 100%;
     background-color: #ffffff79;
-    height: 70vh;
     padding: 0px;
 }
 
@@ -389,6 +388,66 @@ footer {
     transform: rotateY(180deg);
 }
 
+/* forgot password page */
+.container .forgot-page,
+.container .changePass-page {
+    width: 100%;
+    margin-top: 100px;
+}
+
+    .container .forgot-page .form-content,
+    .container .changePass-page .form-content {
+        box-shadow: 0 0 50px #41f3c0;
+        border-radius: 39px;
+        overflow: hidden;
+    }
+
+.container .forgot-form,
+.container .changePass-form {
+    width: 100%;
+    background-color: #ffffff79;
+    padding: 20px;
+}
+
+    .container .forgot-form .forgot-title,
+    .container .changePass-form .changePass-title {
+        font-size: 24px;
+        font-weight: 500;
+    }
+
+    .container .forgot-form .username-input,
+    .container .changePass-form .text-input {
+        margin: 20px;
+        padding: 5px;
+        outline: 2px solid #0091ff;
+        border-radius: 10px;
+        border: none;
+    }
+
+        .container .forgot-form .username-input:focus,
+        .container .changePass-form .text-input:focus {
+            box-shadow: 0 0 20px #0091ff;
+        }
+
+    .container .forgot-form .submit-btn,
+    .container .changePass-form .submit-btn {
+        background-color: #00000079;
+        border: none;
+        border-radius: 20px;
+        padding: 5px;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 400;
+        transition: transform 0.5s ease;
+    }
+
+        .container .forgot-form .submit-btn:hover,
+        .container .changePass-form .submit-btn:hover {
+            box-shadow: 0 0 20px #0091ff;
+            transform: scale(1.05);
+        }
+
+/* change password page */
 
 
 /* Mobile: width <740px */
