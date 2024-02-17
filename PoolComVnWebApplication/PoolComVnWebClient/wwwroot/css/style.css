@@ -447,8 +447,56 @@ footer {
             transform: scale(1.05);
         }
 
-/* change password page */
+/* change password page same forgot password page */
 
+/* newsDetails.html */
+.container .news-details {
+    margin-top: 80px;
+}
+
+.container .news-detail {
+    padding-right: 40px;
+}
+
+    .container .news-detail img {
+        width: 100%;
+        background-position: center center;
+        border-radius: 10px;
+    }
+
+    .container .news-detail .news-title {
+        padding: 20px;
+        color: #fff;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 700;
+        font-style: italic;
+    }
+
+    .container .news-detail .news-description {
+        margin-top: 20px;
+        font-weight: 500;
+        text-align: justify;
+    }
+
+.container .news-other .news-item {
+    padding: 0;
+    padding-bottom: 40px;
+}
+
+    .container .news-other .news-item .news-image {
+        border-radius: 5px;
+    }
+
+    .container .news-other .news-item .news-title {
+        color: #000;
+        text-align: left;
+        padding-left: 20px;
+    }
+
+    .container .news-other .news-item:hover .news-title {
+        color: #fff;
+    }
 
 /* Mobile: width <740px */
 @media only screen and (max-width: 739px) {
