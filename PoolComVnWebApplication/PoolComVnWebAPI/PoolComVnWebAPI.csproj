@@ -12,7 +12,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BusinessObject\BusinessObject.csproj" />
+    <Folder Include="Authorization\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
   </ItemGroup>
 
 </Project>
