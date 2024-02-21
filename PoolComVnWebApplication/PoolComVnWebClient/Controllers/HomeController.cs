@@ -18,6 +18,11 @@ namespace PoolComVnWebClient.Controllers
             return View();
         }
 
+        public IActionResult NewsDetail()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
