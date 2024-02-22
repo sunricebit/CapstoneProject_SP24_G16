@@ -1,8 +1,16 @@
+using BusinessObject.Models;
+using DataAccess;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+var builder2 = new ConfigurationBuilder()
+.SetBasePath(Directory.GetCurrentDirectory())
+.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+IConfigurationRoot configuration = builder2.Build();
+builder.Services.AddDbContext<PoolComContext>(options => options.UseSqlServer(configuration.GetConnectionString("PoolCom")));
 
 // Add services to the container.
 
@@ -10,6 +18,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<PostDAO>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(option =>
     {

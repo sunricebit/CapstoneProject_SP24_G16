@@ -11,6 +11,7 @@ namespace BusinessObject.Models
     {
         [Key]
         public int ProductID { get; set; }
+        public Category Category { get; set; }
         public int CategoryID { get; set; }
         public string ProductName { get; set; }
         public string Image { get; set; }
@@ -20,6 +21,7 @@ namespace BusinessObject.Models
         public string Description { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
+        public OrderDetails OrderDetails { get; set; }
     }
 
 }

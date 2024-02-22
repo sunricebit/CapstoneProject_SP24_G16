@@ -13,5 +13,6 @@ namespace BusinessObject.Models
         public int ScaleID { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public List<Tournament> Tournament { get; set; }
     }
 }

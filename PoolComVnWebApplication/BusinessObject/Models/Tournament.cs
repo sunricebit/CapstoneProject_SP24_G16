@@ -15,13 +15,17 @@ namespace BusinessObject.Models
         [Required]
         public string TourName { get; set; }
         public string Description { get; set; }
-        public string Type { get; set; }
+        public int TypeID { get; set; }
         public int GameRuleID { get; set; }
         public int ScaleID { get; set; }
         public int MinPlayer { get; set; }
         public int MaxPlayer { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public List<MatchOfTournament> MatchOfTournamentList { get; set; }
+        public Scale scale { get; set; }
+        public List<TourPlayer> tourPlayer { get; set; }
+        public Type type { get; set; }
 
 
 
