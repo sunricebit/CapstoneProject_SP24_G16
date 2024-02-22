@@ -23,6 +23,11 @@ namespace PoolComVnWebClient.Controllers
             return View();
         }
 
+        public IActionResult GameRules()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
