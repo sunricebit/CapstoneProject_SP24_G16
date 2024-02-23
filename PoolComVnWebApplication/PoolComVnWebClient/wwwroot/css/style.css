@@ -922,6 +922,48 @@ footer {
         font-weight: 600;
     }
 
+/* verifyRegister.html */
+.verify-register {
+    margin-top: 80px;
+    width: 100%;
+}
+
+    .verify-register .verify-form {
+        width: 50%;
+        background-color: #9dd5c8;
+        border-radius: 20px;
+    }
+
+        .verify-register .verify-form .verify-title {
+            color: #0b0831;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .verify-register .verify-form .code-input {
+            width: 48px;
+            height: 52px;
+            border: 2px #bbb solid;
+            font-size: 24px;
+            text-align: center;
+            font-weight: 600;
+            margin: 0 5px;
+        }
+
+        .verify-register .verify-form .submit-btn {
+            width: 60%;
+            height: 40px;
+            border-radius: 20px;
+            border: 1px solid #aaa;
+            transition: transform 0.3s ease;
+            background: #41f3c0;
+            font-weight:600;
+        }
+
+            .verify-register .verify-form .submit-btn:hover {
+                transform: scale(1.1);
+            }
+
 /* Mobile: width <740px */
 @media only screen and (max-width: 739px) {
 

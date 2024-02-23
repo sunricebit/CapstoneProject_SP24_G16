@@ -8,5 +8,10 @@ namespace PoolComVnWebClient.Controllers
         {
             return View();
         }
+
+        public IActionResult VerifyRegister()
+        {
+            return View();
+        }
     }
 }
