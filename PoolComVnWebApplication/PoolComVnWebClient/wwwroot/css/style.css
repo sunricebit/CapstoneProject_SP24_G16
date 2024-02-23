@@ -390,6 +390,17 @@ footer {
     transform: rotateY(180deg);
 }
 
+.container .input-form .account-role {
+    font-weight: 600;
+    font-style: italic;
+}
+
+.container .input-form input[type='radio'],
+.container .input-form input[type='checkbox'] {
+    width: 16px;
+    height: 16px;
+}
+
 /* forgot password page */
 .container .forgot-page,
 .container .changePass-page {

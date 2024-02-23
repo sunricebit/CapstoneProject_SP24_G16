@@ -20,12 +20,12 @@
                             </button>
                         </div>
                         <div class="input-form row">
-                            <div class="col-6 d-flex">
+                            <div class="col-6 d-flex align-items-center">
                                 <input type="checkbox" />
                                 <span class="mx-2">Nhớ mật khẩu</span>
                             </div>
                             <div class="col-6 d-flex justify-content-end">
-                                <a asp-controller="forgotPassword" action="index">Quên mật khẩu?</a>
+                                <a href="">Quên mật khẩu?</a>
                             </div>
                         </div>
                         <div class="input-form d-flex justify-content-center">
@@ -82,6 +82,25 @@
                             <button type="button" class="hidden-pass d-none" onclick="togglePassword(this)">
                                 <i class="fa-solid fa-eye-slash"></i>
                             </button>
+                        </div>
+                        <div class="input-form">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <div class="d-flex justify-content-around">
+                                <div class="account-role d-flex align-items-center">
+                                    <input class="mx-2" type="radio" name="account-role" checked>
+                                    Người chơi
+                                </div>
+                                <div class="account-role d-flex align-items-center">
+                                    <input class="mx-2" type="radio" name="account-role">
+                                    Tổ chức
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-form text-center">
+                            <input type="checkbox" class="mx-2">
+                            <span>Tôi đã đọc và đồng ý với</span>
+                            <a href="#">Chính sách và điều khoản dịch vụ</a>
+                            <span>của website.</span>
                         </div>
                         <div class="input-form d-flex justify-content-center">
                             <input class="submit-btn" type="submit" value="Đăng kí">
