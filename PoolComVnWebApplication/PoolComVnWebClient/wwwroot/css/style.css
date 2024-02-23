@@ -792,6 +792,13 @@ footer {
     }
 
     /* gameRule.html */
+    .gameRule .gameRule-body {
+        padding: 20px 20px 100px 20px;
+        background: #00000088;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+    }
+
     .gameRule .source-title {
         margin-top: 20px;
         color: #fff;
@@ -814,27 +821,30 @@ footer {
 
     .gameRule .rule-body {
         width: 80%;
+        color: #fff;
     }
 
         .gameRule .rule-body .rule-title {
-            color: #fff;
             font-size: 20px;
             font-weight: 700;
             margin-bottom: 10px;
         }
 
         .gameRule .rule-body .rule-description {
-            color: #fff;
             text-align: justify;
         }
 
         .gameRule .rule-body .rule-image {
             width: 50%;
+            border-radius: 5px;
+        }
+
+        .gameRule .rule-body p {
+            font-style:italic;
         }
 
 /* Mobile: width <740px */
 @media only screen and (max-width: 739px) {
-
     .news-header .news-description {
         font-size: 20px;
     }
