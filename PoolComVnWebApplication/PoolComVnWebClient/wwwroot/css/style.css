@@ -390,6 +390,17 @@ footer {
     transform: rotateY(180deg);
 }
 
+.container .input-form .account-role {
+    font-weight: 600;
+    font-style: italic;
+}
+
+.container .input-form input[type='radio'],
+.container .input-form input[type='checkbox'] {
+    width: 16px;
+    height: 16px;
+}
+
 /* forgot password page */
 .container .forgot-page,
 .container .changePass-page {
@@ -792,6 +803,13 @@ footer {
     }
 
     /* gameRule.html */
+    .gameRule .gameRule-body {
+        padding: 20px 20px 100px 20px;
+        background: #00000088;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+    }
+
     .gameRule .source-title {
         margin-top: 20px;
         color: #fff;
@@ -814,23 +832,137 @@ footer {
 
     .gameRule .rule-body {
         width: 80%;
+        color: #fff;
     }
 
         .gameRule .rule-body .rule-title {
-            color: #fff;
             font-size: 20px;
             font-weight: 700;
             margin-bottom: 10px;
         }
 
         .gameRule .rule-body .rule-description {
-            color: #fff;
             text-align: justify;
         }
 
         .gameRule .rule-body .rule-image {
             width: 50%;
+            border-radius: 5px;
         }
+
+        .gameRule .rule-body p {
+            font-style: italic;
+        }
+
+/* contact.html */
+.contact-body {
+    margin-top: 140px;
+}
+
+    .contact-body .contact-form {
+        background: #9dd5c8;
+        border-radius: 20px;
+        padding: 50px 20px 20px 20px;
+        position: relative;
+    }
+
+        .contact-body .contact-form .form-input {
+            padding: 10px 20px;
+        }
+
+        .contact-body .contact-form .input-title {
+            font-weight: 500;
+        }
+
+        .contact-body .contact-form .input-text {
+            border-radius: 10px;
+            border: 1px solid #878787;
+            padding: 5px 10px;
+        }
+
+        .contact-body .contact-form .submit-btn {
+            padding: 5px;
+            border-radius: 20px;
+            background: #41f3c0;
+            border: #47BC9A 1px solid;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+            .contact-body .contact-form .submit-btn:hover {
+                background-color: #41f3c0;
+                transform: scale(1.05);
+            }
+
+        .contact-body .contact-form .contact-tag {
+            font-size: 60px;
+            color: #fff;
+            position: absolute;
+            top: -30px;
+            right: 30px;
+            background: #000;
+            padding: 0px 20px 10px 20px;
+            border-radius: 20px;
+            line-height: 80px;
+            opacity: 0.8;
+        }
+
+    .contact-body .contact-info .contact-icon {
+        width: 60px;
+        height: 60px;
+        background: #000;
+        color: #fff;
+        border-radius: 50%;
+        font-size: 32px;
+        margin-right: 20px;
+    }
+
+    .contact-body .contact-info .contact-description {
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+/* verifyRegister.html */
+.verify-register {
+    margin-top: 80px;
+    width: 100%;
+}
+
+    .verify-register .verify-form {
+        width: 50%;
+        background-color: #9dd5c8;
+        border-radius: 20px;
+    }
+
+        .verify-register .verify-form .verify-title {
+            color: #0b0831;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .verify-register .verify-form .code-input {
+            width: 48px;
+            height: 52px;
+            border: 2px #bbb solid;
+            font-size: 24px;
+            text-align: center;
+            font-weight: 600;
+            margin: 0 5px;
+        }
+
+        .verify-register .verify-form .submit-btn {
+            width: 60%;
+            height: 40px;
+            border-radius: 20px;
+            border: 1px solid #aaa;
+            transition: transform 0.3s ease;
+            background: #41f3c0;
+            font-weight:600;
+        }
+
+            .verify-register .verify-form .submit-btn:hover {
+                transform: scale(1.1);
+            }
 
 /* Mobile: width <740px */
 @media only screen and (max-width: 739px) {
