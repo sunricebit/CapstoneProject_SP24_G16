@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObject.Migrations
 {
     [DbContext(typeof(PoolComContext))]
-    [Migration("20240129151648_DB2")]
+    [Migration("20240224061656_DB2")]
     partial class DB2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,6 +70,10 @@ namespace BusinessObject.Migrations
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("veriyCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AccountID");
 
@@ -170,6 +174,27 @@ namespace BusinessObject.Migrations
                     b.HasIndex("ClubID");
 
                     b.ToTable("ClubPost");
+                });
+
+            modelBuilder.Entity("BusinessObject.Models.GameRule", b =>
+                {
+                    b.Property<int>("GameRuleID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GameRuleID"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RuleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("GameRuleID");
+
+                    b.ToTable("GameRules");
                 });
 
             modelBuilder.Entity("BusinessObject.Models.MatchOfTournament", b =>

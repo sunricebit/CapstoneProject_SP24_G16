@@ -21,6 +21,7 @@ namespace BusinessObject.Models
         public string Password { get; set; }
         public Role Role { get; set; }
         public int RoleID { get; set; }
+        public string veriyCode { get; set; }   
         public string PhoneNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Avatar { get; set; }
