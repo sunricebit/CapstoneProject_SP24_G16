@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace PoolComVnWebAPI.Controllers
+namespace PoolComVnWebClient.Controllers
 {
-    public class ClubController : Controller
+    public class ChangePasswordController : Controller
     {
         public IActionResult Index()
         {

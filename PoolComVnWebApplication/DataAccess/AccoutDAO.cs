@@ -1,26 +1,17 @@
-﻿using BCrypt.Net;
-using BusinessObject.Models;
-using Microsoft.EntityFrameworkCore;
-
-namespace DataAccess
+﻿namespace DataAccess
 {
-    public class AccountDAO
+    public class AccoutDAO
     {
-        private readonly PoolComContext _context;
-
-        public AccountDAO(PoolComContext poolComContext)
-        {
-            _context = poolComContext;
-        }
-
         /// <summary>
         /// 
         /// </summary>
         public void BanAccount() { }
 
         /// <summary>
-        /// Register 
+        /// 
         /// </summary>
+        public void RegisterAccount() { 
+        }
         public void RegisterAccount(string username, string email, string pass, bool isBussiness) {
             try
             {
@@ -46,8 +37,9 @@ namespace DataAccess
         public void GetAllAccount() { }
 
         /// <summary>
-        /// Authentication Account
+        /// 
         /// </summary>
+        public void AuthenAccount() { }
         public Account? AuthenAccount(string username, string pass) {
             var account = _context.Accounts.FirstOrDefault(account => account.Email.Equals(username));
             if (account != null)

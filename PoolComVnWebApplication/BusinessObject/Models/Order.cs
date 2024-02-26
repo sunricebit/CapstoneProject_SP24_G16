@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-        public class News
+        public class Order
         {
             [Key]
-            public int NewsID { get; set; }
-            public string Title { get; set; }
-            public string Description { get; set; }
+            public int OrderID { get; set; }
             public int AccountID { get; set; }
-            public DateTime CreatedDate { get; set; }
-            public DateTime UpdatedDate { get; set; }
+            public DateTime OrderDate { get; set; }
+            public DateTime ShippedDate { get; set; }
+            public DateTime RequiredDate { get; set; }
+            public bool Status { get; set; }
             public Account Account { get; set; }
+            public List<OrderDetails> Details { get; set; }
         }
 }

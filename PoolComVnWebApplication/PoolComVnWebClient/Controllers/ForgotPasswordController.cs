@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace PoolComVnWebAPI.Controllers
+namespace PoolComVnWebClient.Controllers
 {
-    public class AccountController : Controller
+    public class ForgotPasswordController : Controller
     {
         public IActionResult Index()
         {
