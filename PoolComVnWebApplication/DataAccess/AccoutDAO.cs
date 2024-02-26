@@ -29,6 +29,8 @@ namespace DataAccess
                     Email = email,
                     Password = BCrypt.Net.BCrypt.HashPassword(pass, Constant.SaltRound),
                     RoleID = isBussiness ? Constant.BusinessRole : Constant.UserRole,
+                    PhoneNumber = "Default",
+                    verifyCode = "Default",
                 };
                 _context.Accounts.Add(account);
                 _context.SaveChanges();

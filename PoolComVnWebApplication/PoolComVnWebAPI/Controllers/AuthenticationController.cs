@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PoolComVnWebAPI.Authentication;
+using PoolComVnWebAPI.DTO;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Principal;
 using System.Text;
@@ -36,12 +37,13 @@ namespace PoolComVnWebAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Register([FromBody]string username, string email, string pass, bool isBusiness)
+        public IActionResult Register([FromBody]RegisterDTO registerDto)
         {
-            if (_accountDAO.IsEmailExist(email) || _accountDAO.IsUsernameExist(username)) {
+            if (_accountDAO.IsEmailExist(registerDto.email) || _accountDAO.IsUsernameExist(registerDto.username)) {
                 return BadRequest();
             }
-            _accountDAO.RegisterAccount(username, email, pass, isBusiness);
+            _accountDAO.RegisterAccount(registerDto.username, registerDto.email, 
+                registerDto.pass, registerDto.isBusiness);
             //if (account != null)
             //{
             //    return Ok(new { token = TokenManager.GenerateToken(username, account.RoleID) });
