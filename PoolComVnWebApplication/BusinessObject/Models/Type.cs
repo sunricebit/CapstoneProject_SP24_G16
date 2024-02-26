@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    public class GameType
+    public class Type
     {
         [Key]
         [Required]
-        public int GameTypeID { get; set; }
+        public int TypeID { get; set; }
         [Required]
         public string TypeName { get; set; }
-        public string? Description { get; set; }
-        public virtual List<SoloMatch> Match { get; set; }
-        public virtual List<Tournament> Tournament { get; set; }
+        public string Description { get; set; }
+        public List<SoloMatch> Match { get; set; }
+        public List<Tournament> Tournament { get; set; }
     }
 }
