@@ -13,24 +13,18 @@ namespace BusinessObject.Models
         [Required]
         public int AccountID { get; set; }
         [Required]
-        public string Fullname { get; set; }
-        [Required]
-        public string Nickname { get; set; }
-        [Required]
+  
         public string Email { get; set; }
         public string Password { get; set; }
-        public Role Role { get; set; }
+        public virtual Role Role { get; set; }
         public int RoleID { get; set; }
-        public string PhoneNumber { get; set; }
-        public string verifyCode { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public string Avatar { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
-        public List<Order> OrderList { get; set; }
-        public List<News> NewsList { get; set; }
-        public Player Player { get; set; }
-        public Club Club { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? verifyCode { get; set; }
+        
+        public virtual List<News>? NewsList { get; set; }
+        public virtual Player? Player { get; set; }
+        public virtual Club? Club { get; set; }
+        public bool Status { get; set; }
 
     }
 }
