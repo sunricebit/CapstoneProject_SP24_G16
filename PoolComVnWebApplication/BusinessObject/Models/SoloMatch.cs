@@ -12,7 +12,6 @@ namespace BusinessObject.Models
         [Key]
         public int SoloMatchID { get; set; }
         [Required]
-        public Player? Players { get; set; }
         public int Player1 { get; set; }
         [Required]
         
@@ -22,8 +21,10 @@ namespace BusinessObject.Models
         [Required]
         public int Score2 { get; set; }
         public DateTime StartTime { get; set; }
-        public Type? Type { get; set; }
-        public int TypeID { get; set; }
+        public virtual GameType? Type { get; set; }
+        public int GameTypeID { get; set; }
+        public int ClubID { get; set; }
+        public virtual Club Club { get; set; }
         public string Description { get; set; }
     }
 }
