@@ -16,12 +16,12 @@ namespace PoolComVnWebAPI.Authentication
             return randomString;
         }
 
-        public static string GenerateToken(string name, int roleId)
+        public static string GenerateToken(string email, string role)
         {
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey));
             SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, name), new Claim(ClaimTypes.Role, roleId.ToString()) }),
+                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Email, email), new Claim(ClaimTypes.Role, role) }),
                 Expires = DateTime.UtcNow.AddHours(4),
                 SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256),
             };

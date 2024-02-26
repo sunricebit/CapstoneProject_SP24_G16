@@ -11,17 +11,15 @@ namespace BusinessObject.Models
     public class MatchOfTournament
     {
         [Key]
-        public int MatchNumber { get; set; }
+        public int TourMatchID { get; set; }
         [Required]
-        public virtual Tournament tournament { get; set; }
+        public Tournament tournament { get; set; }
 
         public int TourID { get; set; }
-        public int player1 { get; set; }
-        public int player2 { get; set; }
-        public virtual List<Player> playerList { get; set; }
-        public int Score1 { get; set; }
-        public int Score2 { get; set; }
-        public bool IsFinish { get; set; }
+        public int MatchNumber { get; set; }
+        public Player player { get; set; }
+        public int PlayerID { get; set; }
+        public int Score { get; set; }
 
     }
 }

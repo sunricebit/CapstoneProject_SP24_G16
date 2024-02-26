@@ -12,11 +12,11 @@ namespace BusinessObject.Models
         [Key]
         public int PostID { get; set; }
         public int ClubID { get; set; }
-        public virtual Club Club { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
-        public string? Image { get; set; }
+        public Club Club { get; set; }
+        public string ClubName { get; set; }
+        public string Address { get; set; }
+        public string Phone { get; set; }
+        public string Facebook { get; set; }
+        public string Avatar { get; set; }
     }
 }
