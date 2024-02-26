@@ -13,26 +13,31 @@ namespace PoolComVnWebClient.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
 
+        [HttpGet]
         public IActionResult NewsDetail()
         {
             return View();
         }
 
+        [HttpGet]
         public IActionResult GameRules()
         {
             return View();
         }
 
+        [HttpGet]
         public IActionResult Contact()
         {
             return View();
         }
 
+        [HttpGet]
         public IActionResult Privacy()
         {
             return View();

@@ -13,12 +13,12 @@ namespace BusinessObject.Models
         [Required]
         public int PlayerID { get; set; }
         public string PlayerName { get; set; }
-        public Account Account { get; set; }
+        public virtual Account Account { get; set; }
         public int AccountID { get; set; }
         public string Level { get; set; }
-        public List<TourPlayer> TourPlayer { get; set; }
-        public MatchOfTournament MatchOfTournament { get; set;}
-        public List<SoloMatch> soloMatches { get; set; }
+        public virtual MatchOfTournament MatchOfTournament { get; set;}
+        public virtual User User { get; set; }
+        public virtual TourPlayer TourPlayer { get; set; }
 
     }
 }

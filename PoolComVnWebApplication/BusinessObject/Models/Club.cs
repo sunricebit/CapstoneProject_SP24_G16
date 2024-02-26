@@ -18,7 +18,8 @@ namespace BusinessObject.Models
         public string Address { get; set; }
         public string Phone { get; set; }
         public string Facebook { get; set; }
-        public string Avatar { get; set; }
-        public List<ClubPost> ClubPost { get; set; }
+        public string? Avatar { get; set; }
+        public virtual List<ClubPost>? ClubPost { get; set; }
+        public virtual List<SoloMatch>? SoloMatches { get; set; }
     }
 }
