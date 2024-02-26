@@ -12,10 +12,11 @@ namespace BusinessObject.Models
             [Key]
             public int NewsID { get; set; }
             public string Title { get; set; }
-            public string Description { get; set; }
-            public int AccountID { get; set; }
+            public string? Description { get; set; }
+            public int AccID { get; set; }
             public DateTime CreatedDate { get; set; }
             public DateTime UpdatedDate { get; set; }
-            public Account Account { get; set; }
+            public string link { get; set; }
+            public virtual Account Account { get; set; }
         }
 }

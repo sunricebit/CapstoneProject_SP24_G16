@@ -7,14 +7,13 @@ using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    public class Role
+    public class TournamentType
     {
         [Key]
+        public int TournamentTypeID { get; set; }
         [Required]
-        public int RoleID { get; set; }
-        [Required]
-        public string RoleName { get; set; }
-        public virtual List<Account> Account { get; set; }
-
+        public string TournamentTypeName { get; set; }
+        public string? Description { get; set; }
+        public virtual List<Tournament>? tournaments { get; set; }
     }
 }
