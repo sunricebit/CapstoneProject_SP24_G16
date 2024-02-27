@@ -27,11 +27,11 @@ namespace DataAccess
                 Account account = new Account()
                 {
                     Email = email,
-                    Nickname = username,
+                  
                     Password = BCrypt.Net.BCrypt.HashPassword(pass, Constant.SaltRound),
                     RoleID = isBussiness ? Constant.BusinessRole : Constant.UserRole,
                 };
-                _context.Account.Add(account);
+                _context.Accounts.Add(account);
                 _context.SaveChanges();
             }
             catch (Exception e)
@@ -49,7 +49,7 @@ namespace DataAccess
         /// Authentication Account
         /// </summary>
         public Account? AuthenAccount(string username, string pass) {
-            var account = _context.Account.FirstOrDefault(account => account.Nickname.Equals(username));
+            var account = _context.Accounts.FirstOrDefault(account => account.Email.Equals(username));
             if (account != null)
             {
                 bool verify = BCrypt.Net.BCrypt.Verify(pass, account.Password);
@@ -65,19 +65,19 @@ namespace DataAccess
 
         public Account? GetAccountByUsername(string username)
         {
-            Account? account = _context.Account.FirstOrDefault(item => username.Equals(item.Nickname));
+            Account? account = _context.Accounts.FirstOrDefault(item => username.Equals(item.Email));
             return account;
         }
 
         public bool IsUsernameExist(string username)
         {
-            Account? account = _context.Account.FirstOrDefault(item => username.Equals(item.Nickname));
+            Account? account = _context.Accounts.FirstOrDefault(item => username.Equals(item.Email));
             return account == null ? false : true;
         }
 
         public bool IsEmailExist(string email)
         {
-            Account? account = _context.Account.FirstOrDefault(item => email.Equals(item.Email));
+            Account? account = _context.Accounts.FirstOrDefault(item => email.Equals(item.Email));
             return account == null ? false : false;
         }
     }
