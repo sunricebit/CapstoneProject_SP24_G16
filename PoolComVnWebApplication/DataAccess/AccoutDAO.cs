@@ -27,9 +27,10 @@ namespace DataAccess
                 Account account = new Account()
                 {
                     Email = email,
-                  
                     Password = BCrypt.Net.BCrypt.HashPassword(pass, Constant.SaltRound),
                     RoleID = isBussiness ? Constant.BusinessRole : Constant.UserRole,
+                    PhoneNumber = "Default",
+                    verifyCode = "Default",
                 };
                 _context.Accounts.Add(account);
                 _context.SaveChanges();
@@ -48,8 +49,8 @@ namespace DataAccess
         /// <summary>
         /// Authentication Account
         /// </summary>
-        public Account? AuthenAccount(string username, string pass) {
-            var account = _context.Accounts.FirstOrDefault(account => account.Email.Equals(username));
+        public Account? AuthenAccount(string email, string pass) {
+            var account = _context.Accounts.FirstOrDefault(account => account.Email.Equals(email));
             if (account != null)
             {
                 bool verify = BCrypt.Net.BCrypt.Verify(pass, account.Password);
