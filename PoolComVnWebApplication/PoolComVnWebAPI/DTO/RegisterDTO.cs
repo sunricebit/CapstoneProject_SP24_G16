@@ -2,9 +2,9 @@
 {
     public class RegisterDTO
     {
-        public string username;
-        public string email;
-        public string pass;
-        public bool isBusiness;
+        public string username { get; set; }
+        public string email { get; set; }
+        public string pass { get; set; }
+        public bool isBusiness { get; set; }
     }
 }

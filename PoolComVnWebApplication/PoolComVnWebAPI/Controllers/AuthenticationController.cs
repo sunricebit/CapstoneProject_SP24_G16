@@ -25,17 +25,17 @@ namespace PoolComVnWebAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult Login(string username, string pass)
+        public IActionResult Login([FromBody]LoginDTO loginDTO)
         {
-            Account account = _accountDAO.AuthenAccount(username, pass);
+            Account account = _accountDAO.AuthenAccount(loginDTO.Email, loginDTO.Password);
             if (account != null)
             {
-                return Ok(new { token = TokenManager.GenerateToken(username, account.RoleID) });
+                return Ok(new { token = TokenManager.GenerateToken(loginDTO.Email, account.RoleID) });
             }
             return Unauthorized();
         }
 
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost("register")]
         public IActionResult Register([FromBody]RegisterDTO registerDto)
         {
@@ -55,7 +55,7 @@ namespace PoolComVnWebAPI.Controllers
         [HttpPost("testAuthorize")]
         public IActionResult Authorize()
         {
-            return Ok();
+            return Ok("authen thanh cong");
         }
     }
 }

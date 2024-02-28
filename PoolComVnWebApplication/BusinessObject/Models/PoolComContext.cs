@@ -15,6 +15,9 @@ namespace BusinessObject.Models
         {
 
         }
+        public PoolComContext(DbContextOptions<PoolComContext> options) : base(options)
+        {
+        }
         public DbSet<Access> Accesses { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Club> Clubs { get; set; }
