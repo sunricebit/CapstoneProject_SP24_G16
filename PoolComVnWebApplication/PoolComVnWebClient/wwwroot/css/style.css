@@ -26,7 +26,7 @@ button {
     z-index: 1;
 }
 
-nav {
+.main-nav {
     background: linear-gradient(#000000 0%, #00000077 75%, #00000000 100%);
     position: fixed;
     top: 0;
@@ -34,71 +34,71 @@ nav {
     right: 0;
     z-index: 99;
     padding: 20px;
-    transition: top 1s;
+    transition: top 1s ease;
 }
 
-.logo-image a {
-    color: white;
-    font-size: 28px;
-    font-weight: 700;
-    font-style: italic;
-}
-
-    .logo-image a img {
-        width: 80px;
-        height: 80px;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center center;
+    .main-nav .logo-image a {
+        color: white;
+        font-size: 28px;
+        font-weight: 700;
+        font-style: italic;
     }
 
-.nav-menu {
-    margin: 0;
-    list-style: none;
-    display: flex;
-    line-height: 80px;
-}
+        .main-nav .logo-image a img {
+            width: 80px;
+            height: 80px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
 
-    .nav-menu li {
-        display: flex;
-        justify-content: center;
-        width: 100px;
-    }
-
-    .nav-menu a {
-        line-height: 80px;
-        color: #fff;
-        transition: transform 0.5s;
-        transition: line-height 0.3s ease;
-    }
-
-nav .login a,
-nav .large-user .user-name,
-nav .large-user .user-menu li {
-    line-height: 80px;
-    color: #fff;
-    font-size: 16px;
-    font-style: italic;
-    font-weight: 800px;
-}
-
-nav .large-user {
-    position: relative;
-    line-height: 80px;
-}
-
-    nav .large-user .user-name {
-        width: 100%;
-    }
-
-    nav .large-user .user-menu {
-        display: none;
-        position: absolute;
-        z-index: 98;
-        list-style: none;
-        padding: 0;
+    .main-nav .nav-menu {
         margin: 0;
+        list-style: none;
+        display: flex;
+        line-height: 80px;
     }
+
+        .main-nav .nav-menu li {
+            display: flex;
+            justify-content: center;
+            width: 100px;
+        }
+
+        .main-nav .nav-menu a {
+            line-height: 80px;
+            color: #fff;
+            transition: transform 0.5s;
+            transition: line-height 0.3s ease;
+        }
+
+    .main-nav .login a,
+    .main-nav .large-user .user-name,
+    .main-nav .large-user .user-menu li {
+        line-height: 60px;
+        color: #fff;
+        font-size: 16px;
+        font-style: italic;
+        font-weight: 800px;
+    }
+
+    .main-nav .large-user {
+        position: relative;
+        line-height: 80px;
+    }
+
+        .main-nav .large-user .user-name {
+            width: 100%;
+        }
+
+        .main-nav .large-user .user-menu {
+            display: none;
+            position: absolute;
+            z-index: 98;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
 .small-user {
     position: fixed;
@@ -110,7 +110,7 @@ nav .large-user {
     display: none;
 }
 
-nav .fa-bars {
+.main-nav .fa-bars {
     font-size: 48px;
     color: #fff;
     padding: 0 20px;
@@ -140,6 +140,14 @@ nav .fa-bars {
         color: #fff;
         font-weight: 500;
     }
+
+    .small-user .option-menu .small-user-menu {
+        border-bottom: 1px solid #fff;
+    }
+
+        .small-user .option-menu .small-user-menu a {
+            padding: 32px;
+        }
 
 
 
@@ -581,7 +589,7 @@ footer {
         position: absolute;
         top: 40px;
         right: 0;
-        background-color: #000000bf;
+        background-color: #000000de;
         border-radius: 5px;
         padding: 30px;
         z-index: 99;
@@ -922,6 +930,177 @@ footer {
         font-weight: 600;
     }
 
+/* clubDashBoard.html */
+.manage-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    background: #000;
+    line-height: 50px;
+}
+
+    .manage-nav .logo-image a {
+        color: white;
+        font-size: 18px;
+        font-weight: 700;
+        font-style: italic;
+    }
+
+        .manage-nav .logo-image a img {
+            width: 40px;
+            height: 40px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+
+    .manage-nav .user-menu-btn {
+        position: absolute;
+        right: 0;
+        top: 0;
+        color: #fff;
+        font-size: 18px;
+    }
+
+        .manage-nav .user-menu-btn:hover {
+            color: #000;
+            cursor: pointer;
+            background-color: #aaa;
+        }
+
+            .manage-nav .user-menu-btn:hover .user-menu {
+                display: block;
+            }
+
+        .manage-nav .user-menu-btn .user-icon {
+            padding: 0 30px;
+        }
+
+    .manage-nav .user-menu {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        list-style-type: none;
+        background-color: #000000de;
+        width: 200px;
+        display: none;
+        padding: 0;
+        z-index: 100;
+    }
+
+        .manage-nav .user-menu li {
+            width: 100%;
+        }
+
+            .manage-nav .user-menu li a {
+                color: #fff;
+            }
+
+            .manage-nav .user-menu li:hover {
+                font-weight: 700;
+            }
+
+    .manage-nav .nav-menu .nav-icon {
+        padding: 0 20px;
+        font-size: 28px;
+        color: #fff;
+        position: absolute;
+        top: 0;
+        left: 0;
+        line-height: 50px;
+    }
+
+    .manage-nav .nav-menu:hover {
+        cursor: pointer;
+    }
+
+    .manage-nav .menu-body {
+        position: absolute;
+        top: 50px;
+        left: 0;
+        right: 0;
+        z-index: 99;
+        background: #455d64;
+        line-height: 50px;
+        transition: top 0.3s ease;
+        display: none;
+        border-top: 1px #ccc solid;
+    }
+
+        .manage-nav .menu-body .nav-body {
+            list-style: none;
+        }
+
+            .manage-nav .menu-body .nav-body a {
+                padding: 0 10px;
+                line-height: 50px;
+                width: 120px;
+                text-align: center;
+                margin: 0;
+                color: #fff;
+                font-weight: 600;
+            }
+
+                .manage-nav .menu-body .nav-body a:hover {
+                    font-style: italic;
+                    background-color: #00d9ff;
+                    color: #000;
+                }
+
+        .manage-nav .menu-body .general-nav {
+            display: none;
+        }
+
+        .manage-nav .menu-body .exchange-nav:hover {
+            cursor: pointer;
+        }
+
+            .manage-nav .menu-body .exchange-nav:hover i {
+                transition: transform 0.5s ease;
+                transform: rotateY(180deg);
+            }
+
+        .manage-nav .menu-body .exchange-nav {
+            width: 80px;
+            font-size: 24px;
+            padding: 0;
+            color: #fff;
+            background: #0b083a;
+        }
+
+.tour-manage-nav {
+    background: #455d64;
+    line-height: 50px;
+    transition: top 1s ease;
+    display: flex;
+}
+
+    .tour-manage-nav .tour-nav-btn {
+        padding: 0;
+        line-height: 50px;
+        width: 120px;
+        text-align: center;
+        margin: 0;
+        color: #fff;
+        font-weight: 600;
+    }
+
+        .tour-manage-nav .tour-nav-btn:hover {
+            font-style: italic;
+            background-color: #00d9ff;
+            color: #000;
+        }
+
+        .tour-manage-nav .tour-nav-btn.active:hover {
+            font-style: none;
+        }
+
+.manager-container {
+    width: 100%;
+}
+
 /* verifyRegister.html */
 .verify-register {
     margin-top: 80px;
@@ -957,18 +1136,636 @@ footer {
             border: 1px solid #aaa;
             transition: transform 0.3s ease;
             background: #41f3c0;
-            font-weight:600;
+            font-weight: 600;
         }
 
             .verify-register .verify-form .submit-btn:hover {
                 transform: scale(1.1);
             }
 
+/* tournamentDetails.html */
+.container-full {
+    width: 100%;
+    margin-top: 120px;
+    position: relative;
+    z-index: 2;
+}
+
+    .container-full .manage-btn {
+        position: fixed;
+    }
+
+    .container-full .tour-info {
+        width: 90%;
+        background-color: #00000088;
+        overflow: hidden;
+        border-radius: 20px;
+        margin-bottom: 50px;
+    }
+
+        .container-full .tour-info .overview-text {
+            background-color: #00000088;
+            color: #fff;
+            font-size: 20px;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-bottom: 1px #fff solid;
+        }
+
+        .container-full .tour-info .tour-image {
+            border-bottom: 1px #fff solid;
+        }
+
+            .container-full .tour-info .tour-image img {
+                width: 80%;
+            }
+
+    .container-full .info-line {
+        padding: 5px 0;
+        margin-bottom: 10px;
+    }
+
+        .container-full .info-line .info-title {
+            color: #fff;
+            font-weight: 700;
+            font-style: italic;
+            font-size: 14px;
+        }
+
+        .container-full .info-line .info-description {
+            padding: 5px 0;
+            color: #fff;
+            font-size: 12px;
+            text-align: justify;
+        }
+
+            .container-full .info-line .info-description a {
+                font-size: 14px;
+                font-weight: 600;
+                font-style: italic;
+            }
+
+    .container-full .address-info .info-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+        font-style: italic;
+    }
+
+    .container-full .address-info .info-description {
+        color: #fff;
+        font-size: 14px;
+    }
+
+    .container-full .address-info .address-icon {
+        padding-right: 20px;
+        font-size: 36px;
+        color: #fff;
+        transition: transform 0.5s ease;
+    }
+
+    .container-full .address-info:hover .address-icon {
+        color: #ddd;
+        transform: scale(1.2);
+    }
+
+    .container-full .tour-podium {
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .container-full .podium-content {
+        position: relative;
+        padding-top: 50px;
+        background: #ffffff7d;
+        border-top-right-radius: 20px;
+        border-top-left-radius: 20px;
+        background: linear-gradient(90deg, #ffffff7d 20%, #fff 50%, #ffffff7d 80%);
+    }
+
+    .container-full .podium-bg {
+        background: linear-gradient(#00000087 50%, #000 100%);
+        height: 10px;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+
+    .container-full .tour-podium a {
+        color: #000;
+    }
+
+    .container-full .tour-podium .silver-medal .medal-img {
+        width: 50%;
+    }
+
+    .container-full .tour-podium .gold-medal .medal-img {
+        width: 60%;
+    }
+
+    .container-full .tour-podium .bronze-medal .medal-img {
+        width: 40%;
+    }
+
+    .container-full .tour-podium .silver-podium {
+        height: 100px;
+        background: linear-gradient(#fff 5%, #bbb 100%);
+    }
+
+    .container-full .tour-podium .gold-podium {
+        height: 120px;
+        background: linear-gradient(#fff 5%, #ffe600 100%);
+    }
+
+    .container-full .tour-podium .bronze-podium {
+        height: 80px;
+        background: linear-gradient(#fff 5%, #f1a73f 100%);
+    }
+
+    .container-full .tour-podium .tour-flag {
+        width: 24px;
+        height: 16px;
+        border-radius: 2px;
+    }
+
+    .container-full .overview-player {
+        background: #00000088;
+        border-top: 1px #fff solid;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+    }
+
+        .container-full .overview-player .player-position {
+            color: #fff;
+            font-size: 12px;
+            text-align: end;
+        }
+
+    .container-full .player-table {
+        width: 100%;
+        color: #fff;
+    }
+
+    .container-full .overview-player.isPlaying tr td:nth-child(1),
+    .container-full .overview-player.isPlaying tr td:nth-child(2),
+    .container-full .overview-player.isPlaying tr td:nth-child(4),
+    .container-full .overview-player.isPlaying tr th:nth-child(1),
+    .container-full .overview-player.isPlaying tr th:nth-child(3),
+    .container-full .overview-player.isPlaying .player-position {
+        display: none;
+    }
+
+    .container-full .player-table tr:first-child {
+        border-bottom: 1px solid #fff;
+        line-height: 40px;
+        font-style: italic;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .container-full .player-table tr {
+        font-weight: 400;
+        line-height: 40px;
+        font-size: 14px;
+    }
+
+        .container-full .player-table tr.my-position {
+            background: linear-gradient(#41f3c156 20%, #41f3c1 100%);
+        }
+
+    .container-full .player-table .player-cup {
+        width: 30px;
+        padding: 0 5px;
+    }
+
+    .container-full .player-table .player-top {
+        width: 10%;
+    }
+
+    .container-full .player-table .player-name {
+        width: 35%;
+    }
+
+    .container-full .player-table .history-match {
+        height: 16px;
+        width: 16px;
+        color: #fff;
+        font-size: 16px;
+        line-height: 16px;
+        text-align: center;
+        display: inline-block;
+        border-radius: 4px;
+        padding: 0;
+    }
+
+        .container-full .player-table .history-match.lose-match {
+            background-color: rgb(252, 7, 7);
+        }
+
+        .container-full .player-table .history-match.win-match {
+            background-color: rgb(36, 252, 7);
+        }
+
+/* bracket.html */
+.flashing {
+    box-shadow: 0 0 10px 5px #dc2222;
+    transition: box-shadow 0.2s ease-in;
+}
+
+.container-bracket {
+    width: 100%;
+    margin-top: 50px;
+    position: relative;
+    z-index: 2;
+}
+
+.match-box {
+    position: absolute;
+    background-color: aquamarine;
+    border-radius: 5px;
+}
+
+    .match-box:hover {
+        cursor: pointer;
+    }
+
+.line {
+    position: absolute;
+    display: flex;
+}
+
+.left-line-win {
+    border: 2px solid #0b083a;
+    border-left: none;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.right-line-win {
+    border-bottom: 2px solid #0b0831;
+}
+
+.left-line-lose {
+    border-bottom: 2px solid #0b0831;
+}
+
+.right-line-lose {
+    border: 2px solid #0b0831;
+    border-right: none;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.between-line {
+    position: absolute;
+    border-bottom: 2px solid #0b0831;
+}
+
+.bracket-tab {
+    width: 100%;
+    height: calc(100vh - 50px);
+    overflow: auto;
+    position: relative;
+    z-index: 2;
+}
+
+    .bracket-tab .bracket-content {
+        position: absolute;
+        top: 100px;
+        transition: transform 0.3s ease;
+        background: linear-gradient(90deg, #ccc, #000);
+    }
+
+    .bracket-tab #loser-match-body {
+        position: relative;
+        height: 100%;
+        padding: 0;
+    }
+
+    .bracket-tab #winer-match-body {
+        position: relative;
+        height: 100%;
+        padding: 0;
+    }
+
+    .bracket-tab .match-number {
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 60px;
+        text-align: center;
+        border-right: 1px solid #0b0831;
+        background-color: #201b1b;
+        color: #fff;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+
+    .bracket-tab .next-win,
+    .bracket-tab .next-lose {
+        font-size: 12px;
+        line-height: 12px;
+        text-align: center;
+        padding: 0 2px;
+        font-weight: 600;
+        color: #fff;
+    }
+
+    .bracket-tab .match-box .next-match {
+        position: absolute;
+        bottom: -15px;
+        line-height: 15px;
+        left: 5px;
+        padding: 0px;
+    }
+
+    .bracket-tab .player-match img {
+        width: 20px;
+        height: 15px;
+        background-position: center center;
+        background-size: cover;
+        border-radius: 20%;
+        margin-right: 5px;
+    }
+
+    .bracket-tab .match-box .player-name {
+        line-height: 30px;
+        font-size: 14px;
+    }
+
+    .bracket-tab .match-box .match-score {
+        text-align: right;
+        line-height: 30px;
+    }
+
+    .bracket-tab .match-box .match-table {
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 20px;
+        width: 80px;
+        position: absolute;
+        top: -20px;
+        left: 5px;
+        background-color: #c20a4d;
+        color: #fff;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .bracket-tab .match-box .match-raceTo {
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 20px;
+        width: 100px;
+        position: absolute;
+        top: -20px;
+        right: 5px;
+        text-align: right;
+        padding: 0;
+        color: #fff;
+    }
+
+    .bracket-tab .match-box .match-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+    }
+
+    .bracket-tab .match-plus {
+        position: absolute;
+        bottom: -100px;
+    }
+
+.container-bracket .zoom-btns {
+    position: fixed;
+    bottom: 100px;
+    right: 50px;
+    background-color: #0b083ac9;
+    padding: 5px;
+    border-radius: 20px;
+    opacity: 0.3;
+    transition: opacity 0.5s ease;
+    z-index: 99;
+}
+
+    .container-bracket .zoom-btns:hover {
+        opacity: 1;
+    }
+
+    .container-bracket .zoom-btns .zoom-in,
+    .container-bracket .zoom-btns .zoom-out {
+        width: 50px;
+        height: 50px;
+        background-color: #35a9e8;
+        position: relative;
+        margin: 20px 0;
+        border: none;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        transition: transform 0.3s ease;
+    }
+
+        .container-bracket .zoom-btns .zoom-in:hover,
+        .container-bracket .zoom-btns .zoom-out:hover {
+            transform: scale(1.2);
+        }
+
+            .container-bracket .zoom-btns .zoom-in:hover.no-hover,
+            .container-bracket .zoom-btns .zoom-out:hover.no-hover {
+                transform: scale(1);
+            }
+
+.match-display {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #000000d4;
+    z-index: 100;
+}
+
+    .match-display .match-detail {
+        min-width: 500px;
+        background-color: #41f3c0;
+        border-radius: 10px;
+        border: 2px #aaa solid;
+        overflow: hidden;
+    }
+
+        .match-display .match-detail .match-header {
+            background: #000;
+            color: #fff;
+        }
+
+        .match-display .match-detail .match-title {
+            font-weight: 600;
+            padding: 10px;
+        }
+
+        .match-display .match-detail .match-close {
+            padding: 10px;
+            background: #c20a4d;
+            color: #fff;
+        }
+
+            .match-display .match-detail .match-close:hover {
+                color: #000;
+                background: #aa0642;
+                cursor: pointer;
+            }
+
+        .match-display .match-detail .details-body {
+            padding: 20px 50px;
+        }
+
+        .match-display .match-detail .match-time {
+            font-size: 12px;
+            font-weight: 700;
+            margin: 20px 0 0 50px;
+        }
+
+        .match-display .match-detail .match-complete {
+            padding: 2px 10px;
+            margin: 20px 20px 0 0;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid #346585;
+        }
+
+        .match-display .match-detail .details-player {
+            font-size: 28px;
+            font-weight: 600;
+            border-bottom: 1px solid #455d64;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+            .match-display .match-detail .details-player img {
+                width: 42px;
+                height: 28px;
+                border-radius: 5px;
+            }
+
+        .match-display .match-detail .score-board {
+            padding: 30px 0 20px 0;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+            .match-display .match-detail .score-board span {
+                line-height: 20px;
+            }
+
+        .match-display .match-detail .name-board div {
+            padding-right: 10px;
+        }
+
+.board-line {
+    border-bottom: 1px #fff solid;
+}
+
+.match-display .match-detail .general-score {
+    background: #000;
+    color: #fff;
+}
+
+.match-display .match-detail .detail-score {
+    width: 24px;
+    text-align: center;
+}
+
+    .match-display .match-detail .detail-score .round-score {
+        background-color: #dc2222;
+        color: #fff;
+    }
+
+.match-display .match-detail .details-next {
+    margin-top: 40px;
+}
+
+.match-display .match-detail .lose-next,
+.match-display .match-detail .win-next {
+    width: 100px;
+    padding: 5px 0;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 5px;
+}
+
+.match-display .match-detail .lose-next {
+    background: #9c1515;
+}
+
+.match-display .match-detail .win-next {
+    background: #127f4e;
+}
+
+.match-display .match-detail .lose-next:hover {
+    background: #b91b1b;
+    cursor: pointer;
+}
+
+.match-display .match-detail .win-next:hover {
+    background: #18a163;
+    cursor: pointer;
+}
+
+/* matchList.html */
+.match-list {
+    margin: 50px;
+}
+
+    .match-list .list-header {
+        line-height: 60px;
+        background: #000;
+        color: #fff;
+        font-size: 28px;
+        font-weight: 600;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+        .match-list .list-header a {
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            color: #fff;
+            font-size: 18px;
+            width: 100px;
+            text-align: center;
+        }
+
+    .match-list .bracket-btn {
+        background-color: #dc2222;
+    }
+
+        .match-list .bracket-btn:hover {
+            background-color: #b91b1b;
+            cursor: pointer;
+        }
 /* Mobile: width <740px */
 @media only screen and (max-width: 739px) {
 
     .news-header .news-description {
         font-size: 20px;
+    }
+
+    .container-full .tour-podium .silver-podium,
+    .container-full .tour-podium .gold-podium,
+    .container-full .tour-podium .bronze-podium {
+        font-size: 12px;
+    }
+
+    .container-full .tour-podium .tour-flag {
+        width: 18px;
+        height: 12px;
+    }
+
+    .tour-manage-nav {
+        display: none;
     }
 }
 
@@ -977,6 +1774,17 @@ footer {
 
     .large-screen {
         display: none;
+    }
+
+    .container-full .tour-podium .silver-podium,
+    .container-full .tour-podium .gold-podium,
+    .container-full .tour-podium .bronze-podium {
+        font-size: 14px;
+    }
+
+    .container-full .tour-podium .tour-flag {
+        width: 21px;
+        height: 14px;
     }
 }
 
@@ -989,32 +1797,41 @@ footer {
 
 
 
-    .nav-menu li:hover a,
-    nav .login:hover a {
+    .main-nav .nav-menu li:hover a,
+    .main-nav .login:hover a {
         font-size: 20px;
         transform: scale(0.9);
         font-weight: 700;
         line-height: 70px;
     }
 
-    nav .user:hover .user-name {
-        display: none;
+    .main-nav .user {
+        position: relative;
     }
 
-    nav .user:hover .user-menu {
-        display: flex;
+    .main-nav .user-menu {
+        position: absolute;
+        background-color: #000000de;
+        top: 60px;
+        right: 0;
+        width: 240px;
+        border-radius: 10px;
     }
 
-    nav .user .user-menu li {
+    .main-nav .user:hover .user-menu {
+        display: block;
+    }
+
+    .main-nav .user .user-menu li {
         padding: 0 10px;
     }
 
-        nav .user .user-menu li:hover a {
+        .main-nav .user .user-menu li:hover a {
             font-size: 16px;
             font-weight: 700;
         }
 
-    nav .user .user-menu a {
+    .main-nav .user .user-menu a {
         color: white;
     }
 }

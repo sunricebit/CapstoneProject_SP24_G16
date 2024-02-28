@@ -1,0 +1,489 @@
+﻿@{
+    Layout = "~/Views/Shared/_TournamentLayout.cshtml";
+}
+
+<div class="container-bracket">
+    <div class="bracket-tab">
+        <div class="bracket-content d-flex">
+            <div id="loser-match-body"></div>
+            <div id="winer-match-body"></div>
+        </div>
+    </div>
+    <div class="zoom-btns">
+        <div>
+            <button class="zoom-in" onclick="zoomIn()">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        </div>
+        <div>
+            <button class="zoom-out" onclick="zoomOut()">
+                <i class="fa-solid fa-minus"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="match-display d-flex justify-content-center align-items-center">
+    <div class="match-detail ">
+        <div class="match-header d-flex justify-content-between">
+            <div class="match-title">
+                <span>Nam Vu</span>
+                <span> vs. </span>
+                <span>Vu Nam</span>
+            </div>
+            <div class="match-close">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="match-time">
+                <span>13:20</span>
+                <span> - 14:20</span>
+                <span>22/02/2024</span>
+            </div>
+            <div class="match-complete">Đã xong</div>
+        </div>
+        <div class="details-body">
+            <div class="details-score">
+                <div class="details-player d-flex justify-content-between">
+                    <span class="d-flex align-items-center">
+                        <img src="/images/VietNamFlag.png" alt="">
+                        <span class="px-2">Nam Vũ</span>
+                    </span>
+                    <span>6</span>
+                </div>
+                <div class="details-player d-flex justify-content-between pt-2">
+                    <span class="d-flex align-items-center">
+                        <img src="/images/VietNamFlag.png" alt="">
+                        <span class="px-2">Quảng Vũ</span>
+                    </span>
+                    <span>3</span>
+                </div>
+            </div>
+            <div class="score-board d-flex align-items-end ">
+                <div class="name-board">
+                    <div class="board-line"><span>Nam Vũ</span></div>
+                    <div><span>Quảng Vũ</span></div>
+                </div>
+                <div class="general-score">
+                    <div class="board-line px-2"><span>Điểm</span></div>
+                    <div class="text-center board-line"><span>6</span></div>
+                    <div class="text-center"><span>3</span></div>
+                </div>
+                <div class="detail-score">
+                    <div class="round-score board-line"><span>1</span></div>
+                    <div class="board-line"><span><i class="fa-solid fa-xmark"></i></span></div>
+                    <div><span>&nbsp;</span></div>
+                </div>
+                <div class="detail-score">
+                    <div class="round-score board-line"><span>2</span></div>
+                    <div class="board-line"><span>&nbsp;</span></div>
+                    <div><span><i class="fa-solid fa-xmark"></i></span></div>
+                </div>
+                <div class="detail-score">
+                    <div class="round-score board-line"><span>3</span></div>
+                    <div class="board-line"><span><i class="fa-solid fa-xmark"></i></span></div>
+                    <div><span>&nbsp;</span></div>
+                </div>
+                <div class="detail-score">
+                    <div class="round-score board-line"><span>4</span></div>
+                    <div class="board-line"><span><i class="fa-solid fa-xmark"></i></span></div>
+                    <div><span>&nbsp;</span></div>
+                </div>
+                <div class="detail-score">
+                    <div class="round-score board-line"><span>5</span></div>
+                    <div class="board-line"><span>&nbsp;</span></div>
+                    <div><span><i class="fa-solid fa-xmark"></i></span></div>
+                </div>
+                <div class="detail-score">
+                    <div class="round-score board-line"><span>6</span></div>
+                    <div class="board-line"><span><i class="fa-solid fa-xmark"></i></span></div>
+                    <div><span>&nbsp;</span></div>
+                </div>
+                <div class="detail-score">
+                    <div class="round-score board-line"><span>7</span></div>
+                    <div class="board-line"><span><i class="fa-solid fa-xmark"></i></span></div>
+                    <div><span>&nbsp;</span></div>
+                </div>
+                <div class="detail-score">
+                    <div class="round-score board-line"><span>8</span></div>
+                    <div class="board-line"><span>&nbsp;</span></div>
+                    <div><span><i class="fa-solid fa-xmark"></i></span></div>
+                </div>
+                <div class="detail-score">
+                    <div class="round-score board-line"><span>9</span></div>
+                    <div class="board-line"><span><i class="fa-solid fa-xmark"></i></span></div>
+                    <div><span>&nbsp;</span></div>
+                </div>
+                <div class="detail-score">
+                    <div class="round-score board-line"><span>10</span></div>
+                    <div class="board-line"><span>&nbsp;</i></span></div>
+                    <div><span>&nbsp;</span></div>
+                </div>
+            </div>
+            <div class="details-next d-flex justify-content-around">
+                <div class="lose-next row">
+                    <div class="col-4">
+                        <i class="fa-solid fa-angles-left"></i>
+                    </div>
+                    <div class="text-center col-8" onclick="scrollToElement(32)">Thua</div>
+                </div>
+                <div class="win-next row">
+                    <div class="text-center col-8" onclick="scrollToElement(52)">Thắng</div>
+                    <div class="col-4">
+                        <i class="fa-solid fa-angles-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const winMatchBody = document.getElementById('winer-match-body');
+    const playerNumber = 32;
+    let roundNumber = Math.log2(playerNumber / 2);
+    const finalSinglePlayer = 8;
+    let finalSingleRound = roundNumber - Math.log2(finalSinglePlayer) + 1;
+    var width = 250;
+    var height = 60;
+    var matchDistance = 30;
+    var leftRightSpace = 100;
+    let numberMatchEachRound = 0;
+    let count = 0;
+    var winBody = '';
+
+    for (i = 0; i <= finalSingleRound; i++) {
+        numberMatchEachRound = 2 ** (roundNumber - i);
+        for (j = 0; j < numberMatchEachRound; j++) {
+            if (i == 0) {
+                ++count;
+                winBody += '<div class="match-box" id="match' + count + '" style=" top:' + (j * 2 * height) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                    + '<div class="match-content row">'
+                    + '<div class="match-number col-2 p-0 text-center">'
+                    + count
+                    + '</div>'
+                    + '<div class="player-match col-8">'
+                    + '<div class="d-flex justify-content-start align-items-center">'
+                    + '<img src="/images/VietNamFlag.png" alt="">'
+                    + '<!-- 15 char -->'
+                    + '<div class="player-name">Vũ Hoài Nam</div>'
+                    + '</div>'
+                    + '<div class="d-flex justify-content-start align-items-center">'
+                    + '<img src="/images/VietNamFlag.png" alt="">'
+                    + '<!-- 15 char -->'
+                    + '<div class="player-name">Vũ Hữu Quảng</div>'
+                    + '</div>'
+                    + '</div>'
+                    + '<div class="col-2">'
+                    + '<div class="match-score">6</div>'
+                    + '<div class="match-score">6</div>'
+                    + '</div>'
+                    + '<div class="match-table">Table <span class="table-number">99</span></div>'
+                    + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
+                    + '<div class="next-match d-flex">'
+                    + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
+                    + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
+            } else {
+                ++count;
+                winBody +=
+                    '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; left:' + (width * i + matchDistance * (i - 1)) + 'px">'
+                    + '<div class="left-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height) + 'px;"></div>'
+                    + '<div class="right-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
+                    + '</div>'
+                    + '<div class="match-box" id="match' + count + '" style="top:' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; left: ' + ((matchDistance + width) * i) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                    + '<div class="match-content row">'
+                    + '<div class="match-number col-2 p-0 text-center">'
+                    + count
+                    + '</div>'
+                    + '<div class="player-match col-8">'
+                    + '<div class="d-flex justify-content-start align-items-center">'
+                    + '<img src="/images/VietNamFlag.png" alt="">'
+                    + '<!-- 15 char -->'
+                    + '<div class="player-name">Vũ Hoài Nam</div>'
+                    + '</div>'
+                    + '<div class="d-flex justify-content-start align-items-center">'
+                    + '<img src="/images/VietNamFlag.png" alt="">'
+                    + '<!-- 15 char -->'
+                    + '<div class="player-name">Vũ Hữu Quảng</div>'
+                    + '</div>'
+                    + '</div>'
+                    + '<div class="col-2">'
+                    + '<div class="match-score">6</div>'
+                    + '<div class="match-score">6</div>'
+                    + '</div>'
+                    + '<div class="match-table">Table <span class="table-number">99</span></div>'
+                    + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
+                    + '<div class="next-match d-flex">'
+                    + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
+                    + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
+            }
+        }
+    }
+
+
+
+    const loseMatchBody = document.getElementById('loser-match-body');
+    var loseBody = '';
+    for (i = 1; i <= finalSingleRound; i++) {
+        numberMatchEachRound = 2 ** (roundNumber - i);
+        for (j = 0; j < numberMatchEachRound; j++) {
+            ++count;
+            loseBody +=
+                '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; right:' + ((i - 1) * (1.5 * matchDistance + 2 * width)) + 'px">'
+                + '<div class="left-line-lose" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
+                + '<div class="right-line-lose" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height) + 'px;"></div>'
+                + '</div>'
+                + '<div class="match-box" id="match' + count + '" style="top:' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; right: ' + ((1.5 * i - 0.5) * matchDistance + 2 * (i - 1) * width) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                + '<div class="match-content row">'
+                + '<div class="match-number col-2 p-0 text-center">'
+                + count
+                + '</div>'
+                + '<div class="player-match col-8">'
+                + '<div class="d-flex justify-content-start align-items-center">'
+                + '<img src="/images/VietNamFlag.png" alt="">'
+                + '<!-- 15 char -->'
+                + '<div class="player-name">Vũ Hoài Nam</div>'
+                + '</div>'
+                + '<div class="d-flex justify-content-start align-items-center">'
+                + '<img src="/images/VietNamFlag.png" alt="">'
+                + '<!-- 15 char -->'
+                + '<div class="player-name">Vũ Hữu Quảng</div>'
+                + '</div>'
+                + '</div>'
+                + '<div class="col-2">'
+                + '<div class="match-score">6</div>'
+                + '<div class="match-score">6</div>'
+                + '</div>'
+                + '<div class="match-table">Table <span class="table-number">99</span></div>'
+                + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
+                + '<div class="next-match d-flex">'
+                + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
+                + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
+                + '</div>'
+                + '</div>'
+                + '</div>'
+        }
+        for (j = 0; j < numberMatchEachRound; j++) {
+            ++count;
+            loseBody +=
+                '<div class="between-line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; right:' + ((1.5 * i - 0.5) * matchDistance + (2 * i - 1) * width) + 'px; width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
+                + '<div class="match-box" id="match' + count + '" style="top: ' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; right: ' + ((matchDistance * 1.5 * i + width * (2 * i - 1))) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                + '<div class="match-content row">'
+                + '<div class="match-number col-2 p-0 text-center">'
+                + count
+                + '</div>'
+                + '<div class="player-match col-8">'
+                + '<div class="d-flex justify-content-start align-items-center">'
+                + '<img src="/images/VietNamFlag.png" alt="">'
+                + '<!-- 15 char -->'
+                + '<div class="player-name">Vũ Hoài Nam</div>'
+                + '</div>'
+                + '<div class="d-flex justify-content-start align-items-center">'
+                + '<img src="/images/VietNamFlag.png" alt="">'
+                + '<!-- 15 char -->'
+                + '<div class="player-name">Vũ Hữu Quảng</div>'
+                + '</div>'
+                + '</div>'
+                + '<div class="col-2">'
+                + '<div class="match-score">6</div>'
+                + '<div class="match-score">6</div>'
+                + '</div>'
+                + '<div class="match-table">Table <span class="table-number">99</span></div>'
+                + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
+                + '<div class="next-match d-flex">'
+                + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
+                + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
+                + '</div>'
+                + '</div>'
+                + '</div>'
+        }
+    }
+    loseMatchBody.innerHTML = loseBody;
+
+    for (i = finalSingleRound; i <= roundNumber; i++) {
+        numberMatchEachRound = 2 ** (roundNumber - i);
+        if (i === finalSingleRound) {
+            for (j = 0; j < numberMatchEachRound; j++) {
+                ++count;
+                winBody +=
+                    '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; left:' + (width * (i + 1) + matchDistance * i) + 'px">'
+                    + '<div class="right-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
+                    + '</div>'
+                    + '<div class="match-box" id="match' + count + '" style="top:' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; left: ' + (matchDistance * (i + 0.5) + width * (i + 1)) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                    + '<div class="match-content row">'
+                    + '<div class="match-number col-2 p-0 text-center">'
+                    + count
+                    + '</div>'
+                    + '<div class="player-match col-8">'
+                    + '<div class="d-flex justify-content-start align-items-center">'
+                    + '<img src="/images/VietNamFlag.png" alt="">'
+                    + '<!-- 15 char -->'
+                    + '<div class="player-name">Vũ Hoài Nam</div>'
+                    + '</div>'
+                    + '<div class="d-flex justify-content-start align-items-center">'
+                    + '<img src="/images/VietNamFlag.png" alt="">'
+                    + '<!-- 15 char -->'
+                    + '<div class="player-name">Vũ Hữu Quảng</div>'
+                    + '</div>'
+                    + '</div>'
+                    + '<div class="col-2">'
+                    + '<div class="match-score">6</div>'
+                    + '<div class="match-score">6</div>'
+                    + '</div>'
+                    + '<div class="match-table">Table <span class="table-number">99</span></div>'
+                    + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
+                    + '<div class="next-match d-flex">'
+                    + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
+                    + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
+            }
+        } else {
+            for (j = 0; j < numberMatchEachRound; j++) {
+                ++count;
+                winBody +=
+                    '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; left:' + (width * (i + 1) + matchDistance * (i - 0.5)) + 'px">'
+                    + '<div class="left-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height) + 'px;"></div>'
+                    + '<div class="right-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
+                    + '</div>'
+                    + '<div class="match-box" id="match' + count + '" style="top:' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; left: ' + (matchDistance * (i + 0.5) + width * (i + 1)) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                    + '<div class="match-content row">'
+                    + '<div class="match-number col-2 p-0 text-center">'
+                    + count
+                    + '</div>'
+                    + '<div class="player-match col-8">'
+                    + '<div class="d-flex justify-content-start align-items-center">'
+                    + '<img src="/images/VietNamFlag.png" alt="">'
+                    + '<!-- 15 char -->'
+                    + '<div class="player-name">Vũ Hoài Nam</div>'
+                    + '</div>'
+                    + '<div class="d-flex justify-content-start align-items-center">'
+                    + '<img src="/images/VietNamFlag.png" alt="">'
+                    + '<!-- 15 char -->'
+                    + '<div class="player-name">Vũ Hữu Quảng</div>'
+                    + '</div>'
+                    + '</div>'
+                    + '<div class="col-2">'
+                    + '<div class="match-score">6</div>'
+                    + '<div class="match-score">6</div>'
+                    + '</div>'
+                    + '<div class="match-table">Table <span class="table-number">99</span></div>'
+                    + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
+                    + '<div class="next-match d-flex">'
+                    + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
+                    + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
+            }
+        }
+
+    }
+
+    winMatchBody.innerHTML = winBody;
+
+    const lastMatchHeight = document.getElementById('match' + playerNumber / 2);
+    const matchTableElement = lastMatchHeight.querySelector('.match-raceTo');
+    matchTableElement.style.paddingBottom = '200px';
+
+    window.addEventListener('load', centerPosition);
+
+    function centerPosition() {
+        bracketTab.scrollLeft = loseMatchBody.offsetWidth - window.innerWidth / 2 + 125;
+    }
+
+    let currentZoom = 1;
+
+    let winerWidth;
+    let loserWidth;
+
+    const bracketContent = document.querySelector('.bracket-content');
+    const bracketTab = document.querySelector('.bracket-tab');
+    const zoomInBtn = document.querySelector('.zoom-in');
+    const zoomOutBtn = document.querySelector('.zoom-out');
+
+    zoomInBtn.removeEventListener
+    applyZoom();
+    function zoomIn() {
+        if (currentZoom <= 1.5) {
+            currentZoom += 0.1;
+            applyZoom();
+            zoomOutBtn.style.opacity = '1';
+            zoomOutBtn.classList.remove('no-hover');
+        } else {
+            zoomInBtn.style.opacity = '0.3';
+            zoomInBtn.classList.add('no-hover');
+        }
+    }
+
+    function zoomOut() {
+        if (currentZoom >= 0.4) {
+            currentZoom -= 0.1;
+            applyZoom();
+            zoomInBtn.style.opacity = '1';
+            zoomInBtn.classList.remove('no-hover');
+        } else {
+            zoomOutBtn.style.opacity = '0.3';
+            zoomOutBtn.classList.add('no-hover');
+        }
+    }
+
+    function applyZoom() {
+        winerWidth = ((roundNumber + 2) * width + (roundNumber + 0.5) * matchDistance) * currentZoom + leftRightSpace;
+        loserWidth = (finalSingleRound * (2 * width + 1.5 * matchDistance)) * currentZoom + leftRightSpace;
+        winMatchBody.style.width = winerWidth + 'px';
+        loseMatchBody.style.width = loserWidth + 'px';
+        bracketContent.style.transform = `scale(${currentZoom})`;
+        centerPosition();
+    }
+
+
+    function scrollToElement(elementId) {
+        const matchDisplay = document.querySelector('.match-display');
+        matchDisplay.classList.add('d-none');
+
+        // Get the element to scroll to by its ID
+        const elementToScrollTo = document.getElementById('match' + elementId);
+        const elementRect = elementToScrollTo.getBoundingClientRect();
+        const parentRect = bracketContent.getBoundingClientRect();
+
+        let distanceToLeft = elementRect.x - parentRect.x - window.innerWidth / 2 + 125;
+        let distanceToTop = elementRect.top - parentRect.top - window.innerHeight / 4;
+
+        bracketTab.scrollTo({
+            left: distanceToLeft,
+            top: distanceToTop,
+            behavior: 'smooth'
+        });
+
+        flashingBox(elementToScrollTo);
+    }
+
+    function flashingBox(element) {
+        let count = 0;
+        element.classList.add('flashing');
+        const interval = setInterval(() => {
+            if (count < 3) {
+                if (element.classList.contains('flashing')) {
+                    element.classList.remove('flashing');
+                } else {
+                    element.classList.add('flashing');
+                    count++;
+                }
+            } else {
+                clearInterval(interval);
+            }
+        }, 300);
+        setTimeout(() => {
+            element.classList.remove('flashing');
+        }, 3500);
+    }
+
+</script>
