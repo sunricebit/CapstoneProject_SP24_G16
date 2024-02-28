@@ -1,6 +1,8 @@
 ﻿using BCrypt.Net;
 using BusinessObject.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 
 namespace DataAccess
 {
@@ -14,14 +16,39 @@ namespace DataAccess
         }
 
         /// <summary>
-        /// 
+        /// Ban or unban an account by toggling its Status property.
         /// </summary>
-        public void BanAccount() { }
+        public void ToggleBanAccount(int accountId)
+        {
+            try
+            {
+                var accountToToggle = _context.Accounts.Find(accountId);
+
+                if (accountToToggle != null)
+                {
+                    // Toggle Status (ban if unbanned, unban if banned)
+                    accountToToggle.Status = !accountToToggle.Status;
+
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    // Account not found
+                    throw new InvalidOperationException("Account not found in the database.");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Failed to toggle ban status: {e.Message}", e);
+            }
+        }
+
 
         /// <summary>
-        /// Register 
+        /// Register a new account.
         /// </summary>
-        public void RegisterAccount(string username, string email, string pass, bool isBussiness) {
+        public void RegisterAccount(string username, string email, string pass, bool isBussiness)
+        {
             try
             {
                 Account account = new Account()
@@ -42,15 +69,73 @@ namespace DataAccess
         }
 
         /// <summary>
-        /// 
+        /// Get all accounts from the database.
         /// </summary>
-        public void GetAllAccount() { }
+        public List<Account> GetAllAccounts()
+        {
+            try
+            {
+                return _context.Accounts.ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Failed to retrieve accounts: {e.Message}", e);
+            }
+        }
+
+        /// <summary>
+        /// Add a new account to the database.
+        /// </summary>
+        public void AddAccount(Account newAccount)
+        {
+            try
+            {
+                _context.Accounts.Add(newAccount);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Failed to add account: {e.Message}", e);
+            }
+        }
+
+        /// <summary>
+        /// Update an existing account in the database.
+        /// </summary>
+        public void UpdateAccount(Account updatedAccount)
+        {
+            try
+            {
+                var existingAccount = _context.Accounts.Find(updatedAccount.AccountID);
+
+                if (existingAccount != null)
+                {
+                    existingAccount.Email = updatedAccount.Email;
+                    existingAccount.Password = updatedAccount.Password; // Ensure to hash the updated password if needed
+                    existingAccount.RoleID = updatedAccount.RoleID;
+                    existingAccount.PhoneNumber = updatedAccount.PhoneNumber;
+                    existingAccount.verifyCode = updatedAccount.verifyCode;
+                    existingAccount.Status = updatedAccount.Status;
+
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    throw new InvalidOperationException("Account not found in the database.");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Failed to update account: {e.Message}", e);
+            }
+        }
 
         /// <summary>
         /// Authentication Account
         /// </summary>
-        public Account? AuthenAccount(string email, string pass) {
-            var account = _context.Accounts.FirstOrDefault(account => account.Email.Equals(email));
+        public Account? AuthenAccount(string username, string pass)
+        {
+            var account = _context.Accounts.FirstOrDefault(account => account.Email.Equals(username));
             if (account != null)
             {
                 bool verify = BCrypt.Net.BCrypt.Verify(pass, account.Password);
@@ -64,22 +149,59 @@ namespace DataAccess
             return account;
         }
 
-        public Account? GetAccountByUsername(string username)
+        /// <summary>
+        /// Get an account by username from the database and determine the account type.
+        /// </summary>
+        public Account GetAccountByUsername(string username)
         {
-            Account? account = _context.Accounts.FirstOrDefault(item => username.Equals(item.Email));
-            return account;
+            try
+            {
+                var account = _context.Accounts
+                    .Include(a => a.Club) // Include the Club navigation property
+                    .FirstOrDefault(item => username.Equals(item.Email));
+
+                if (account != null)
+                {
+                    // Check if the account is associated with a club (business account)
+                    if (account.Club != null)
+                    {
+                        // Business account
+                        return account;
+                    }
+                    else
+                    {
+                        // User account
+                        return account;
+                    }
+                }
+                else
+                {
+                    // Account not found
+                    throw new InvalidOperationException("Account not found in the database.");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Failed to retrieve account: {e.Message}", e);
+            }
         }
 
+        /// <summary>
+        /// Check if a username exists.
+        /// </summary>
         public bool IsUsernameExist(string username)
         {
-            Account? account = _context.Accounts.FirstOrDefault(item => username.Equals(item.Email));
-            return account == null ? false : true;
+            var account = _context.Accounts.FirstOrDefault(item => username.Equals(item.Email));
+            return account != null;
         }
 
+        /// <summary>
+        /// Check if an email exists.
+        /// </summary>
         public bool IsEmailExist(string email)
         {
-            Account? account = _context.Accounts.FirstOrDefault(item => email.Equals(item.Email));
-            return account == null ? false : false;
+            var account = _context.Accounts.FirstOrDefault(item => email.Equals(item.Email));
+            return account != null;
         }
     }
 }
