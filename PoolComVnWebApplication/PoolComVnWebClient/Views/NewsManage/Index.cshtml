@@ -1,0 +1,72 @@
+﻿<div class="container">
+    <div class="news-manage">
+        <div class="manage-header">Quản lí bài viết</div>
+        <div class="mt-5 d-flex justify-content-between">
+            <a href="" class="addBtn d-flex justify-content-center align-items-center">
+                Tạo mới
+                <i class="fa-solid fa-circle-plus px-3"></i>
+            </a>
+            <div class="manageSearch d-flex">
+                <input class="news-input" placeholder="Title,..." />
+                <div class="searchBtn px-3 align-items-center" onclick="Search()">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+            </div>
+            <script type="text/javascript">
+                const inputElement = document.querySelector('.news-input');
+                const buttonElement = document.querySelector('.searchBtn');
+
+                inputElement.addEventListener('keyup', function (event) {
+                    if (event.key === 'Enter') {
+                        buttonElement.click();
+                    }
+                });
+            </script>
+        </div>
+        <div class="manage-body mt-3">
+            <table>
+                <tr>
+                    <th class="news-id">#</th>
+                    <th class="image">Ảnh</th>
+                    <th class="title">Tiêu đề</th>
+                    <th class="create-date">Ngày tạo</th>
+                    <th class="update-date">Thay đổi</th>
+                    <th class="action">Hành động</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td><img src="~/images/new_1.jpg" /></td>
+                    <td>KO PING CHUNG PRODUCES FLAWLESS DISPLAY TO SET UP HUGE US OPEN FINAL WITH FEDOR GORST</td>
+                    <td>30/10/2023</td>
+                    <td>30/10/2023<br>Nam Vu</td>
+                    <td>
+                        <a href="#"><i class="fa-solid fa-pencil p-2"></i></a>
+                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><img src="~/images/new_1.jpg" /></td>
+                    <td>KO PING CHUNG PRODUCES FLAWLESS DISPLAY TO SET UP HUGE US OPEN FINAL WITH FEDOR GORST</td>
+                    <td>30/10/2023</td>
+                    <td>30/10/2023<br>Pham Quốc Hưng</td>
+                    <td>
+                        <a href="#"><i class="fa-solid fa-pencil p-2"></i></a>
+                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><img src="~/images/new_1.jpg" /></td>
+                    <td>KO PING CHUNG PRODUCES FLAWLESS DISPLAY TO SET UP HUGE US OPEN FINAL WITH FEDOR GORST</td>
+                    <td>30/10/2023</td>
+                    <td>30/10/2023<br>Pham Quốc Hưng</td>
+                    <td>
+                        <a href="#"><i class="fa-solid fa-pencil p-2"></i></a>
+                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
