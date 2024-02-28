@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PoolComVnWebAPI.Authentication;
+using PoolComVnWebAPI.Authorization;
 using PoolComVnWebAPI.DTO;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Principal;
@@ -51,7 +52,7 @@ namespace PoolComVnWebAPI.Controllers
             return Ok();
         }
 
-        [Authorize]
+        [CustomAuthenticationFilter]
         [HttpPost("testAuthorize")]
         public IActionResult Authorize()
         {
