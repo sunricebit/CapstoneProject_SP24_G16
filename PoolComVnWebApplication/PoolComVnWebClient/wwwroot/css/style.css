@@ -1746,6 +1746,163 @@ footer {
             background-color: #b91b1b;
             cursor: pointer;
         }
+
+/* newsManage.html */
+.news-manage {
+    margin: 100px 0;
+}
+
+    .news-manage .manage-header {
+        color: white;
+        font-size: 40px;
+        font-weight: 500;
+        border-bottom: 2px white solid;
+        font-style: italic;
+    }
+
+    .news-manage .addBtn {
+        text-decoration: none;
+        background-color: white;
+        width: 160px;
+        height: 40px;
+        color: #000;
+        border-radius: 20px;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+        .news-manage .addBtn:hover {
+            background: linear-gradient(#acc4e0 50%, #648fc0);
+        }
+
+    .news-manage .manageSearch {
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+        .news-manage .manageSearch input {
+            border: none;
+            padding: 0px 20px;
+            line-height: 40px;
+        }
+
+            .news-manage .manageSearch input:focus {
+                outline: none;
+            }
+
+        .news-manage .manageSearch .searchBtn {
+            line-height: 40px;
+            background-color: white;
+        }
+
+            .news-manage .manageSearch .searchBtn:hover i {
+                color: #ccc;
+            }
+
+            .news-manage .manageSearch .searchBtn:hover {
+                cursor: pointer;
+            }
+
+    .news-manage .manage-body {
+        background-color: white;
+    }
+
+        .news-manage .manage-body table {
+            width: 100%;
+        }
+
+        .news-manage .manage-body tr:first-child {
+            background-color: #bbb;
+        }
+
+        .news-manage .manage-body td,
+        .news-manage .manage-body th {
+            padding: 10px;
+        }
+
+
+        .news-manage .manage-body .news-id {
+            width: 50px;
+        }
+
+        .news-manage .manage-body img {
+            width: 100px;
+        }
+
+        .news-manage .manage-body .create-date {
+            width: 100px;
+        }
+
+        .news-manage .manage-body .update-date {
+            width: 160px;
+        }
+
+        .news-manage .manage-body .action {
+            width: 120px;
+        }
+
+    .news-manage table tr:nth-child(odd) {
+        background-color: #efefef;
+    }
+
+    .news-manage .manage-body .fa-pencil,
+    .news-manage .manage-body .fa-trash-can {
+        color: #000000;
+    }
+
+        .news-manage .manage-body .fa-pencil:hover,
+        .news-manage .manage-body .fa-trash-can:hover {
+            opacity: 0.6;
+        }
+
+/* addNews.html */
+.add-news {
+    background-color: white;
+    margin: 100px 10%;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+    .add-news .box-header {
+        background-color: #EEE;
+        height: 36px;
+        font-weight: 500;
+        font-size: 24px;
+        padding-left: 20px;
+    }
+
+.text-danger {
+    font-style: italic;
+    font-weight: 500;
+}
+
+.text-success {
+    font-style: italic;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.add-news .box-body input {
+    width: 100%;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+}
+
+.add-news .box-body .btn {
+    width: 150px;
+    height: 40PX;
+}
+
+.add-news .ck-content {
+    min-height: 200px;
+}
+
+.add-news .ck-editor {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
 /* Mobile: width <740px */
 @media only screen and (max-width: 739px) {
 
