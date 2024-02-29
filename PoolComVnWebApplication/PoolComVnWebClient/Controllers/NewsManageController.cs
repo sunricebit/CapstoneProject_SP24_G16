@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace PoolComVnWebClient.Views.Home
+namespace PoolComVnWebClient.Controllers
 {
     public class NewsManageController : Controller
     {
