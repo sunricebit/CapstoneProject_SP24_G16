@@ -1,8 +1,10 @@
 using BusinessObject.Models;
 using DataAccess;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using PoolComVnWebAPI.Authorization;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +22,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<PostDAO>();
 builder.Services.AddScoped<AccountDAO>();
+
+// Add services to the container
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(option =>
     {
@@ -31,10 +35,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-
         };
     }
     );
+
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("CustomPolicy", policy => policy.Requirements.Add(new CustomAuthorizationRequirement(1)));
+//});
+
+builder.Services.AddSingleton<IAuthorizationHandler, CustomAuthorizationHandler>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

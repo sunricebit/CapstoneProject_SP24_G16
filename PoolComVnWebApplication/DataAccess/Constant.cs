@@ -13,5 +13,6 @@ namespace DataAccess
         public const int BusinessRole = 3;
         public const int UserRole = 2;
         public const int AdminRole = 1;
+        public const int BusinessManager = 4;
     }
 }
