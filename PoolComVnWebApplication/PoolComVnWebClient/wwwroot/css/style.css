@@ -782,7 +782,6 @@ footer {
         overflow: hidden;
         padding: 0 15px;
         white-space: nowrap;
-        overflow: hidden;
         text-overflow: ellipsis;
         color: #1c324ddf;
         font-weight: 400;
@@ -1146,7 +1145,7 @@ footer {
 /* tournamentDetails.html */
 .container-full {
     width: 100%;
-    margin-top: 120px;
+    margin-top: 100px;
     position: relative;
     z-index: 2;
 }
@@ -1719,33 +1718,114 @@ footer {
     margin: 50px;
 }
 
-    .match-list .list-header {
-        line-height: 60px;
-        background: #000;
+    .match-list .round-name {
+        background: linear-gradient(90deg,#000 10%, #00000066 30%);
         color: #fff;
-        font-size: 28px;
-        font-weight: 600;
-        border-radius: 10px;
-        overflow: hidden;
+        font-size: 20px;
+        font-weight: 700;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        padding: 0 100px 0 20px;
+        line-height: 40px;
     }
 
-        .match-list .list-header a {
-            border-top-right-radius: 10px;
-            border-bottom-right-radius: 10px;
+        .match-list .round-name.upcoming {
+            font-size: 24px;
+            padding: 10px 20px;
+        }
+
+    .match-list .table-overflow {
+        overflow-x: auto;
+    }
+
+    .match-list .round-table {
+        margin-top: 10px;
+        width: 100%;
+    }
+
+        .match-list .round-table tr:first-child {
+            background: #00000099;
             color: #fff;
-            font-size: 18px;
-            width: 100px;
+            padding: 20px;
+            height: 40px;
+        }
+
+        .match-list .round-table tr:not(:first-child) {
+            background: #9dd5c8;
+            border-bottom: 1px solid #00000066;
+        }
+
+        .match-list .round-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .match-list .round-table th,
+        .match-list .round-table td {
+            padding: 0 10px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .match-list .round-table td {
+            height: 68px;
+        }
+
+        .match-list .round-table .match-number {
+            min-width: 20px;
             text-align: center;
         }
 
-    .match-list .bracket-btn {
-        background-color: #dc2222;
-    }
-
-        .match-list .bracket-btn:hover {
-            background-color: #b91b1b;
-            cursor: pointer;
+        .match-list .round-table .match-table {
+            min-width: 60px;
         }
+
+        .match-list .round-table .match-race {
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .match-list .round-table .match-player {
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            min-width: 200px;
+            white-space: nowrap;
+        }
+
+        .match-list .round-table .match-img {
+            width: 21px;
+        }
+
+        .match-list .round-table img {
+            width: 21px;
+            height: 14px;
+            border-radius: 3px;
+        }
+
+        .match-list .round-table .match-score {
+            min-width: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 0;
+        }
+
+        .match-list .round-table .match-vs {
+            min-width: 20px;
+        }
+
+        .match-list .round-table .match-time {
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .match-list .round-table .match-status {
+            min-width: 100px;
+        }
+
+.match-list-small .match-list {
+    margin: 50px 20px;
+}
 
 /* newsManage.html */
 .news-manage {
@@ -1903,6 +1983,238 @@ footer {
     border-radius: 5px;
 }
 
+/* tournamentPlayers.html */
+.tour-players {
+    margin: 100px 50px;
+}
+
+    .tour-players .players-header {
+        background: linear-gradient(90deg,#000 10%, #00000066 30%);
+        color: #fff;
+        font-weight: 700;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        line-height: 40px;
+        font-size: 24px;
+        padding: 10px 20px;
+    }
+
+    .tour-players .table-overflow {
+        overflow-x: auto;
+    }
+
+    .tour-players .players-table {
+        margin-top: 10px;
+        width: 100%;
+    }
+
+        .tour-players .players-table tr:first-child {
+            background: #00000099;
+            color: #fff;
+            padding: 20px;
+            height: 40px;
+        }
+
+        .tour-players .players-table tr:not(:first-child) {
+            background: #9dd5c8;
+            border-bottom: 1px solid #00000066;
+        }
+
+        .tour-players .players-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .tour-players .players-table tr:not(:first-child):hover {
+            background: #41f3c1;
+            cursor: pointer;
+        }
+
+        .tour-players .players-table th,
+        .tour-players .players-table td {
+            padding: 0 10px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .tour-players .players-table td {
+            height: 68px;
+        }
+
+    .tour-players .tb-stt {
+        width: 40px;
+        text-align: center;
+    }
+
+    .tour-players .tb-name {
+        display: flex;
+        align-items: center;
+        min-width: 100px;
+    }
+
+        .tour-players .tb-name img {
+            width: 21px;
+            height: 14px;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+
+    .tour-players .tb-country {
+        min-width: 100px;
+    }
+
+    .tour-players .tb-rank {
+        min-width: 50px;
+    }
+
+        .tour-players .tb-rank i {
+            margin-right: 5px;
+        }
+
+    .tour-players .tb-history .history-match {
+        height: 16px;
+        width: 16px;
+        color: #fff;
+        font-size: 16px;
+        line-height: 16px;
+        text-align: center;
+        display: inline-block;
+        border-radius: 4px;
+        padding: 0;
+    }
+
+        .tour-players .tb-history .history-match.lose-match {
+            background-color: rgb(197, 9, 9);
+        }
+
+        .tour-players .tb-history .history-match.win-match {
+            background-color: rgb(38, 179, 19);
+        }
+
+    .tour-players .tb-match {
+        text-align: center;
+        min-width: 60px;
+    }
+
+    .tour-players .tb-match-pct {
+        min-width: 100px;
+    }
+
+    .tour-players .total {
+        background-color: #aaa;
+        width: 100px;
+        height: 10px;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px #fff solid;
+    }
+
+        .tour-players .total .percent {
+            background: #18a163;
+            height: 10px;
+            border-right: 2px solid #097f3c;
+        }
+
+    .tour-players .tb-game {
+        text-align: center;
+        min-width: 60px;
+    }
+
+    .tour-players .tb-game-pct {
+        min-width: 100px;
+    }
+
+    .tour-players .tb-max-game {
+        text-align: center;
+        min-width: 60px;
+    }
+
+.player-history {
+    background-color: #000000d4;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    width: 100%;
+    height: 100vh;
+}
+
+    .player-history .history-body {
+        min-width: 500px;
+        background-color: #41f3c0;
+        border-radius: 10px;
+        border: 2px #aaa solid;
+        overflow: hidden;
+        width: 500px;
+        max-height: 500px;
+    }
+
+        .player-history .history-body .history-header {
+            background: #000;
+            color: #fff;
+            height: 40px;
+        }
+
+        .player-history .history-body .history-title {
+            font-weight: 600;
+            padding: 10px;
+        }
+
+        .player-history .history-body .history-close {
+            padding: 10px;
+            background: #c20a4d;
+            color: #fff;
+        }
+
+            .player-history .history-body .history-close:hover {
+                color: #000;
+                background: #aa0642;
+                cursor: pointer;
+            }
+
+        .player-history .history-body .history-content {
+            padding: 0 50px 20px 50px;
+            height: 460px;
+            overflow: auto;
+        }
+
+    .player-history .history-line {
+        padding-top: 20px;
+    }
+
+        .player-history .history-line .match-number {
+            font-size: 18px;
+            font-weight: 700;
+            border-bottom: 1px solid #000;
+        }
+
+        .player-history .history-line .player {
+            margin-top: 10px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+        }
+
+            .player-history .history-line .player div {
+                display: flex;
+                align-items: center;
+            }
+
+            .player-history .history-line .player img {
+                height: 14px;
+                width: 21px;
+                border-radius: 3px;
+                margin-right: 5px;
+            }
+
+            .player-history .history-line .player.win {
+                background: linear-gradient(90deg,#00000000 0%, #37e57c 50%,#00000000 100%);
+            }
+
+            .player-history .history-line .player.lose {
+                background: linear-gradient(90deg,#00000000 0%, #dd8484 50%, #00000000 100%);
+            }
+
 /* Mobile: width <740px */
 @media only screen and (max-width: 739px) {
 
@@ -1910,20 +2222,74 @@ footer {
         font-size: 20px;
     }
 
-    .container-full .tour-podium .silver-podium,
-    .container-full .tour-podium .gold-podium,
-    .container-full .tour-podium .bronze-podium {
-        font-size: 12px;
+    .container-full {
+        margin-top: 80px;
     }
 
-    .container-full .tour-podium .tour-flag {
-        width: 18px;
-        height: 12px;
-    }
+        .container-full .tour-podium .silver-podium,
+        .container-full .tour-podium .gold-podium,
+        .container-full .tour-podium .bronze-podium {
+            font-size: 12px;
+        }
+
+        .container-full .tour-podium .tour-flag {
+            width: 18px;
+            height: 12px;
+        }
 
     .tour-manage-nav {
         display: none;
     }
+
+    .match-list {
+        margin: 30px 5px;
+    }
+
+        .match-list .round-name {
+            border-radius: 0;
+        }
+
+        .match-list .round-table .match-number {
+            font-size: 12px;
+        }
+
+        .match-list .round-table .match-table {
+            font-size: 12px;
+            min-width: 50px;
+        }
+
+        .match-list .round-table .match-race {
+            font-size: 12px;
+            min-width: 50px;
+        }
+
+        .match-list .round-table .match-player {
+            font-size: 12px;
+            font-weight: 700;
+            min-width: 50px;
+        }
+
+        .match-list .round-table .match-score {
+            font-size: 12px;
+            font-weight: 700;
+            min-width: 20px;
+        }
+
+        .match-list .round-table .match-vs {
+            font-size: 10px;
+            font-weight: 600;
+            min-width: 20px;
+        }
+
+        .match-list .round-table .match-time {
+            font-size: 12px;
+            min-width: 100px;
+        }
+
+        .match-list .round-table .match-status {
+            font-size: 12px;
+            min-width: 100px;
+        }
 }
 
 /* Tablet: width >= 740px and width <1024 */
@@ -1933,15 +2299,23 @@ footer {
         display: none;
     }
 
-    .container-full .tour-podium .silver-podium,
-    .container-full .tour-podium .gold-podium,
-    .container-full .tour-podium .bronze-podium {
-        font-size: 14px;
+    .container-full {
+        margin-top: 80px;
     }
 
-    .container-full .tour-podium .tour-flag {
-        width: 21px;
-        height: 14px;
+        .container-full .tour-podium .silver-podium,
+        .container-full .tour-podium .gold-podium,
+        .container-full .tour-podium .bronze-podium {
+            font-size: 14px;
+        }
+
+        .container-full .tour-podium .tour-flag {
+            width: 21px;
+            height: 14px;
+        }
+
+    .match-list {
+        margin: 30px 20px;
     }
 }
 

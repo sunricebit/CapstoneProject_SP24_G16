@@ -4,14 +4,14 @@
             <div class="login-form login-change d-flex ">
                 <div class="col-10">
                     <div class="login-title">Đăng nhập</div>
-                    <form method="post" action="@Url.Action("Index", "Login")">
+                    <form method="post" action="@Url.Action("Login", "Authentication")">
                         <div class="input-form">
                             <i class="fa-solid fa-user col-12"></i>
-                            <input class="username-input col-12" type="text" placeholder="Tên đăng nhập">
+                            <input class="username-input col-12" name="email" type="text" placeholder="Email">
                         </div>
                         <div class="input-form">
                             <i class="fa-solid fa-key col-12"></i>
-                            <input class="password-input col-12" type="password" placeholder="Mật khẩu">
+                            <input class="password-input col-12" name="password" type="password" placeholder="Mật khẩu">
                             <button type="button" class="show-pass" onclick="togglePassword(this)">
                                 <i class="fa-solid fa-eye"></i>
                             </button>
