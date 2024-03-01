@@ -10,6 +10,8 @@ using PoolComVnWebAPI.Common;
 using PoolComVnWebAPI.DTO;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Net.Mail;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Xml.Linq;
@@ -22,11 +24,13 @@ namespace PoolComVnWebAPI.Controllers
     {
         private readonly AccountDAO _accountDAO;
         private IConfiguration _config;
+        private readonly IEmailSender _emailSender;
 
-        public AuthenticationController(AccountDAO accountDAO, IConfiguration configuration)
+        public AuthenticationController(AccountDAO accountDAO, IConfiguration configuration, IEmailSender emailSender)
         {
             _accountDAO = accountDAO;
             _config = configuration;
+            _emailSender = emailSender;
         }
 
         [HttpPost("login")]
@@ -43,11 +47,11 @@ namespace PoolComVnWebAPI.Controllers
         [HttpPost("register")]
         public IActionResult Register([FromBody]RegisterDTO registerDto)
         {
-            if (_accountDAO.IsEmailExist(registerDto.email) || _accountDAO.IsUsernameExist(registerDto.username)) {
+            if (_accountDAO.IsEmailExist(registerDto.Email) || _accountDAO.IsUsernameExist(registerDto.Username)) {
                 return BadRequest();
             }
-            _accountDAO.RegisterAccount(registerDto.username, registerDto.email, 
-                registerDto.pass, registerDto.isBusiness);
+            _accountDAO.RegisterAccount(registerDto.Username, registerDto.Email, 
+                registerDto.Pass, registerDto.isBusiness);
             return Ok();
         }
 
@@ -87,6 +91,15 @@ namespace PoolComVnWebAPI.Controllers
                             expires: DateTime.Now.AddHours(1),
                             signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        
+
+        [HttpPost("verify")]
+        public async Task<IActionResult> SendVerifyCode()
+        {
+            await _emailSender.SendMailAsync("Vhnam2209@gmail.com", "Nam Vu");
+            return Ok();
         }
     }
 }

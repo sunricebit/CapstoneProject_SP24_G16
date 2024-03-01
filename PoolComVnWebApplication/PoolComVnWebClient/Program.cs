@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Diagnostics;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,6 +14,34 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.Use(async (context, next) =>
+{
+    await next();
+    if (context.Response.StatusCode == 404)
+    {
+        context.Request.Path = "/Error/404";
+        await next();
+    }
+});
+
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.StatusCode = 500; // or another status code
+        context.Response.ContentType = "text/html";
+
+        var exception = context.Features.Get<IExceptionHandlerFeature>();
+        if (exception != null)
+        {
+            var errorMessage = exception.Error.Message;
+
+            // Redirect to the error page with the error message in the query string
+            context.Response.Redirect($"/Error/InternalServerError?message={Uri.EscapeDataString(errorMessage)}");
+        }
+    });
+});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
