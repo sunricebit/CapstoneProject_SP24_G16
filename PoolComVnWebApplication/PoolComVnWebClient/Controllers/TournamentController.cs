@@ -13,5 +13,10 @@ namespace PoolComVnWebClient.Controllers
         {
             return View();
         }
+
+        public IActionResult TournamentMatchList()
+        {
+            return View();
+        }
     }
 }
