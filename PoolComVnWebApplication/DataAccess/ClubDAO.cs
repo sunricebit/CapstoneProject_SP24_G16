@@ -39,6 +39,7 @@ namespace DataAccess
 
             if (existingClub != null)
             {
+                // Avoid updating ClubId
                 existingClub.ClubName = updatedClub.ClubName;
                 existingClub.Address = updatedClub.Address;
                 existingClub.Phone = updatedClub.Phone;

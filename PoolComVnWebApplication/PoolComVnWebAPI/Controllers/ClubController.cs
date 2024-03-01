@@ -54,18 +54,21 @@ namespace PoolComVnWebAPI.Controllers
             }
 
             var club = _mapper.Map<Club>(clubDto);
+
+            // Ensure ClubId is not set explicitly, allowing the database to generate it
+            club.ClubId = 0;
+
             _clubDAO.AddClub(club);
 
             return CreatedAtAction(nameof(Get), new { id = club.ClubId }, clubDto);
         }
-
         // PUT: api/Club/5
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] ClubDTO updatedClubDto)
         {
-            if (updatedClubDto == null || id != updatedClubDto.ClubId)
+            if (updatedClubDto == null)
             {
-                return BadRequest();
+                return BadRequest("Invalid request data");
             }
 
             var existingClub = _clubDAO.GetClubById(id);
@@ -75,11 +78,21 @@ namespace PoolComVnWebAPI.Controllers
                 return NotFound();
             }
 
-            _mapper.Map(updatedClubDto, existingClub); // Update the existing entity
+            // Use the ClubDTO properties to update the existingClub
+            existingClub.ClubName = updatedClubDto.ClubName;
+            existingClub.Address = updatedClubDto.Address;
+            existingClub.Phone = updatedClubDto.Phone;
+            existingClub.Facebook = updatedClubDto.Facebook;
+            existingClub.Avatar = updatedClubDto.Avatar;
+
+            // Update the existing entity
             _clubDAO.UpdateClub(existingClub);
 
             return NoContent();
         }
+
+
+
 
         // DELETE: api/Club/5
         [HttpDelete("{id}")]
