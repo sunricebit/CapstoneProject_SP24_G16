@@ -14,11 +14,13 @@ namespace BusinessObject.Models
         public int MatchNumber { get; set; }
         [Required]
         public virtual Tournament tournament { get; set; }
-
+        public int TableID { get; set; }
+        public virtual Table table { get; set; }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
         public int TourID { get; set; }
         public int player1 { get; set; }
         public int player2 { get; set; }
-        public virtual List<Player> playerList { get; set; }
         public int Score1 { get; set; }
         public int Score2 { get; set; }
         public bool IsFinish { get; set; }

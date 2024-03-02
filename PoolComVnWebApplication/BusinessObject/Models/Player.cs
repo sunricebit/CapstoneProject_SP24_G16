@@ -16,7 +16,6 @@ namespace BusinessObject.Models
         public virtual Account Account { get; set; }
         public int AccountID { get; set; }
         public string Level { get; set; }
-        public virtual MatchOfTournament MatchOfTournament { get; set;}
         public virtual User User { get; set; }
         public virtual TourPlayer TourPlayer { get; set; }
 

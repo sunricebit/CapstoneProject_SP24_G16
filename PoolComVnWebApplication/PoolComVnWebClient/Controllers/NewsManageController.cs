@@ -6,6 +6,7 @@ namespace PoolComVnWebClient.Controllers
     {
         public IActionResult Index()
         {
+
             return View();
         }
 
@@ -13,5 +14,10 @@ namespace PoolComVnWebClient.Controllers
         {
             return View();
         }
+        public IActionResult NewsDetails()
+        {
+            return View();
+        }
+
     }
 }
