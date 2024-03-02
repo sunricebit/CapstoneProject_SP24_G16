@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class PostDAO
+    public class NewsDAO
     {
         private readonly PoolComContext _context;
-        public PostDAO(PoolComContext context)
+        public NewsDAO(PoolComContext context)
         {
             _context = context;
         }
@@ -45,7 +45,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                // Xử lý lỗi nếu cần thiết
+               
                 throw new Exception($"Error while retrieving news with ID {newsId}.", ex);
             }
         }
@@ -59,7 +59,7 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                // Xử lý lỗi nếu cần thiết
+               
                 throw new Exception("Error while retrieving all news.", ex);
             }
         }
@@ -80,7 +80,7 @@ namespace DataAccess
                 throw new ArgumentException("Updated news description cannot be null or empty", nameof(updatedNews.Description));
             }
 
-            var existingNews = _context.News.Find(updatedNews.NewsID);
+            var existingNews = _context.News.FirstOrDefault(u => u.NewsID == updatedNews.NewsID);
 
             if (existingNews != null)
             {
@@ -91,6 +91,11 @@ namespace DataAccess
                 _context.SaveChanges();
             }
         }
+        public Account GetAccount(int AccID)
+        {
+            var account = _context.Accounts.FirstOrDefault(a => a.AccountID == AccID);
+            return account;
+        }
         public void DeleteNews(int newsId)
         {
             if (newsId <= 0)
@@ -98,7 +103,7 @@ namespace DataAccess
                 throw new ArgumentException("News ID must be greater than 0", nameof(newsId));
             }
 
-            var newsToDelete = _context.News.Find(newsId);
+            var newsToDelete = _context.News.FirstOrDefault(u => u.NewsID == newsId);
 
             if (newsToDelete != null)
             {

@@ -18,6 +18,7 @@ namespace BusinessObject.Models
         public PoolComContext(DbContextOptions<PoolComContext> options) : base(options)
         {
         }
+        public DbSet<Table> Tables { get; set; }
         public DbSet<Access> Accesses { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Club> Clubs { get; set; }
@@ -43,6 +44,8 @@ namespace BusinessObject.Models
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Table>()
+                .HasKey(t => t.TableId);
 
             modelBuilder.Entity<Access>()
                 .HasKey(a => a.AccessID);
@@ -72,6 +75,10 @@ namespace BusinessObject.Models
                 .HasKey(u => u.UserId);
             modelBuilder.Entity<User>()
                 .HasKey(u => u.UserId);
+            modelBuilder.Entity<MatchOfTournament>()
+                .HasOne(t => t.table)
+                .WithMany(t => t.MatchOfTournament)
+                .HasForeignKey(t => t.TableID);
             modelBuilder.Entity<Tournament>()
             .HasOne(t => t.access)
             .WithMany(a => a.tournaments)

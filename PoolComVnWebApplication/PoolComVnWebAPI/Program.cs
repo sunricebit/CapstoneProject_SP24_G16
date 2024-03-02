@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PoolComVnWebAPI.Authorization;
 using PoolComVnWebAPI.Common;
+using PoolComVnWebAPI.DTO;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,8 +22,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<PostDAO>();
+builder.Services.AddScoped<NewsDAO>();
 builder.Services.AddScoped<AccountDAO>();
+builder.Services.AddScoped<ClubDAO>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 // Add services to the container
@@ -47,6 +49,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 //});
 
 builder.Services.AddSingleton<IAuthorizationHandler, CustomAuthorizationHandler>();
+builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 var app = builder.Build();
 
