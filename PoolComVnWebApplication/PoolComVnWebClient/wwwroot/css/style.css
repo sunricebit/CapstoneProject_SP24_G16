@@ -2070,25 +2070,29 @@ footer {
             margin-right: 5px;
         }
 
-    .tour-players .tb-history .history-match {
-        height: 16px;
-        width: 16px;
-        color: #fff;
-        font-size: 16px;
-        line-height: 16px;
-        text-align: center;
-        display: inline-block;
-        border-radius: 4px;
-        padding: 0;
+    .tour-players .tb-history {
+        min-width: 150px;
     }
 
-        .tour-players .tb-history .history-match.lose-match {
-            background-color: rgb(197, 9, 9);
+        .tour-players .tb-history .history-match {
+            height: 16px;
+            width: 16px;
+            color: #fff;
+            font-size: 16px;
+            line-height: 16px;
+            text-align: center;
+            display: inline-block;
+            border-radius: 4px;
+            padding: 0;
         }
 
-        .tour-players .tb-history .history-match.win-match {
-            background-color: rgb(38, 179, 19);
-        }
+            .tour-players .tb-history .history-match.lose-match {
+                background-color: rgb(197, 9, 9);
+            }
+
+            .tour-players .tb-history .history-match.win-match {
+                background-color: rgb(38, 179, 19);
+            }
 
     .tour-players .tb-match {
         text-align: center;
@@ -2096,7 +2100,7 @@ footer {
     }
 
     .tour-players .tb-match-pct {
-        min-width: 100px;
+        width: 100px;
     }
 
     .tour-players .total {
@@ -2120,8 +2124,13 @@ footer {
     }
 
     .tour-players .tb-game-pct {
-        min-width: 100px;
+        width: 100px;
     }
+
+        .tour-players .tb-game-pct .percent-number,
+        .tour-players .tb-match-pct .percent-number {
+            width: 100px;
+        }
 
     .tour-players .tb-max-game {
         text-align: center;
@@ -2241,8 +2250,9 @@ footer {
         display: none;
     }
 
-    .match-list {
-        margin: 30px 5px;
+    .match-list,
+    .tour-players {
+        margin: 30px 10px;
     }
 
         .match-list .round-name {

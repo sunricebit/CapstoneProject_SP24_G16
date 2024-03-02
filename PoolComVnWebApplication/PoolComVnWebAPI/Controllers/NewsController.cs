@@ -9,11 +9,11 @@ namespace PoolComVnWebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PostController : ControllerBase
+    public class NewsController : ControllerBase
     {
-        private readonly PostDAO _newsDAO;
+        private readonly NewsDAO _newsDAO;
 
-        public PostController(PostDAO newsDAO)
+        public NewsController(NewsDAO newsDAO)
         {
             _newsDAO = newsDAO;
         }

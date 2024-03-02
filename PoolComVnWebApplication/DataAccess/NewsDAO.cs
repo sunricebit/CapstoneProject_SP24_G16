@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class PostDAO
+    public class NewsDAO
     {
         private readonly PoolComContext _context;
-        public PostDAO(PoolComContext context)
+        public NewsDAO(PoolComContext context)
         {
             _context = context;
         }
