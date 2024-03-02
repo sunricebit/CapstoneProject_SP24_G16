@@ -9,20 +9,23 @@ using System.Web;
 using Microsoft.Net.Http.Headers;
 using System.Net.Http.Headers;
 using PoolComVnWebClient.DTO;
+using PoolComVnWebAPI.DTO;
+using PoolComVnWebClient.Common;
+using System.Reflection.Metadata.Ecma335;
 
 namespace PoolComVnWebClient.Controllers
 {
     public class AuthenticationController : Controller
     {
         private readonly HttpClient client = null;
-        private string ApiUrl = "";
+        private string ApiUrl = Constant.ApiUrl;
 
         public AuthenticationController()
         {
             client = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             client.DefaultRequestHeaders.Accept.Add(contentType);
-            ApiUrl = "https://localhost:7123/api/Authentication";
+            ApiUrl = ApiUrl + "/Authentication";
         }
 
         [HttpGet]
@@ -49,17 +52,53 @@ namespace PoolComVnWebClient.Controllers
             if (response.IsSuccessStatusCode)
             {
                 // Nhận và giữ token từ phản hồi của server
-                var responseData = await response.Content.ReadFromJsonAsync<string>();
-                //var token = responseData.token;
-
-                // Lưu token vào nơi phù hợp, có thể lưu vào Session, Cache, hoặc nơi khác
-                // để sử dụng trong các yêu cầu sau này
+                var responseMessage = await response.Content.ReadFromJsonAsync<TokenJWT>();
+                Response.Cookies.Append("TokenJwt", responseMessage.token, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddHours(1),
+                });
             }
             else
             {
-                // Xử lý khi đăng nhập không thành công
+                
             }
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(string rName, string rEmail, string rPassword, string AccountRole)
+        {
+            var registerInfo = new RegisterDTO
+            {
+                Email = rEmail,
+                Pass = rPassword,
+                Username = rName,
+                isBusiness = AccountRole == Constant.StrBusinessRole ? true : false,
+            };
+
+            var response = await client.PostAsJsonAsync(ApiUrl + "/register", registerInfo);
+
+            // Kiểm tra xem yêu cầu có thành công hay không
+            if (response.IsSuccessStatusCode)
+            {
+                // Nhận và giữ token từ phản hồi của server
+                var responseData = await response.Content.ReadFromJsonAsync<string>();
+
+            }
+            else
+            {
+                // Xử lý khi đăng ký không thành công
+            }
+            return RedirectToAction("Login", "Authentication");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> VerifyRegister()
+        {
+            return View();
         }
     }
 }
