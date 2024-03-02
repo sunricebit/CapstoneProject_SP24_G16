@@ -18,14 +18,14 @@ namespace PoolComVnWebClient.Controllers
     public class AuthenticationController : Controller
     {
         private readonly HttpClient client = null;
-        private string ApiUrl = "";
+        private string ApiUrl = Constant.ApiUrl;
 
         public AuthenticationController()
         {
             client = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             client.DefaultRequestHeaders.Accept.Add(contentType);
-            ApiUrl = "https://localhost:7123/api/Authentication";
+            ApiUrl = ApiUrl + "/Authentication";
         }
 
         [HttpGet]

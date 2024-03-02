@@ -18,5 +18,7 @@ namespace PoolComVnWebClient.Common
         public const string StrUserRole = "User";
         public const string StrAdminRole = "Admin";
         public const string StrBusinessManagerRole = "BusinessManager";
+
+        public const string ApiUrl = "https://localhost:5000/api";
     }
 }
