@@ -24,6 +24,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<NewsDAO>();
 builder.Services.AddScoped<AccountDAO>();
 builder.Services.AddScoped<ClubDAO>();
+builder.Services.AddScoped<ClubPostDAO>();
+
 // Add services to the container
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(option =>
