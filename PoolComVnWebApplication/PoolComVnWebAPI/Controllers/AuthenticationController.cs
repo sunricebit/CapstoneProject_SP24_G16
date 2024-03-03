@@ -80,7 +80,7 @@ namespace PoolComVnWebAPI.Controllers
             var credentials = new SigningCredentials(securitykey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
-                new Claim("Role", account.RoleID.ToString())
+                new Claim("Role", account.RoleId.ToString())
             };
 
             var token = new JwtSecurityToken(_config["Jwt:Issuer"], _config["Jwt:Audience"], claims,

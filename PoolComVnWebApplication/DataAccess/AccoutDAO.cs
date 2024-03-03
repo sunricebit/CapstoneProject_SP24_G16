@@ -8,9 +8,9 @@ namespace DataAccess
 {
     public class AccountDAO
     {
-        private readonly PoolComContext _context;
+        private readonly poolcomvnContext _context;
 
-        public AccountDAO(PoolComContext poolComContext)
+        public AccountDAO(poolcomvnContext poolComContext)
         {
             _context = poolComContext;
         }
@@ -55,9 +55,9 @@ namespace DataAccess
                 {
                     Email = email,
                     Password = BCrypt.Net.BCrypt.HashPassword(pass, Constant.SaltRound),
-                    RoleID = isBussiness ? Constant.BusinessRole : Constant.UserRole,
+                    RoleId = isBussiness ? Constant.BusinessRole : Constant.UserRole,
                     PhoneNumber = "Default",
-                    verifyCode = "Default",
+                    VerifyCode = "Default",
                 };
                 _context.Accounts.Add(account);
                 _context.SaveChanges();
@@ -106,15 +106,15 @@ namespace DataAccess
         {
             try
             {
-                var existingAccount = _context.Accounts.Find(updatedAccount.AccountID);
+                var existingAccount = _context.Accounts.Find(updatedAccount.AccountId);
 
                 if (existingAccount != null)
                 {
                     existingAccount.Email = updatedAccount.Email;
                     existingAccount.Password = updatedAccount.Password; // Ensure to hash the updated password if needed
-                    existingAccount.RoleID = updatedAccount.RoleID;
+                    existingAccount.RoleId = updatedAccount.RoleId;
                     existingAccount.PhoneNumber = updatedAccount.PhoneNumber;
-                    existingAccount.verifyCode = updatedAccount.verifyCode;
+                    existingAccount.VerifyCode = updatedAccount.VerifyCode;
                     existingAccount.Status = updatedAccount.Status;
 
                     _context.SaveChanges();

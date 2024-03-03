@@ -13,7 +13,7 @@ var builder2 = new ConfigurationBuilder()
 .SetBasePath(Directory.GetCurrentDirectory())
 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 IConfigurationRoot configuration = builder2.Build();
-builder.Services.AddDbContext<PoolComContext>(options => options.UseSqlServer(configuration.GetConnectionString("PoolCom")));
+builder.Services.AddDbContext<poolcomvnContext>(options => options.UseSqlServer(configuration.GetConnectionString("PoolCom")));
 
 // Add services to the container.
 

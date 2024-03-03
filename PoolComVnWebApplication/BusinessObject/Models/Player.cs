@@ -1,23 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    public class Player
+    public partial class Player
     {
-        [Key]
-        [Required]
-        public int PlayerID { get; set; }
-        public string PlayerName { get; set; }
-        public virtual Account Account { get; set; }
-        public int AccountID { get; set; }
-        public string Level { get; set; }
-        public virtual User User { get; set; }
-        public virtual TourPlayer TourPlayer { get; set; }
+        public Player()
+        {
+            PlayerInMatches = new HashSet<PlayerInMatch>();
+            PlayerInSoloMatches = new HashSet<PlayerInSoloMatch>();
+        }
 
+        public int PlayerId { get; set; }
+        public string PlayerName { get; set; } = null!;
+        public int AccountId { get; set; }
+        public int? CountryId { get; set; }
+        public int Level { get; set; }
+        public int UserId { get; set; }
+
+        public virtual Country? Country { get; set; }
+        public virtual User User { get; set; } = null!;
+        public virtual TourPlayer? TourPlayer { get; set; }
+        public virtual User? UserNavigation { get; set; }
+        public virtual ICollection<PlayerInMatch> PlayerInMatches { get; set; }
+        public virtual ICollection<PlayerInSoloMatch> PlayerInSoloMatches { get; set; }
     }
 }

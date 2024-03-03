@@ -10,8 +10,8 @@ namespace DataAccess
 {
     public class NewsDAO
     {
-        private readonly PoolComContext _context;
-        public NewsDAO(PoolComContext context)
+        private readonly poolcomvnContext _context;
+        public NewsDAO(poolcomvnContext context)
         {
             _context = context;
         }
@@ -40,8 +40,8 @@ namespace DataAccess
             try
             {
                 return _context.News
-                    .Include(n => n.Account)
-                    .FirstOrDefault(n => n.NewsID == newsId);
+                    .Include(n => n.Acc)
+                    .FirstOrDefault(n => n.NewsId == newsId);
             }
             catch (Exception ex)
             {
@@ -54,7 +54,7 @@ namespace DataAccess
             try
             {
                 return _context.News
-                    .Include(n => n.Account)
+                    .Include(n => n.Acc)
                     .ToList();
             }
             catch (Exception ex)
@@ -80,7 +80,7 @@ namespace DataAccess
                 throw new ArgumentException("Updated news description cannot be null or empty", nameof(updatedNews.Description));
             }
 
-            var existingNews = _context.News.FirstOrDefault(u => u.NewsID == updatedNews.NewsID);
+            var existingNews = _context.News.FirstOrDefault(u => u.NewsId == updatedNews.NewsId);
 
             if (existingNews != null)
             {
@@ -93,7 +93,7 @@ namespace DataAccess
         }
         public Account GetAccount(int AccID)
         {
-            var account = _context.Accounts.FirstOrDefault(a => a.AccountID == AccID);
+            var account = _context.Accounts.FirstOrDefault(a => a.AccountId == AccID);
             return account;
         }
         public void DeleteNews(int newsId)
@@ -103,7 +103,7 @@ namespace DataAccess
                 throw new ArgumentException("News ID must be greater than 0", nameof(newsId));
             }
 
-            var newsToDelete = _context.News.FirstOrDefault(u => u.NewsID == newsId);
+            var newsToDelete = _context.News.FirstOrDefault(u => u.NewsId == newsId);
 
             if (newsToDelete != null)
             {
