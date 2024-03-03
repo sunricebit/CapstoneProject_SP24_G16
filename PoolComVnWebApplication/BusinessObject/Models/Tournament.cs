@@ -8,7 +8,7 @@ namespace BusinessObject.Models
         public Tournament()
         {
             MatchOfTournaments = new HashSet<MatchOfTournament>();
-            TourPlayers = new HashSet<TourPlayer>();
+            Players = new HashSet<Player>();
         }
 
         public int TourId { get; set; }
@@ -37,6 +37,6 @@ namespace BusinessObject.Models
         public virtual TournamentType Tour { get; set; } = null!;
         public virtual TournamentType TournamentType { get; set; } = null!;
         public virtual ICollection<MatchOfTournament> MatchOfTournaments { get; set; }
-        public virtual ICollection<TourPlayer> TourPlayers { get; set; }
+        public virtual ICollection<Player> Players { get; set; }
     }
 }

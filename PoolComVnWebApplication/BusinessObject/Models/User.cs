@@ -19,7 +19,6 @@ namespace BusinessObject.Models
         public int AccountId { get; set; }
 
         public virtual Account Account { get; set; } = null!;
-        public virtual Player UserNavigation { get; set; } = null!;
         public virtual ICollection<Player> Players { get; set; }
     }
 }
