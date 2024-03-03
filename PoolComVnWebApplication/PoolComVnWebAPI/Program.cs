@@ -25,6 +25,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<NewsDAO>();
 builder.Services.AddScoped<AccountDAO>();
 builder.Services.AddScoped<ClubDAO>();
+builder.Services.AddScoped<ClubPostDAO>();
+
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 // Add services to the container
