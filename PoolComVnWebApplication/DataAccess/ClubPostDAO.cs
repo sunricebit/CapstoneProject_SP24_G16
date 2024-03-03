@@ -9,9 +9,9 @@ namespace DataAccess
 {
     public class ClubPostDAO
     {
-        private readonly PoolComContext _context;
+        private readonly poolcomvnContext _context;
 
-        public ClubPostDAO(PoolComContext context)
+        public ClubPostDAO(poolcomvnContext context)
         {
             _context = context;
         }
@@ -37,7 +37,7 @@ namespace DataAccess
         // Update ClubPost
         public void UpdateClubPost(ClubPost updatedClubPost)
         {
-            var existingClubPost = _context.ClubPosts.Find(updatedClubPost.PostID);
+            var existingClubPost = _context.ClubPosts.Find(updatedClubPost.PostId);
 
             if (existingClubPost != null)
             {
@@ -45,7 +45,7 @@ namespace DataAccess
                 existingClubPost.Description = updatedClubPost.Description;
                 existingClubPost.CreatedDate = updatedClubPost.CreatedDate;
                 existingClubPost.UpdatedDate = updatedClubPost.UpdatedDate;
-                existingClubPost.Image = updatedClubPost.Image;
+                existingClubPost.Link = updatedClubPost.Link;
 
                 _context.SaveChanges();
             }

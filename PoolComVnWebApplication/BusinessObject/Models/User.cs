@@ -1,24 +1,25 @@
-﻿    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
 
-    namespace BusinessObject.Models
+namespace BusinessObject.Models
+{
+    public partial class User
     {
-        public class User
+        public User()
         {
-            [Key] public int UserId { get; set; }
-            [Required]
-             public string FullName { get; set; }
-            [Required]
-            public DateTime DOB { get; set; }
-            public string? Avatar { get; set; }
-            public DateTime CreatedDate { get; set; }
-            public DateTime UpdatedDate { get; set;}
-            public virtual Account Account { get; set; }
-            public virtual Player Player { get; set; }
-
+            Players = new HashSet<Player>();
         }
+
+        public int UserId { get; set; }
+        public string FullName { get; set; } = null!;
+        public DateTime Dob { get; set; }
+        public string? Avatar { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
+        public int AccountId { get; set; }
+
+        public virtual Account Account { get; set; } = null!;
+        public virtual Player UserNavigation { get; set; } = null!;
+        public virtual ICollection<Player> Players { get; set; }
     }
+}

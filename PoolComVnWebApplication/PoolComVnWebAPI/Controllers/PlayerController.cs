@@ -57,11 +57,11 @@ namespace PoolComVnWebAPI.Controllers
             var player = _mapper.Map<Player>(playerDto);
 
             // Ensure PlayerID is not set explicitly, allowing the database to generate it
-            player.PlayerID = 0;
+            player.PlayerId = 0;
 
             _playerDAO.AddPlayer(player);
 
-            return CreatedAtAction(nameof(Get), new { id = player.PlayerID }, playerDto);
+            return CreatedAtAction(nameof(Get), new { id = player.PlayerId }, playerDto);
         }
 
         // PUT: api/Player/5
@@ -82,7 +82,7 @@ namespace PoolComVnWebAPI.Controllers
 
             // Use the PlayerDTO properties to update the existingPlayer
             existingPlayer.PlayerName = updatedPlayerDto.PlayerName;
-            existingPlayer.AccountID = updatedPlayerDto.AccountID;
+            existingPlayer.AccountId = updatedPlayerDto.AccountID;
             existingPlayer.Level = updatedPlayerDto.Level;
 
             // Update the existing entity
@@ -149,8 +149,8 @@ namespace PoolComVnWebAPI.Controllers
                             var player = new Player
                             {
                                 PlayerName = playerName,
-                                AccountID = accountID,
-                                Level = level
+                                AccountId = accountID,
+                                Level = int.Parse(level)
                             };
 
                             _playerDAO.AddPlayer(player);
@@ -189,8 +189,8 @@ namespace PoolComVnWebAPI.Controllers
                             var player = new Player
                             {
                                 PlayerName = playerName,
-                                AccountID = accountID,
-                                Level = level
+                                AccountId = accountID,
+                                Level = int.Parse(level)
                             };
 
                             _playerDAO.AddPlayer(player);

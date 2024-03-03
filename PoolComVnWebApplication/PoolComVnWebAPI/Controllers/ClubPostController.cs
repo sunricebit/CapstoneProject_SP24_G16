@@ -63,7 +63,7 @@ namespace PoolComVnWebAPI.Controllers
             }
 
             var clubPost = _mapper.Map<ClubPost>(clubPostDto);
-            clubPost.PostID = 0; // Ensure PostID is not set explicitly
+            clubPost.PostId = 0; // Ensure PostID is not set explicitly
 
             _clubPostDAO.AddClubPost(clubPost);
 
@@ -115,7 +115,7 @@ namespace PoolComVnWebAPI.Controllers
             var clubIdFromToken = GetClubIdFromToken(); // Hàm giả định, bạn cần triển khai hàm này
 
             // Kiểm tra xem ClubID từ Token có khớp với ClubID của bản ghi không
-            if (clubPost.ClubID != clubIdFromToken)
+            if (clubPost.ClubId != clubIdFromToken)
             {
                 return BadRequest("Invalid ClubID in the request.");
             }

@@ -7,9 +7,9 @@ namespace DataAccess
 {
     public class ClubDAO
     {
-        private readonly PoolComContext _context;
+        private readonly poolcomvnContext _context;
 
-        public ClubDAO(PoolComContext poolComContext)
+        public ClubDAO(poolcomvnContext poolComContext)
         {
             _context = poolComContext;
         }

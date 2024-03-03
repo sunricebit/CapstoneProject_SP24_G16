@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    public class Table
+    public partial class Table
     {
-        [Key] 
         public int TableId { get; set; }
-        [Required]
-        public virtual List<MatchOfTournament> MatchOfTournament { get; set; }
-        public string TableName { get; set; }
+        public string TableName { get; set; } = null!;
+        public int ClubId { get; set; }
+
+        public virtual Club Club { get; set; } = null!;
     }
 }

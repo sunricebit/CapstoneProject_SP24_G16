@@ -9,9 +9,9 @@ namespace DataAccess
 {
     public class PlayerDAO
     {
-        private readonly PoolComContext _context;
+        private readonly poolcomvnContext _context;
 
-        public PlayerDAO(PoolComContext context)
+        public PlayerDAO(poolcomvnContext context)
         {
             _context = context;
         }
@@ -47,12 +47,12 @@ namespace DataAccess
                 throw new ArgumentNullException(nameof(updatedPlayer));
             }
 
-            var existingPlayer = _context.Players.Find(updatedPlayer.PlayerID);
+            var existingPlayer = _context.Players.Find(updatedPlayer.PlayerId);
 
             if (existingPlayer != null)
             {
                 existingPlayer.PlayerName = updatedPlayer.PlayerName;
-                existingPlayer.AccountID = updatedPlayer.AccountID;
+                existingPlayer.AccountId = updatedPlayer.AccountId;
                 existingPlayer.Level = updatedPlayer.Level;
 
                 _context.SaveChanges();
@@ -60,7 +60,7 @@ namespace DataAccess
             else
             {
                 // Handle the case where the player with the given ID doesn't exist
-                throw new ArgumentException($"Player with ID {updatedPlayer.PlayerID} not found");
+                throw new ArgumentException($"Player with ID {updatedPlayer.PlayerId} not found");
             }
         }
 
@@ -110,8 +110,8 @@ namespace DataAccess
                         var player = new Player
                         {
                             PlayerName = playerName,
-                            AccountID = accountID,
-                            Level = level
+                            AccountId = accountID,
+                            Level = int.Parse(level)
                         };
 
                         _context.Players.Add(player);

@@ -28,14 +28,14 @@ namespace PoolComVnWebAPI.Controllers
 
                 var result = allNews.Select(news => new NewsDTO
                 {
-                    NewsID = news.NewsID,
+                    NewsID = news.NewsId,
                     Title = news.Title,
                     Description = news.Description,
-                    AccID = news.AccID,
+                    AccID = news.AccId,
                     CreatedDate = news.CreatedDate,
                     UpdatedDate = news.UpdatedDate,
-                    link = news.link,
-                    AccountName = news.Account?.Email
+                    link = news.Link,
+                    AccountName = news.Acc?.Email
                 }).ToList();
 
                 return Ok(result);
@@ -63,14 +63,14 @@ namespace PoolComVnWebAPI.Controllers
                 }
                 var result = new NewsDTO
                 {
-                    NewsID = news.NewsID,
+                    NewsID = news.NewsId,
                     Title = news.Title,
                     Description = news.Description,
-                    AccID = news.AccID,
+                    AccID = news.AccId,
                     CreatedDate = news.CreatedDate,
                     UpdatedDate = news.UpdatedDate,
-                    link = news.link,
-                    AccountName = news.Account?.Email
+                    link = news.Link,
+                    AccountName = news.Acc?.Email
                 };
 
                 return Ok(result);
@@ -99,16 +99,16 @@ namespace PoolComVnWebAPI.Controllers
                 {
                     Title = newsDTO.Title,
                     Description = newsDTO.Description,
-                    AccID = newsDTO.AccID,
+                    AccId = newsDTO.AccID,
                     CreatedDate = newsDTO.CreatedDate,
                     UpdatedDate = newsDTO.UpdatedDate,
-                    link = newsDTO.link,
-                    Account = account
+                    Link = newsDTO.link,
+                    Acc = account
                     
                 };
 
                 _newsDAO.AddNews(news);
-                return CreatedAtAction(nameof(Get), new { id = news.NewsID }, newsDTO);
+                return CreatedAtAction(nameof(Get), new { id = news.NewsId }, newsDTO);
             }
             catch (Exception ex)
             {
@@ -145,11 +145,11 @@ namespace PoolComVnWebAPI.Controllers
 
                 existingNews.Title = updatedNewsDTO.Title;
                 existingNews.Description = updatedNewsDTO.Description;
-                existingNews.AccID = updatedNewsDTO.AccID;
+                existingNews.AccId = updatedNewsDTO.AccID;
                 existingNews.CreatedDate = updatedNewsDTO.CreatedDate;
                 existingNews.UpdatedDate = updatedNewsDTO.UpdatedDate;
-                existingNews.link = updatedNewsDTO.link;
-                existingNews.Account = account; 
+                existingNews.Link = updatedNewsDTO.link;
+                existingNews.Acc = account; 
                 _newsDAO.UpdateNews(existingNews);
                 return NoContent();
             }
