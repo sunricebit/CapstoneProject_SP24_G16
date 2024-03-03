@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PoolComVnWebAPI.Authorization;
+using PoolComVnWebAPI.Common;
 using PoolComVnWebAPI.DTO;
 using System.Text;
 
@@ -24,6 +25,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<NewsDAO>();
 builder.Services.AddScoped<AccountDAO>();
 builder.Services.AddScoped<ClubDAO>();
+builder.Services.AddScoped<ClubPostDAO>();
+builder.Services.AddScoped<PlayerDAO>();
+
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+
 // Add services to the container
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(option =>

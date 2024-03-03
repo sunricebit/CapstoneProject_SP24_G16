@@ -13,6 +13,7 @@ namespace DataAccess
     {
         public MapperConfig()
         {
+            //Mapper Club
             CreateMap<Club, ClubDTO>()
                 .ForMember(dest => dest.ClubId, opt => opt.MapFrom(src => src.ClubId))
                 .ForMember(dest => dest.ClubName, opt => opt.MapFrom(src => src.ClubName))
