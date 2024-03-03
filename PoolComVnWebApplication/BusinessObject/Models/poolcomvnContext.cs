@@ -31,7 +31,6 @@ namespace BusinessObject.Models
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<SoloMatch> SoloMatches { get; set; } = null!;
         public virtual DbSet<Table> Tables { get; set; } = null!;
-        public virtual DbSet<TourPlayer> TourPlayers { get; set; } = null!;
         public virtual DbSet<Tournament> Tournaments { get; set; } = null!;
         public virtual DbSet<TournamentType> TournamentTypes { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
@@ -164,12 +163,19 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.CountryId).HasColumnName("CountryID");
 
+                entity.Property(e => e.TourId).HasColumnName("TourID");
+
                 entity.Property(e => e.UserId).HasColumnName("UserID");
 
                 entity.HasOne(d => d.Country)
                     .WithMany(p => p.Players)
                     .HasForeignKey(d => d.CountryId)
                     .HasConstraintName("FK_Players_Country");
+
+                entity.HasOne(d => d.Tour)
+                    .WithMany(p => p.Players)
+                    .HasForeignKey(d => d.TourId)
+                    .HasConstraintName("FK_Players_Tournaments");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Players)
@@ -269,27 +275,6 @@ namespace BusinessObject.Models
                     .HasConstraintName("FK_Tables_Clubs");
             });
 
-            modelBuilder.Entity<TourPlayer>(entity =>
-            {
-                entity.HasIndex(e => e.PlayerId, "IX_TourPlayers_PlayerID")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.TournamentId, "IX_TourPlayers_TournamentID");
-
-                entity.Property(e => e.PlayerId).HasColumnName("PlayerID");
-
-                entity.Property(e => e.TournamentId).HasColumnName("TournamentID");
-
-                entity.HasOne(d => d.Player)
-                    .WithOne(p => p.TourPlayer)
-                    .HasForeignKey<TourPlayer>(d => d.PlayerId);
-
-                entity.HasOne(d => d.Tournament)
-                    .WithMany(p => p.TourPlayers)
-                    .HasForeignKey(d => d.TournamentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-            });
-
             modelBuilder.Entity<Tournament>(entity =>
             {
                 entity.HasKey(e => e.TourId);
@@ -355,11 +340,6 @@ namespace BusinessObject.Models
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.AccountId);
-
-                entity.HasOne(d => d.UserNavigation)
-                    .WithOne(p => p.UserNavigation)
-                    .HasForeignKey<User>(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             OnModelCreatingPartial(modelBuilder);
