@@ -48,7 +48,19 @@ namespace DataAccess
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate))
                 .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(src => src.UpdatedDate))
                 .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Image));
+            
+            // Mapper for Player
+            CreateMap<Player, PlayerDTO>()
+                .ForMember(dest => dest.PlayerID, opt => opt.MapFrom(src => src.PlayerID))
+                .ForMember(dest => dest.PlayerName, opt => opt.MapFrom(src => src.PlayerName))
+                .ForMember(dest => dest.AccountID, opt => opt.MapFrom(src => src.AccountID))
+                .ForMember(dest => dest.Level, opt => opt.MapFrom(src => src.Level));
 
+            CreateMap<PlayerDTO, Player>()
+                .ForMember(dest => dest.PlayerID, opt => opt.MapFrom(src => src.PlayerID))
+                .ForMember(dest => dest.PlayerName, opt => opt.MapFrom(src => src.PlayerName))
+                .ForMember(dest => dest.AccountID, opt => opt.MapFrom(src => src.AccountID))
+                .ForMember(dest => dest.Level, opt => opt.MapFrom(src => src.Level));
         }
     }
 }
