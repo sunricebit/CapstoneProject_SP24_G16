@@ -25,6 +25,11 @@ namespace PoolComVnWebClient.Controllers
             return View();
         }
 
+        public IActionResult Tournament()
+        {
+            return View();
+        }
+
         [HttpGet]
         public IActionResult GameRules()
         {
