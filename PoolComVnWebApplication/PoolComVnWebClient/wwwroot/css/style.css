@@ -1167,9 +1167,36 @@ footer {
             color: #fff;
             font-size: 20px;
             font-weight: 700;
-            padding: 10px 20px;
+            line-height: 36px;
             border-bottom: 1px #fff solid;
         }
+
+            .container-full .tour-info .overview-text span {
+                padding: 10px 20px;
+            }
+
+        .container-full .tour-info .join-btn {
+            color: #fff;
+            font-size: 16px;
+            font-style: italic;
+            line-height: 36px;
+            padding: 10px 0px;
+            background-color: #b91b1b;
+            width: 150px;
+            text-align: center;
+        }
+
+            .container-full .tour-info .join-btn.isJoin {
+                background: #f1a73f;
+            }
+
+            .container-full .tour-info .join-btn:hover {
+                background: #9c1515;
+            }
+
+            .container-full .tour-info .join-btn.isJoin:hover {
+                background-color: #f99b17;
+            }
 
         .container-full .tour-info .tour-image {
             border-bottom: 1px #fff solid;
@@ -1178,6 +1205,10 @@ footer {
             .container-full .tour-info .tour-image img {
                 width: 80%;
             }
+
+    .container-full .tour-details {
+        border-bottom: 1px #fff solid;
+    }
 
     .container-full .info-line {
         padding: 5px 0;
@@ -1378,13 +1409,13 @@ footer {
     z-index: 2;
 }
 
-.match-box {
+.bracket-tab .match-box {
     position: absolute;
     background-color: aquamarine;
     border-radius: 5px;
 }
 
-    .match-box:hover {
+    .bracket-tab .match-box:hover {
         cursor: pointer;
     }
 
@@ -1719,7 +1750,7 @@ footer {
 }
 
     .match-list .round-name {
-        background: linear-gradient(90deg,#000 10%, #00000066 30%);
+        background: linear-gradient(90deg, #000 10%, #00000066 30%);
         color: #fff;
         font-size: 20px;
         font-weight: 700;
@@ -1989,7 +2020,7 @@ footer {
 }
 
     .tour-players .players-header {
-        background: linear-gradient(90deg,#000 10%, #00000066 30%);
+        background: linear-gradient(90deg, #000 10%, #00000066 30%);
         color: #fff;
         font-weight: 700;
         border-top-left-radius: 10px;
@@ -2137,7 +2168,7 @@ footer {
         min-width: 60px;
     }
 
-.player-history {
+.player-histories {
     background-color: #000000d4;
     position: fixed;
     top: 0;
@@ -2148,7 +2179,7 @@ footer {
     height: 100vh;
 }
 
-    .player-history .history-body {
+    .player-histories .history-body {
         min-width: 500px;
         background-color: #41f3c0;
         border-radius: 10px;
@@ -2158,71 +2189,243 @@ footer {
         max-height: 500px;
     }
 
-        .player-history .history-body .history-header {
+        .player-histories .history-body .history-header {
             background: #000;
             color: #fff;
             height: 40px;
         }
 
-        .player-history .history-body .history-title {
+        .player-histories .history-body .history-title {
             font-weight: 600;
             padding: 10px;
         }
 
-        .player-history .history-body .history-close {
+        .player-histories .history-body .history-close {
             padding: 10px;
             background: #c20a4d;
             color: #fff;
         }
 
-            .player-history .history-body .history-close:hover {
+            .player-histories .history-body .history-close:hover {
                 color: #000;
                 background: #aa0642;
                 cursor: pointer;
             }
 
-        .player-history .history-body .history-content {
+        .player-histories .history-body .history-content {
             padding: 0 50px 20px 50px;
             height: 460px;
             overflow: auto;
         }
 
-    .player-history .history-line {
+    .player-histories .history-line {
         padding-top: 20px;
     }
 
-        .player-history .history-line .match-number {
+        .player-histories .history-line .match-number {
             font-size: 18px;
             font-weight: 700;
             border-bottom: 1px solid #000;
         }
 
-        .player-history .history-line .player {
+        .player-histories .history-line .player {
             margin-top: 10px;
             font-weight: 600;
             display: flex;
             justify-content: space-between;
         }
 
-            .player-history .history-line .player div {
+            .player-histories .history-line .player div {
                 display: flex;
                 align-items: center;
             }
 
-            .player-history .history-line .player img {
+            .player-histories .history-line .player img {
                 height: 14px;
                 width: 21px;
                 border-radius: 3px;
                 margin-right: 5px;
             }
 
-            .player-history .history-line .player.win {
-                background: linear-gradient(90deg,#00000000 0%, #37e57c 50%,#00000000 100%);
+            .player-histories .history-line .player.win {
+                background: linear-gradient(90deg, #00000000 0%, #37e57c 50%, #00000000 100%);
             }
 
-            .player-history .history-line .player.lose {
-                background: linear-gradient(90deg,#00000000 0%, #dd8484 50%, #00000000 100%);
+            .player-histories .history-line .player.lose {
+                background: linear-gradient(90deg, #00000000 0%, #dd8484 50%, #00000000 100%);
             }
+
+/* randomFirstRound.html */
+.random-round {
+    margin: 50px 50px 0 50px;
+}
+
+    .random-round .matches {
+        border-radius: 20px;
+        height: calc(100vh - 130px);
+    }
+
+        .random-round .matches .matches-header,
+        .random-round .players-header {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 700;
+            background-color: #000;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            padding: 0 20px;
+            line-height: 40px;
+            border-bottom: 1px #fff solid;
+        }
+
+        .random-round .matches .matches-view {
+            height: 68vh;
+            overflow-y: auto;
+            background-color: #0000003f;
+        }
+
+        .random-round .matches .match-box {
+            width: 250px;
+            height: 60px;
+            margin: 10px;
+            background-color: aquamarine;
+            border-radius: 5px;
+        }
+
+        .random-round .matches .match-number {
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 60px;
+            text-align: center;
+            background-color: #201b1b;
+            color: #fff;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            margin-right: 10px;
+        }
+
+    .random-round .player-match img {
+        width: 20px;
+        height: 15px;
+        background-position: center center;
+        background-size: cover;
+        border-radius: 20%;
+        margin-right: 5px;
+    }
+
+    .random-round .match-box .player-name {
+        line-height: 30px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .random-round .players-view {
+        padding: 5px;
+        height: 68vh;
+        overflow-x: auto;
+        background-color: #0000003f;
+        width: 100%;
+        position: relative;
+    }
+
+    .random-round .random-btn,
+    .random-round .random-btn-virtual {
+        padding: 10px 20px;
+        color: #fff;
+        font-weight: 600;
+        text-align: center;
+        background: #000;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        height: 60px;
+        font-size: 24px;
+        transition: transform 0.5s ease;
+        border-top: 1px #fff solid;
+    }
+
+        .random-round .random-btn:hover {
+            cursor: pointer;
+            background-color: #242424;
+        }
+
+            .random-round .random-btn:hover i {
+                transform: scale(1.2)
+            }
+
+    .random-round .player,
+    .player-pick {
+        width: 150px;
+        background: #00d9ff;
+        display: inline-block;
+        align-items: center;
+        border-radius: 10px;
+        margin: 5px;
+        height: 32px;
+        padding: 0;
+        overflow: hidden;
+        border: 1px #ccc solid;
+        transition: opacity 0.3s ease;
+    }
+
+        .random-round .player.flash {
+            box-shadow: 0 0 10px 5px #dbd222;
+        }
+
+        .random-round .player-flag,
+        .player-pick .player-flag {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20%;
+            height: 32px;
+            background: #000000d4;
+        }
+
+        .random-round .player img,
+        .player-pick img {
+            width: 18px;
+            height: 12px;
+            line-height: 30px;
+            border-radius: 3px;
+        }
+
+        .random-round .player .player-name,
+        .player-pick .player-name {
+            font-size: 12px;
+            font-weight: 600;
+            width: 80%;
+            line-height: 32px;
+            text-align: center;
+        }
+
+    .random-round .players-note {
+        background-color: #000;
+        text-align: center;
+        color: #fff;
+        font-weight: 600;
+        line-height: 40px;
+        padding: 10px;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        border-top: 1px #fff solid;
+    }
+
+.player-pick {
+    position: absolute;
+    transition: transform 0.5s ease;
+}
+
+.player-pick-bg {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: #000000dd;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 /* Mobile: width <740px */
 @media only screen and (max-width: 739px) {
