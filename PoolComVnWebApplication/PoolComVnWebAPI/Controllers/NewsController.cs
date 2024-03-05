@@ -97,6 +97,7 @@ namespace PoolComVnWebAPI.Controllers
 
                 var news = new News
                 {
+                    NewsId = newsDTO.NewsID,
                     Title = newsDTO.Title,
                     Description = newsDTO.Description,
                     AccId = newsDTO.AccID,

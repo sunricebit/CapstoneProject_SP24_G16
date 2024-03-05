@@ -22,6 +22,7 @@ namespace BusinessObject.Models
         public virtual DbSet<Club> Clubs { get; set; } = null!;
         public virtual DbSet<ClubPost> ClubPosts { get; set; } = null!;
         public virtual DbSet<Country> Countries { get; set; } = null!;
+        public virtual DbSet<DrawType> DrawTypes { get; set; } = null!;
         public virtual DbSet<GameType> GameTypes { get; set; } = null!;
         public virtual DbSet<MatchOfTournament> MatchOfTournaments { get; set; } = null!;
         public virtual DbSet<News> News { get; set; } = null!;
@@ -105,13 +106,24 @@ namespace BusinessObject.Models
             {
                 entity.ToTable("Country");
 
-                entity.Property(e => e.CountryId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("CountryID");
+                entity.Property(e => e.CountryId).HasColumnName("CountryID");
 
                 entity.Property(e => e.CountryImage).HasMaxLength(255);
 
                 entity.Property(e => e.CountryName).HasMaxLength(255);
+            });
+
+            modelBuilder.Entity<DrawType>(entity =>
+            {
+                entity.ToTable("DrawType");
+
+                entity.Property(e => e.DrawTypeId).HasColumnName("DrawTypeID");
+
+                entity.Property(e => e.Description).HasMaxLength(255);
+
+                entity.Property(e => e.DrawType1)
+                    .HasMaxLength(50)
+                    .HasColumnName("DrawType");
             });
 
             modelBuilder.Entity<GameType>(entity =>
@@ -277,29 +289,40 @@ namespace BusinessObject.Models
 
             modelBuilder.Entity<Tournament>(entity =>
             {
-                entity.HasKey(e => e.TourId);
+                entity.HasKey(e => e.TourId)
+                    .HasName("PK__Tourname__604CEA10E6A3F0D2");
 
-                entity.HasIndex(e => e.AccessId, "IX_Tournaments_AccessID");
-
-                entity.HasIndex(e => e.GameTypeId, "IX_Tournaments_GameTypeID");
-
-                entity.Property(e => e.TourId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("TourID");
+                entity.Property(e => e.TourId).HasColumnName("TourID");
 
                 entity.Property(e => e.AccessId).HasColumnName("AccessID");
 
                 entity.Property(e => e.ClubId).HasColumnName("ClubID");
 
+                entity.Property(e => e.Description).HasMaxLength(255);
+
+                entity.Property(e => e.DrawTypeId).HasColumnName("DrawTypeID");
+
+                entity.Property(e => e.EndDate).HasColumnType("datetime");
+
                 entity.Property(e => e.GameTypeId).HasColumnName("GameTypeID");
 
-                entity.Property(e => e.Rules).HasMaxLength(255);
+                entity.Property(e => e.PaymentType).HasMaxLength(255);
+
+                entity.Property(e => e.RaceToString).HasMaxLength(255);
+
+                entity.Property(e => e.RegistrationDeadline).HasColumnType("datetime");
+
+                entity.Property(e => e.StartDate).HasColumnType("datetime");
+
+                entity.Property(e => e.TourName).HasMaxLength(255);
 
                 entity.Property(e => e.TournamentTypeId).HasColumnName("TournamentTypeID");
 
                 entity.HasOne(d => d.Access)
                     .WithMany(p => p.Tournaments)
-                    .HasForeignKey(d => d.AccessId);
+                    .HasForeignKey(d => d.AccessId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Tournaments_Accesses");
 
                 entity.HasOne(d => d.Club)
                     .WithMany(p => p.Tournaments)
@@ -307,16 +330,20 @@ namespace BusinessObject.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Tournaments_Clubs");
 
+                entity.HasOne(d => d.DrawType)
+                    .WithMany(p => p.Tournaments)
+                    .HasForeignKey(d => d.DrawTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Tournaments_DrawTypes");
+
                 entity.HasOne(d => d.GameType)
                     .WithMany(p => p.Tournaments)
-                    .HasForeignKey(d => d.GameTypeId);
-
-                entity.HasOne(d => d.Tour)
-                    .WithOne(p => p.TournamentTour)
-                    .HasForeignKey<Tournament>(d => d.TourId);
+                    .HasForeignKey(d => d.GameTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Tournaments_GameTypes");
 
                 entity.HasOne(d => d.TournamentType)
-                    .WithMany(p => p.TournamentTournamentTypes)
+                    .WithMany(p => p.Tournaments)
                     .HasForeignKey(d => d.TournamentTypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Tournaments_TournamentTypes");
