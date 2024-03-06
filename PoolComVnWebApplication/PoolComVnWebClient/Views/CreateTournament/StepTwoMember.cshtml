@@ -279,6 +279,7 @@
             const groupList = document.querySelectorAll('.one-checkbox.group');
             groupList.forEach(cb => {
                 cb.checked = false;
+                cb.classList.remove('group');
             });
             allCheckboxBtn.checked = false;
         }
@@ -289,13 +290,13 @@
         containerFull.appendChild(successBox);
 
         successBox.classList.remove('d-none');
-        successBox.style.top = '-100px';
+        successBox.style.right = '-300px';
         successBox.classList.remove('d-none');
         setTimeout(() => {
-            successBox.style.top = '0';
+            successBox.style.right = '50px';
             setTimeout(() => {
                 successBox.classList.add('d-none');
-                successBox.style.top = '-100px';
+                successBox.style.right = '-300px';
             }, 1500);
         }, 100);
     }
