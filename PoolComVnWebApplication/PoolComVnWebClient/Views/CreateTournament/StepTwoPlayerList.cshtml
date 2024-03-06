@@ -56,6 +56,10 @@
                                 <option value="Chưa nộp">Chưa nộp</option>
                             </select>
                             <button class="club-player" disabled>Thêm vào thành viên</button>
+                            <button class="import-excel">
+                                <i class="fa-solid fa-upload"></i>
+                                <span>Nhập từ Excel</span>
+                            </button>
                         </div>
                         <div class="player-search d-flex align-items-end">
                             <i class="fa-solid fa-magnifying-glass"></i>
@@ -413,6 +417,7 @@
             const groupList = document.querySelectorAll('.one-checkbox.group');
             groupList.forEach(cb => {
                 cb.checked = false;
+                cb.classList.remove('group');
             });
             allCheckboxBtn.checked = false;
         }
@@ -423,13 +428,13 @@
         containerFull.appendChild(successBox);
 
         successBox.classList.remove('d-none');
-        successBox.style.top = '-100px';
+        successBox.style.right = '-300px';
         successBox.classList.remove('d-none');
         setTimeout(() => {
-            successBox.style.top = '0';
+            successBox.style.right = '50px';
             setTimeout(() => {
                 successBox.classList.add('d-none');
-                successBox.style.top = '-100px';
+                successBox.style.right = '-300px';
             }, 1500);
         }, 100);
     }
