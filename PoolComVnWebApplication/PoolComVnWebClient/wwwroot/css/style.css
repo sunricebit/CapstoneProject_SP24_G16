@@ -1169,6 +1169,7 @@ footer {
             font-weight: 700;
             line-height: 36px;
             border-bottom: 1px #fff solid;
+            border-top: 1px #fff solid;
         }
 
             .container-full .tour-info .overview-text span {
@@ -1198,17 +1199,9 @@ footer {
                 background-color: #f99b17;
             }
 
-        .container-full .tour-info .tour-image {
-            border-bottom: 1px #fff solid;
+        .container-full .tour-info .tour-image img {
+            width: 80%;
         }
-
-            .container-full .tour-info .tour-image img {
-                width: 80%;
-            }
-
-    .container-full .tour-details {
-        border-bottom: 1px #fff solid;
-    }
 
     .container-full .info-line {
         padding: 5px 0;
@@ -2030,44 +2023,53 @@ footer {
         padding: 10px 20px;
     }
 
-    .tour-players .table-overflow {
+    .tour-players .table-overflow,
+    .create-tour .table-overflow {
         overflow-x: auto;
     }
 
-    .tour-players .players-table {
+    .tour-players .players-table,
+    .create-tour .players-table {
         margin-top: 10px;
         width: 100%;
     }
 
-        .tour-players .players-table tr:first-child {
+        .tour-players .players-table tr:first-child,
+        .create-tour .players-table tr:first-child {
             background: #00000099;
             color: #fff;
             padding: 20px;
             height: 40px;
         }
 
-        .tour-players .players-table tr:not(:first-child) {
+        .tour-players .players-table tr:not(:first-child),
+        .create-tour .players-table tr:not(:first-child) {
             background: #9dd5c8;
             border-bottom: 1px solid #00000066;
         }
 
-        .tour-players .players-table tr:last-child {
+        .tour-players .players-table tr:last-child,
+        .create-tour .players-table tr:last-child {
             border-bottom: none;
         }
 
-        .tour-players .players-table tr:not(:first-child):hover {
+        .tour-players .players-table tr:not(:first-child):hover,
+        .create-tour .players-table tr:not(:first-child):hover {
             background: #41f3c1;
             cursor: pointer;
         }
 
         .tour-players .players-table th,
-        .tour-players .players-table td {
+        .create-tour .players-table th,
+        .tour-players .players-table td,
+        .create-tour .players-table td {
             padding: 0 10px;
             font-weight: 600;
             font-size: 14px;
         }
 
-        .tour-players .players-table td {
+        .tour-players .players-table td,
+        .create-tour .players-table td {
             height: 68px;
         }
 
@@ -2076,13 +2078,15 @@ footer {
         text-align: center;
     }
 
-    .tour-players .tb-name {
+    .tour-players .tb-name,
+    .create-tour .tb-name {
         display: flex;
         align-items: center;
         min-width: 100px;
     }
 
-        .tour-players .tb-name img {
+        .tour-players .tb-name img,
+        .create-tour .tb-name img {
             width: 21px;
             height: 14px;
             border-radius: 3px;
@@ -2200,13 +2204,15 @@ footer {
             padding: 10px;
         }
 
-        .player-histories .history-body .history-close {
+        .player-histories .history-body .history-close,
+        .player-edit .edit-close {
             padding: 10px;
             background: #c20a4d;
             color: #fff;
         }
 
-            .player-histories .history-body .history-close:hover {
+            .player-histories .history-body .history-close:hover,
+            .player-edit .edit-close:hover {
                 color: #000;
                 background: #aa0642;
                 cursor: pointer;
@@ -2329,28 +2335,58 @@ footer {
     }
 
     .random-round .random-btn,
-    .random-round .random-btn-virtual {
+    .random-round .random-btn-virtual,
+    .random-round .reset-btn {
         padding: 10px 20px;
         color: #fff;
         font-weight: 600;
         text-align: center;
-        background: #000;
+        background: #b91b1b;
         border-bottom-left-radius: 20px;
-        border-bottom-right-radius: 20px;
+        border-right: 1px #fff solid;
         height: 60px;
-        font-size: 24px;
-        transition: transform 0.5s ease;
+        font-size: 20px;
         border-top: 1px #fff solid;
     }
 
-        .random-round .random-btn:hover {
+    .random-round .players-note.save {
+        background: #41f3c1;
+        color: #000;
+    }
+
+        .random-round .players-note.save:hover {
+            background: #47BC9A;
             cursor: pointer;
-            background-color: #242424;
         }
 
-            .random-round .random-btn:hover i {
-                transform: scale(1.2)
-            }
+        .random-round .players-note.save.save-btn {
+            border-bottom-left-radius: 20px;
+        }
+
+    .random-round .random-btn:hover {
+        cursor: pointer;
+        background-color: #9c1515;
+    }
+
+    .random-round .random-btn i {
+        transition: transform 0.2s ease;
+    }
+
+    .random-round .random-btn:hover i {
+        transform: scale(1.2)
+    }
+
+    .random-round .reset-btn {
+        border: none;
+        border-bottom-right-radius: 20px;
+        background: #0b0831;
+    }
+
+        .random-round .reset-btn:hover {
+            background: #ccc;
+            color: #000;
+            cursor: pointer;
+        }
 
     .random-round .player,
     .player-pick {
@@ -2403,9 +2439,8 @@ footer {
         text-align: center;
         color: #fff;
         font-weight: 600;
-        line-height: 40px;
-        padding: 10px;
-        border-bottom-left-radius: 20px;
+        height: 60px;
+        line-height: 60px;
         border-bottom-right-radius: 20px;
         border-top: 1px #fff solid;
     }
@@ -2425,6 +2460,774 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* createTournament.html */
+.create-tour {
+    margin: 50px;
+}
+
+    .create-tour .tour-step-nav {
+        position: fixed;
+        top: 100px;
+        left: 50px;
+    }
+
+    .create-tour .tour-step {
+        display: flex;
+    }
+
+        .create-tour .tour-step .step-number {
+            line-height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            background: #4d5c60;
+            color: #fff;
+            font-weight: 700;
+            text-align: center;
+            font-size: 20px;
+            border: 2px solid #ccc;
+            margin-right: 10px;
+        }
+
+            .create-tour .tour-step .step-number:hover {
+                background: #3b4649;
+                cursor: pointer;
+            }
+
+            .create-tour .tour-step .step-number.active {
+                background: #9c1515;
+            }
+
+        .create-tour .tour-step .step-title {
+            font-weight: 600;
+            color: #fff;
+            line-height: 40px;
+        }
+
+    .create-tour .step-network-line {
+        width: 20px;
+        height: 50px;
+        border-right: 2px solid #ccc;
+    }
+
+    .create-tour .create-tour-display {
+        background-color: #0000003f;
+        border-radius: 20px;
+    }
+
+    .create-tour .display-title {
+        font-size: 24px;
+        font-weight: 700;
+        border-bottom: 2px #fff solid;
+        color: #fff;
+        padding-left: 20px;
+        line-height: 50px;
+    }
+
+    .create-tour .display-content {
+        margin: 30px 20px;
+    }
+
+        .create-tour .display-content.full-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+        }
+
+            .create-tour .display-content.full-screen .bracket-tab {
+                height: 100vh;
+            }
+
+            .create-tour .display-content.full-screen .zoom-btns {
+                right: 50px;
+            }
+
+    .create-tour .tour-input {
+        margin-bottom: 20px;
+    }
+
+        .create-tour .tour-input .input-title {
+            height: 32px;
+            color: #fff;
+            font-size: 14px;
+            font-style: italic;
+        }
+
+            .create-tour .tour-input .input-title.checkbox {
+                font-size: 16px;
+                font-style: normal;
+                padding: 10px;
+            }
+
+        .create-tour .tour-input .input-requir {
+            color: #ff3838;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .create-tour .tour-input .input-content {
+            background-color: #00000000;
+            outline: none;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            border-bottom: 3px solid #fff;
+            padding: 5px 10px;
+            width: 80%;
+            caret-color: #fff;
+            color: #fff;
+        }
+
+        .create-tour .tour-input textarea.input-content {
+            min-height: 100px;
+        }
+
+        .create-tour .tour-input .input-date {
+            width: 300px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px #ccc solid;
+        }
+
+        .create-tour .tour-input select.input-content option {
+            color: #000;
+        }
+
+        .create-tour .tour-input select.input-content:disabled {
+            background: #0000003f;
+        }
+
+        .create-tour .tour-input .stage-checkbox-input {
+            height: 16px;
+            width: 16px;
+        }
+
+    .create-tour .race-round {
+        width: 80%;
+    }
+
+    .create-tour .tour-input-line {
+        width: 40%;
+    }
+
+    .create-tour .race-round .race-branch {
+        color: #fff;
+        width: 120px;
+        font-size: 14px;
+        font-style: italic;
+        margin: 10px 0;
+    }
+
+    .create-tour .round-name {
+        font-size: 14px;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+    }
+
+    .create-tour .race-round input {
+        background-color: #00000000;
+        outline: none;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        border-bottom: 3px solid #fff;
+        padding: 5px 10px;
+        caret-color: #fff;
+        color: #fff;
+        margin: 10px 0;
+    }
+
+        .create-tour .race-round input.multi {
+            box-shadow: 0px 0px 2px 2px #c20a4d;
+        }
+
+    .create-tour .race-round .remove-group,
+    .create-tour .race-round .add-group,
+    .create-tour .create-tour-fee,
+    .create-tour .club-player,
+    .create-tour .import-excel,
+    .create-tour .list-player {
+        width: 160px;
+        height: 40px;
+        background: #ccc;
+        border: 1px #fff solid;
+        color: #000;
+        margin: 20px 12px;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+        .create-tour .race-round .remove-group:hover,
+        .create-tour .race-round .add-group:hover,
+        .create-tour .create-tour-fee:hover,
+        .create-tour .club-player:hover,
+        .create-tour .list-player:hover {
+            background-color: #aaa;
+            color: #fff;
+        }
+
+    .create-tour .race-round .race-note {
+        font-size: 14px;
+        color: #ccc;
+    }
+
+    .create-tour .tour-input .arrange-list {
+        color: #fff;
+    }
+
+    .create-tour .tour-input .input-arrange,
+    .create-tour .tour-input .input-access {
+        height: 16px;
+        width: 16px;
+    }
+
+    .create-tour .tour-input .submit-btn {
+        padding: 10px 20px;
+        background: #41f3c0;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+        .create-tour .tour-input .submit-btn:hover {
+            background-color: #47BC9A;
+            color: #fff;
+        }
+
+    .create-tour .step-two-nav {
+        font-size: 16px;
+        padding: 0px 20px;
+        border-left: 2px #fff solid;
+        width: 200px;
+        text-align: center;
+        background-color: #242424a6;
+    }
+
+        .create-tour .step-two-nav:last-child {
+            border-top-right-radius: 20px;
+        }
+
+        .create-tour .step-two-nav:hover {
+            background: #181515;
+            cursor: pointer;
+        }
+
+        .create-tour .step-two-nav.active {
+            background: #181515;
+        }
+
+    .create-tour .table-overflow tr td:first-child input,
+    .create-tour .table-overflow tr th:first-child input {
+        height: 16px;
+        width: 16px;
+        font-size: 16px;
+    }
+
+    .create-tour .table-overflow tr td:last-child a i {
+        color: #3b4649;
+        transition: transform 0.3s ease;
+    }
+
+    .create-tour .table-overflow tr td:last-child a:hover i {
+        transform: scale(1.3);
+    }
+
+    .create-tour .player-search {
+        background-color: transparent;
+        border-bottom: 1px solid #fff;
+        width: 300px;
+        color: #fff;
+    }
+
+        .create-tour .player-search input {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            caret-color: #fff;
+            margin-left: 10px;
+            color: #fff;
+            width: 280px;
+        }
+
+        .create-tour .player-search i {
+            margin-bottom: 5px;
+        }
+
+    .create-tour .create-tour-fee,
+    .create-tour .club-player,
+    .create-tour .list-player {
+        margin: 0 10px 0 0;
+        padding: 5px 20px;
+        width: 200px;
+    }
+
+        .create-tour .create-tour-fee:hover {
+            background: #ccc;
+            color: #000;
+            cursor: pointer;
+        }
+
+        .create-tour .create-tour-fee:disabled {
+            opacity: 0.6;
+            cursor: auto;
+        }
+
+        .create-tour .club-player:disabled,
+        .create-tour .list-player:disabled {
+            background-color: #ccc;
+            color: #000;
+            opacity: 0.6;
+        }
+
+    .create-tour .table-overflow .player-fee {
+        width: 100px;
+    }
+
+.container-full .success-box {
+    position: absolute;
+    top: 50px;
+    right: 100%;
+    width: 300px;
+    background-color: #18a163be;
+    color: #fff;
+    border: 2px #fff solid;
+    text-align: center;
+    font-weight: 900;
+    border-radius: 5px;
+    transition: right 0.5s ease;
+    font-size: 24px;
+    line-height: 40px;
+}
+
+.create-tour .table-overflow .is-member {
+    font-size: 10px;
+    line-height: 20px;
+    width: 60px;
+    text-align: center;
+    background-color: #346585;
+    color: white;
+    border-radius: 5px;
+}
+
+.player-edit {
+    background-color: #000000d4;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 99;
+}
+
+    .player-edit .edit-form {
+        min-width: 500px;
+        background-color: #41f3c0;
+        border-radius: 10px;
+        border: 2px #aaa solid;
+        overflow: hidden;
+        width: 500px;
+        height: 500px;
+    }
+
+    .player-edit .form-overflow {
+        overflow-y: auto;
+        height: 460px;
+    }
+
+    .player-edit .edit-form .edit-header {
+        background-color: #000;
+    }
+
+    .player-edit .edit-form .edit-title {
+        color: #fff;
+        font-weight: 600;
+        padding: 10px 20px;
+        height: 40px;
+    }
+
+    .player-edit .edit-form .input-line {
+        margin: 10px 20px;
+        font-weight: 600;
+    }
+
+        .player-edit .edit-form .input-line input,
+        .player-edit .edit-form .input-line select {
+            border: 2px solid #ccc;
+            background-color: #fff;
+            border-radius: 10px;
+            width: 100%;
+            padding: 5px 10px;
+        }
+
+        .player-edit .edit-form .input-line button {
+            width: 120px;
+            padding: 5px 0;
+            margin: 50px 0;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+            .player-edit .edit-form .input-line button:first-child {
+                border: #000 2px solid;
+            }
+
+                .player-edit .edit-form .input-line button:first-child:hover {
+                    background: #9c1515;
+                    color: #fff;
+                }
+
+            .player-edit .edit-form .input-line button:last-child {
+                background-color: #346585;
+                color: #fff;
+            }
+
+                .player-edit .edit-form .input-line button:last-child:hover {
+                    background-color: #455d64;
+                }
+
+
+.create-tour .import-excel {
+    background-color: #346585;
+    border: 1px #ccc solid;
+    color: #fff;
+    margin: 0;
+}
+
+    .create-tour .import-excel:hover {
+        background: #648fc0;
+    }
+
+.upload-img {
+    border: dashed 5px #fff;
+    width: 500px;
+    height: 350px;
+    margin-bottom: 50px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+}
+
+    .upload-img .imageInput {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1000px;
+        height: 1000px;
+        outline: none;
+        opacity: 0;
+        z-index: 4;
+    }
+
+        .upload-img .imageInput:hover {
+            cursor: pointer;
+        }
+
+    .upload-img .upload-title {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        font-size: 20px;
+        font-weight: 600;
+        color: #fff;
+        z-index: 3;
+    }
+
+        .upload-img .upload-title i {
+            font-size: 60px;
+        }
+
+    .upload-img .preview-image-bg {
+        width: 450px;
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .upload-img .preview-image {
+        width: 450px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+
+.create-tour .bracket-tab {
+    height: 70vh;
+}
+
+.create-tour .zoom-btns {
+    right: 80px
+}
+
+.create-tour .create-step-five .step-two-nav {
+    background: #b91b1b;
+}
+
+    .create-tour .create-step-five .step-two-nav:hover {
+        background: #9c1515;
+    }
+
+.create-tour .arrange-btn {
+    position: relative;
+}
+
+    .create-tour .arrange-btn:hover .arrange-menu {
+        display: block;
+    }
+
+.create-tour .arrange-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    width: 200px;
+    background-color: #0b083a;
+    z-index: 6;
+    border-top: 2px #fff solid;
+}
+
+    .create-tour .arrange-menu a {
+        color: #fff;
+    }
+
+        .create-tour .arrange-menu a:hover {
+            background-color: #648fc0;
+            display: block;
+        }
+
+.back-btn-nav {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    line-height: 50px;
+    background-color: #000;
+    width: 100%;
+    font-weight: 600;
+}
+
+    .back-btn-nav .back-btn {
+        color: #fff;
+        width: 100px;
+        margin-left: 20px;
+    }
+
+        .back-btn-nav .back-btn:hover {
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+.random-round .system-random {
+    height: 68vh;
+    background-color: #0000003f;
+    width: 100%;
+}
+
+    .random-round .system-random .bracket-tab {
+        height: 68vh;
+    }
+
+    .random-round .system-random .zoom-btns {
+        right: 80px;
+    }
+
+    .random-round .system-random.full-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+    }
+
+        .random-round .system-random.full-screen .bracket-tab {
+            height: 100vh;
+        }
+
+        .random-round .system-random.full-screen .zoom-btns {
+            right: 50px;
+        }
+
+.random-round .match-line {
+    color: #fff;
+    font-weight: 600;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    width: 50%;
+}
+
+    .random-round .match-line .match-title {
+        width: 100px;
+        text-align: end;
+        margin: 10px;
+        border-radius: 5px;
+        height: 40px;
+        line-height: 40px;
+    }
+
+    .random-round .match-line .first-player,
+    .random-round .match-line .second-player {
+        width: 200px;
+        background-color: #41f3c0;
+        margin: 10px;
+        border-radius: 5px;
+        height: 40px;
+        line-height: 40px;
+        padding: 0 10px;
+        color: #000;
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .random-round .match-line .first-player:hover,
+        .random-round .match-line .second-player:hover {
+            /* background: #47BC9A; */
+            cursor: pointer;
+            color: #dc2222;
+        }
+
+    .random-round .match-line .player-title {
+        width: 200px;
+        text-align: center;
+        margin: 0 10px;
+    }
+
+.random-round .user-custom {
+    height: 68vh;
+    background-color: #0000003f;
+    width: 100%;
+}
+
+    .random-round .user-custom .match-row {
+        display: flex;
+        height: 50px;
+    }
+
+.random-round .match-line img {
+    height: 14px;
+    width: 21px;
+    border-radius: 3px;
+}
+
+.random-round .search-box {
+    position: absolute;
+    top: 40px;
+    left: 10px;
+    width: 180px;
+    z-index: 5;
+    background-color: rgb(67, 231, 152);
+    color: #000;
+    border: 1px solid #fff;
+    border-top: none;
+}
+
+    .random-round .search-box input {
+        height: 32px;
+        background-color: #00000000;
+        border: none;
+        outline: none;
+        width: 160px;
+        padding: 0 10px;
+        color: #000;
+        border: #000 1px solid;
+        border-bottom: 3px solid #000;
+        border-radius: 5px;
+        margin: 0 10px;
+    }
+
+    .random-round .search-box img {
+        margin-right: 10px;
+    }
+
+    .random-round .search-box .player-name {
+        padding: 0 10px;
+    }
+
+        .random-round .search-box .player-name:hover {
+            background: #648fc0;
+        }
+
+.confirm-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 99;
+    background: #000000d4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .confirm-popup .confirm-content {
+        width: 500px;
+        height: 300px;
+        background-color: #41f3c0;
+        border-radius: 20px;
+        box-shadow: 0 0 10px 5px #dc2222;
+    }
+
+    .confirm-popup .confirm-title {
+        font-size: 24px;
+        font-weight: 600;
+        padding: 20px 20px;
+        text-align: center;
+        margin: 50px 0;
+    }
+
+    .confirm-popup .exit-btn,
+    .confirm-popup .save-random {
+        width: 150px;
+        height: 50px;
+        background: #dc2222;
+        color: #fff;
+        font-weight: 600;
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 20px;
+        text-align: center;
+    }
+
+        .confirm-popup .exit-btn:hover {
+            background: #9c1515;
+            cursor: pointer;
+        }
+
+    .confirm-popup .save-random {
+        width: 250px;
+        background: #18a163;
+        box-shadow: 0px 0px 5px 5px #37e57c;
+    }
+
+        .confirm-popup .save-random:hover,
+        .create-tour .create-tour-btn:hover {
+            background: #127f4e;
+            cursor: pointer;
+        }
+
+.create-tour .create-tour-btn {
+    width: 300px;
+    height: 50px;
+    background: #18a163;
+    color: #fff;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 20px;
 }
 
 /* Mobile: width <740px */
