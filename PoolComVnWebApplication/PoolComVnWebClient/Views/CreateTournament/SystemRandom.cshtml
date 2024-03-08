@@ -1,0 +1,342 @@
+﻿@{
+    Layout = "~/Views/Shared/_CreateTournamentFiveLayout.cshtml";
+}
+
+<div class="container-full">
+    <div class="random-round">
+        <div class="">
+            <div class="players-header">
+                Hệ thống ngẫu nhiên
+            </div>
+            <div class="system-random">
+                <div class="container-bracket mt-0">
+                    <div class="bracket-tab">
+                        <div class="bracket-content d-flex" style="top:50px">
+                            <div id="loser-match-body"></div>
+                            <div id="winer-match-body"></div>
+                        </div>
+                    </div>
+                    <div class="zoom-btns">
+                        <div class="screen-size">
+                            <button class="zoom-in" onclick="fullScreen()">
+                                <i class="fa-solid fa-expand"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <button class="zoom-in" onclick="zoomIn()">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <button class="zoom-out" onclick="zoomOut()">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="random-btn-group row mx-0">
+                <div class="random-btn col-4">
+                    <i class="fa-solid fa-shuffle"></i>
+                </div>
+                <div class="players-note save col-8">
+                    <i class="fa-solid fa-floppy-disk px-2"></i>
+                    <span style="font-size: 20px;">Lưu và xem sơ đồ đấu</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const winMatchBody = document.getElementById('winer-match-body');
+    const playerNumber = 32;
+    let roundNumber = Math.log2(playerNumber / 2);
+    const finalSinglePlayer = 2;
+    let finalSingleRound = roundNumber - Math.log2(finalSinglePlayer) + 1;
+    var width = 250;
+    var height = 60;
+    var matchDistance = 30;
+    var leftRightSpace = 100;
+    let numberMatchEachRound = 0;
+    let count = 0;
+    var winBody = '';
+
+    for (i = 0; i <= finalSingleRound; i++) {
+        numberMatchEachRound = 2 ** (roundNumber - i);
+        for (j = 0; j < numberMatchEachRound; j++) {
+            if (i == 0) {
+                ++count;
+                winBody += '<div class="match-box" id="match' + count + '" style=" top:' + (j * 2 * height) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                    + '<div class="match-content row">'
+                    + '<div class="match-number col-2 p-0 text-center">'
+                    + count
+                    + '</div>'
+                    + '<div class="player-match col-8">'
+                    + '<div class="d-flex justify-content-start align-items-center">'
+                    + '<img src="Image/VietNamFlag.png"/>'
+                    + '<!-- 15 char -->'
+                    + '<div class="player-name">Vũ Hoài Nam</div>'
+                    + '</div>'
+                    + '<div class="d-flex justify-content-start align-items-center">'
+                    + '<img src="Image/VietNamFlag.png"/>'
+                    + '<!-- 15 char -->'
+                    + '<div class="player-name">Vũ Hữu Quảng</div>'
+                    + '</div>'
+                    + '</div>'
+                    + '<div class="col-2">'
+                    + '</div>'
+                    + '<div class="match-table">Table <span class="table-number">99</span></div>'
+                    + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
+                    + '<div class="next-match d-flex">'
+                    + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
+                    + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
+            } else {
+                ++count;
+                winBody +=
+                    '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; left:' + (width * i + matchDistance * (i - 1)) + 'px">'
+                    + '<div class="left-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height) + 'px;"></div>'
+                    + '<div class="right-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
+                    + '</div>'
+                    + '<div class="match-box" id="match' + count + '" style="top:' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; left: ' + ((matchDistance + width) * i) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                    + '<div class="match-content row">'
+                    + '<div class="match-number col-2 p-0 text-center">'
+                    + count
+                    + '</div>'
+                    + '<div class="player-match col-8">'
+                    + '<div class="d-flex justify-content-start align-items-center">'
+                    + '</div>'
+                    + '<div class="d-flex justify-content-start align-items-center">'
+                    + '</div>'
+                    + '</div>'
+                    + '<div class="col-2">'
+                    + '</div>'
+                    + '<div class="match-table">Table <span class="table-number">99</span></div>'
+                    + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
+                    + '<div class="next-match d-flex">'
+                    + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
+                    + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
+            }
+        }
+    }
+
+
+
+    const loseMatchBody = document.getElementById('loser-match-body');
+    var loseBody = '';
+    for (i = 1; i <= finalSingleRound; i++) {
+        numberMatchEachRound = 2 ** (roundNumber - i);
+        for (j = 0; j < numberMatchEachRound; j++) {
+            ++count;
+            loseBody +=
+                '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; right:' + ((i - 1) * (1.5 * matchDistance + 2 * width)) + 'px">'
+                + '<div class="left-line-lose" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
+                + '<div class="right-line-lose" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height) + 'px;"></div>'
+                + '</div>'
+                + '<div class="match-box" id="match' + count + '" style="top:' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; right: ' + ((1.5 * i - 0.5) * matchDistance + 2 * (i - 1) * width) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                + '<div class="match-content row">'
+                + '<div class="match-number col-2 p-0 text-center">'
+                + count
+                + '</div>'
+                + '<div class="player-match col-8">'
+                + '<div class="d-flex justify-content-start align-items-center">'
+                + '</div>'
+                + '<div class="d-flex justify-content-start align-items-center">'
+                + '</div>'
+                + '</div>'
+                + '<div class="col-2">'
+                + '</div>'
+                + '<div class="match-table">Table <span class="table-number">99</span></div>'
+                + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
+                + '<div class="next-match d-flex">'
+                + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
+                + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
+                + '</div>'
+                + '</div>'
+                + '</div>'
+        }
+        for (j = 0; j < numberMatchEachRound; j++) {
+            ++count;
+            loseBody +=
+                '<div class="between-line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; right:' + ((1.5 * i - 0.5) * matchDistance + (2 * i - 1) * width) + 'px; width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
+                + '<div class="match-box" id="match' + count + '" style="top: ' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; right: ' + ((matchDistance * 1.5 * i + width * (2 * i - 1))) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                + '<div class="match-content row">'
+                + '<div class="match-number col-2 p-0 text-center">'
+                + count
+                + '</div>'
+                + '<div class="player-match col-8">'
+                + '<div class="d-flex justify-content-start align-items-center">'
+                + '</div>'
+                + '<div class="d-flex justify-content-start align-items-center">'
+                + '</div>'
+                + '</div>'
+                + '<div class="col-2">'
+                + '</div>'
+                + '<div class="match-table">Table <span class="table-number">99</span></div>'
+                + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
+                + '<div class="next-match d-flex">'
+                + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
+                + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
+                + '</div>'
+                + '</div>'
+                + '</div>'
+        }
+    }
+    loseMatchBody.innerHTML = loseBody;
+
+    for (i = finalSingleRound; i <= roundNumber; i++) {
+        numberMatchEachRound = 2 ** (roundNumber - i);
+        if (i === finalSingleRound) {
+            for (j = 0; j < numberMatchEachRound; j++) {
+                ++count;
+                winBody +=
+                    '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; left:' + (width * (i + 1) + matchDistance * i) + 'px">'
+                    + '<div class="right-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
+                    + '</div>'
+                    + '<div class="match-box" id="match' + count + '" style="top:' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; left: ' + (matchDistance * (i + 0.5) + width * (i + 1)) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                    + '<div class="match-content row">'
+                    + '<div class="match-number col-2 p-0 text-center">'
+                    + count
+                    + '</div>'
+                    + '<div class="player-match col-8">'
+                    + '<div class="d-flex justify-content-start align-items-center">'
+                    + '</div>'
+                    + '<div class="d-flex justify-content-start align-items-center">'
+                    + '</div>'
+                    + '</div>'
+                    + '<div class="col-2">'
+                    + '</div>'
+                    + '<div class="match-table">Table <span class="table-number">99</span></div>'
+                    + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
+                    + '<div class="next-match d-flex">'
+                    + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
+                    + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
+            }
+        } else {
+            for (j = 0; j < numberMatchEachRound; j++) {
+                ++count;
+                winBody +=
+                    '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; left:' + (width * (i + 1) + matchDistance * (i - 0.5)) + 'px">'
+                    + '<div class="left-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height) + 'px;"></div>'
+                    + '<div class="right-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
+                    + '</div>'
+                    + '<div class="match-box" id="match' + count + '" style="top:' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; left: ' + (matchDistance * (i + 0.5) + width * (i + 1)) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                    + '<div class="match-content row">'
+                    + '<div class="match-number col-2 p-0 text-center">'
+                    + count
+                    + '</div>'
+                    + '<div class="player-match col-8">'
+                    + '<div class="d-flex justify-content-start align-items-center">'
+                    + '</div>'
+                    + '<div class="d-flex justify-content-start align-items-center">'
+                    + '</div>'
+                    + '</div>'
+                    + '<div class="col-2">'
+                    + '</div>'
+                    + '<div class="match-table">Table <span class="table-number">99</span></div>'
+                    + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
+                    + '<div class="next-match d-flex">'
+                    + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
+                    + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
+            }
+        }
+
+    }
+
+    winMatchBody.innerHTML = winBody;
+
+    const lastMatchHeight = document.getElementById('match' + playerNumber / 2);
+    const matchTableElement = lastMatchHeight.querySelector('.match-raceTo');
+    matchTableElement.style.paddingBottom = '200px';
+
+    window.addEventListener('load', centerPosition);
+
+    function centerPosition() {
+        bracketTab.scrollLeft = loseMatchBody.offsetWidth - window.innerWidth / 2 + 200;
+    }
+
+    let currentZoom = 0.5;
+
+    let winerWidth;
+    let loserWidth;
+
+    const bracketContent = document.querySelector('.bracket-content');
+    const bracketTab = document.querySelector('.bracket-tab');
+    const zoomInBtn = document.querySelector('.zoom-in');
+    const zoomOutBtn = document.querySelector('.zoom-out');
+
+    zoomInBtn.removeEventListener
+    applyZoom();
+    function zoomIn() {
+        if (currentZoom <= 1.5) {
+            currentZoom += 0.1;
+            applyZoom();
+            zoomOutBtn.style.opacity = '1';
+            zoomOutBtn.classList.remove('no-hover');
+        } else {
+            zoomInBtn.style.opacity = '0.3';
+            zoomInBtn.classList.add('no-hover');
+        }
+    }
+
+    function zoomOut() {
+        if (currentZoom >= 0.2) {
+            currentZoom -= 0.1;
+            applyZoom();
+            zoomInBtn.style.opacity = '1';
+            zoomInBtn.classList.remove('no-hover');
+        } else {
+            zoomOutBtn.style.opacity = '0.3';
+            zoomOutBtn.classList.add('no-hover');
+        }
+    }
+
+    function applyZoom() {
+        winerWidth = ((roundNumber + 2) * width + (roundNumber + 0.5) * matchDistance) * currentZoom + leftRightSpace;
+        loserWidth = (finalSingleRound * (2 * width + 1.5 * matchDistance)) * currentZoom + leftRightSpace;
+        winMatchBody.style.width = winerWidth + 'px';
+        loseMatchBody.style.width = loserWidth + 'px';
+        bracketContent.style.transform = `scale(${currentZoom})`;
+        centerPosition();
+    }
+
+
+    const header = document.querySelector('.back-btn-nav');
+    const screenSize = document.querySelector('.screen-size');
+    const playersHeader = document.querySelector('.players-header');
+    const systemRandom = document.querySelector('.system-random');
+    const randomBtnGroup = document.querySelector('.random-btn-group');
+
+    function fullScreen() {
+        systemRandom.classList.add('full-screen');
+        screenSize.innerHTML = '<button class="zoom-in" onclick="minimized()">'
+            + '<i class="fa-solid fa-compress"></i>'
+            + '</button>';
+        header.classList.add('d-none');
+        playersHeader.classList.add('d-none');
+        randomBtnGroup.classList.add('d-none');
+    }
+
+    function minimized() {
+        systemRandom.classList.remove('full-screen');
+        screenSize.innerHTML = '<button class="zoom-in" onclick="fullScreen()">'
+            + '<i class="fa-solid fa-expand"></i>'
+            + '</button>';
+        header.classList.remove('d-none');
+        playersHeader.classList.remove('d-none');
+        randomBtnGroup.classList.remove('d-none');
+    }
+
+</script>
