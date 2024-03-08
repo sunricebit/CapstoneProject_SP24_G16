@@ -33,5 +33,40 @@ namespace PoolComVnWebClient.Controllers
         {
             return View();
         }
+
+        public IActionResult StepThreeAddTable()
+        {
+            return View();
+        }
+
+        public IActionResult StepFourAddBanner()
+        {
+            return View();
+        }
+
+        public IActionResult StepFiveArrange()
+        {
+            return View();
+        }
+
+        public IActionResult SystemRandom()
+        {
+            return View();
+        }
+
+        public IActionResult UserRandom()
+        {
+            return View();
+        }
+
+        public IActionResult UserCustom()
+        {
+            return View();
+        }
+
+        public IActionResult StepSixReview()
+        {
+            return View();
+        }
     }
 }

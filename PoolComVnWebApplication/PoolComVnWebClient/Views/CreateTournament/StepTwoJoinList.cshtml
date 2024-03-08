@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = "~/Views/Shared/_TournamentLayout.cshtml";
+    Layout = "~/Views/Shared/_CreateTournamentLayout.cshtml";
 }
 
 <div class="container-full">
@@ -17,7 +17,7 @@
             <div class="step-network-line"></div>
             <div class="tour-step">
                 <div class="step-number">3</div>
-                <div class="step-title">Bàn</div>
+                <div class="step-title">Bàn đấu</div>
             </div>
             <div class="step-network-line"></div>
             <div class="tour-step">
@@ -41,9 +41,9 @@
                     <div>Người chơi</div>
                     <div class="d-flex align-items-center">
                         <div class="step-two-nav" id="all-list">Danh sách (16)</div>
-                        <div class="step-two-nav" id="request-list">Yêu cầu tham gia (3)</div>
+                        <div class="step-two-nav active" id="request-list">Yêu cầu tham gia (3)</div>
                         <div class="step-two-nav" id="member-list">Thành viên (120)</div>
-                        <div class="step-two-nav active" id="system-list">Toàn hệ thống (500)</div>
+                        <div class="step-two-nav" id="system-list">Toàn hệ thống (500)</div>
                     </div>
                 </div>
 
@@ -82,7 +82,7 @@
                                     </td>
                                     <td>1</td>
                                     <td class="tb-name">
-                                        <img src="~/images/VietNamFlag.png" alt="">
+                                        <img src="Image/VietNamFlag.png" alt="">
                                         Nam Vũ
                                     </td>
                                     <td>Việt Nam</td>
@@ -103,7 +103,7 @@
                                     </td>
                                     <td>1</td>
                                     <td class="tb-name">
-                                        <img src="~/images/VietNamFlag.png" alt="">
+                                        <img src="Image/VietNamFlag.png" alt="">
                                         Nam Vũ
                                     </td>
                                     <td>Việt Nam</td>
@@ -122,7 +122,7 @@
                                     </td>
                                     <td>1</td>
                                     <td class="tb-name">
-                                        <img src="~/images/VietNamFlag.png" alt="">
+                                        <img src="Image/VietNamFlag.png" alt="">
                                         Nam Vũ
                                     </td>
                                     <td>Việt Nam</td>
@@ -143,7 +143,7 @@
                                     </td>
                                     <td>1</td>
                                     <td class="tb-name">
-                                        <img src="~/images/VietNamFlag.png" alt="">
+                                        <img src="Image/VietNamFlag.png" alt="">
                                         Nam Vũ
                                     </td>
                                     <td>Việt Nam</td>
@@ -162,7 +162,7 @@
                                     </td>
                                     <td>1</td>
                                     <td class="tb-name">
-                                        <img src="~/images/VietNamFlag.png" alt="">
+                                        <img src="Image/VietNamFlag.png" alt="">
                                         Nam Vũ
                                     </td>
                                     <td>Việt Nam</td>
@@ -183,7 +183,7 @@
                                     </td>
                                     <td>1</td>
                                     <td class="tb-name">
-                                        <img src="~/images/VietNamFlag.png" alt="">
+                                        <img src="Image/VietNamFlag.png" alt="">
                                         Nam Vũ
                                     </td>
                                     <td>Việt Nam</td>
@@ -308,13 +308,10 @@
         containerFull.appendChild(successBox);
 
         successBox.classList.remove('d-none');
-        successBox.style.right = '-300px';
-        successBox.classList.remove('d-none');
         setTimeout(() => {
             successBox.style.right = '50px';
             setTimeout(() => {
-                successBox.classList.add('d-none');
-                successBox.style.right = '-300px';
+                successBox.remove();
             }, 1500);
         }, 100);
     }
