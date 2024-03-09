@@ -1,10 +1,10 @@
 ﻿@using PoolComVnWebClient.DTO;
-@model NewsDTO
+@model List<NewsDTO> ;
 <div class="container">
     <div class="news-manage">
         <div class="manage-header">Quản lí bài viết</div>
         <div class="mt-5 d-flex justify-content-between">
-            <a href="" class="addBtn d-flex justify-content-center align-items-center">
+            <a asp-controller="NewsManage" asp-action="AddNews" class="addBtn d-flex justify-content-center align-items-center">
                 Tạo mới
                 <i class="fa-solid fa-circle-plus px-3"></i>
             </a>
@@ -35,39 +35,21 @@
                     <th class="update-date">Thay đổi</th>
                     <th class="action">Hành động</th>
                 </tr>
-                <tr>
-                    <td>1</td>
-                    <td><img src="~/images/new_1.jpg" /></td>
-                    <td>KO PING CHUNG PRODUCES FLAWLESS DISPLAY TO SET UP HUGE US OPEN FINAL WITH FEDOR GORST</td>
-                    <td>30/10/2023</td>
-                    <td>30/10/2023<br>Nam Vu</td>
-                    <td>
-                        <a href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td><img src="~/images/new_1.jpg" /></td>
-                    <td>KO PING CHUNG PRODUCES FLAWLESS DISPLAY TO SET UP HUGE US OPEN FINAL WITH FEDOR GORST</td>
-                    <td>30/10/2023</td>
-                    <td>30/10/2023<br>Pham Quốc Hưng</td>
-                    <td>
-                        <a href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td><img src="~/images/new_1.jpg" /></td>
-                    <td>KO PING CHUNG PRODUCES FLAWLESS DISPLAY TO SET UP HUGE US OPEN FINAL WITH FEDOR GORST</td>
-                    <td>30/10/2023</td>
-                    <td>30/10/2023<br>Pham Quốc Hưng</td>
-                    <td>
-                        <a href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                    </td>
-                </tr>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    var news = Model[i];
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td><img src="~/images/new_1.jpg" /></td>
+                        <td>@news.Title</td>
+                        <td>@news.CreatedDate</td>
+                        <td>@news.UpdatedDate</td>
+                        <td>
+                            <a href="#"><i class="fa-solid fa-pencil p-2"></i></a>
+                            <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
+                        </td>
+                    </tr>
+                }
             </table>
         </div>
     </div>
