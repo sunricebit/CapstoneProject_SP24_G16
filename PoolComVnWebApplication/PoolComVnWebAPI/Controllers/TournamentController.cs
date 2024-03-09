@@ -31,6 +31,7 @@ namespace PoolComVnWebAPI.Controllers
             try
             {
                 Tournament p = _tournamentDAO.GetTournament(tourId);
+
                 return Ok(p);
             }
             catch (Exception e)

@@ -31,5 +31,12 @@ namespace DataAccess
         public const int UserRandomDraw = 2;
         public const int UserCustom = 3;
 
+        public const int Game8Ball = 1;
+        public const int Game9Ball = 2;
+        public const int Game10Ball = 3;
+
+        public const int SingleEliminate = 1;
+        public const int DoubleEliminate = 2;
+
     }
 }
