@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PoolComVnWebClient.Common;
 using PoolComVnWebClient.DTO;
+using System.Net.Http;
 using System.Net.Http.Headers;
 
 namespace PoolComVnWebClient.Controllers
@@ -32,42 +33,45 @@ namespace PoolComVnWebClient.Controllers
         [HttpPost]
         public async Task<IActionResult> StepOneCreateTournament(CreateTournamentInputDTO inputDTO)
         {
-            var response = await client.PostAsJsonAsync(ApiUrl + "/Tournament", inputDTO);
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            var response = await client.PostAsJsonAsync(ApiUrl + "/CreateTourStOne", inputDTO);
             if (response.IsSuccessStatusCode)
             {
-
+                ViewBag.TourId = await response.Content.ReadFromJsonAsync<int>();
+                return View("StepTwoPlayerList");
             }
             else
             {
                 var status = response.StatusCode;
             }
 
-            return RedirectToAction("StepTwoPlayerList");
+            return RedirectToAction("InternalServerError", "Error");
         }
 
-        [HttpGet]
+        [HttpPost]
         public IActionResult StepTwoPlayerList()
         {
-            return View();
+            return View("StepThreeAddTable");
         }
 
-        [HttpGet]
-        public IActionResult StepTwoJoinList()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> StepTwoJoinList()
+        //{
+        //    return View();
+        //}
 
-        [HttpGet]
-        public IActionResult StepTwoMember()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public IActionResult StepTwoMember()
+        //{
+        //    return View();
+        //}
 
-        [HttpGet]
-        public IActionResult StepTwoPlayerSystem()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public IActionResult StepTwoPlayerSystem()
+        //{
+        //    return View();
+        //}
 
         [HttpGet]
         public IActionResult StepThreeAddTable()
