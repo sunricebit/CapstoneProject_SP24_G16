@@ -38,8 +38,8 @@ namespace BusinessObject.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var builder = new ConfigurationBuilder()
-                                    .SetBasePath(Directory.GetCurrentDirectory())
-                                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                                        .SetBasePath(Directory.GetCurrentDirectory())
+                                        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             IConfigurationRoot configuration = builder.Build();
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("PoolCom"));
         }
@@ -114,12 +114,10 @@ namespace BusinessObject.Models
 
             modelBuilder.Entity<MatchOfTournament>(entity =>
             {
-                entity.HasKey(e => new { e.MatchId, e.TourId })
-                    .HasName("PK__MatchOfT__541C0696231E03AA");
+                entity.HasKey(e => e.MatchId)
+                    .HasName("PK__MatchOfT__4218C837BE2ABD39");
 
                 entity.Property(e => e.MatchId).HasColumnName("MatchID");
-
-                entity.Property(e => e.TourId).HasColumnName("TourID");
 
                 entity.Property(e => e.EndTime).HasColumnType("datetime");
 
@@ -128,6 +126,8 @@ namespace BusinessObject.Models
                 entity.Property(e => e.StartTime).HasColumnType("datetime");
 
                 entity.Property(e => e.TableId).HasColumnName("TableID");
+
+                entity.Property(e => e.TourId).HasColumnName("TourID");
 
                 entity.HasOne(d => d.Table)
                     .WithMany(p => p.MatchOfTournaments)
@@ -165,6 +165,8 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.CountryId).HasColumnName("CountryID");
 
+                entity.Property(e => e.PhoneNumber).HasMaxLength(50);
+
                 entity.Property(e => e.TourId).HasColumnName("TourID");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
@@ -187,30 +189,30 @@ namespace BusinessObject.Models
 
             modelBuilder.Entity<PlayerInMatch>(entity =>
             {
-                entity.HasKey(e => new { e.MatchId, e.TourId, e.PlayerId })
-                    .HasName("PK_PlayerInMatchPRIMARY");
+                entity.HasKey(e => e.PlayerMatchId)
+                    .HasName("PK__PlayerIn__0D8800C601C68548");
 
                 entity.ToTable("PlayerInMatch");
 
-                entity.Property(e => e.MatchId).HasColumnName("MatchID");
+                entity.Property(e => e.PlayerMatchId).HasColumnName("PlayerMatchID");
 
-                entity.Property(e => e.TourId).HasColumnName("TourID");
+                entity.Property(e => e.GameWin).HasMaxLength(50);
+
+                entity.Property(e => e.MatchId).HasColumnName("MatchID");
 
                 entity.Property(e => e.PlayerId).HasColumnName("PlayerID");
 
-                entity.Property(e => e.GameWin).HasMaxLength(50);
+                entity.HasOne(d => d.Match)
+                    .WithMany(p => p.PlayerInMatches)
+                    .HasForeignKey(d => d.MatchId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PlayerInMatch_MatchOfTournaments");
 
                 entity.HasOne(d => d.Player)
                     .WithMany(p => p.PlayerInMatches)
                     .HasForeignKey(d => d.PlayerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PlayerInMatch_Players");
-
-                entity.HasOne(d => d.MatchOfTournament)
-                    .WithMany(p => p.PlayerInMatches)
-                    .HasForeignKey(d => new { d.MatchId, d.TourId })
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PlayerInMatch_MatchOfTournaments");
             });
 
             modelBuilder.Entity<PlayerInSoloMatch>(entity =>
@@ -310,8 +312,6 @@ namespace BusinessObject.Models
                 entity.Property(e => e.Flyer).HasMaxLength(500);
 
                 entity.Property(e => e.GameTypeId).HasColumnName("GameTypeID");
-
-                entity.Property(e => e.PaymentType).HasMaxLength(255);
 
                 entity.Property(e => e.PlayerTypeId).HasColumnName("PlayerTypeID");
 
