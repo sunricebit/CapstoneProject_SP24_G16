@@ -3,17 +3,16 @@ using System.Collections.Generic;
 
 namespace BusinessObject.Models
 {
-    public partial class TournamentType
+    public partial class PlayerType
     {
-        public TournamentType()
+        public PlayerType()
         {
             Tournaments = new HashSet<Tournament>();
         }
 
-        public int TournamentTypeId { get; set; }
-        public string TournamentTypeName { get; set; } = null!;
+        public int PlayerTypeId { get; set; }
+        public string Title { get; set; } = null!;
         public string? Description { get; set; }
-        public int? IsManyStage { get; set; }
 
         public virtual ICollection<Tournament> Tournaments { get; set; }
     }

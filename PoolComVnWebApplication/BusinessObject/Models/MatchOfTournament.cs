@@ -17,7 +17,9 @@ namespace BusinessObject.Models
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public byte Status { get; set; }
+        public int TableId { get; set; }
 
+        public virtual Table Table { get; set; } = null!;
         public virtual Tournament Tour { get; set; } = null!;
         public virtual ICollection<PlayerInMatch> PlayerInMatches { get; set; }
     }
