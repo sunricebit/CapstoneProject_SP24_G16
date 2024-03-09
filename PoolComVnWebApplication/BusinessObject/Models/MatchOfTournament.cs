@@ -15,7 +15,7 @@ namespace BusinessObject.Models
         public int MatchNumber { get; set; }
         public string MatchCode { get; set; } = null!;
         public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime? EndTime { get; set; }
         public byte Status { get; set; }
         public int TableId { get; set; }
 

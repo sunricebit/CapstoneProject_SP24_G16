@@ -82,7 +82,7 @@ namespace PoolComVnWebAPI.Controllers
 
             // Use the PlayerDTO properties to update the existingPlayer
             existingPlayer.PlayerName = updatedPlayerDto.PlayerName;
-            existingPlayer.AccountId = updatedPlayerDto.AccountID;
+        
             existingPlayer.Level = updatedPlayerDto.Level;
 
             // Update the existing entity
@@ -149,7 +149,7 @@ namespace PoolComVnWebAPI.Controllers
                             var player = new Player
                             {
                                 PlayerName = playerName,
-                                AccountId = accountID,
+                                
                                 Level = int.Parse(level)
                             };
 
@@ -189,7 +189,7 @@ namespace PoolComVnWebAPI.Controllers
                             var player = new Player
                             {
                                 PlayerName = playerName,
-                                AccountId = accountID,
+                            
                                 Level = int.Parse(level)
                             };
 
