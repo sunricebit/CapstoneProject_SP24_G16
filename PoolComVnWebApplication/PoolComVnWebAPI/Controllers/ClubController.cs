@@ -28,6 +28,26 @@ namespace PoolComVnWebAPI.Controllers
             var clubsDto = _mapper.Map<List<ClubDTO>>(clubs);
             return Ok(clubsDto);
         }
+        [HttpGet("Matches")]
+        public ActionResult<IEnumerable<MatchesDTO>> Get2()
+        {
+            var matches = _clubDAO.matchOfTournaments();
+            List<MatchesDTO> matchesDTOs = new List<MatchesDTO>();
+            foreach( var match in matches)
+            {
+                MatchesDTO matche2 = new MatchesDTO
+                {
+                    MatchId = match.MatchId,
+                    PlayerInMatches = match.PlayerInMatches,
+                }
+                  
+                    ;
+                matchesDTOs.Add(matche2);
+            }
+                
+
+            return Ok(matchesDTOs);
+        }
 
         // GET: api/Club/5
         [HttpGet("{id}")]

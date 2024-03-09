@@ -17,6 +17,7 @@ namespace BusinessObject.Models
         public int Level { get; set; }
         public int? UserId { get; set; }
         public int? TourId { get; set; }
+        public string? PhoneNumber { get; set; }
 
         public virtual Country? Country { get; set; }
         public virtual Tournament? Tour { get; set; }
