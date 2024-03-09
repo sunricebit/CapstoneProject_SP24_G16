@@ -65,7 +65,8 @@ namespace DataAccess
             {
                 var updateTournament = _context.Tournaments.FirstOrDefault(t => t.TourId == tournament.TourId);
                 updateTournament = tournament;
-                _context.Tournaments.Update(updateTournament);
+                _context.Tournaments.Add(updateTournament);
+                _context.SaveChanges();
             }
             catch (Exception e)
             {

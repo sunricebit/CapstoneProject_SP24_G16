@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PoolComVnWebClient.Common;
 using PoolComVnWebClient.DTO;
+using System.Net.Http;
 using System.Net.Http.Headers;
 
 namespace PoolComVnWebClient.Controllers
@@ -32,17 +33,19 @@ namespace PoolComVnWebClient.Controllers
         [HttpPost]
         public async Task<IActionResult> StepOneCreateTournament(CreateTournamentInputDTO inputDTO)
         {
-            var response = await client.PostAsJsonAsync(ApiUrl + "/Tournament", inputDTO);
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            var response = await client.PostAsJsonAsync(ApiUrl + "/CreateTourStOne", inputDTO);
             if (response.IsSuccessStatusCode)
             {
-
+                return RedirectToAction("StepTwoPlayerList");
             }
             else
             {
                 var status = response.StatusCode;
             }
 
-            return RedirectToAction("StepTwoPlayerList");
+            return RedirectToAction("InternalServerError", "Error");
         }
 
         [HttpGet]

@@ -61,5 +61,12 @@ namespace DataAccess
                 _context.SaveChanges();
             }
         }
+
+        public int GetClubIdByAccountId(int accountId)
+        {
+            var club = _context.Clubs.FirstOrDefault(c => c.AccountId == accountId);
+
+            return club.ClubId;
+        }
     }
 }

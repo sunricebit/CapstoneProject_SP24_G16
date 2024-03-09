@@ -66,7 +66,7 @@ namespace PoolComVnWebAPI.Controllers
             var handler = new JwtSecurityTokenHandler();
             var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
 
-            // Xử lý logic của bạn với các claims
+            // Xử lý logic với các claims
             var RoleClaim = jsonToken?.Claims.FirstOrDefault(claim => claim.Type == "Role");
 
             if (Constant.UserRole.ToString().Equals(RoleClaim.Value))
@@ -84,7 +84,8 @@ namespace PoolComVnWebAPI.Controllers
             var credentials = new SigningCredentials(securitykey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
-                new Claim("Role", account.RoleId.ToString())
+                new Claim("Role", account.RoleId.ToString()),
+                new Claim("Account", account.AccountId.ToString()),
             };
 
             var token = new JwtSecurityToken(_config["Jwt:Issuer"], _config["Jwt:Audience"], claims,
