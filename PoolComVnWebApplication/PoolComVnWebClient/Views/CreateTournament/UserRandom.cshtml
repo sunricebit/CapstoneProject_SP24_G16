@@ -1,0 +1,320 @@
+﻿@{
+    Layout = "~/Views/Shared/_CreateTournamentFiveLayout.cshtml";
+}
+
+<div class="container-full">
+    <div class="random-round d-flex justify-content-between row">
+        <div class="matches col-lg-3 px-0">
+            <div class="matches-header">
+                Trận đấu
+            </div>
+            <div class="matches-view">
+                <div class="match-list-view"></div>
+                <!-- <div class="d-flex justify-content-center">
+                    <div class="match-box" id="match1">
+                        <div class="d-flex">
+                            <div class="match-number col-2 text-center">
+                                1
+                            </div>
+                            <div class="player-match col-8">
+                                <div class="d-flex justify-content-start align-items-center">
+                                    <img src="Image/VietNamFlag.png" />
+                                    <div class="player-name">Vũ Hoài Nam</div>
+                                </div>
+                                <div class="d-flex justify-content-start align-items-center">
+                                    <img src="Image/VietNamFlag.png" />
+                                    <div class="player-name">Vũ Hữu Quảng</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+            <div class="reset-btn">
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span style="font-size: 20px;">Đặt lại</span>
+            </div>
+        </div>
+        <div class=" col-lg-8 px-0">
+            <div class="players-header">
+                Người chơi
+            </div>
+            <div class="players-view">
+                <!-- <div class="player">
+                    <div class="d-flex">
+                        <div class="player-flag">
+                            <img src="/Image/VietNamFlag.png" alt="">
+                        </div>
+                        <div class="player-name">Vũ Đoàn Nam Thư</div>
+                    </div>
+                </div> -->
+            </div>
+            <div class="random-btn-group row mx-0">
+                <div class="random-btn col-4">
+                    <i class="fa-solid fa-shuffle"></i>
+                </div>
+                <div class="random-btn-virtual col-4 d-none">
+                    <i class="fa-solid fa-shuffle"></i>
+                </div>
+                <div class="players-note col-8">
+                    Nhấn phím cách (space) để lấy ra tên cơ thủ cho vị trí tiếp theo.
+                </div>
+            </div>
+            <div class="players-note save save-btn d-none">
+                <i class="fa-solid fa-floppy-disk px-2"></i>
+                <span style="font-size: 20px;">Lưu và xem sơ đồ đấu</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var playerNumber = 2;
+
+    //add html to matches view
+    const matchesView = document.querySelector('.matches-view');
+    const matchList = document.querySelector('.match-list-view');
+    var matchesListHTML = '';
+    let matchCount = 0;
+    for (var i = 0; i < (playerNumber / 2); i++) {
+        matchesListHTML += '<div class="d-flex justify-content-center">'
+            + '<div class="match-box" id="match' + (i + 1) + '">'
+            + '<div class="d-flex">'
+            + '<div class="match-number col-2 text-center">'
+            + (i + 1)
+            + '</div>'
+            + '<div class="player-match col-8">'
+            + '<div id="randomMatch' + (++matchCount) + '" class="d-flex justify-content-start align-items-center">'
+            + '</div>'
+            + '<div id="randomMatch' + (++matchCount) + '" class="d-flex justify-content-start align-items-center">'
+            + '</div>'
+            + '</div>'
+            + '</div>'
+            + '</div>'
+            + '</div>'
+    }
+
+    matchList.innerHTML = matchesListHTML;
+
+    //add html to Player view
+    const playerView = document.querySelector('.players-view');
+    var playerViewHTML = '';
+    for (var i = 0; i < playerNumber; i++) {
+        playerViewHTML += '<div class="player">'
+            + '<div class="d-flex">'
+            + '<div class="player-flag">'
+            + '<img src="/Image/VietNamFlag.png" alt="">'
+            + '</div>'
+            + '<div class="player-name">Vũ Đoàn Nam Thư ' + (i + 1) + '</div>'
+            + '</div>'
+            + '</div>'
+    }
+    playerViewHTML += '<div class="player-pick-bg d-none">'
+        + '<div class="player-pick">'
+        + '<div class="d-flex">'
+        + '<div class="player-flag">'
+        + '<img src="/Image/VietNamFlag.png" alt="">'
+        + '</div>'
+        + '<div class="player-name"></div>'
+        + '</div>'
+        + '</div>'
+        + '</div>'
+    playerView.innerHTML = playerViewHTML;
+</script>
+
+<!-- script random -->
+<script>
+    //Random 1 player
+    const playerPick = document.querySelector('.player-pick');
+    const playerPickBg = document.querySelector('.player-pick-bg');
+    const randomBtnGroup = document.querySelector('.random-btn-group');
+    const saveBtn = document.querySelector('.save-btn');
+
+    let random;
+    let imgRandom;
+    let nameRandom;
+    var isPlayerPick = false;
+    let isEventCompleted = true;
+
+    function shufferEvent() {
+        if (isPlayerPick === true) {
+            offRandomBtnReal();
+            isEventCompleted = false;
+            resetPlayerPick();
+            isPlayerPick = false;
+        } else {
+            offRandomBtnReal();
+            isEventCompleted = false;
+            randomPlayer();
+            isPlayerPick = true;
+        }
+    }
+
+
+    function randomPlayer() {
+        var players = document.querySelectorAll('.player');
+
+        function flashElement(element) {
+            element.classList.add('flash');
+            setTimeout(function () {
+                element.classList.remove('flash');
+            }, 100);
+        }
+
+        function getRandomElement(array) {
+            var randomIndex = Math.floor(Math.random() * array.length);
+            return array[randomIndex];
+        }
+
+        var intervalId = setInterval(() => {
+            random = getRandomElement(players);
+            flashElement(random);
+            setTimeout(function () {
+                clearInterval(intervalId);
+            }, 1500);
+        }, 100);
+
+        setTimeout(() => {
+            let count = 0;
+            random.classList.add('flash');
+            const interval = setInterval(() => {
+                if (count < 3) {
+                    if (random.classList.contains('flash')) {
+                        random.classList.remove('flash');
+                    } else {
+                        random.classList.add('flash');
+                        count++;
+                    }
+                } else {
+                    clearInterval(interval);
+                }
+            }, 300);//hết 2100
+        }, 1500);
+
+        setTimeout(() => {
+            displayPlayerPick();
+            playerPick.classList.remove('d-none');
+            setTimeout(() => {
+                playerPick.style.transform = 'scale(2)';
+            }, 100);
+        }, 3600);
+
+        setTimeout(() => {
+            onRandomBtnReal();
+            isEventCompleted = true;
+        }, 5000);//4100
+    }
+
+    //Remove random element and setup to random next time
+    let playerCount = 0;
+    function resetPlayerPick() {
+        playerCount++;
+        playerPickBg.classList.add('d-none');
+        playerPick.classList.add('d-none');
+        playerPick.style.transform = 'scale(1)';
+
+        const playerNext = document.getElementById('randomMatch' + playerCount);
+        if (playerCount === playerNumber) {
+            const playerExist = document.querySelector('.player');
+            imgRandom = playerExist.querySelector('.player-flag')
+                .querySelector('img').src;
+            nameRandom = playerExist.querySelector('.player-name')
+                .textContent;
+            playerExist.classList.add('flash');
+            removeElement(playerExist);
+        }
+        playerNext.innerHTML = '<img src=' + imgRandom + ' />'
+            + '<div class="player-name">' + nameRandom + '</div>';
+
+        //scroll to align-center
+        if (playerCount % 2 === 1) {
+            const elementToScrollTo = document.getElementById('match' + ((playerCount + 1) / 2));
+            const elementRect = elementToScrollTo.getBoundingClientRect();
+            const parentRect = matchList.getBoundingClientRect();
+            const matchesViewRect = matchesView.getBoundingClientRect();
+            let distanceToTop = elementRect.top - parentRect.top - matchesViewRect.height / 2;
+
+            matchesView.scrollTo({
+                top: distanceToTop,
+                behavior: 'smooth'
+            });
+        }
+
+        removeElement(random);
+
+        if (playerCount === (playerNumber - 1)) {
+            setTimeout(() => {
+                randomBtnGroup.classList.add('d-none');
+                saveBtn.classList.remove('d-none');
+                randomBtn.removeEventListener('click', clickHandle);
+                document.removeEventListener('keydown', keydownHandle);
+                resetPlayerPick();
+            }, 3000);
+        }
+    }
+
+    function removeElement(element) {
+        var opacityCount = 0;
+        var opacityInt = setInterval(() => {
+            if (element.style.opacity === '1') {
+                element.style.opacity = '0.2';
+            } else {
+                element.style.opacity = '1';
+            }
+            setTimeout(() => {
+                clearInterval(opacityInt);
+                setTimeout(() => {
+                    if (opacityCount === 0) {
+                        element.remove();
+                        opacityCount++;
+                    }
+                }, 100);
+            }, 2100);
+        }, 300);
+        setTimeout(() => {
+            onRandomBtnReal();
+            isEventCompleted = true;
+        }, 3000);//2300
+    }
+
+    function offRandomBtnReal() {
+        randomBtn.classList.add('d-none');
+        randomBtnVirtual.classList.remove('d-none');
+    }
+
+    function onRandomBtnReal() {
+        randomBtn.classList.remove('d-none');
+        randomBtnVirtual.classList.add('d-none');
+    }
+
+    function displayPlayerPick() {
+        playerPickBg.classList.remove('d-none');
+
+        imgRandom = random.querySelector('.player-flag')
+            .querySelector('img').src;
+        nameRandom = random.querySelector('.player-name')
+            .textContent;
+
+        playerPick.querySelector('.player-flag')
+            .querySelector('img').src = imgRandom;
+        playerPick.querySelector('.player-name')
+            .textContent = nameRandom;
+    }
+
+    const randomBtn = document.querySelector('.random-btn');
+    const randomBtnVirtual = document.querySelector('.random-btn-virtual');
+    randomBtn.addEventListener('click', clickHandle);
+    function clickHandle(event) {
+        event.preventDefault();
+        shufferEvent();
+    }
+
+    document.addEventListener('keydown', keydownHandle);
+    function keydownHandle(event) {
+        if ((event.key === ' ' || event.keyCode === 32) && isEventCompleted) {
+            event.preventDefault();
+            shufferEvent();
+        }
+    }
+
+</script>
