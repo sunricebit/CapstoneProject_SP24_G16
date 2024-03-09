@@ -38,8 +38,8 @@ namespace BusinessObject.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var builder = new ConfigurationBuilder()
-                                     .SetBasePath(Directory.GetCurrentDirectory())
-                                     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                                    .SetBasePath(Directory.GetCurrentDirectory())
+                                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             IConfigurationRoot configuration = builder.Build();
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("PoolCom"));
         }
@@ -114,9 +114,12 @@ namespace BusinessObject.Models
 
             modelBuilder.Entity<MatchOfTournament>(entity =>
             {
-                entity.HasKey(e => e.MatchId);
+                entity.HasKey(e => new { e.MatchId, e.TourId })
+                    .HasName("PK__MatchOfT__541C0696231E03AA");
 
                 entity.Property(e => e.MatchId).HasColumnName("MatchID");
+
+                entity.Property(e => e.TourId).HasColumnName("TourID");
 
                 entity.Property(e => e.EndTime).HasColumnType("datetime");
 
@@ -125,8 +128,6 @@ namespace BusinessObject.Models
                 entity.Property(e => e.StartTime).HasColumnType("datetime");
 
                 entity.Property(e => e.TableId).HasColumnName("TableID");
-
-                entity.Property(e => e.TourId).HasColumnName("TourID");
 
                 entity.HasOne(d => d.Table)
                     .WithMany(p => p.MatchOfTournaments)
@@ -186,29 +187,30 @@ namespace BusinessObject.Models
 
             modelBuilder.Entity<PlayerInMatch>(entity =>
             {
-                entity.HasKey(e => e.PlayerMatchId);
+                entity.HasKey(e => new { e.MatchId, e.TourId, e.PlayerId })
+                    .HasName("PK_PlayerInMatchPRIMARY");
 
                 entity.ToTable("PlayerInMatch");
 
-                entity.Property(e => e.PlayerMatchId).HasColumnName("PlayerMatchID");
-
-                entity.Property(e => e.GameWin).HasMaxLength(50);
-
                 entity.Property(e => e.MatchId).HasColumnName("MatchID");
+
+                entity.Property(e => e.TourId).HasColumnName("TourID");
 
                 entity.Property(e => e.PlayerId).HasColumnName("PlayerID");
 
-                entity.HasOne(d => d.Match)
-                    .WithMany(p => p.PlayerInMatches)
-                    .HasForeignKey(d => d.MatchId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PlayerInMatchs_MatchOfTournaments");
+                entity.Property(e => e.GameWin).HasMaxLength(50);
 
                 entity.HasOne(d => d.Player)
                     .WithMany(p => p.PlayerInMatches)
                     .HasForeignKey(d => d.PlayerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PlayerInMatch_Players");
+
+                entity.HasOne(d => d.MatchOfTournament)
+                    .WithMany(p => p.PlayerInMatches)
+                    .HasForeignKey(d => new { d.MatchId, d.TourId })
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PlayerInMatch_MatchOfTournaments");
             });
 
             modelBuilder.Entity<PlayerInSoloMatch>(entity =>

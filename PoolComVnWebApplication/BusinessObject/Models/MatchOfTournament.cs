@@ -12,7 +12,6 @@ namespace BusinessObject.Models
 
         public int MatchId { get; set; }
         public int TourId { get; set; }
-        public int MatchNumber { get; set; }
         public string MatchCode { get; set; } = null!;
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
