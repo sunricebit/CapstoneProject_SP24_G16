@@ -30,6 +30,20 @@ namespace DataAccess
             }
         }
 
+        public Tournament GetLastestTournament()
+        {
+            try
+            {
+                var tournament = _context.Tournaments.Last();
+
+                return tournament;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         public IEnumerable<Tournament> GetAllTournament()
         {
             try
@@ -65,7 +79,8 @@ namespace DataAccess
             {
                 var updateTournament = _context.Tournaments.FirstOrDefault(t => t.TourId == tournament.TourId);
                 updateTournament = tournament;
-                _context.Tournaments.Update(updateTournament);
+                _context.Tournaments.Add(updateTournament);
+                _context.SaveChanges();
             }
             catch (Exception e)
             {
