@@ -2529,15 +2529,18 @@ footer {
         margin: 30px 20px;
     }
 
-        .create-tour .display-content.full-screen {
+        .create-tour .display-content.full-screen,
+        .container-bracket.full-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100vh;
+            margin: 0;
         }
 
-            .create-tour .display-content.full-screen .bracket-tab {
+            .create-tour .display-content.full-screen .bracket-tab,
+            .container-bracket.full-screen .bracket-tab {
                 height: 100vh;
             }
 
@@ -3120,24 +3123,30 @@ footer {
     border-radius: 3px;
 }
 
-.random-round .search-box {
+.random-round .search-box,
+.match-display .edit-table .search-box {
     position: absolute;
     top: 40px;
-    left: 10px;
-    width: 180px;
+    left: 5px;
+    width: 190px;
     z-index: 5;
-    background-color: rgb(67, 231, 152);
+    background-color: #d4e5ee;
     color: #000;
     border: 1px solid #fff;
     border-top: none;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px 15px #3b4649;
 }
 
-    .random-round .search-box input {
+    .random-round .search-box input,
+    .match-display .edit-table .search-box input {
         height: 32px;
         background-color: #00000000;
         border: none;
         outline: none;
-        width: 160px;
+        width: 170px;
         padding: 0 10px;
         color: #000;
         border: #000 1px solid;
@@ -3150,11 +3159,14 @@ footer {
         margin-right: 10px;
     }
 
-    .random-round .search-box .player-name {
+    .random-round .search-box .player-name,
+    .match-display .edit-table .search-box .player-name {
         padding: 0 10px;
+        border-top: 1px solid #fff;
     }
 
-        .random-round .search-box .player-name:hover {
+        .random-round .search-box .player-name:hover,
+        .match-display .edit-table .search-box .player-name:hover {
             background: #648fc0;
         }
 
@@ -3229,6 +3241,277 @@ footer {
     text-align: center;
     margin-top: 20px;
 }
+
+/* tournamentDetailFormanage.html */
+.tour-info .manager .add-manager-btn {
+    margin: 20px;
+    width: 160px;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    border: 2px solid #fff;
+    font-weight: 600;
+    background: #41f3c1;
+}
+
+    .tour-info .manager .add-manager-btn:hover {
+        background: #47BC9A;
+        cursor: pointer;
+    }
+
+.tour-info .manager-table {
+    margin: 0 50px 50px 50px;
+    width: calc(100% - 100px);
+    color: #fff;
+}
+
+    .tour-info .manager-table table {
+        width: 100%;
+    }
+
+    .tour-info .manager-table tr:first-child {
+        border-bottom: 2px solid #fff;
+        font-style: italic;
+    }
+
+    .tour-info .manager-table td {
+        padding: 10px 0;
+        text-align: center;
+    }
+
+        .tour-info .manager-table td:nth-child(1) {
+            width: 50%;
+            text-align: start;
+            padding: 10px 10px;
+        }
+
+        .tour-info .manager-table td:nth-child(2) {
+            width: 30%;
+        }
+
+        .tour-info .manager-table td:nth-child(3) {
+            width: 20%;
+        }
+
+            .tour-info .manager-table td:nth-child(3) a {
+                color: #ddd;
+            }
+
+                .tour-info .manager-table td:nth-child(3) a:hover i {
+                    transform: scale(1.2);
+                }
+
+    .tour-info .manager-table tr:nth-child(even) {
+        background: #0000003f;
+    }
+
+.tour-info .admin-name {
+    color: #41f3c1;
+    font-size: 18px;
+    font-weight: 700;
+    font-style: italic;
+}
+
+.tour-info .overview-text.down-btn {
+    border-bottom: none;
+    height: 60px;
+    line-height: 60px;
+}
+
+.tour-info .down-btn:hover {
+    background: #455d64;
+    cursor: pointer;
+}
+
+    .tour-info .down-btn:hover i {
+        transform: scale(1.5);
+        transition: transform 0.3s ease;
+    }
+
+.tour-statistic .statistic-box {
+    background: #00000088;
+    margin: 0 50px 30px 0;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 160px;
+    position: relative;
+}
+
+    .tour-statistic .statistic-box .statistic-header {
+        background: #00000088;
+        padding: 0 20px;
+        font-size: 20px;
+        color: #fff;
+        font-weight: 700;
+        line-height: 40px;
+        border-bottom: 1px solid #fff;
+        text-align: center;
+    }
+
+    .tour-statistic .statistic-box .statistic-title {
+        font-weight: 600;
+        color: #fff;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .tour-statistic .statistic-box .statistic-content {
+        color: #fff;
+        font-size: 40px;
+        text-align: center;
+        font-weight: 400;
+    }
+
+.tour-statistic .tour-control-btn {
+    color: #fff;
+    font-size: 24px;
+    box-shadow: 0 0 2px 2px #fff;
+}
+
+    .tour-statistic .tour-control-btn:hover {
+        cursor: pointer;
+        background: #00000066;
+        box-shadow: 0 0 10px 5px #fff;
+    }
+
+    .tour-statistic .tour-control-btn i {
+        font-size: 40px;
+    }
+
+.tour-statistic .statistic-link {
+    position: absolute;
+    top: 0;
+    right: 0;
+    line-height: 40px;
+    width: 100px;
+    background: #b91b1b;
+    text-align: center;
+    color: #fff;
+    font-weight: 600;
+}
+
+    .tour-statistic .statistic-link:hover {
+        background: #9c1515;
+    }
+
+/* tournamentBracketForManager.html */
+
+.match-display .edit-score .player-name {
+    line-height: 32px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 600;
+    width: 200px;
+}
+
+.match-display .player-score {
+    display: flex;
+    align-items: center;
+}
+
+    .match-display .player-score :nth-child(2) {
+        margin: 0 10px;
+    }
+
+    .match-display .player-score.win {
+        background: linear-gradient(90deg, #00000000 0%, #37e57c 50%, #00000000 100%);
+    }
+
+    .match-display .player-score.lose {
+        background: linear-gradient(90deg, #00000000 0%, #dd8484 50%, #00000000 100%);
+    }
+
+    .match-display .player-score.first .player-header {
+        font-style: italic;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+.match-display .edit-score .player-name img {
+    height: 16px;
+    width: 24px;
+    border-radius: 3px;
+    margin-right: 10px;
+}
+
+.match-display .edit-score .player-point input,
+.match-display .edit-score .player-status select,
+.match-display .edit-table .table-name {
+    width: 80px;
+    line-height: 32px;
+    height: 32px;
+    background-color: #ffffff7d;
+    border: 2px #fff solid;
+    border-radius: 5px;
+    outline: none;
+    padding-left: 10px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.match-display .edit-score .player-status select {
+    width: 120px;
+    height: 32px;
+}
+
+.match-display .edit-table .table-header {
+    font-size: 14px;
+    font-weight: 600;
+    font-style: italic;
+    width: 100px;
+}
+
+.match-display .edit-table .table-name {
+    width: 190px;
+    padding: 0 20px;
+}
+
+    .match-display .edit-table .table-name:hover {
+        cursor: pointer;
+    }
+
+.match-display .edit-table .save-btn {
+    width: 120px;
+    line-height: 74px;
+    height: 74px;
+    text-align: center;
+    margin-left: 10px;
+    background-color: #346585;
+    border-radius: 5px;
+    border: 2px #fff solid;
+    color: #fff;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+    .match-display .edit-table .save-btn:hover {
+        background-color: #648fc0;
+        cursor: pointer;
+    }
+
+.match-display .edit-table .table-name {
+    position: relative;
+}
+
+.match-display .edit-table .search-box {
+    width: 180px;
+    top: 30px;
+    left: 5px;
+}
+
+    .match-display .edit-table .search-box input {
+        width: 160px;
+        margin: 10px;
+    }
+
+    .match-display .edit-table .search-box .player-name {
+        text-align: center;
+    }
+
+        .match-display .edit-table .search-box .player-name:hover {
+            cursor: pointer;
+        }
 
 /* Mobile: width <740px */
 @media only screen and (max-width: 739px) {

@@ -28,5 +28,15 @@ namespace PoolComVnWebClient.Controllers
         {
             return View();
         }
+
+        //Tournament detail for club and manage of club
+        public IActionResult TournamentDetailForManager()
+        {
+            return View();
+        }
+
+        public IActionResult TournamentBracketForManager() {
+            return View();
+        }
     }
 }
