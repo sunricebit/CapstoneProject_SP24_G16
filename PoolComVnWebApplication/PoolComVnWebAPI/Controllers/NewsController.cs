@@ -36,13 +36,14 @@ namespace PoolComVnWebAPI.Controllers
 
                 var result = allNews.Select(news => new NewsDTO
                 {
-                    NewsID = news.NewsId,
+                    NewsId = news.NewsId,
                     Title = news.Title,
                     Description = news.Description,
-                    AccID = news.AccId,
+                    AccId = news.AccId,
                     CreatedDate = news.CreatedDate,
                     UpdatedDate = news.UpdatedDate,
-                    link = news.Link,
+                    Flyer = news.Flyer,
+                    Link = news.Link,
                     AccountName = news.Acc?.Email
                 }).ToList();
 
@@ -71,13 +72,14 @@ namespace PoolComVnWebAPI.Controllers
                 }
                 var result = new NewsDTO
                 {
-                    NewsID = news.NewsId,
+                    NewsId = news.NewsId,
                     Title = news.Title,
                     Description = news.Description,
-                    AccID = news.AccId,
+                    AccId = news.AccId,
                     CreatedDate = news.CreatedDate,
                     UpdatedDate = news.UpdatedDate,
-                    link = news.Link,
+                    Link = news.Link,
+                    Flyer = news.Flyer,
                     AccountName = news.Acc?.Email
                 };
 
@@ -95,7 +97,7 @@ namespace PoolComVnWebAPI.Controllers
         {
             try
             {
-                var account =_newsDAO.GetAccount(newsDTO.AccID);
+                var account =_newsDAO.GetAccount(newsDTO.AccId);
 
                 if (account == null)
                 {
@@ -105,12 +107,13 @@ namespace PoolComVnWebAPI.Controllers
 
                 var news = new News
                 {
-                    NewsId = newsDTO.NewsID,
                     Title = newsDTO.Title,
                     Description = newsDTO.Description,
-                    AccId = newsDTO.AccID,
+                    AccId = newsDTO.AccId,
                     CreatedDate = newsDTO.CreatedDate,
                     UpdatedDate = newsDTO.UpdatedDate,
+                    Link = newsDTO.Link,
+                    
                     Acc = account
                     
                 };
@@ -130,7 +133,7 @@ namespace PoolComVnWebAPI.Controllers
 
                             imageUrls.Add(imageUrl);
                         }
-                        news.Link = imageUrl;
+                        news.Flyer = imageUrl;
                     }
                 }
                 
@@ -150,11 +153,11 @@ namespace PoolComVnWebAPI.Controllers
         {
             try
             {
-                if (id != updatedNewsDTO.NewsID)
+                if (id != updatedNewsDTO.NewsId)
                 {
                     return BadRequest("Invalid News ID"); 
                 }
-                var account = _newsDAO.GetAccount(updatedNewsDTO.AccID);
+                var account = _newsDAO.GetAccount(updatedNewsDTO.AccId);
 
                 if (account == null)
                 {
@@ -173,10 +176,11 @@ namespace PoolComVnWebAPI.Controllers
 
                 existingNews.Title = updatedNewsDTO.Title;
                 existingNews.Description = updatedNewsDTO.Description;
-                existingNews.AccId = updatedNewsDTO.AccID;
+                existingNews.AccId = updatedNewsDTO.AccId;
                 existingNews.CreatedDate = updatedNewsDTO.CreatedDate;
                 existingNews.UpdatedDate = updatedNewsDTO.UpdatedDate;
-                existingNews.Link = updatedNewsDTO.link;
+                existingNews.Link = updatedNewsDTO.Link;
+                existingNews.Flyer = updatedNewsDTO.Flyer;
                 existingNews.Acc = account; 
                 _newsDAO.UpdateNews(existingNews);
                 return NoContent();
@@ -193,7 +197,7 @@ namespace PoolComVnWebAPI.Controllers
         {
             try
             {
-                if (id != deletedNewsDTO.NewsID)
+                if (id != deletedNewsDTO.NewsId)
                 {
                     return BadRequest("Invalid News ID");
                 }
@@ -206,8 +210,8 @@ namespace PoolComVnWebAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost("Upload")]
-        public async Task<string> UploadFromFirebase(MemoryStream stream, string filename)
+        
+        private async Task<string> UploadFromFirebase(MemoryStream stream, string filename)
         {
             var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
             var a = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);

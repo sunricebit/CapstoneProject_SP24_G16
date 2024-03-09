@@ -8,8 +8,8 @@ namespace BusinessObject.Models
         public int PlayerMatchId { get; set; }
         public int MatchId { get; set; }
         public int PlayerId { get; set; }
-        public int Score { get; set; }
-        public string GameWin { get; set; } = null!;
+        public int? Score { get; set; }
+        public string? GameWin { get; set; }
         public byte IsWinner { get; set; }
 
         public virtual MatchOfTournament Match { get; set; } = null!;
