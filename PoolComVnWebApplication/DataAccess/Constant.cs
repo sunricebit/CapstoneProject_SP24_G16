@@ -19,5 +19,17 @@ namespace DataAccess
         public const string StrUserRole = "User";
         public const string StrAdminRole = "Admin";
         public const string StrBusinessManagerRole = "BusinessManager";
+
+        public const int TournamentIncoming = 0;
+        public const int TournamentInProgress = 1;
+        public const int TournamentComplete = 2;
+
+        public const int AccessPublic = 1;
+        public const int AccessPrivate = 2;
+
+        public const int SysRandomDraw = 1;
+        public const int UserRandomDraw = 2;
+        public const int UserCustom = 3;
+
     }
 }
