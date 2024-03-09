@@ -37,8 +37,6 @@ namespace PoolComVnWebClient.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string email, string password)
         {
-            // HttpResponseMessage responseMessage = await client.GetAsync(ApiUrl + "/login");
-
             // Tạo đối tượng chứa thông tin đăng nhập
             var loginInfo = new LoginDTO { 
                 Email = email, 

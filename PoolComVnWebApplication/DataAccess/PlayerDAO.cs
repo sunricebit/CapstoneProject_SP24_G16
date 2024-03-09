@@ -126,5 +126,19 @@ namespace DataAccess
                 _context.SaveChanges();
             }
         }
+
+        public IEnumerable<Player> GetPlayersByTournament(int tourId)
+        {
+            try
+            {
+                var players = _context.Players.Where(p => p.TourId == tourId);
+                return players;
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
     }
 }
