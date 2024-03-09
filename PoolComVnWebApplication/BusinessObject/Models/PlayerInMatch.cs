@@ -10,7 +10,7 @@ namespace BusinessObject.Models
         public int PlayerId { get; set; }
         public int? Score { get; set; }
         public string? GameWin { get; set; }
-        public byte IsWinner { get; set; }
+        public bool? IsWinner { get; set; }
 
         public virtual MatchOfTournament Match { get; set; } = null!;
         public virtual Player Player { get; set; } = null!;

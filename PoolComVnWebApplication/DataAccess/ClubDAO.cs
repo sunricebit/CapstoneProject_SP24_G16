@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,21 @@ namespace DataAccess
         {
             _context.Clubs.Add(club);
             _context.SaveChanges();
+            _context.MatchOfTournaments.Include( m => m.PlayerInMatches).ToList();
+
+        }
+        public List<MatchOfTournament> matchOfTournaments()
+        {
+            try
+            {
+                return _context.MatchOfTournaments.Include(m => m.PlayerInMatches).ToList();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
         }
 
         // Read

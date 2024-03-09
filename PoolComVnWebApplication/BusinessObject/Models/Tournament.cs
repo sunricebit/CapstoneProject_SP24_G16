@@ -21,12 +21,11 @@ namespace BusinessObject.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string RaceToString { get; set; } = null!;
-        public string PaymentType { get; set; } = null!;
         public DateTime RegistrationDeadline { get; set; }
         public int MaxPlayerNumber { get; set; }
         public byte Status { get; set; }
         public int ClubId { get; set; }
-        public bool? Accesses { get; set; }
+        public bool? Access { get; set; }
         public string? Flyer { get; set; }
         public int? PlayerTypeId { get; set; }
         public int? TotalPrize { get; set; }

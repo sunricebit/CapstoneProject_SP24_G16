@@ -113,7 +113,6 @@ namespace PoolComVnWebAPI.Controllers
                     CreatedDate = newsDTO.CreatedDate,
                     UpdatedDate = newsDTO.UpdatedDate,
                     Link = newsDTO.Link,
-                    
                     Acc = account
                     
                 };
