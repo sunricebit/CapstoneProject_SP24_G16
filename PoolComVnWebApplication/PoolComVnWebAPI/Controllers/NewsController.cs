@@ -1,9 +1,12 @@
 ﻿using BusinessObject.Models;
 using DataAccess;
+using Firebase.Auth;
+using Firebase.Storage;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PoolComVnWebAPI.DTO;
+using System.Net.Sockets;
 
 namespace PoolComVnWebAPI.Controllers
 {
@@ -12,6 +15,11 @@ namespace PoolComVnWebAPI.Controllers
     public class NewsController : ControllerBase
     {
         private readonly NewsDAO _newsDAO;
+        private static string ApiKey = "AIzaSyDbVNJE6bbQdXlcr3TZqxkZh3xqi5CqKIc";
+        private static string Bucket = "poolcomvn-82664.appspot.com";
+        private static string AuthEmail = "vuducduy@gmail.com";
+        private static string AuthPassword = "123456";
+
 
         public NewsController(NewsDAO newsDAO)
         {
@@ -83,7 +91,7 @@ namespace PoolComVnWebAPI.Controllers
 
      
         [HttpPost]
-        public ActionResult Post([FromBody] NewsDTO newsDTO)
+        public async Task<ActionResult> Post([FromForm] NewsDTO newsDTO, [FromForm] List<IFormFile> images)
         {
             try
             {
@@ -97,15 +105,35 @@ namespace PoolComVnWebAPI.Controllers
 
                 var news = new News
                 {
+                    NewsId = newsDTO.NewsID,
                     Title = newsDTO.Title,
                     Description = newsDTO.Description,
                     AccId = newsDTO.AccID,
                     CreatedDate = newsDTO.CreatedDate,
                     UpdatedDate = newsDTO.UpdatedDate,
-                    Link = newsDTO.link,
                     Acc = account
                     
                 };
+                List<string> imageUrls = new List<string>();
+
+                foreach (var image in images)
+                {
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        image.CopyTo(memoryStream);
+
+
+                        string imageUrl = await UploadFromFirebase(memoryStream, image.FileName);
+
+                        if (!string.IsNullOrEmpty(imageUrl))
+                        {
+
+                            imageUrls.Add(imageUrl);
+                        }
+                        news.Link = imageUrl;
+                    }
+                }
+                
 
                 _newsDAO.AddNews(news);
                 return CreatedAtAction(nameof(Get), new { id = news.NewsId }, newsDTO);
@@ -178,5 +206,40 @@ namespace PoolComVnWebAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPost("Upload")]
+        public async Task<string> UploadFromFirebase(MemoryStream stream, string filename)
+        {
+            var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
+            var a = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
+            var cancellation = new CancellationTokenSource();
+            var task = new FirebaseStorage(
+         Bucket,
+         new FirebaseStorageOptions
+         {
+             AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+             ThrowOnCancel = true
+         }
+     ).Child("News")
+      .Child(filename)
+      .PutAsync(stream, cancellation.Token);
+            try
+            {
+                string link = await task;
+                return link;
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine("Exception was thrown : {0}", ex);
+                return null;
+            }
+        }
+     
+
+
+
+
+
     }
 }
