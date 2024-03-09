@@ -17,6 +17,8 @@ namespace BusinessObject.Models
         public bool Status { get; set; }
         public string Size { get; set; } = null!;
         public string Image { get; set; } = null!;
+        public bool? IsScheduling { get; set; }
+        public bool? IsUseInTour { get; set; }
 
         public virtual Club Club { get; set; } = null!;
         public virtual ICollection<MatchOfTournament> MatchOfTournaments { get; set; }

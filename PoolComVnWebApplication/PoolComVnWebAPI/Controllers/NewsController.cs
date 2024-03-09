@@ -107,14 +107,13 @@ namespace PoolComVnWebAPI.Controllers
 
                 var news = new News
                 {
-                    NewsId = newsDTO.NewsId,
                     Title = newsDTO.Title,
                     Description = newsDTO.Description,
                     AccId = newsDTO.AccId,
                     CreatedDate = newsDTO.CreatedDate,
                     UpdatedDate = newsDTO.UpdatedDate,
                     Link = newsDTO.Link,
-                    Flyer = newsDTO.Flyer,
+                    
                     Acc = account
                     
                 };
@@ -134,7 +133,7 @@ namespace PoolComVnWebAPI.Controllers
 
                             imageUrls.Add(imageUrl);
                         }
-                        news.Link = imageUrl;
+                        news.Flyer = imageUrl;
                     }
                 }
                 
@@ -211,8 +210,8 @@ namespace PoolComVnWebAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost("Upload")]
-        public async Task<string> UploadFromFirebase(MemoryStream stream, string filename)
+        
+        private async Task<string> UploadFromFirebase(MemoryStream stream, string filename)
         {
             var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
             var a = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
