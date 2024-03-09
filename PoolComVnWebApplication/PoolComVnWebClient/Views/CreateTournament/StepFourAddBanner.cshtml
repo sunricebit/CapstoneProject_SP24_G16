@@ -35,6 +35,7 @@
                 <div class="step-title">Hoàn thành</div>
             </div>
         </div>
+        <form method="post" enctype="multipart/form-data" asp-controller="CreateTournament" asp-action="StepFourAddBanner">
         <div class="create-tour-display col-lg-10">
             <div class="create-step-one">
                 <div class="display-title">Thêm ảnh bìa</div>
@@ -44,8 +45,8 @@
                             <span>Hãy tải ảnh có kích thước 3x2 để được hiển thị tốt nhất.</span>
                         </div>
                     </div>
-                    <div class="upload-img">
-                        <input type="file" class="imageInput mt-1" accept="image/*" />
+                    <div class="upload-img" >
+                        <input type="file" name="banner" class="imageInput mt-1" accept="image/*" />
                         <div class="upload-title d-flex align-items-center justify-content-center">
                             <div>
                                 <i class="fa-regular fa-image"></i>
@@ -55,7 +56,6 @@
                         <div class="preview-image-bg m-0">
                             <img class="preview-image" />
                         </div>
-                        <!-- lấy tên ảnh -->
                         <input id="file-name" class="d-none" />
                     </div>
                     <div class="tour-input">
@@ -64,6 +64,7 @@
                 </div>
             </div>
         </div>
+        </form>
     </div>
 </div>
 
