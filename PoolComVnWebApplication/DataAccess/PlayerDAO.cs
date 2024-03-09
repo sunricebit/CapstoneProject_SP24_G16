@@ -52,7 +52,7 @@ namespace DataAccess
             if (existingPlayer != null)
             {
                 existingPlayer.PlayerName = updatedPlayer.PlayerName;
-                existingPlayer.AccountId = updatedPlayer.AccountId;
+               
                 existingPlayer.Level = updatedPlayer.Level;
 
                 _context.SaveChanges();
@@ -110,7 +110,7 @@ namespace DataAccess
                         var player = new Player
                         {
                             PlayerName = playerName,
-                            AccountId = accountID,
+                            
                             Level = int.Parse(level)
                         };
 

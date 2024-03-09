@@ -12,6 +12,7 @@ namespace BusinessObject.Models
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public string? Link { get; set; }
+        public string? Flyer { get; set; }
 
         public virtual Account Acc { get; set; } = null!;
     }

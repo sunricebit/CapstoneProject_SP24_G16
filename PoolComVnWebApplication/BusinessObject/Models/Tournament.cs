@@ -18,7 +18,6 @@ namespace BusinessObject.Models
         public int TournamentTypeId { get; set; }
         public int PlayerNumber { get; set; }
         public int EntryFee { get; set; }
-        public int TotalPrice { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string RaceToString { get; set; } = null!;
@@ -30,6 +29,8 @@ namespace BusinessObject.Models
         public bool? Accesses { get; set; }
         public string? Flyer { get; set; }
         public int? PlayerTypeId { get; set; }
+        public int? TotalPrize { get; set; }
+        public int? KnockoutPlayerNumber { get; set; }
 
         public virtual Club Club { get; set; } = null!;
         public virtual GameType GameType { get; set; } = null!;

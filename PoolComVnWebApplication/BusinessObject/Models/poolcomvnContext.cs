@@ -35,16 +35,14 @@ namespace BusinessObject.Models
         public virtual DbSet<TournamentType> TournamentTypes { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
-       
-            protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var builder = new ConfigurationBuilder()
-                                 .SetBasePath(Directory.GetCurrentDirectory())
-                                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                                  .SetBasePath(Directory.GetCurrentDirectory())
+                                  .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             IConfigurationRoot configuration = builder.Build();
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("PoolCom"));
         }
-    
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -151,6 +149,8 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.AccId).HasColumnName("AccID");
 
+                entity.Property(e => e.Flyer).HasMaxLength(500);
+
                 entity.Property(e => e.Link).HasMaxLength(255);
 
                 entity.HasOne(d => d.Acc)
@@ -161,8 +161,6 @@ namespace BusinessObject.Models
             modelBuilder.Entity<Player>(entity =>
             {
                 entity.Property(e => e.PlayerId).HasColumnName("PlayerID");
-
-                entity.Property(e => e.AccountId).HasColumnName("AccountID");
 
                 entity.Property(e => e.CountryId).HasColumnName("CountryID");
 
@@ -183,7 +181,6 @@ namespace BusinessObject.Models
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Players)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Players_Users");
             });
 

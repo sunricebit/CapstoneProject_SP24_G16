@@ -53,13 +53,13 @@ namespace DataAccess
             CreateMap<Player, PlayerDTO>()
                 .ForMember(dest => dest.PlayerID, opt => opt.MapFrom(src => src.PlayerId))
                 .ForMember(dest => dest.PlayerName, opt => opt.MapFrom(src => src.PlayerName))
-                .ForMember(dest => dest.AccountID, opt => opt.MapFrom(src => src.AccountId))
+                
                 .ForMember(dest => dest.Level, opt => opt.MapFrom(src => src.Level));
 
             CreateMap<PlayerDTO, Player>()
                 .ForMember(dest => dest.PlayerId, opt => opt.MapFrom(src => src.PlayerID))
                 .ForMember(dest => dest.PlayerName, opt => opt.MapFrom(src => src.PlayerName))
-                .ForMember(dest => dest.AccountId, opt => opt.MapFrom(src => src.AccountID))
+                
                 .ForMember(dest => dest.Level, opt => opt.MapFrom(src => src.Level));
         }
     }
