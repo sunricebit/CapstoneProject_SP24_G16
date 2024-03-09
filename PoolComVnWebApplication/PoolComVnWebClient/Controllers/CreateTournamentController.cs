@@ -38,7 +38,8 @@ namespace PoolComVnWebClient.Controllers
             var response = await client.PostAsJsonAsync(ApiUrl + "/CreateTourStOne", inputDTO);
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("StepTwoPlayerList");
+                ViewBag.TourId = await response.Content.ReadFromJsonAsync<int>();
+                return View("StepTwoPlayerList");
             }
             else
             {
@@ -48,29 +49,29 @@ namespace PoolComVnWebClient.Controllers
             return RedirectToAction("InternalServerError", "Error");
         }
 
-        [HttpGet]
+        [HttpPost]
         public IActionResult StepTwoPlayerList()
         {
-            return View();
+            return View("StepThreeAddTable");
         }
 
-        [HttpGet]
-        public IActionResult StepTwoJoinList()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> StepTwoJoinList()
+        //{
+        //    return View();
+        //}
 
-        [HttpGet]
-        public IActionResult StepTwoMember()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public IActionResult StepTwoMember()
+        //{
+        //    return View();
+        //}
 
-        [HttpGet]
-        public IActionResult StepTwoPlayerSystem()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public IActionResult StepTwoPlayerSystem()
+        //{
+        //    return View();
+        //}
 
         [HttpGet]
         public IActionResult StepThreeAddTable()

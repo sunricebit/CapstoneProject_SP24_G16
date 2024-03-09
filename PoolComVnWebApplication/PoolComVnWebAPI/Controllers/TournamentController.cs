@@ -78,7 +78,7 @@ namespace PoolComVnWebAPI.Controllers
                 Tournament tour = new Tournament()
                 {
                     TourName = inputDto.TournamentName,
-                    Accesses = inputDto.Access,
+                    Access = inputDto.Access,
                     ClubId = clubId,
                     Description = inputDto.Description,
                     StartDate = inputDto.StartTime,
@@ -91,9 +91,10 @@ namespace PoolComVnWebAPI.Controllers
                     MaxPlayerNumber = inputDto.MaxPlayerNumber,
                     RegistrationDeadline = inputDto.RegistrationDeadline,
                     RaceToString = inputDto.RaceNumberString,
+                    Status = Constant.TournamentIncoming,
                 };
                 _tournamentDAO.CreateTournament(tour);
-                return Ok("Create tournament Successful");
+                return Ok(_tournamentDAO.GetLastestTournament().TourId);
             }
             catch (Exception e)
             {
