@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Mvc;
+using PoolComVnWebClient.DTO;
 using PoolComVnWebClient.Common;
+using System.Collections.Generic;
 using System.Net.Http.Headers;
 
 namespace PoolComVnWebClient.Controllers
@@ -17,7 +20,7 @@ namespace PoolComVnWebClient.Controllers
             ApiUrl = ApiUrl + "/Tournament";
         }
 
-        [HttpGet]
+        [HttpGet("{tourId}")]
         public async Task<IActionResult> TournamentDetail(int tourId)
         {
             
@@ -25,10 +28,22 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Tournament()
+        public async Task<IActionResult> TournamentList()
         {
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            var response = await client.GetAsync(ApiUrl + "/GetAllTour");
+            if (response.IsSuccessStatusCode)
+            {
+                List<TournamentOutputDTO> lstTour = await response.Content.ReadFromJsonAsync<List<TournamentOutputDTO>>();
+                return View(lstTour);
+            }
+            else
+            {
+                var status = response.StatusCode;
+            }
 
-            return View();
+            return RedirectToAction("InternalServerError", "Error");
         }
 
         public IActionResult TournamentBracket()

@@ -45,11 +45,11 @@ namespace DataAccess
             }
         }
 
-        public IEnumerable<Tournament> GetAllTournament()
+        public List<Tournament> GetAllTournament()
         {
             try
             {
-                var tournaments = _context.Tournaments.Include(t => t.Club);
+                var tournaments = _context.Tournaments.Include(t => t.Club).ToList();
                 return tournaments;
             }
             catch (Exception e)

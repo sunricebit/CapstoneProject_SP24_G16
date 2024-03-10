@@ -1,4 +1,4 @@
-﻿namespace PoolComVnWebAPI.DTO
+﻿namespace PoolComVnWebClient.DTO
 {
     public class TournamentOutputDTO
     {
@@ -11,5 +11,6 @@
         public DateTime EndTime { get; set; }
         public string GameType { get; set; }
         public string Description { get; set; }
+        public string Flyer { get; set; }
     }
 }

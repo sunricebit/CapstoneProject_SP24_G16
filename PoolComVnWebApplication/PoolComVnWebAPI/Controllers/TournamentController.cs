@@ -122,11 +122,13 @@ namespace PoolComVnWebAPI.Controllers
                         ClubName = item.Club.ClubName,
                         Description = item.Description,
                         GameType = item.GameTypeId == Constant.Game8Ball ? Constant.String8Ball 
-                                    : (item.GameTypeId == Constant.Game8Ball ? Constant.String9Ball : Constant.String10Ball),
+                                    : (item.GameTypeId == Constant.Game9Ball ? Constant.String9Ball : Constant.String10Ball),
                         Status = item.Status,
+                        Flyer = item.Flyer,
                     };
+                    allTourDto.Add(tour);
                 }
-                return Ok();
+                return Ok(allTourDto);
             }
             catch (Exception e)
             {
