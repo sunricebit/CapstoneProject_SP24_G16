@@ -18,6 +18,8 @@ namespace BusinessObject.Models
         public int? UserId { get; set; }
         public int? TourId { get; set; }
         public string? PhoneNumber { get; set; }
+        public string? Email { get; set; }
+        public bool? IsPayed { get; set; }
 
         public virtual Country? Country { get; set; }
         public virtual Tournament? Tour { get; set; }
