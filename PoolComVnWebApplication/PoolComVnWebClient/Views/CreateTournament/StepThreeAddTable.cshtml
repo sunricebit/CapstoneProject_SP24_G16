@@ -1,6 +1,8 @@
-﻿@{
+﻿@using PoolComVnWebClient.DTO
+@{
     Layout = "~/Views/Shared/_CreateTournamentLayout.cshtml";
 }
+@model List<TableDTO>
 
 <div class="container-full">
     <div class="create-tour d-flex justify-content-end">
@@ -65,100 +67,30 @@
                                     <th>Nhãn</th>
                                     <th class="text-center">Ảnh</th>
                                     <th class="text-center">Kích thước</th>
-                                    <th>Hãng</th>
+                                    @*  <th>Hãng</th> *@
                                     <th>Tên bàn</th>
                                     <th>Hành động</th>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <input class="one-checkbox" type="checkbox">
-                                    </td>
-                                    <td>1</td>
-                                    <td>Bàn 1</td>
-                                    <td class="d-flex justify-content-center">
-                                        <img src="/Image/rassonTable.png"
-                                             alt="">
-                                    </td>
-                                    <td class="text-center">9 ft</td>
-                                    <td>Rasson</td>
-                                    <td>Rasson OX 9ft</td>
-                                    <td>
-                                        <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input class="one-checkbox" type="checkbox">
-                                    </td>
-                                    <td>1</td>
-                                    <td>Bàn 1</td>
-                                    <td class="d-flex justify-content-center">
-                                        <img src="/Image/rassonTable.png"
-                                             alt="">
-                                    </td>
-                                    <td class="text-center">9 ft</td>
-                                    <td>Rasson</td>
-                                    <td>Rasson OX 9ft</td>
-                                    <td>
-                                        <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input class="one-checkbox" type="checkbox">
-                                    </td>
-                                    <td>1</td>
-                                    <td>Bàn 1</td>
-                                    <td class="d-flex justify-content-center">
-                                        <img src="/Image/rassonTable.png"
-                                             alt="">
-                                    </td>
-                                    <td class="text-center">9 ft</td>
-                                    <td>Rasson</td>
-                                    <td>Rasson OX 9ft</td>
-                                    <td>
-                                        <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input class="one-checkbox" type="checkbox">
-                                    </td>
-                                    <td>1</td>
-                                    <td>Bàn 1</td>
-                                    <td class="d-flex justify-content-center">
-                                        <img src="/Image/rassonTable.png"
-                                             alt="">
-                                    </td>
-                                    <td class="text-center">9 ft</td>
-                                    <td>Rasson</td>
-                                    <td>Rasson OX 9ft</td>
-                                    <td>
-                                        <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input class="one-checkbox" type="checkbox">
-                                    </td>
-                                    <td>1</td>
-                                    <td>Bàn 1</td>
-                                    <td class="d-flex justify-content-center">
-                                        <img src="/Image/rassonTable.png"
-                                             alt="">
-                                    </td>
-                                    <td class="text-center">9 ft</td>
-                                    <td>Rasson</td>
-                                    <td>Rasson OX 9ft</td>
-                                    <td>
-                                        <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                    </td>
-                                </tr>
+                                @foreach (var table in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input class="one-checkbox" type="checkbox">
+                                        </td>
+                                        <td>1</td>
+                                        <td>@table.TagName</td>
+                                        <td class="d-flex justify-content-center">
+                                            <img src="@table.Image" alt="" style="width: 100px; height: 100px;">
+                                        </td>
+                                        <td class="text-center">@table.Size</td>
+                                        @*   <td>Rasson</td> *@
+                                        <td>@table.TableName</td>
+                                        <td>
+                                            <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
+                                            <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
+                                        </td>
+                                    </tr>
+                                }
                             </table>
                         </div>
                     </div>
@@ -202,7 +134,68 @@
         </div>
     </div>
 </div>
+<!-- Modal for adding a table -->
+<div id="addTableModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Thêm bàn</h2>
+        <label for="tableName">Tên bàn:</label>
+        <input type="text" id="tableName" name="tableName" required>
 
+        <label for="tag">Nhãn:</label>
+        <input type="text" id="tag" name="tag" required>
+
+        <label for="size">Kích thước:</label>
+        <input type="text" id="size" name="size" required>
+
+        <label for="image">Ảnh:</label>
+        <input type="text" id="image" name="image" required>
+
+        <label for="status">Status:</label>
+        <input type="checkbox" id="status" name="status" checked>
+
+        <label for="isScheduling">Is Scheduling:</label>
+        <input type="checkbox" id="isScheduling" name="isScheduling">
+
+        <label for="isUseInTour">Is Use In Tour:</label>
+        <input type="checkbox" id="isUseInTour" name="isUseInTour">
+
+        <button id="saveTable">Lưu</button>
+    </div>
+</div>
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 50%;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }</style>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     //Handle entry checkbox
     const allCheckboxBtn = document.querySelector('.all-checkbox');
@@ -212,7 +205,60 @@
     const rowList = document.querySelectorAll('.players-table tr');
     const containerFull = document.querySelector('.container-full');
 
+    function AddTable() {
+        $.ajax({
+            url: "https://localhost:5000/api/Table/AddTable",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result, status) {
+                console.log(result);
+                ShowAllProducts(); // Refresh the table after adding a new table
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+            }
+        });
+    }
 
+    $('.club-player').on('click', function () {
+        $('#addTableModal').css('display', 'block');
+    });
+
+    $('.close').on('click', function () {
+        $('#addTableModal').css('display', 'none');
+    });
+
+    $('#saveTable').on('click', function () {
+        $.ajax({
+            url: "https://localhost:5000/api/Table/AddTable",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify({
+                tableName: $('#tableName').val(),
+                // ... (Other fields)
+            }),
+            success: function (result, status) {
+                console.log(result);
+                ShowAllProducts();
+                $('#addTableModal').css('display', 'none');
+                displaySuccessBox(); // Add this line to show success message
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+            }
+        });
+    });
+    function displaySuccessBox() {
+        const successBox = $('<div class="success-box">Thành công</div>').appendTo('.container-full');
+        setTimeout(() => {
+            successBox.css('right', '50px');
+            setTimeout(() => {
+                successBox.remove();
+            }, 1500);
+        }, 100);
+    }
     allCheckboxBtn.addEventListener('change', () => {
         if (allCheckboxBtn.checked) {
             checkboxList.forEach(cb => {

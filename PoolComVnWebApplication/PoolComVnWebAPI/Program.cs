@@ -28,6 +28,7 @@ builder.Services.AddScoped<ClubDAO>();
 builder.Services.AddScoped<ClubPostDAO>();
 builder.Services.AddScoped<PlayerDAO>();
 builder.Services.AddScoped<TournamentDAO>();
+builder.Services.AddScoped<TableDAO>();
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddCors();

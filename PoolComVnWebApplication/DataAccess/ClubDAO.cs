@@ -20,23 +20,8 @@ namespace DataAccess
         {
             _context.Clubs.Add(club);
             _context.SaveChanges();
-            _context.MatchOfTournaments.Include( m => m.PlayerInMatches).ToList();
-
         }
-        public List<MatchOfTournament> matchOfTournaments()
-        {
-            try
-            {
-                return _context.MatchOfTournaments.Include(m => m.PlayerInMatches).ToList();
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-            
-        }
-
+       
         // Read
         public Club GetClubById(int clubId)
         {
