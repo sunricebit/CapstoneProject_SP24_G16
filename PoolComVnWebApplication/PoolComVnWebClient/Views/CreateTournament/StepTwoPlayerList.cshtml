@@ -1,6 +1,8 @@
-﻿@{
+﻿@using PoolComVnWebClient.DTO
+@{
     Layout = "~/Views/Shared/_CreateTournamentLayout.cshtml";
 }
+@model List<PlayerDTO>
 
 <div class="container-full">
     <div class="create-tour d-flex justify-content-end">
@@ -84,7 +86,6 @@
                             <input class="" />
                         </div>
                     </div>
-                </div>
 
                     <div class="pt-3">
                         <div class="table-overflow">
@@ -100,14 +101,19 @@
                                     <th class="text-center">Hạng</th>
                                     <th class="player-fee">Lệ phí</th>
                                     <th>Hành động</th>
-                                </tr>                              
-                               
-                    </div>
+                                </tr>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
 
-                    <div class="tour-input pt-5">
-                        <button class="submit-btn" type="submit">Lưu và chuyển sang bước 3</button>
+                        <div class="tour-input pt-5">
+                            <button class="submit-btn" type="submit">Lưu và chuyển sang bước 3</button>
+                        </div>
                     </div>
                 </div>
+
+                
             </div>
         </div>
     </div>
@@ -231,11 +237,11 @@
     }
 
     //close player-edit
-    const closeBtn = document.querySelector('.edit-close');
-    const playerEdit = document.querySelector('.player-edit');
-    closeBtn.addEventListener('click', () => {
-        playerEdit.classList.add('d-none');
-    })
+    // const closeBtn = document.querySelector('.edit-close');
+    // const playerEdit = document.querySelector('.player-edit');
+    // closeBtn.addEventListener('click', () => {
+    //     playerEdit.classList.add('d-none');
+    // })
 
     //edit button
     const editBtns = document.querySelectorAll('.edit-button');
@@ -274,9 +280,8 @@
             }
         });
     }
-    // Hàm hiển thị dữ liệu sau khi import
     function displayImportedData(data) {
-        var playersTable = document.querySelector('.players-table');
+        var playersTable = document.querySelector('.players-table tbody');
 
         // Loop through the data and append rows to the table
         data.forEach(function (player) {
@@ -288,7 +293,7 @@
             row.appendChild(checkboxCell);
 
             var indexCell = document.createElement('td');
-            indexCell.textContent = playersTable.rows.length; // Assuming index is based on the current row count
+            indexCell.textContent = playersTable.rows.length + 1; // Assuming index is based on the current row count
             row.appendChild(indexCell);
 
             var nameCell = document.createElement('td');

@@ -17,7 +17,7 @@ namespace PoolComVnWebAPI.Controllers
     {
         private readonly PlayerDAO _playerDAO;
         private readonly IMapper _mapper;
-
+        private static List<PlayerDTO> selectedPlayers = new List<PlayerDTO>();
         public PlayerController(PlayerDAO playerDAO, IMapper mapper)
         {
             _playerDAO = playerDAO;
@@ -255,6 +255,6 @@ namespace PoolComVnWebAPI.Controllers
                 // Xử lý lỗi và trả về lỗi nếu cần
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
-        }
+        }      
     }
 }
