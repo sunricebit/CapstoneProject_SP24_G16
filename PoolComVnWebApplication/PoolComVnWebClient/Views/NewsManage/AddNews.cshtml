@@ -2,33 +2,40 @@
 <div class="container">
     <div class="add-news">
         <div class="box-header">Tạo bài viết</div>
-        <div class="box-body row py-5 px-5">
-            <div class=" col-lg-10 px-5 pt-2">
-                <strong class="mt-1">Tiêu đề</strong>
-                <input type="text" class="nameInput mt-1" id="news-title" placeholder="Tiêu đề bài viết" />
-                <div class="text-danger nameErr px-2 py-1"></div>
-            </div>
-            <div class=" col-lg-10 px-5 pt-2">
-                <strong class="mt-1">Mô tả chi tiết</strong>
-
-                <div id="editor">Viết mô tả tại đây</div>
-                <script>
-                    ClassicEditor
-                        .create(document.querySelector('#editor'))
-                        .then(editor => {
-                            console.log(editor);
-                        })
-                        .catch(error => {
-                            console.error(error);
-                        });
-                </script>
-                <div class="text-danger descErr px-2 py-1"></div>
-            </div>
-            <div class=" col-lg-6 px-5 pt-5 d-flex justify-content-around">
-                <a href="" id="createBtn" class="btn btn-success">Tạo mới</a>
-                <a href="" id="cancleBtn" class="btn btn-danger">HỦY</a>
-            </div>
-            <div class=" col-lg-6 px-5 pt-5" id="form-message"></div>
-        </div>
+        <form method="post" asp-controller="NewsManage" asp-action="AddNews" enctype="multipart/form-data">
+            
+                <div class="box-body row py-5 px-5">
+                    <div class="col-lg-10 px-5 pt-2">
+                        <strong class="mt-1">Tiêu đề</strong>
+                        <input type="text" class="nameInput mt-1" id="news-title" name="Title" placeholder="Tiêu đề bài viết" />
+                        <div class="text-danger nameErr px-2 py-1"></div>
+                    </div>
+                    <div class="col-lg-10 px-5 pt-2">
+                        <strong class="mt-1">Mô tả chi tiết</strong>
+                        <div id="editor" name="Description">Viết mô tả tại đây</div>
+                        <div class="text-danger descErr px-2 py-1"></div>
+                    </div>
+                    <div class="col-lg-10 px-5 pt-2">
+                        <strong class="mt-1">Thêm banner </strong>
+                        <input type="file" accept="image/*" id="banner-input" name="BannerFile" />
+                        <div class="text-danger bannerErr px-2 py-1"></div>
+                    </div>
+                    <div class="col-lg-6 px-5 pt-5 d-flex justify-content-around">
+                        <button type="submit" class="btn btn-success">Tạo mới</button>
+                        <a href="#" class="btn btn-danger">HỦY</a>
+                    </div>
+                    <div class="col-lg-6 px-5 pt-5" id="form-message"></div>
+            
+        </form>
+        <script>
+            ClassicEditor
+                .create(document.querySelector('#editor'))
+                .then(editor => {
+                    console.log(editor);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        </script>
     </div>
 </div>
