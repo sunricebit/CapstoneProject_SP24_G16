@@ -40,10 +40,9 @@
                 <div class="display-title d-flex justify-content-between">
                     <div>Người chơi</div>
                     <div class="d-flex align-items-center">
-                        <div class="step-two-nav" id="all-list">Danh sách (16)</div>
-                        <div class="step-two-nav active" id="request-list">Yêu cầu tham gia (3)</div>
-                        <div class="step-two-nav" id="member-list">Thành viên (120)</div>
-                        <div class="step-two-nav" id="system-list">Toàn hệ thống (500)</div>
+                        <a class="step-two-nav active" id="all-list" asp-controller="CreateTournament" asp-action="StepTwoPlayerList">Danh sách (16)</a>
+                        <a class="step-two-nav" id="request-list" asp-controller="CreateTournament" asp-action="StepTwoJoinList">Yêu cầu tham gia (3)</a>
+                        <a class="step-two-nav" id="system-list" asp-controller="CreateTournament" asp-action="StepTwoPlayerSystem">Toàn hệ thống (500)</a>
                     </div>
                 </div>
 

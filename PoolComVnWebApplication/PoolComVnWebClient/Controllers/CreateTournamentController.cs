@@ -80,15 +80,64 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult StepThreeAddTable()
+        public async Task<IActionResult> StepThreeAddTable()
         {
-            return View();
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            var response = await client.GetFromJsonAsync<IEnumerable<TableDTO>>("https://localhost:5000/api/Table/GetAllTablesForClub");
+            var listtable= response.ToList();
+            return View(listtable);
         }
 
         [HttpGet]
         public IActionResult StepFourAddBanner()
         {
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> StepFourAddBanner(IFormFile banner, int tourID)
+        {
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            var bannerContent = new MultipartFormDataContent();
+            try
+            {
+                var stream = new MemoryStream();
+                
+                    await banner.CopyToAsync(stream);
+                    stream.Seek(0, SeekOrigin.Begin);
+
+                    bannerContent.Add(new StreamContent(stream), "banner", banner.FileName);
+
+                  
+                
+
+                bannerContent.Add(new StringContent(tourID.ToString()), "tourID");
+
+                var response = await client.PostAsync(ApiUrl + "/CreateTourStFour", bannerContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    ViewBag.TourId = await response.Content.ReadFromJsonAsync<int>();
+                    return View("StepFiveArrange");
+                }
+                else
+                {
+                    var status = response.StatusCode;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+            finally
+            {
+                
+                bannerContent?.Dispose();
+            }
+
+            return RedirectToAction("InternalServerError", "Error");
         }
 
         [HttpGet]

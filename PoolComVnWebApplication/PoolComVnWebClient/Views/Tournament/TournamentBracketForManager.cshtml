@@ -123,11 +123,12 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="d-flex justify-content-center">
                 <div class="save-btn">
                     Lưu
                 </div>
             </div>
-
             <div class="score-board d-flex align-items-end ">
                 <div class="name-board">
                     <div class="board-line"><span>Nam Vũ</span></div>
@@ -240,12 +241,12 @@
                     + '</div>'
                     + '<div class="player-match col-8">'
                     + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src="Image/VietNamFlag.png"/>'
+                    + '<img src="/images/VietNamFlag.png"/>'
                     + '<!-- 15 char -->'
                     + '<div class="player-name">Vũ Hoài Nam</div>'
                     + '</div>'
                     + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src="Image/VietNamFlag.png"/>'
+                    + '<img src="/images/VietNamFlag.png"/>'
                     + '<!-- 15 char -->'
                     + '<div class="player-name">Vũ Hữu Quảng</div>'
                     + '</div>'
@@ -276,12 +277,12 @@
                     + '</div>'
                     + '<div class="player-match col-8">'
                     + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src="Image/VietNamFlag.png"/>'
+                    + '<img src="/images/VietNamFlag.png"/>'
                     + '<!-- 15 char -->'
                     + '<div class="player-name">Vũ Hoài Nam</div>'
                     + '</div>'
                     + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src="Image/VietNamFlag.png"/>'
+                    + '<img src="/images/VietNamFlag.png"/>'
                     + '<!-- 15 char -->'
                     + '<div class="player-name">Vũ Hữu Quảng</div>'
                     + '</div>'
@@ -322,12 +323,12 @@
                 + '</div>'
                 + '<div class="player-match col-8">'
                 + '<div class="d-flex justify-content-start align-items-center">'
-                + '<img src="Image/VietNamFlag.png"/>'
+                + '<img src="/images/VietNamFlag.png"/>'
                 + '<!-- 15 char -->'
                 + '<div class="player-name">Vũ Hoài Nam</div>'
                 + '</div>'
                 + '<div class="d-flex justify-content-start align-items-center">'
-                + '<img src="Image/VietNamFlag.png"/>'
+                + '<img src="/images/VietNamFlag.png"/>'
                 + '<!-- 15 char -->'
                 + '<div class="player-name">Vũ Hữu Quảng</div>'
                 + '</div>'
@@ -356,12 +357,12 @@
                 + '</div>'
                 + '<div class="player-match col-8">'
                 + '<div class="d-flex justify-content-start align-items-center">'
-                + '<img src="Image/VietNamFlag.png"/>'
+                + '<img src="/images/VietNamFlag.png"/>'
                 + '<!-- 15 char -->'
                 + '<div class="player-name">Vũ Hoài Nam</div>'
                 + '</div>'
                 + '<div class="d-flex justify-content-start align-items-center">'
-                + '<img src="Image/VietNamFlag.png"/>'
+                + '<img src="/images/VietNamFlag.png"/>'
                 + '<!-- 15 char -->'
                 + '<div class="player-name">Vũ Hữu Quảng</div>'
                 + '</div>'
@@ -398,12 +399,12 @@
                     + '</div>'
                     + '<div class="player-match col-8">'
                     + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src="Image/VietNamFlag.png"/>'
+                    + '<img src="/images/VietNamFlag.png"/>'
                     + '<!-- 15 char -->'
                     + '<div class="player-name">Vũ Hoài Nam</div>'
                     + '</div>'
                     + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src="Image/VietNamFlag.png"/>'
+                    + '<img src="/images/VietNamFlag.png"/>'
                     + '<!-- 15 char -->'
                     + '<div class="player-name">Vũ Hữu Quảng</div>'
                     + '</div>'
@@ -436,12 +437,12 @@
                     + '</div>'
                     + '<div class="player-match col-8">'
                     + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src="Image/VietNamFlag.png"/>'
+                    + '<img src="/images/VietNamFlag.png"/>'
                     + '<!-- 15 char -->'
                     + '<div class="player-name">Vũ Hoài Nam</div>'
                     + '</div>'
                     + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src="Image/VietNamFlag.png"/>'
+                    + '<img src="/images/VietNamFlag.png"/>'
                     + '<!-- 15 char -->'
                     + '<div class="player-name">Vũ Hữu Quảng</div>'
                     + '</div>'
@@ -565,6 +566,7 @@
     const containerBracket = document.querySelector('.container-bracket');
     const header = document.querySelector('header');
     const screenSize = document.querySelector('.screen-size');
+    const body = document.querySelector('body');
 
     function fullScreen() {
         containerBracket.classList.add('full-screen');
@@ -572,6 +574,14 @@
             + '<i class="fa-solid fa-compress"></i>'
             + '</button>';
         header.classList.add('d-none');
+
+        if (body.requestFullscreen) {
+            body.requestFullscreen();
+        } else if (body.webkitRequestFullscreen) { /* Safari */
+            body.webkitRequestFullscreen();
+        } else if (body.msRequestFullscreen) { /* IE11 */
+            body.msRequestFullscreen();
+        }
     }
 
     function minimized() {
@@ -580,49 +590,14 @@
             + '<i class="fa-solid fa-expand"></i>'
             + '</button>';
         header.classList.remove('d-none');
-    }
 
-    //Handle click choose table
-    const openTable = document.querySelector('.open-table');
-    const scheduleTable = document.querySelector('.schedule-table');
-
-    openTable.addEventListener('click', onOffSearchBox);
-    scheduleTable.addEventListener('click', onOffSearchBox);
-
-    function onOffSearchBox() {
-        if (this.querySelector('.search-box') === null) {
-            removeSearchBox();
-            this.appendChild(createSearchBox());
-        } else {
-            removeSearchBox();
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+            document.msExitFullscreen();
         }
-    }
-
-    function createSearchBox() {
-        var searchBox = document.createElement('div');
-        searchBox.classList.add('search-box');
-
-        var input = document.createElement('input');
-        input.setAttribute('type', 'text');
-        input.addEventListener('click', handleInput);
-        searchBox.appendChild(input);
-
-        for (var i = 0; i < 3; i++) {
-            var playerContainer = document.createElement('div');
-            playerContainer.classList.add('player-name');
-
-            var span = document.createElement('span');
-            span.textContent = 'Bàn' + (i + 1);
-            playerContainer.appendChild(span);
-
-            searchBox.appendChild(playerContainer);
-            searchBox.addEventListener('click', (e) => {
-                e.stopPropagation();
-                removeSearchBox();
-            })
-        }
-
-        return searchBox;
     }
 
     //Handle input
