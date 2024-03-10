@@ -80,9 +80,13 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult StepThreeAddTable()
+        public async Task<IActionResult> StepThreeAddTable()
         {
-            return View();
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            var response = await client.GetFromJsonAsync<IEnumerable<TableDTO>>("https://localhost:5000/api/Table/GetAllTablesForClub");
+            var listtable= response.ToList();
+            return View(listtable);
         }
 
         [HttpGet]

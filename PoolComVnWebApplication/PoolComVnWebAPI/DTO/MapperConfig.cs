@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class MapperConfig:Profile
+    public class MapperConfig : Profile
     {
         public MapperConfig()
         {
@@ -61,6 +61,28 @@ namespace DataAccess
                 .ForMember(dest => dest.PlayerName, opt => opt.MapFrom(src => src.PlayerName))
                 .ForMember(dest => dest.Level, opt => opt.MapFrom(src => src.Level));
 
+            //Mapper for Table
+            CreateMap<Table, TableDTO>()
+                .ForMember(dest => dest.TableId, opt => opt.MapFrom(src => src.TableId))
+                .ForMember(dest => dest.TableName, opt => opt.MapFrom(src => src.TableName))
+                .ForMember(dest => dest.ClubId, opt => opt.MapFrom(src => src.ClubId))
+                .ForMember(dest => dest.TagName, opt => opt.MapFrom(src => src.TagName))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+                .ForMember(dest => dest.Size, opt => opt.MapFrom(src => src.Size))
+                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Image))
+                .ForMember(dest => dest.IsScheduling, opt => opt.MapFrom(src => src.IsScheduling))
+                .ForMember(dest => dest.IsUseInTour, opt => opt.MapFrom(src => src.IsUseInTour));
+
+            CreateMap<TableDTO, Table>()
+                .ForMember(dest => dest.TableId, opt => opt.MapFrom(src => src.TableId))
+                .ForMember(dest => dest.TableName, opt => opt.MapFrom(src => src.TableName))
+                .ForMember(dest => dest.ClubId, opt => opt.MapFrom(src => src.ClubId))
+                .ForMember(dest => dest.TagName, opt => opt.MapFrom(src => src.TagName))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+                .ForMember(dest => dest.Size, opt => opt.MapFrom(src => src.Size))
+                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Image))
+                .ForMember(dest => dest.IsScheduling, opt => opt.MapFrom(src => src.IsScheduling))
+                .ForMember(dest => dest.IsUseInTour, opt => opt.MapFrom(src => src.IsUseInTour));
         }
     }
 }
