@@ -16,5 +16,7 @@ namespace PoolComVnWebAPI.DTO
         public string? CountryName { get; set; }
         public int? Level { get; set; }
         public string? PhoneNumber { get; set; }
+        public string? Email { get; set; }
+        public bool? IsPayed { get; set; }
     }
 }

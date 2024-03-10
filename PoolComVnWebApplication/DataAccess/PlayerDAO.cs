@@ -17,7 +17,6 @@ namespace DataAccess
             _context = context;
         }
 
-        // CREATE
         public void AddPlayer(Player player)
         {
             if (player == null)
@@ -29,20 +28,20 @@ namespace DataAccess
             _context.SaveChanges();
         }
 
-        // READ
+       
         public Player GetPlayerById(int playerId)
         {
             return _context.Players.Find(playerId);
         }
 
-        // READ
+       
         public Player GetPlayerByName(string playerName)
         {
             return _context.Players.FirstOrDefault(p => p.PlayerName == playerName);
         }
 
 
-        //Get all
+        
         public List<Player> GetAllPlayers()
         {
             return _context.Players.Include(player => player.User)
@@ -51,7 +50,7 @@ namespace DataAccess
                 .ToList();
         }
 
-        //update
+        
         public void UpdatePlayer(Player updatedPlayer)
         {
             if (updatedPlayer == null)
@@ -77,12 +76,12 @@ namespace DataAccess
             }
             else
             {
-                // Handle the case where the player with the given ID doesn't exist
+                
                 throw new ArgumentException($"Player with ID {updatedPlayer.PlayerId} not found");
             }
         }
 
-        //Delete
+        
         public void DeletePlayer(int playerId)
         {
             var playerToDelete = _context.Players.Find(playerId);
@@ -94,7 +93,7 @@ namespace DataAccess
             }
             else
             {
-                // Handle the case where the player with the given ID doesn't exist
+                
                 throw new ArgumentException($"Player with ID {playerId} not found");
             }
         }
