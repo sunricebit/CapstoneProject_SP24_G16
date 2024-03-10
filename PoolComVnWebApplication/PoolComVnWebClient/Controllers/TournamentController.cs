@@ -17,8 +17,17 @@ namespace PoolComVnWebClient.Controllers
             ApiUrl = ApiUrl + "/Tournament";
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> TournamentDetail(int tourId)
         {
+            
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Tournament()
+        {
+
             return View();
         }
 

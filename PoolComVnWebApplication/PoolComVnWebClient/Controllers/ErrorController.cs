@@ -4,19 +4,19 @@ namespace PoolComVnWebClient.Controllers
 {
     public class ErrorController : Controller
     {
-        [HttpGet("NotAccess")]
+        [HttpGet]
         public IActionResult NotAccess()
         {
             return View();
         }
 
-        [HttpGet("404")]
+        [HttpGet]
         public IActionResult NotFound()
         {
             return View();
         }
 
-        [HttpGet("InternalServerError")]
+        [HttpGet]
         public IActionResult InternalServerError(string message)
         {
             ViewBag.ErrorMessage = message;

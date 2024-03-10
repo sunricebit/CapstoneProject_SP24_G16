@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +49,7 @@ namespace DataAccess
         {
             try
             {
-                var tournaments = _context.Tournaments;
+                var tournaments = _context.Tournaments.Include(t => t.Club);
                 return tournaments;
             }
             catch (Exception e)
