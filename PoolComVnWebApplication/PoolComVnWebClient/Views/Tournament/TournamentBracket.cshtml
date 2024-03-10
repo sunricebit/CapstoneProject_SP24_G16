@@ -10,6 +10,11 @@
         </div>
     </div>
     <div class="zoom-btns">
+        <div class="screen-size">
+            <button class="zoom-in" onclick="fullScreen()">
+                <i class="fa-solid fa-expand"></i>
+            </button>
+        </div>
         <div>
             <button class="zoom-in" onclick="zoomIn()">
                 <i class="fa-solid fa-plus"></i>
@@ -22,7 +27,7 @@
         </div>
     </div>
 </div>
-<div class="match-display d-flex justify-content-center align-items-center">
+<div class="match-display d-flex justify-content-center align-items-center d-none">
     <div class="match-detail ">
         <div class="match-header d-flex justify-content-between">
             <div class="match-title">
@@ -399,7 +404,7 @@
         bracketTab.scrollLeft = loseMatchBody.offsetWidth - window.innerWidth / 2 + 125;
     }
 
-    let currentZoom = 1;
+    let currentZoom = 0.6;
 
     let winerWidth;
     let loserWidth;
@@ -444,9 +449,9 @@
         centerPosition();
     }
 
+    const matchDisplay = document.querySelector('.match-display');
 
     function scrollToElement(elementId) {
-        const matchDisplay = document.querySelector('.match-display');
         matchDisplay.classList.add('d-none');
 
         // Get the element to scroll to by its ID
@@ -485,5 +490,57 @@
             element.classList.remove('flashing');
         }, 3500);
     }
+
+    //Handle full screen
+    const containerBracket = document.querySelector('.container-bracket');
+    const header = document.querySelector('header');
+    const screenSize = document.querySelector('.screen-size');
+    const body = document.querySelector('body');
+
+    function fullScreen() {
+        containerBracket.classList.add('full-screen');
+        screenSize.innerHTML = '<button class="zoom-in" onclick="minimized()">'
+            + '<i class="fa-solid fa-compress"></i>'
+            + '</button>';
+        header.classList.add('d-none');
+
+        if (body.requestFullscreen) {
+            body.requestFullscreen();
+        } else if (body.webkitRequestFullscreen) { /* Safari */
+            body.webkitRequestFullscreen();
+        } else if (body.msRequestFullscreen) { /* IE11 */
+            body.msRequestFullscreen();
+        }
+    }
+
+    function minimized() {
+        containerBracket.classList.remove('full-screen');
+        screenSize.innerHTML = '<button class="zoom-in" onclick="fullScreen()">'
+            + '<i class="fa-solid fa-expand"></i>'
+            + '</button>';
+        header.classList.remove('d-none');
+
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+            document.msExitFullscreen();
+        }
+    }
+
+    //close popup
+    const popup = document.querySelector('.match-close');
+    popup.addEventListener('click', () => {
+        matchDisplay.classList.add('d-none');
+    })
+
+    //open popup
+    const matchBoxList = document.querySelectorAll('.match-box');
+    matchBoxList.forEach(element => {
+        element.addEventListener('click', () => {
+            matchDisplay.classList.remove('d-none');
+        })
+    });
 
 </script>
