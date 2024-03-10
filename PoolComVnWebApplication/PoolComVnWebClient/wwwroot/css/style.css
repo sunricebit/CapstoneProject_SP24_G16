@@ -2902,6 +2902,15 @@ footer {
         background: #648fc0;
     }
 
+/* stepThreeAddTable.html */
+.create-tour .table-overflow td img {
+    height: 68px;
+    padding: 5px;
+    background-position: center center;
+    background-size: cover;
+    margin: 0;
+}
+
 .upload-img {
     border: dashed 5px #fff;
     width: 500px;
@@ -3511,6 +3520,64 @@ footer {
 
         .match-display .edit-table .search-box .player-name:hover {
             cursor: pointer;
+        }
+
+/* errorPage.html */
+.error-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+    .error-page .error-content {
+        width: 500px;
+    }
+
+    .error-page .error-icon {
+        text-align: center;
+        color: #ce0c0c;
+        font-size: 100px;
+    }
+
+    .error-page .error-title {
+        font-size: 28px;
+        font-weight: 900;
+        color: #fff;
+        text-align: center;
+        text-shadow: 0px 0px 5px #000;
+    }
+
+    .error-page .error-description {
+        font-size: 18px;
+        font-weight: 600;
+        text-align: center;
+        margin: 20px 0;
+        color: #fff;
+        text-shadow: 0px 0px 5px #000;
+    }
+
+    .error-page .home-btn {
+        width: 200px;
+        height: 50px;
+        background: #41f3c1;
+        border-radius: 20px;
+        text-align: center;
+        line-height: 50px;
+        color: #000;
+        font-weight: 600;
+        box-shadow: 0 0 1px 3px #35a9e8;
+    }
+
+        .error-page .home-btn:hover {
+            background: #62d7ef;
+            font-size: 18px;
+            transition: font-size 0.2s ease;
         }
 
 /* Mobile: width <740px */
