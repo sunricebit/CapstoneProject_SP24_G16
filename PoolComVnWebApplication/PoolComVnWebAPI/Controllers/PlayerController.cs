@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using BusinessObject.Models;
 using DataAccess;
+using DataAccess.DTO;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 using PoolComVnWebAPI.DTO;
 using System.Collections.Generic;
+using System.Data;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace PoolComVnWebAPI.Controllers
 {
@@ -26,15 +29,32 @@ namespace PoolComVnWebAPI.Controllers
         public ActionResult<IEnumerable<PlayerDTO>> Get()
         {
             var players = _playerDAO.GetAllPlayers();
-            var playersDto = _mapper.Map<List<PlayerDTO>>(players);
-            return Ok(playersDto);
+
+            // Modify the PhoneNumber property using foreach loop
+            foreach (var playerDto in players)
+            {
+                if (playerDto.User != null && playerDto.User.Account != null)
+                {
+                    playerDto.PhoneNumber = playerDto.User.Account.PhoneNumber;
+                }
+            }
+
+            return Ok(players.Select(player => new PlayerDTO
+            {
+                PlayerId = player.PlayerId,
+                PlayerName = player.PlayerName,
+                CountryName = player.Country?.CountryName,
+                PhoneNumber = player.PhoneNumber, // Use the modified PhoneNumber property
+                Level = player.Level,
+            }));
         }
 
-        // GET: api/Player/5
-        [HttpGet("{id}")]
-        public ActionResult<PlayerDTO> Get(int id)
+
+        // GET: api/Player/GetByName/{name}
+        [HttpGet("GetByName/{name}")]
+        public ActionResult<PlayerDTO> GetByName(string name)
         {
-            var player = _playerDAO.GetPlayerById(id);
+            var player = _playerDAO.GetPlayerByName(name);
 
             if (player == null)
             {
@@ -46,7 +66,7 @@ namespace PoolComVnWebAPI.Controllers
         }
 
         // POST: api/Player
-        [HttpPost]
+        [HttpGet("AddPlayer")]
         public IActionResult Post([FromBody] PlayerDTO playerDto)
         {
             if (playerDto == null)
@@ -61,11 +81,12 @@ namespace PoolComVnWebAPI.Controllers
 
             _playerDAO.AddPlayer(player);
 
-            return CreatedAtAction(nameof(Get), new { id = player.PlayerId }, playerDto);
+            var createdPlayerDto = _mapper.Map<PlayerDTO>(player);
+            return CreatedAtAction(nameof(Get), new { id = createdPlayerDto.PlayerId }, createdPlayerDto);
         }
 
         // PUT: api/Player/5
-        [HttpPut("{id}")]
+        [HttpGet("Update/{id}")]
         public IActionResult Put(int id, [FromBody] PlayerDTO updatedPlayerDto)
         {
             if (updatedPlayerDto == null)
@@ -80,10 +101,12 @@ namespace PoolComVnWebAPI.Controllers
                 return NotFound();
             }
 
-            // Use the PlayerDTO properties to update the existingPlayer
+            // Update the existingPlayer with properties from updatedPlayerDto
             existingPlayer.PlayerName = updatedPlayerDto.PlayerName;
-        
             existingPlayer.Level = updatedPlayerDto.Level;
+
+            // Assuming User and Account are not null
+            existingPlayer.User.Account.PhoneNumber = updatedPlayerDto.PhoneNumber;
 
             // Update the existing entity
             _playerDAO.UpdatePlayer(existingPlayer);
@@ -92,7 +115,7 @@ namespace PoolComVnWebAPI.Controllers
         }
 
         // DELETE: api/Player/5
-        [HttpDelete("{id}")]
+        [HttpGet("Delete/{id}")]
         public IActionResult Delete(int id)
         {
             var player = _playerDAO.GetPlayerById(id);
@@ -109,8 +132,9 @@ namespace PoolComVnWebAPI.Controllers
 
         // POST: api/Player/ImportExcel
         [HttpPost("ImportExcel")]
-        public IActionResult ImportExcel(IFormFile file)
+        public IActionResult ImportPlayers(IFormFile file)
         {
+
             try
             {
                 if (file == null || file.Length <= 0)
@@ -118,8 +142,8 @@ namespace PoolComVnWebAPI.Controllers
                     return BadRequest("Invalid file.");
                 }
 
-                // Check file extension
                 var fileExtension = Path.GetExtension(file.FileName)?.ToLower();
+
                 if (fileExtension == ".xls" || fileExtension == ".xlsx")
                 {
                     // Handle Excel file
@@ -131,81 +155,104 @@ namespace PoolComVnWebAPI.Controllers
                         for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
                         {
                             var playerName = worksheet.Cells[row, 1].Text?.Trim();
-                            var accountIDText = worksheet.Cells[row, 2].Text?.Trim();
-                            var level = worksheet.Cells[row, 3].Text?.Trim();
+                            var countryName = worksheet.Cells[row, 2].Text?.Trim();
+                            var phoneNumber = worksheet.Cells[row, 3].Text?.Trim();
+                            var levelText = worksheet.Cells[row, 4].Text?.Trim();
 
-                            if (string.IsNullOrEmpty(playerName) || string.IsNullOrEmpty(accountIDText) || string.IsNullOrEmpty(level))
+                            if (string.IsNullOrEmpty(playerName) || string.IsNullOrEmpty(countryName) ||
+                                string.IsNullOrEmpty(phoneNumber) || string.IsNullOrEmpty(levelText))
                             {
                                 // Log or handle missing data
                                 continue;
                             }
 
-                            if (!int.TryParse(accountIDText, out int accountID))
+                            if (!int.TryParse(levelText, out int level))
                             {
-                                // Log or handle invalid AccountID format
+                                // Log or handle invalid level format
                                 continue;
                             }
 
-                            var player = new Player
+                            var player = new PlayerDTO
                             {
                                 PlayerName = playerName,
-                                
-                                Level = int.Parse(level)
+                                CountryName = countryName,
+                                PhoneNumber = phoneNumber,
+                                Level = level
                             };
 
-                            _playerDAO.AddPlayer(player);
-                        }
-                    }
-                }
-                else if (fileExtension == ".csv")
-                {
-                    // Handle CSV file
-                    using (var reader = new StreamReader(file.OpenReadStream()))
-                    {
-                        // Skip header row
-                        reader.ReadLine();
-
-                        while (!reader.EndOfStream)
-                        {
-                            var line = reader.ReadLine();
-                            var values = line.Split(',');
-
-                            var playerName = values[0]?.Trim();
-                            var accountIDText = values[1]?.Trim();
-                            var level = values[2]?.Trim();
-
-                            if (string.IsNullOrEmpty(playerName) || string.IsNullOrEmpty(accountIDText) || string.IsNullOrEmpty(level))
-                            {
-                                // Log or handle missing data
-                                continue;
-                            }
-
-                            if (!int.TryParse(accountIDText, out int accountID))
-                            {
-                                // Log or handle invalid AccountID format
-                                continue;
-                            }
-
-                            var player = new Player
-                            {
-                                PlayerName = playerName,
-                            
-                                Level = int.Parse(level)
-                            };
-
-                            _playerDAO.AddPlayer(player);
+                            _playerDAO.AddPlayersFromExcel(new List<PlayerDTO> { player });
                         }
                     }
                 }
                 else
                 {
-                    return BadRequest("Unsupported file format. Please upload a valid Excel (.xls, .xlsx) or CSV file.");
+                    return BadRequest("Unsupported file format. Please upload a valid Excel (.xls, .xlsx) file.");
                 }
 
                 return Ok("Data imported successfully.");
             }
+            catch (IOException ex)
+            {
+                // Log or handle file-related exceptions
+                return BadRequest($"Error reading the file: {ex.Message}");
+            }
             catch (Exception ex)
             {
+                // Log or handle other exceptions
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+        // GET: api/Player/DownloadTemplate
+        [HttpGet("DownloadTemplate")]
+        public IActionResult DownloadTemplate()
+        {
+            try
+            {
+                // Thiết lập LicenseContext cho EPPlus
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+                // Tạo một MemoryStream để lưu trữ dữ liệu Excel
+                using (var stream = new MemoryStream())
+                {
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        // Tạo một worksheet và thiết lập các tiêu đề cột
+                        var worksheet = package.Workbook.Worksheets.Add("PlayerTemplate");
+
+                        // Thiết lập màu nền và màu chữ cho hàng tiêu đề
+                        var headerCells = worksheet.Cells["A1:D1"];
+                        headerCells.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        headerCells.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(0, 128, 0)); // Màu xanh
+                        headerCells.Style.Font.Color.SetColor(System.Drawing.Color.White); // Màu chữ trắng
+
+                        // Thiết lập các tiêu đề cột
+                        worksheet.Cells["A1"].Value = "Tên";
+                        worksheet.Cells["B1"].Value = "Quốc Gia";
+                        worksheet.Cells["C1"].Value = "Số Điện Thoại";
+                        worksheet.Cells["D1"].Value = "Hạng";
+
+                        // Thêm dòng ví dụ
+                        worksheet.Cells["A2"].Value = "Nguyễn Văn A";
+                        worksheet.Cells["B2"].Value = "Việt Nam";
+                        worksheet.Cells["C2"].Value = "123456789";
+                        worksheet.Cells["D2"].Value = 1;
+
+                        worksheet.Cells["A3"].Value = "Alex josh";
+                        worksheet.Cells["B3"].Value = "Russia";
+                        worksheet.Cells["C3"].Value = "987654321";
+                        worksheet.Cells["D3"].Value = 2;
+
+                        // Lưu trữ workbook và trả về dữ liệu như là một File Content Result
+                        package.Save(); // Lưu trước khi đọc từ MemoryStream
+                        var content = stream.ToArray();
+                        return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "PlayerTemplate.xlsx");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về lỗi nếu cần
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
         }
