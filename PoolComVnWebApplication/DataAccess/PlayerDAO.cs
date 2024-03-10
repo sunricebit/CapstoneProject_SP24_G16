@@ -12,7 +12,7 @@ namespace DataAccess
     public class PlayerDAO
     {
         private readonly poolcomvnContext _context;
-
+        public List<PlayerDTO> ProcessedPlayers { get; set; } = new List<PlayerDTO>();
         public PlayerDAO(poolcomvnContext context)
         {
             _context = context;
@@ -123,15 +123,16 @@ namespace DataAccess
                         continue;
                     }
 
-                    var player = new Player
+                    var processedPlayer = new PlayerDTO
                     {
                         PlayerName = playerName,
-                        CountryId = GetCountryIdByName(countryName),
+                        CountryName = countryName,
                         PhoneNumber = phoneNumber,
                         Level = parsedLevel
                     };
 
-                    AddPlayer(player);
+                    // Add the processed player to the collection
+                    ProcessedPlayers.Add(processedPlayer);
                 }
                 catch (Exception ex)
                 {
@@ -139,13 +140,8 @@ namespace DataAccess
                 }
             }
 
-            _context.SaveChanges();
         }
 
-        private int? GetCountryIdByName(string countryName)
-        {
-            return _context.Countries.FirstOrDefault(c => c.CountryName == countryName)?.CountryId;
-        }
         public IEnumerable<Player> GetPlayersByTournament(int tourId)
         {
             try
