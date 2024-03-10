@@ -102,5 +102,39 @@ namespace PoolComVnWebAPI.Controllers
                 throw e;
             }
         }
+
+        [HttpGet("GetAllTour")]
+        public IActionResult GetAllTour()
+        {
+            try
+            {
+                List<TournamentOutputDTO> allTourDto = new List<TournamentOutputDTO>();
+                var allTourLst = _tournamentDAO.GetAllTournament();
+                foreach(var item in allTourLst)
+                {
+                    TournamentOutputDTO tour = new TournamentOutputDTO()
+                    {
+                        TournamentId = item.TourId,
+                        TournamentName = item.TourName,
+                        StartTime = item.StartDate,
+                        EndTime = item.EndDate,
+                        Address = item.Club.Address,
+                        ClubName = item.Club.ClubName,
+                        Description = item.Description,
+                        GameType = item.GameTypeId == Constant.Game8Ball ? Constant.String8Ball 
+                                    : (item.GameTypeId == Constant.Game9Ball ? Constant.String9Ball : Constant.String10Ball),
+                        Status = item.Status,
+                        Flyer = item.Flyer,
+                    };
+                    allTourDto.Add(tour);
+                }
+                return Ok(allTourDto);
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
     }
 }
