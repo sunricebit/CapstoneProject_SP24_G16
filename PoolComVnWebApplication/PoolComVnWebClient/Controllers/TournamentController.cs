@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Mvc;
+using PoolComVnWebClient.DTO;
 using PoolComVnWebClient.Common;
+using System.Collections.Generic;
 using System.Net.Http.Headers;
 
 namespace PoolComVnWebClient.Controllers
@@ -17,9 +20,30 @@ namespace PoolComVnWebClient.Controllers
             ApiUrl = ApiUrl + "/Tournament";
         }
 
-        public IActionResult Index()
+        [HttpGet("{tourId}")]
+        public async Task<IActionResult> TournamentDetail(int tourId)
         {
+            
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TournamentList()
+        {
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            var response = await client.GetAsync(ApiUrl + "/GetAllTour");
+            if (response.IsSuccessStatusCode)
+            {
+                List<TournamentOutputDTO> lstTour = await response.Content.ReadFromJsonAsync<List<TournamentOutputDTO>>();
+                return View(lstTour);
+            }
+            else
+            {
+                var status = response.StatusCode;
+            }
+
+            return RedirectToAction("InternalServerError", "Error");
         }
 
         public IActionResult TournamentBracket()
@@ -42,6 +66,15 @@ namespace PoolComVnWebClient.Controllers
             return View();
         }
 
+        //Tournament detail for club and manage of club
+        public IActionResult TournamentDetailForManager()
+        {
+            return View();
+        }
+
+        public IActionResult TournamentBracketForManager() {
+            return View();
+        }
         //[HttpPost("/Create")]
         //public
     }

@@ -1,5 +1,7 @@
 ﻿using BusinessObject.Models;
+using DataAccess.DTO;
 using ExcelDataReader;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,7 +12,7 @@ namespace DataAccess
     public class PlayerDAO
     {
         private readonly poolcomvnContext _context;
-
+        public List<PlayerDTO> ProcessedPlayers { get; set; } = new List<PlayerDTO>();
         public PlayerDAO(poolcomvnContext context)
         {
             _context = context;
@@ -34,12 +36,23 @@ namespace DataAccess
             return _context.Players.Find(playerId);
         }
 
-        public List<Player> GetAllPlayers()
+        // READ
+        public Player GetPlayerByName(string playerName)
         {
-            return _context.Players.ToList();
+            return _context.Players.FirstOrDefault(p => p.PlayerName == playerName);
         }
 
-        // UPDATE
+
+        //Get all
+        public List<Player> GetAllPlayers()
+        {
+            return _context.Players.Include(player => player.User)
+                    .ThenInclude(user => user.Account)
+                .Include(player => player.Country)
+                .ToList();
+        }
+
+        //update
         public void UpdatePlayer(Player updatedPlayer)
         {
             if (updatedPlayer == null)
@@ -51,9 +64,15 @@ namespace DataAccess
 
             if (existingPlayer != null)
             {
+                // Update player properties
                 existingPlayer.PlayerName = updatedPlayer.PlayerName;
-               
                 existingPlayer.Level = updatedPlayer.Level;
+
+                // If User and Account properties are not null, update them
+                if (updatedPlayer.User != null && updatedPlayer.User.Account != null)
+                {
+                    existingPlayer.User.Account.PhoneNumber = updatedPlayer.User.Account.PhoneNumber;
+                }
 
                 _context.SaveChanges();
             }
@@ -64,7 +83,7 @@ namespace DataAccess
             }
         }
 
-        // DELETE
+        //Delete
         public void DeletePlayer(int playerId)
         {
             var playerToDelete = _context.Players.Find(playerId);
@@ -81,50 +100,46 @@ namespace DataAccess
             }
         }
 
-        // IMPORT PLAYERS FROM EXCEL
-        public void ImportPlayersFromExcel(Stream stream)
+        public void AddPlayersFromExcel(IEnumerable<PlayerDTO> playerDtos)
         {
-            using (var reader = ExcelReaderFactory.CreateReader(stream))
+            foreach (var playerDto in playerDtos)
             {
-                // Skip the header row
-                reader.Read();
-
-                while (reader.Read())
+                try
                 {
-                    try
+                    var playerName = playerDto.PlayerName?.Trim();
+                    var countryName = playerDto.CountryName?.Trim();
+                    var phoneNumber = playerDto.PhoneNumber?.Trim();
+                    var level = playerDto.Level.ToString(); // Convert level to string
+
+                    if (string.IsNullOrEmpty(playerName) || string.IsNullOrEmpty(countryName) ||
+                        string.IsNullOrEmpty(phoneNumber) || string.IsNullOrEmpty(level))
                     {
-                        var playerName = reader.GetString(0)?.Trim();
-                        var accountIDText = reader.GetString(1)?.Trim();
-                        var level = reader.GetString(2)?.Trim();
-
-                        if (string.IsNullOrEmpty(playerName) || string.IsNullOrEmpty(accountIDText) || string.IsNullOrEmpty(level))
-                        {
-                            continue;
-                        }
-
-                        if (!int.TryParse(accountIDText, out int accountID))
-                        {
-                            continue;
-                        }
-
-                        var player = new Player
-                        {
-                            PlayerName = playerName,
-                            
-                            Level = int.Parse(level)
-                        };
-
-                        _context.Players.Add(player);
+                        continue;
                     }
-                    catch (Exception ex)
+
+                    if (!int.TryParse(level, out int parsedLevel))
                     {
-                        Console.WriteLine($"Error processing row: {ex.Message}");
+                        Console.WriteLine($"Invalid level format for player {playerName}. Skipping.");
+                        continue;
                     }
+
+                    var processedPlayer = new PlayerDTO
+                    {
+                        PlayerName = playerName,
+                        CountryName = countryName,
+                        PhoneNumber = phoneNumber,
+                        Level = parsedLevel
+                    };
+
+                    // Add the processed player to the collection
+                    ProcessedPlayers.Add(processedPlayer);
                 }
-
-                // Save changes after processing all rows
-                _context.SaveChanges();
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error processing row: {ex.Message}");
+                }
             }
+
         }
 
         public IEnumerable<Player> GetPlayersByTournament(int tourId)
