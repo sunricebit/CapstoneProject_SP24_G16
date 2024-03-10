@@ -23,12 +23,12 @@ public class AccountController : ControllerBase
             // Use LINQ to project each Account to AccountDTO
             var allAccountDTOs = allAccounts.Select(account => new AccountDTO
             {
-                AccountID = account.AccountID,
+                AccountID = account.AccountId,
                 Email = account.Email,
                 Password = account.Password,
-                RoleID = account.RoleID,
+                RoleID = account.RoleId,
                 PhoneNumber = account.PhoneNumber,
-                verifyCode = account.verifyCode,
+                verifyCode = account.VerifyCode,
                 Status = account.Status
                 // Map other properties as needed
             });
@@ -57,12 +57,12 @@ public class AccountController : ControllerBase
             // Map Account to AccountDTO
             var accountDTO = new AccountDTO
             {
-                AccountID = account.AccountID,
+                AccountID = account.AccountId,
                 Email = account.Email,
                 Password = account.Password,
-                RoleID = account.RoleID,
+                RoleID = account.RoleId,
                 PhoneNumber = account.PhoneNumber,
-                verifyCode = account.verifyCode,
+                verifyCode = account.VerifyCode,
                 Status = account.Status
                 // Map other properties as needed
             };
@@ -84,12 +84,12 @@ public class AccountController : ControllerBase
             var account = new Account
             {
                 // Map properties from DTO to entity
-                AccountID = accountDTO.AccountID,
+                AccountId = accountDTO.AccountID,
                 Email = accountDTO.Email,
                 Password = accountDTO.Password,
-                RoleID = accountDTO.RoleID,
+                RoleId = accountDTO.RoleID,
                 PhoneNumber = accountDTO.PhoneNumber,
-                verifyCode = accountDTO.verifyCode,
+                VerifyCode = accountDTO.verifyCode,
                 Status = accountDTO.Status
             };
 
@@ -100,12 +100,12 @@ public class AccountController : ControllerBase
             var createdAccountDTO = new AccountDTO
             {
                 // Map properties from entity to DTO
-                AccountID = account.AccountID,
+                AccountID = account.AccountId,
                 Email = account.Email,
                 Password = account.Password,
-                RoleID = account.RoleID,
+                RoleID = account.RoleId,
                 PhoneNumber = account.PhoneNumber,
-                verifyCode = account.verifyCode,
+                verifyCode = account.VerifyCode,
                 Status = account.Status
             };
 
@@ -130,12 +130,12 @@ public class AccountController : ControllerBase
             // Map AccountDTO to Account
             var updatedAccount = new Account
             {
-                AccountID = updatedAccountDTO.AccountID,
+                AccountId = updatedAccountDTO.AccountID,
                 Email = updatedAccountDTO.Email,
                 Password = updatedAccountDTO.Password,
-                RoleID = updatedAccountDTO.RoleID,
+                RoleId = updatedAccountDTO.RoleID,
                 PhoneNumber = updatedAccountDTO.PhoneNumber,
-                verifyCode = updatedAccountDTO.verifyCode,
+                VerifyCode = updatedAccountDTO.verifyCode,
                 Status = updatedAccountDTO.Status
                 // Map other properties as needed
             };

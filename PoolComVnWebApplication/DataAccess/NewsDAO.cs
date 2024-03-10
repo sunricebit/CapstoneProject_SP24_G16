@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class PostDAO
+    public class NewsDAO
     {
-        private readonly PoolComContext _context;
-        public PostDAO(PoolComContext context)
+        private readonly poolcomvnContext _context;
+        public NewsDAO(poolcomvnContext context)
         {
             _context = context;
         }
@@ -40,12 +40,12 @@ namespace DataAccess
             try
             {
                 return _context.News
-                    .Include(n => n.Account)
-                    .FirstOrDefault(n => n.NewsID == newsId);
+                    .Include(n => n.Acc)
+                    .FirstOrDefault(n => n.NewsId == newsId);
             }
             catch (Exception ex)
             {
-                // Xử lý lỗi nếu cần thiết
+               
                 throw new Exception($"Error while retrieving news with ID {newsId}.", ex);
             }
         }
@@ -54,12 +54,12 @@ namespace DataAccess
             try
             {
                 return _context.News
-                    .Include(n => n.Account)
+                    .Include(n => n.Acc)
                     .ToList();
             }
             catch (Exception ex)
             {
-                // Xử lý lỗi nếu cần thiết
+               
                 throw new Exception("Error while retrieving all news.", ex);
             }
         }
@@ -80,7 +80,7 @@ namespace DataAccess
                 throw new ArgumentException("Updated news description cannot be null or empty", nameof(updatedNews.Description));
             }
 
-            var existingNews = _context.News.Find(updatedNews.NewsID);
+            var existingNews = _context.News.FirstOrDefault(u => u.NewsId == updatedNews.NewsId);
 
             if (existingNews != null)
             {
@@ -91,6 +91,11 @@ namespace DataAccess
                 _context.SaveChanges();
             }
         }
+        public Account GetAccount(int AccID)
+        {
+            var account = _context.Accounts.FirstOrDefault(a => a.AccountId == AccID);
+            return account;
+        }
         public void DeleteNews(int newsId)
         {
             if (newsId <= 0)
@@ -98,7 +103,7 @@ namespace DataAccess
                 throw new ArgumentException("News ID must be greater than 0", nameof(newsId));
             }
 
-            var newsToDelete = _context.News.Find(newsId);
+            var newsToDelete = _context.News.FirstOrDefault(u => u.NewsId == newsId);
 
             if (newsToDelete != null)
             {

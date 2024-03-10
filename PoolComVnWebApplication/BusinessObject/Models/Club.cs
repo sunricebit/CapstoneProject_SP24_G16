@@ -1,25 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    public class Club
+    public partial class Club
     {
-        [Key]
-        [Required]
+        public Club()
+        {
+            Accounts = new HashSet<Account>();
+            ClubPosts = new HashSet<ClubPost>();
+            SoloMatches = new HashSet<SoloMatch>();
+            Tables = new HashSet<Table>();
+            Tournaments = new HashSet<Tournament>();
+        }
+
         public int ClubId { get; set; }
-        [Required]
-        public string ClubName { get; set; }
-        [Required]
-        public string Address { get; set; }
-        public string Phone { get; set; }
-        public string Facebook { get; set; }
+        public string ClubName { get; set; } = null!;
+        public string Address { get; set; } = null!;
+        public string Phone { get; set; } = null!;
+        public string Facebook { get; set; } = null!;
         public string? Avatar { get; set; }
-        public virtual List<ClubPost>? ClubPost { get; set; }
-        public virtual List<SoloMatch>? SoloMatches { get; set; }
+        public int? AccountId { get; set; }
+
+        public virtual Account? Account { get; set; }
+        public virtual ICollection<Account> Accounts { get; set; }
+        public virtual ICollection<ClubPost> ClubPosts { get; set; }
+        public virtual ICollection<SoloMatch> SoloMatches { get; set; }
+        public virtual ICollection<Table> Tables { get; set; }
+        public virtual ICollection<Tournament> Tournaments { get; set; }
     }
 }

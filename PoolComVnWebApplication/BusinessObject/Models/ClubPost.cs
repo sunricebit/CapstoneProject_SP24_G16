@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    public class ClubPost
+    public partial class ClubPost
     {
-        [Key]
-        public int PostID { get; set; }
-        public int ClubID { get; set; }
-        public virtual Club Club { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
+        public int PostId { get; set; }
+        public int ClubId { get; set; }
+        public string Title { get; set; } = null!;
+        public string Description { get; set; } = null!;
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
-        public string? Image { get; set; }
+        public string? Link { get; set; }
+        public string? Flyer { get; set; }
+
+        public virtual Club Club { get; set; } = null!;
     }
 }

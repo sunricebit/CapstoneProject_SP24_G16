@@ -1,9 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PoolComVnWebClient.Common;
+using System.Net.Http.Headers;
 
 namespace PoolComVnWebClient.Controllers
 {
     public class TournamentController : Controller
     {
+        private readonly HttpClient client = null;
+        private string ApiUrl = Constant.ApiUrl;
+
+        public TournamentController()
+        {
+            client = new HttpClient();
+            var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+            client.DefaultRequestHeaders.Accept.Add(contentType);
+            ApiUrl = ApiUrl + "/Tournament";
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -43,5 +56,7 @@ namespace PoolComVnWebClient.Controllers
         public IActionResult TournamentBracketForManager() {
             return View();
         }
+        //[HttpPost("/Create")]
+        //public
     }
 }
