@@ -1,45 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessObject.Models
 {
-    public class Tournament
+    public partial class Tournament
     {
-        [Key]
-        [Required]
-        public int TourID { get; set; }
-        [Required]
-        public string TourName { get; set; }
-        public string Description { get; set; }
-        public int GameTypeID { get; set; }
-        public int TournamentTypeID { get; set; }
+        public Tournament()
+        {
+            MatchOfTournaments = new HashSet<MatchOfTournament>();
+            Players = new HashSet<Player>();
+        }
+
+        public int TourId { get; set; }
+        public string TourName { get; set; } = null!;
+        public string? Description { get; set; }
+        public int GameTypeId { get; set; }
+        public int TournamentTypeId { get; set; }
         public int PlayerNumber { get; set; }
         public int EntryFee { get; set; }
-        public int TotalPrice { get; set; }
-
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public string DrawType { get; set; }
-        public string RaceToString { get; set; }
-        public string PaymentType { get; set; }
+        public string RaceToString { get; set; } = null!;
         public DateTime RegistrationDeadline { get; set; }
-        public string Rule { get;set; }
-        public int AccessID { get; set; }
         public int MaxPlayerNumber { get; set; }
+        public byte Status { get; set; }
+        public int ClubId { get; set; }
+        public bool? Access { get; set; }
+        public string? Flyer { get; set; }
+        public int? PlayerTypeId { get; set; }
+        public int? TotalPrize { get; set; }
+        public int? KnockoutPlayerNumber { get; set; }
 
-        public List<MatchOfTournament> MatchOfTournamentList { get; set; }
-        public virtual Access access { get; set; }
-        public virtual GameType type { get; set; }
-        public virtual TournamentType tournamentType { get; set; }
-        public virtual List<TourPlayer> TourPlayer { get; set; }
-
-
-
-
-
+        public virtual Club Club { get; set; } = null!;
+        public virtual GameType GameType { get; set; } = null!;
+        public virtual PlayerType? PlayerType { get; set; }
+        public virtual TournamentType TournamentType { get; set; } = null!;
+        public virtual ICollection<MatchOfTournament> MatchOfTournaments { get; set; }
+        public virtual ICollection<Player> Players { get; set; }
     }
 }

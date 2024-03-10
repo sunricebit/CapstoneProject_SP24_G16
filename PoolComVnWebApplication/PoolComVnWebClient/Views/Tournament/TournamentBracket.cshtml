@@ -22,7 +22,7 @@
         </div>
     </div>
 </div>
-<div class="match-display d-flex justify-content-center align-items-center">
+<div class="match-display d-flex justify-content-center align-items-center d-none">
     <div class="match-detail ">
         <div class="match-header d-flex justify-content-between">
             <div class="match-title">
@@ -140,9 +140,9 @@
 
 <script>
     const winMatchBody = document.getElementById('winer-match-body');
-    const playerNumber = 32;
+    const playerNumber = 32; // số người tham gia giải đấu 
     let roundNumber = Math.log2(playerNumber / 2);
-    const finalSinglePlayer = 8;
+    const finalSinglePlayer = 8; // số người vào được vòng loại trực tiếp
     let finalSingleRound = roundNumber - Math.log2(finalSinglePlayer) + 1;
     var width = 250;
     var height = 60;
@@ -156,6 +156,7 @@
         numberMatchEachRound = 2 ** (roundNumber - i);
         for (j = 0; j < numberMatchEachRound; j++) {
             if (i == 0) {
+                // vòng đầu tiên
                 ++count;
                 winBody += '<div class="match-box" id="match' + count + '" style=" top:' + (j * 2 * height) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
                     + '<div class="match-content row">'
@@ -166,7 +167,7 @@
                     + '<div class="d-flex justify-content-start align-items-center">'
                     + '<img src="/images/VietNamFlag.png" alt="">'
                     + '<!-- 15 char -->'
-                    + '<div class="player-name">Vũ Hoài Nam</div>'
+                    + '<div class="player-name">Vũ Nam</div>'
                     + '</div>'
                     + '<div class="d-flex justify-content-start align-items-center">'
                     + '<img src="/images/VietNamFlag.png" alt="">'
@@ -188,6 +189,7 @@
                     + '</div>'
             } else {
                 ++count;
+                // thắng trước khi vào vòng loại trực tiếp
                 winBody +=
                     '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; left:' + (width * i + matchDistance * (i - 1)) + 'px">'
                     + '<div class="left-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height) + 'px;"></div>'
@@ -207,7 +209,7 @@
                     + '<div class="d-flex justify-content-start align-items-center">'
                     + '<img src="/images/VietNamFlag.png" alt="">'
                     + '<!-- 15 char -->'
-                    + '<div class="player-name">Vũ Hữu Quảng</div>'
+                    + '<div class="player-name">Vũ Quảng</div>'
                     + '</div>'
                     + '</div>'
                     + '<div class="col-2">'
@@ -230,10 +232,12 @@
 
     const loseMatchBody = document.getElementById('loser-match-body');
     var loseBody = '';
+    // Mỗi vòng for là hai cột
     for (i = 1; i <= finalSingleRound; i++) {
         numberMatchEachRound = 2 ** (roundNumber - i);
         for (j = 0; j < numberMatchEachRound; j++) {
             ++count;
+            // cột thua đấu với thua - cột đầu tiên
             loseBody +=
                 '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; right:' + ((i - 1) * (1.5 * matchDistance + 2 * width)) + 'px">'
                 + '<div class="left-line-lose" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
@@ -248,7 +252,7 @@
                 + '<div class="d-flex justify-content-start align-items-center">'
                 + '<img src="/images/VietNamFlag.png" alt="">'
                 + '<!-- 15 char -->'
-                + '<div class="player-name">Vũ Hoài Nam</div>'
+                + '<div class="player-name">Vũ Hoài</div>'
                 + '</div>'
                 + '<div class="d-flex justify-content-start align-items-center">'
                 + '<img src="/images/VietNamFlag.png" alt="">'
@@ -271,6 +275,7 @@
         }
         for (j = 0; j < numberMatchEachRound; j++) {
             ++count;
+            // cột thắng đấu với thua từ nhánh thắng
             loseBody +=
                 '<div class="between-line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; right:' + ((1.5 * i - 0.5) * matchDistance + (2 * i - 1) * width) + 'px; width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
                 + '<div class="match-box" id="match' + count + '" style="top: ' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; right: ' + ((matchDistance * 1.5 * i + width * (2 * i - 1))) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
@@ -287,7 +292,7 @@
                 + '<div class="d-flex justify-content-start align-items-center">'
                 + '<img src="/images/VietNamFlag.png" alt="">'
                 + '<!-- 15 char -->'
-                + '<div class="player-name">Vũ Hữu Quảng</div>'
+                + '<div class="player-name">Vũ Hữu</div>'
                 + '</div>'
                 + '</div>'
                 + '<div class="col-2">'
@@ -311,6 +316,7 @@
         if (i === finalSingleRound) {
             for (j = 0; j < numberMatchEachRound; j++) {
                 ++count;
+                // vòng đấu đầu tiên loại trực tiếp 
                 winBody +=
                     '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; left:' + (width * (i + 1) + matchDistance * i) + 'px">'
                     + '<div class="right-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
@@ -324,7 +330,7 @@
                     + '<div class="d-flex justify-content-start align-items-center">'
                     + '<img src="/images/VietNamFlag.png" alt="">'
                     + '<!-- 15 char -->'
-                    + '<div class="player-name">Vũ Hoài Nam</div>'
+                    + '<div class="player-name"> Hoài Nam</div>'
                     + '</div>'
                     + '<div class="d-flex justify-content-start align-items-center">'
                     + '<img src="/images/VietNamFlag.png" alt="">'
@@ -348,6 +354,7 @@
         } else {
             for (j = 0; j < numberMatchEachRound; j++) {
                 ++count;
+                // vòng đấu loại trực tiếp
                 winBody +=
                     '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; left:' + (width * (i + 1) + matchDistance * (i - 0.5)) + 'px">'
                     + '<div class="left-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height) + 'px;"></div>'
@@ -367,7 +374,7 @@
                     + '<div class="d-flex justify-content-start align-items-center">'
                     + '<img src="/images/VietNamFlag.png" alt="">'
                     + '<!-- 15 char -->'
-                    + '<div class="player-name">Vũ Hữu Quảng</div>'
+                    + '<div class="player-name"> Hữu Quảng</div>'
                     + '</div>'
                     + '</div>'
                     + '<div class="col-2">'

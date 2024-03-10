@@ -31,7 +31,7 @@
                         <div class="input-form d-flex justify-content-center">
                             <input class="submit-btn" type="submit" value="Đăng nhập" >
                         </div>
-                        <div class="row justify-content-between">
+                        @*<div class="row justify-content-between">
                             <div class="pt-2 text-center">or</div>
                             <div class="col-12 mt-3 d-flex justify-content-center">
                                 <button class="login-other col-3 mx-2">
@@ -44,7 +44,7 @@
                                 </button>
                             </div>
 
-                        </div>
+                        </div>*@
                     </form>
                 </div>
                 <button class="exchange-form col-3 d-flex justify-content-center align-items-center"
@@ -55,18 +55,18 @@
             <div class="login-form register-change d-none">
                 <div class="col-10">
                     <div class="login-title">Đăng kí</div>
-                    <form class="">
+                    <form method="post" action="@Url.Action("Register", "Authentication")">
                         <div class="input-form">
                             <i class="fa-solid fa-user col-12"></i>
-                            <input class="username-input col-12" type="text" placeholder="Tên đăng nhập">
+                            <input class="username-input col-12" type="text" name="rName" placeholder="Tên">
                         </div>
                         <div class="input-form">
                             <i class="fa-solid fa-envelope"></i>
-                            <input class="username-input col-12" type="text" placeholder="Email">
+                            <input class="username-input col-12" type="text" name="rEmail" placeholder="Email">
                         </div>
                         <div class="input-form">
                             <i class="fa-solid fa-key col-12"></i>
-                            <input class="password-input col-12" type="password" placeholder="Mật khẩu">
+                            <input class="password-input col-12" type="password" name="rPassword" placeholder="Mật khẩu">
                             <button type="button" class="show-pass" onclick="togglePassword(this)">
                                 <i class="fa-solid fa-eye"></i>
                             </button>
@@ -87,11 +87,11 @@
                             <i class="fa-solid fa-briefcase"></i>
                             <div class="d-flex justify-content-around">
                                 <div class="account-role d-flex align-items-center">
-                                    <input class="mx-2" type="radio" name="account-role" checked>
+                                    <input class="mx-2" type="radio" name="AccountRole" value="User" checked>
                                     Người chơi
                                 </div>
                                 <div class="account-role d-flex align-items-center">
-                                    <input class="mx-2" type="radio" name="account-role">
+                                    <input class="mx-2" type="radio" name="AccountRole" value="Business">
                                     Tổ chức
                                 </div>
                             </div>
