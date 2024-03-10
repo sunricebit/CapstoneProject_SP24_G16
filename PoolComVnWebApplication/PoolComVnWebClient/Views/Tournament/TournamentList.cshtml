@@ -93,7 +93,7 @@
             <div class="mt-5 d-flex row">
                 @foreach(var tour in Model){
                     <div class="tour-item col-sm-6 col-md-4 col-lg-3">
-                        <a href="/Tounament/TournamentDetail?tourId=@tour.TournamentId" class="item-body">
+                        <a href="/Tournament/TournamentDetail?tourId=@tour.TournamentId" class="item-body">
                             @if(tour.Status == Constant.TournamentIncoming){
                                 <div class="tour-status schedule-status"></div>
                             }
@@ -124,9 +124,9 @@
                             </div>
                             <div class="tour-time">
                                 <i class="fa-solid fa-calendar-days"></i>
-                                <span>@tour.StartTime.ToString("dd/mm/yyyy")</span>
+                                <span>@tour.StartTime.ToString("dd/MM/yyyy")</span>
                                 -
-                                <span>@tour.EndTime.ToString("dd/mm/yyyy")</span>
+                                <span>@tour.EndTime.ToString("dd/MM/yyyy")</span>
                             </div>
 
                             <div class="tour-position">

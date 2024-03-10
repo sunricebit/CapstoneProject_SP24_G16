@@ -29,7 +29,7 @@ namespace PoolComVnWebAPI.Controllers
             return Ok(tournaments);
         }
 
-        [HttpGet("{tourId}")]
+        [HttpGet("GetTournament")]
         public IActionResult GetTournament(int tourId)
         {
             try
@@ -47,8 +47,14 @@ namespace PoolComVnWebAPI.Controllers
                     GameType = tour.GameTypeId == Constant.Game8Ball ? Constant.String8Ball
                                     : (tour.GameTypeId == Constant.Game9Ball ? Constant.String9Ball : Constant.String10Ball),
                     Status = tour.Status,
+                    TourTypeId = tour.TournamentTypeId,
                     RaceWin = GetRaceWinNumbers(tour.RaceToString),
                     RaceLose = GetRaceLoseNumbers(tour.RaceToString),
+                    RegisterDate = tour.RegistrationDeadline,
+                    MaxPlayer = tour.MaxPlayerNumber,
+                    Access = tour.Access == null ? true : tour.Access.Value,
+                    EntryFee = tour.EntryFee,
+                    TotalPrize = tour.TotalPrize,
                 };
                 return Ok(tournamentDetailDTO);
             }

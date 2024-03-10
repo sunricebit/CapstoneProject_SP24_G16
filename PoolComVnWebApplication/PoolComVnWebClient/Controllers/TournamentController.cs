@@ -21,36 +21,6 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> TournamentDetail(int tourId)
-        {
-            TournamentDetailDTO tourDetail;
-            var responseGetTourdetail = await client.GetAsync(ApiUrl + "/GetTournament?tourId=" + tourId);
-            if (responseGetTourdetail.IsSuccessStatusCode)
-            {
-                tourDetail = await responseGetTourdetail.Content.ReadFromJsonAsync<TournamentDetailDTO>();
-                ViewBag.TournamentDetail = tourDetail;
-            }
-            else
-            {
-                var status = responseGetTourdetail.StatusCode;
-                return RedirectToAction("InternalServerError", "Error");
-            }
-            List<PlayerDTO> lstPlayer;
-            var responseGetLstPlayer = await client.GetAsync(Constant.ApiUrl + "/Player" + "/GetPlayerByTourId?tourId=" + tourId);
-            if (responseGetTourdetail.IsSuccessStatusCode)
-            {
-                lstPlayer = await responseGetTourdetail.Content.ReadFromJsonAsync<List<PlayerDTO>>();
-                ViewBag.PlayerLst = lstPlayer;
-            }
-            else
-            {
-                var status = responseGetTourdetail.StatusCode;
-                return RedirectToAction("InternalServerError", "Error");
-            }
-            return View();
-        }
-
-        [HttpGet]
         public async Task<IActionResult> TournamentList()
         {
             var response = await client.GetAsync(ApiUrl + "/GetAllTour");
@@ -97,7 +67,35 @@ namespace PoolComVnWebClient.Controllers
         public IActionResult TournamentBracketForManager() {
             return View();
         }
-        //[HttpPost("/Create")]
-        //public
+
+        [HttpGet]
+        public async Task<IActionResult> TournamentDetail(int tourId)
+        {
+            TournamentDetailDTO tourDetail = new TournamentDetailDTO();
+            var responseGetTourdetail = await client.GetAsync(ApiUrl + "/GetTournament?tourId=" + tourId);
+            if (responseGetTourdetail.IsSuccessStatusCode)
+            {
+                tourDetail = await responseGetTourdetail.Content.ReadFromJsonAsync<TournamentDetailDTO>();
+                ViewBag.TournamentDetail = tourDetail;
+            }
+            else
+            {
+                var status = responseGetTourdetail.StatusCode;
+                return RedirectToAction("InternalServerError", "Error");
+            }
+            List<PlayerDTO> lstPlayer;
+            var responseGetLstPlayer = await client.GetAsync(Constant.ApiUrl + "/Player" + "/GetPlayerByTourId?tourId=" + tourId);
+            if (responseGetLstPlayer.IsSuccessStatusCode)
+            {
+                lstPlayer = await responseGetLstPlayer.Content.ReadFromJsonAsync<List<PlayerDTO>>();
+                ViewBag.PlayerLst = lstPlayer;
+            }
+            else
+            {
+                var status = responseGetTourdetail.StatusCode;
+                return RedirectToAction("InternalServerError", "Error");
+            }
+            return View();
+        }
     }
 }

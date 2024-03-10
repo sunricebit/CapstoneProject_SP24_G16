@@ -256,7 +256,7 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("GetPlayerByTourId")]
         public IActionResult GetPlayerByTourId(int tourId)
         {
             var players = _playerDAO.GetPlayersByTournament(tourId);
