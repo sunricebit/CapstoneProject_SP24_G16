@@ -9,7 +9,6 @@ using System.Web;
 using Microsoft.Net.Http.Headers;
 using System.Net.Http.Headers;
 using PoolComVnWebClient.DTO;
-using PoolComVnWebAPI.DTO;
 using PoolComVnWebClient.Common;
 using System.Reflection.Metadata.Ecma335;
 

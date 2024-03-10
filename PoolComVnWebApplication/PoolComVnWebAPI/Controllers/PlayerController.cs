@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BusinessObject.Models;
 using DataAccess;
-using DataAccess.DTO;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 using PoolComVnWebAPI.DTO;
@@ -132,7 +131,7 @@ namespace PoolComVnWebAPI.Controllers
 
             
             existingPlayer.PlayerName = updatedPlayerDto.PlayerName;
-            existingPlayer.Level = updatedPlayerDto.Level;
+            existingPlayer.Level = updatedPlayerDto.Level.Value;
 
             
             existingPlayer.User.Account.PhoneNumber = updatedPlayerDto.PhoneNumber;
@@ -245,6 +244,75 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
+        // GET: api/Player/DownloadTemplate
+        [HttpGet("DownloadTemplate")]
+        public IActionResult DownloadTemplate()
+        {
+            try
+            {
+                // Thiết lập LicenseContext cho EPPlus
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
+                // Tạo một MemoryStream để lưu trữ dữ liệu Excel
+                using (var stream = new MemoryStream())
+                {
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        // Tạo một worksheet và thiết lập các tiêu đề cột
+                        var worksheet = package.Workbook.Worksheets.Add("PlayerTemplate");
+
+                        // Thiết lập màu nền và màu chữ cho hàng tiêu đề
+                        var headerCells = worksheet.Cells["A1:D1"];
+                        headerCells.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        headerCells.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(0, 128, 0)); // Màu xanh
+                        headerCells.Style.Font.Color.SetColor(System.Drawing.Color.White); // Màu chữ trắng
+
+                        // Thiết lập các tiêu đề cột
+                        worksheet.Cells["A1"].Value = "Tên";
+                        worksheet.Cells["B1"].Value = "Quốc Gia";
+                        worksheet.Cells["C1"].Value = "Số Điện Thoại";
+                        worksheet.Cells["D1"].Value = "Hạng";
+
+                        // Thêm dòng ví dụ
+                        worksheet.Cells["A2"].Value = "Nguyễn Văn A";
+                        worksheet.Cells["B2"].Value = "Việt Nam";
+                        worksheet.Cells["C2"].Value = "123456789";
+                        worksheet.Cells["D2"].Value = 1;
+
+                        worksheet.Cells["A3"].Value = "Alex josh";
+                        worksheet.Cells["B3"].Value = "Russia";
+                        worksheet.Cells["C3"].Value = "987654321";
+                        worksheet.Cells["D3"].Value = 2;
+
+                        // Lưu trữ workbook và trả về dữ liệu như là một File Content Result
+                        package.Save(); // Lưu trước khi đọc từ MemoryStream
+                        var content = stream.ToArray();
+                        return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "PlayerTemplate.xlsx");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và trả về lỗi nếu cần
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+        [HttpGet("GetPlayerByTourId")]
+        public IActionResult GetPlayerByTourId(int tourId)
+        {
+            var players = _playerDAO.GetPlayersByTournament(tourId);
+            List<PlayerDTO> lstPlayer = new List<PlayerDTO>();
+            foreach (Player p in players)
+            {
+                PlayerDTO playerDTO = new PlayerDTO 
+                {
+                    PlayerId = p.PlayerId,
+                    PlayerName = p.PlayerName,
+                };
+                lstPlayer.Add(playerDTO);
+            }
+            return Ok(players);
+        }   
     }
 }

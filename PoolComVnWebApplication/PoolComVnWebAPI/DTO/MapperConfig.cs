@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BusinessObject.Models;
-using DataAccess.DTO;
 using PoolComVnWebAPI.DTO;
 using System;
 using System.Collections.Generic;

@@ -21,7 +21,8 @@ namespace DataAccess
         {
             try
             {
-                var tournament = _context.Tournaments.FirstOrDefault(item => item.TourId == tourId);
+                var tournament = _context.Tournaments.Include(x => x.Club)
+                    .FirstOrDefault(item => item.TourId == tourId);
 
                 return tournament;
             }

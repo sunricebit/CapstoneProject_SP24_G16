@@ -1,4 +1,5 @@
-﻿@model List<PoolComVnWebClient.DTO.TournamentOutputDTO>
+﻿@using PoolComVnWebClient.Common
+@model List<PoolComVnWebClient.DTO.TournamentOutputDTO>
 <div class="container">
     <div class="tournament">
         <div class="tour-nav d-flex">
@@ -92,8 +93,18 @@
             <div class="mt-5 d-flex row">
                 @foreach(var tour in Model){
                     <div class="tour-item col-sm-6 col-md-4 col-lg-3">
-                        <a href="/Tounament/TournamentDetail/@tour.TournamentId" class="item-body">
-                            <div class="tour-status schedule-status"></div>
+                        <a href="/Tournament/TournamentDetail?tourId=@tour.TournamentId" class="item-body">
+                            @if(tour.Status == Constant.TournamentIncoming){
+                                <div class="tour-status schedule-status"></div>
+                            }
+                            @if (tour.Status == Constant.TournamentInProgress)
+                            {
+                                <div class="tour-status start-status"></div>
+                            }
+                            @if (tour.Status == Constant.TournamentComplete)
+                            {
+                                <div class="tour-status finish-status"></div>
+                            }
                             @*<img class="tour-image" src="~/images/new_1.jpg" alt="">*@
                             <img class="tour-image" src="@tour.Flyer" alt="">
                             <div>
@@ -113,9 +124,9 @@
                             </div>
                             <div class="tour-time">
                                 <i class="fa-solid fa-calendar-days"></i>
-                                <span>@tour.StartTime.ToString("dd/mm/yyyy")</span>
+                                <span>@tour.StartTime.ToString("dd/MM/yyyy")</span>
                                 -
-                                <span>@tour.EndTime.ToString("dd/mm/yyyy")</span>
+                                <span>@tour.EndTime.ToString("dd/MM/yyyy")</span>
                             </div>
 
                             <div class="tour-position">

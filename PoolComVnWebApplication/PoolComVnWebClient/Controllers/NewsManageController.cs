@@ -77,7 +77,6 @@ namespace PoolComVnWebClient.Controllers
             }
             else
             {
-            
                 ModelState.AddModelError(string.Empty, "Lỗi khi lấy chi tiết tin tức.");
                 return View();
             }
