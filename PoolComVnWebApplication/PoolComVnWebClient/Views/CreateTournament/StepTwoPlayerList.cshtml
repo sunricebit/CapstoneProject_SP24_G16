@@ -42,7 +42,6 @@
                     <div class="d-flex align-items-center">
                         <div class="step-two-nav active" id="all-list">Danh sách (16)</div>
                         <div class="step-two-nav" id="request-list">Yêu cầu tham gia (3)</div>
-                        <div class="step-two-nav" id="member-list">Thành viên (120)</div>
                         <div class="step-two-nav" id="system-list">Toàn hệ thống (500)</div>
                     </div>
                 </div>
@@ -56,16 +55,36 @@
                                 <option value="Chưa nộp">Chưa nộp</option>
                             </select>
                             <button class="club-player" disabled>Thêm vào thành viên</button>
-                            <button class="import-excel">
-                                <i class="fa-solid fa-upload"></i>
-                                <span>Nhập từ Excel</span>
-                            </button>
+                            <!-- Hiển thị nút "Nhập từ Excel" -->
+                            <button class="import-excel" onclick="toggleExcelImportModal()">Nhập từ Excel</button>
+
+                            <!-- Màn hình mockup Nhập từ Excel -->
+                            <div class="excel-import-modal d-none">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content" style="border: 2px solid #ccc; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); padding: 20px; background-color: #fff;margin-top: 10px;">
+                                        <span class="close-modal" onclick="toggleExcelImportModal()">&times;</span>
+                                        <h2 class="modal-title">Nhập từ Excel</h2>
+                                        <p class="modal-description">Chọn file Excel để import danh sách người chơi.</p>
+                                        <div class="excel-form">
+                                            <!-- Add your Excel import form or content here -->
+                                            <label for="excelFile">Chọn file Excel:</label>
+                                            <input type="file" id="excelFile" name="excelFile" accept=".xlsx, .xls">
+                                        </div>
+                                        <div class="modal-buttons mt-3">
+                                            <button class="btn btn-success" onclick="importExcel()">Import</button>
+                                            <button class="btn btn-primary" onclick="downloadExcelTemplate()">Download Template</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="player-search d-flex align-items-end">
                             <i class="fa-solid fa-magnifying-glass"></i>
                             <input class="" />
                         </div>
                     </div>
+                </div>
 
                     <div class="pt-3">
                         <div class="table-overflow">
@@ -77,185 +96,12 @@
                                     <th>#</th>
                                     <th>Tên</th>
                                     <th>Quốc gia</th>
-                                    <th>Email</th>
                                     <th>Số điện thoại</th>
                                     <th class="text-center">Hạng</th>
                                     <th class="player-fee">Lệ phí</th>
                                     <th>Hành động</th>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input class="one-checkbox" type="checkbox">
-                                    </td>
-                                    <td>1</td>
-                                    <td class="tb-name">
-                                        <img src="Image/VietNamFlag.png" alt="">
-                                        Nam Vũ
-                                    </td>
-                                    <td>Việt Nam</td>
-                                    <td>Vhnam2221@gmail.com</td>
-                                    <td>0923456789</td>
-                                    <td class="text-center">H</td>
-                                    <td>Đã xong</td>
-                                    <td>
-                                        <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input class="one-checkbox" type="checkbox">
-                                    </td>
-                                    <td>1</td>
-                                    <td class="tb-name">
-                                        <img src="Image/VietNamFlag.png" alt="">
-                                        Nam Vũ
-                                    </td>
-                                    <td>Việt Nam</td>
-                                    <td>Vhnam2221@gmail.com</td>
-                                    <td>0923456789</td>
-                                    <td class="text-center">H</td>
-                                    <td>Đã xong</td>
-                                    <td>
-                                        <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input class="one-checkbox" type="checkbox">
-                                    </td>
-                                    <td>1</td>
-                                    <td class="tb-name">
-                                        <img src="Image/VietNamFlag.png" alt="">
-                                        Nam Vũ
-                                    </td>
-                                    <td>Việt Nam</td>
-                                    <td>Vhnam2221@gmail.com</td>
-                                    <td>0923456789</td>
-                                    <td class="text-center">H</td>
-                                    <td>Đã xong</td>
-                                    <td>
-                                        <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input class="one-checkbox" type="checkbox">
-                                    </td>
-                                    <td>1</td>
-                                    <td class="tb-name">
-                                        <img src="Image/VietNamFlag.png" alt="">
-                                        Nam Vũ
-                                    </td>
-                                    <td>Việt Nam</td>
-                                    <td>Vhnam2221@gmail.com</td>
-                                    <td>0923456789</td>
-                                    <td class="text-center">H</td>
-                                    <td>Đã xong</td>
-                                    <td>
-                                        <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input class="one-checkbox" type="checkbox">
-                                    </td>
-                                    <td>1</td>
-                                    <td class="tb-name">
-                                        <img src="Image/VietNamFlag.png" alt="">
-                                        Nam Vũ
-                                    </td>
-                                    <td>Việt Nam</td>
-                                    <td>Vhnam2221@gmail.com</td>
-                                    <td>0923456789</td>
-                                    <td class="text-center">H</td>
-                                    <td>Đã xong</td>
-                                    <td>
-                                        <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input class="one-checkbox" type="checkbox">
-                                    </td>
-                                    <td>1</td>
-                                    <td class="tb-name">
-                                        <img src="Image/VietNamFlag.png" alt="">
-                                        Nam Vũ
-                                    </td>
-                                    <td>Việt Nam</td>
-                                    <td>Vhnam2221@gmail.com</td>
-                                    <td>0923456789</td>
-                                    <td class="text-center">H</td>
-                                    <td>Đã xong</td>
-                                    <td>
-                                        <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input class="one-checkbox" type="checkbox">
-                                    </td>
-                                    <td>1</td>
-                                    <td class="tb-name">
-                                        <img src="Image/VietNamFlag.png" alt="">
-                                        Nam Vũ
-                                    </td>
-                                    <td>Việt Nam</td>
-                                    <td>Vhnam2221@gmail.com</td>
-                                    <td>0923456789</td>
-                                    <td class="text-center">H</td>
-                                    <td>Đã xong</td>
-                                    <td>
-                                        <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input class="one-checkbox" type="checkbox">
-                                    </td>
-                                    <td>1</td>
-                                    <td class="tb-name">
-                                        <img src="Image/VietNamFlag.png" alt="">
-                                        Nam Vũ
-                                    </td>
-                                    <td>Việt Nam</td>
-                                    <td>Vhnam2221@gmail.com</td>
-                                    <td>0923456789</td>
-                                    <td class="text-center">H</td>
-                                    <td>Đã xong</td>
-                                    <td>
-                                        <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input class="one-checkbox" type="checkbox">
-                                    </td>
-                                    <td>1</td>
-                                    <td class="tb-name">
-                                        <img src="Image/VietNamFlag.png" alt="">
-                                        Nam Vũ
-                                    </td>
-                                    <td>Việt Nam</td>
-                                    <td>Vhnam2221@gmail.com</td>
-                                    <td>0923456789</td>
-                                    <td class="text-center">H</td>
-                                    <td>Đã xong</td>
-                                    <td>
-                                        <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                                </tr>                              
+                               
                     </div>
 
                     <div class="tour-input pt-5">
@@ -266,59 +112,7 @@
         </div>
     </div>
 </div>
-<div class="player-edit d-flex justify-content-center align-items-center d-none">
-    <div class="edit-form">
-        <div class="edit-header d-flex justify-content-between">
-            <div class="edit-title">Thông tin người chơi</div>
-            <div class="edit-close">
-                <i class="fa-solid fa-xmark"></i>
-            </div>
-        </div>
-        <div class="form-overflow">
-            <div class="input-line">
-                <div class="input-title">Tên</div>
-                <div>
-                    <input type="text" value="Nam Vũ">
-                </div>
-            </div>
-            <div class="input-line">
-                <div class="input-title">Quốc gia</div>
-                <div>
-                    <input type="text">
-                </div>
-            </div>
-            <div class="input-line">
-                <div class="input-title">Email</div>
-                <div>
-                    <input type="text">
-                </div>
-            </div>
-            <div class="input-line">
-                <div class="input-title">Số điện thoại</div>
-                <div>
-                    <input type="text">
-                </div>
-            </div>
-            <div class="input-line">
-                <div class="input-title">Hạng</div>
-                <div>
-                    <input type="text">
-                </div>
-            </div>
-            <div class="input-line">
-                <div class="input-title">Lệ phí</div>
-                <select>
-                    <option value="Đã xong">Đã xong</option>
-                    <option value="Chưa nộp">Chưa nộp</option>
-                </select>
-            </div>
-            <div class="input-line d-flex justify-content-around">
-                <button>Hủy</button>
-                <button>Lưu</button>
-            </div>
-        </div>
-    </div>
-</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     //Handle entry checkbox
     const allCheckboxBtn = document.querySelector('.all-checkbox');
@@ -451,4 +245,108 @@
             playerEdit.classList.remove('d-none');
         })
     })
+
+    function toggleExcelImportModal() {
+        const excelImportModal = document.querySelector('.excel-import-modal');
+        excelImportModal.classList.toggle('d-none');
+    }
+
+    // Hàm gọi API ImportExcel
+    function callImportExcelAPI(file) {
+        // Tạo FormData để chứa dữ liệu tệp tin
+        var formData = new FormData();
+        formData.append('file', file);
+
+        // Gọi API sử dụng AJAX
+        $.ajax({
+            url: 'https://localhost:5000/api/Player/ImportExcel', // Đường dẫn API
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                // Xử lý kết quả thành công
+                displayImportedData(data);
+            },
+            error: function (error) {
+                // Xử lý lỗi
+                console.error('Lỗi khi gọi API ImportExcel:', error);
+            }
+        });
+    }
+    // Hàm hiển thị dữ liệu sau khi import
+    function displayImportedData(data) {
+        var playersTable = document.querySelector('.players-table');
+
+        // Loop through the data and append rows to the table
+        data.forEach(function (player) {
+            var row = document.createElement('tr');
+
+            // Create and append cells for each player property
+            var checkboxCell = document.createElement('td');
+            checkboxCell.innerHTML = '<input class="one-checkbox" type="checkbox">';
+            row.appendChild(checkboxCell);
+
+            var indexCell = document.createElement('td');
+            indexCell.textContent = playersTable.rows.length; // Assuming index is based on the current row count
+            row.appendChild(indexCell);
+
+            var nameCell = document.createElement('td');
+            nameCell.textContent = player.Name;
+            row.appendChild(nameCell);
+
+            var countryCell = document.createElement('td');
+            countryCell.textContent = player.Country;
+            row.appendChild(countryCell);
+
+            var phoneNumberCell = document.createElement('td');
+            phoneNumberCell.textContent = player.PhoneNumber;
+            row.appendChild(phoneNumberCell);
+
+            var rankCell = document.createElement('td');
+            rankCell.textContent = player.Rank;
+            row.appendChild(rankCell);
+
+            var feeCell = document.createElement('td');
+            feeCell.textContent = player.Fee;
+            row.appendChild(feeCell);
+
+            var actionCell = document.createElement('td');
+            actionCell.innerHTML = '<button class="edit-button">Edit</button>';
+            row.appendChild(actionCell);
+
+            playersTable.appendChild(row);
+        });
+
+        // Show a notification (you can replace this with a more sophisticated notification library)
+        alert('Data added successfully!');
+    }
+
+    // Hàm gọi API DownloadTemplate
+    function callDownloadTemplateAPI() {
+        // Tạo một thẻ <a> ẩn để gửi yêu cầu tải xuống
+        var link = document.createElement('a');
+        link.href = 'https://localhost:5000/api/Player/DownloadTemplate';
+        link.target = '_blank';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    // Hàm xử lý sự kiện khi nhấn nút Import
+    function importExcel() {
+        var excelFileInput = document.getElementById('excelFile');
+        var file = excelFileInput.files[0];
+
+        if (file) {
+            callImportExcelAPI(file);
+        } else {
+            alert('Vui lòng chọn một tệp Excel để import.');
+        }
+    }
+
+    // Hàm xử lý sự kiện khi nhấn nút Download Template
+    function downloadExcelTemplate() {
+        callDownloadTemplateAPI();
+    }
 </script>

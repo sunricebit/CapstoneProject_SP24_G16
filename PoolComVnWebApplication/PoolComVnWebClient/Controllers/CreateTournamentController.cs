@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Mvc;
 using PoolComVnWebClient.Common;
 using PoolComVnWebClient.DTO;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -49,29 +51,33 @@ namespace PoolComVnWebClient.Controllers
             return RedirectToAction("InternalServerError", "Error");
         }
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult StepTwoPlayerList()
         {
-            return View("StepThreeAddTable");
+            return View();
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> StepTwoJoinList()
-        //{
-        //    return View();
-        //}
+        [HttpGet]
+        public async Task<IActionResult> StepTwoJoinList()
+        {
+            return View();
+        }
 
-        //[HttpGet]
-        //public IActionResult StepTwoMember()
-        //{
-        //    return View();
-        //}
+        [HttpGet]
+        public IActionResult StepTwoMember()
+        {
+            return View();
+        }
 
-        //[HttpGet]
-        //public IActionResult StepTwoPlayerSystem()
-        //{
-        //    return View();
-        //}
+        [HttpGet]
+        public async Task<IActionResult> StepTwoPlayerSystem()
+        {
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            var response = await client.GetFromJsonAsync<IEnumerable<PlayerDTO>>("https://localhost:5000/api/Player");
+            var listplayer = response.ToList();
+            return View(listplayer);
+        }
 
         [HttpGet]
         public IActionResult StepThreeAddTable()
@@ -115,6 +121,6 @@ namespace PoolComVnWebClient.Controllers
             return View();
         }
 
-        
+
     }
 }
