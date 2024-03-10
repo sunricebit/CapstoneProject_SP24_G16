@@ -13,35 +13,25 @@
     <header>
         <nav class="main-nav d-flex row">
             <div class="logo-image col-2 px-0">
-                <a href="/Home" class="d-flex align-items-center">
+                <a asp-controller="home" asp-action="Index" class="d-flex align-items-center">
                     <img src="~/images/logo.png" alt="PoolCom" />
                     <span class="">PoolCom.</span>
                 </a>
             </div>
             <div class="large-user col-xl-10 px-0 mx-0 d-none d-xl-flex row">
                 <ul class="nav-menu col-10 px-0">
-                    <li><a asp-controller="home" asp-action="index">Tin tức</a></li>
-                    <li><a href="/Tournament/TournamentList">Giải đấu</a></li>
-                    <li><a href="">Giao lưu</a></li>
+                    <li><a href="/NewsManage/Index">Tin tức</a></li>
+                    <li><a href="/Tournament/TournamentList">Giải đấu</a></li>                 
                     <li><a href="">Câu lạc bộ</a></li>
                     <li><a href="">Xếp hạng</a></li>
                     <li><a asp-controller="home" asp-action="GameRules">Luật chơi</a></li>
                     <li><a asp-controller="home" asp-action="Contact">Liên hệ</a></li>
+                    <li><a href="">Mở rộng</a></li>
                 </ul>
                 <div class="login col-2 text-center d-none">
                     <a asp-controller="Authentication" asp-action="Login">Đăng nhập</a>
                 </div>
-              @*  <div class="user col-2 d-flex justify-content-end">
-                    <div class="user-name text-center">
-                        <span>Vu Hoai Nam</span>
-                        <i class="fa-solid fa-caret-left"></i>
-                    </div>
-                    <ul class="user-menu text-center">
-                        <li><a href="">Profile</a></li>
-                        <li><a href="">Logout</a></li>
-                    </ul>
-                </div>*@
-                <div class="login col-2 text-center">
+           
                     @if (User.Identity.IsAuthenticated)
                     {
                         <div class="user-name text-center">
@@ -59,7 +49,7 @@
                             <a asp-controller="Authentication" asp-action="Login">Đăng nhập</a>
                         </div>
                     }
-                </div>
+               
             </div>
             <div class="option-btn col-10 d-flex d-xl-none justify-content-end">
                 <i class="fa-solid fa-bars"></i>
@@ -69,16 +59,15 @@
             <div class="option-menu row">
                 <div class="col-lg-3"></div>
                 <ul class="option-items col-lg-3 col-6">
-                    <li><a href="">Tin tức</a></li>
-                    <li><a href="">Giải đấu</a></li>
-                    <li><a href="">Giao lưu</a></li>
+                    <li><a href="/NewsManage/Index">Tin tức</a></li>
+                    <li><a href="/Tournament/TournamentList">Giải đấu</a></li>
                     <li><a href="">Câu lạc bộ</a></li>
+                    <li><a href="#">Xếp hạng</a></li>
                 </ul>
                 <ul class="option-items col-lg-3 col-6">
-                    <li><a href="#">Xếp hạng</a></li>
-                    <li><a href="#">Dịch vụ</a></li>
-                    <li><a href="#">Luật chơi</a></li>
-                    <li><a href="#">Liên hệ</a></li>
+                    <li><a asp-controller="home" asp-action="GameRules">Luật chơi</a></li>
+                    <li><a asp-controller="home" asp-action="Contact">Liên hệ</a></li>
+                    <li><a href="">Mở rộng</a></li>
                 </ul>
                 <div class="col-lg-3"></div>
             </div>
@@ -101,14 +90,12 @@
                 <ul class="footer-menu">
                     <li><a href="#">Tin tức</a></li>
                     <li><a href="#">Giải đấu</a></li>
-                    <li><a href="#">Giao lưu</a></li>
                     <li><a href="#">Câu lạc bộ</a></li>
                 </ul>
             </div>
             <div class="col-3 footer-content">
                 <ul class="footer-menu">
-                    <li><a href="#">Xếp hạng</a></li>
-                    <li><a href="#">Dịch vụ</a></li>
+                    <li><a href="#">Xếp hạng</a></li>                
                     <li><a href="#">Luật chơi</a></li>
                     <li><a href="#">Liên hệ</a></li>
                 </ul>
