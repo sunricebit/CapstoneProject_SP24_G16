@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.DTO
+namespace PoolComVnWebAPI.DTO
 {
     public class PlayerDTO
     {
@@ -14,7 +14,7 @@ namespace DataAccess.DTO
         public string PlayerName { get; set; } = null!;
         public int? CountryId { get; set; }
         public string? CountryName { get; set; }
-        public int Level { get; set; }
+        public int? Level { get; set; }
         public string? PhoneNumber { get; set; }
     }
 }

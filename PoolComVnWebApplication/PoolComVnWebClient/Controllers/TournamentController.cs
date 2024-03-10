@@ -20,18 +20,39 @@ namespace PoolComVnWebClient.Controllers
             ApiUrl = ApiUrl + "/Tournament";
         }
 
-        [HttpGet("{tourId}")]
+        [HttpGet]
         public async Task<IActionResult> TournamentDetail(int tourId)
         {
-            
+            TournamentDetailDTO tourDetail;
+            var responseGetTourdetail = await client.GetAsync(ApiUrl + "/GetTournament?tourId=" + tourId);
+            if (responseGetTourdetail.IsSuccessStatusCode)
+            {
+                tourDetail = await responseGetTourdetail.Content.ReadFromJsonAsync<TournamentDetailDTO>();
+                ViewBag.TournamentDetail = tourDetail;
+            }
+            else
+            {
+                var status = responseGetTourdetail.StatusCode;
+                return RedirectToAction("InternalServerError", "Error");
+            }
+            List<PlayerDTO> lstPlayer;
+            var responseGetLstPlayer = await client.GetAsync(Constant.ApiUrl + "/Player" + "/GetPlayerByTourId?tourId=" + tourId);
+            if (responseGetTourdetail.IsSuccessStatusCode)
+            {
+                lstPlayer = await responseGetTourdetail.Content.ReadFromJsonAsync<List<PlayerDTO>>();
+                ViewBag.PlayerLst = lstPlayer;
+            }
+            else
+            {
+                var status = responseGetTourdetail.StatusCode;
+                return RedirectToAction("InternalServerError", "Error");
+            }
             return View();
         }
 
         [HttpGet]
         public async Task<IActionResult> TournamentList()
         {
-            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
             var response = await client.GetAsync(ApiUrl + "/GetAllTour");
             if (response.IsSuccessStatusCode)
             {
@@ -48,6 +69,7 @@ namespace PoolComVnWebClient.Controllers
 
         public IActionResult TournamentBracket()
         {
+
             return View();
         }
 

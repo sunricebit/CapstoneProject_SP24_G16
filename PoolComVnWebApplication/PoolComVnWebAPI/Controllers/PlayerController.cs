@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BusinessObject.Models;
 using DataAccess;
-using DataAccess.DTO;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 using PoolComVnWebAPI.DTO;
@@ -103,7 +102,7 @@ namespace PoolComVnWebAPI.Controllers
 
             // Update the existingPlayer with properties from updatedPlayerDto
             existingPlayer.PlayerName = updatedPlayerDto.PlayerName;
-            existingPlayer.Level = updatedPlayerDto.Level;
+            existingPlayer.Level = updatedPlayerDto.Level.Value;
 
             // Assuming User and Account are not null
             existingPlayer.User.Account.PhoneNumber = updatedPlayerDto.PhoneNumber;
@@ -180,7 +179,7 @@ namespace PoolComVnWebAPI.Controllers
                                 Level = level
                             };
 
-                            _playerDAO.AddPlayersFromExcel(new List<PlayerDTO> { player });
+                            //_playerDAO.AddPlayersFromExcel(new List<PlayerDTO> { player });
                         }
                     }
                 }
@@ -255,6 +254,23 @@ namespace PoolComVnWebAPI.Controllers
                 // Xử lý lỗi và trả về lỗi nếu cần
                 return StatusCode(500, $"An error occurred: {ex.Message}");
             }
-        }      
+        }
+
+        [HttpGet]
+        public IActionResult GetPlayerByTourId(int tourId)
+        {
+            var players = _playerDAO.GetPlayersByTournament(tourId);
+            List<PlayerDTO> lstPlayer = new List<PlayerDTO>();
+            foreach (Player p in players)
+            {
+                PlayerDTO playerDTO = new PlayerDTO 
+                {
+                    PlayerId = p.PlayerId,
+                    PlayerName = p.PlayerName,
+                };
+                lstPlayer.Add(playerDTO);
+            }
+            return Ok(players);
+        }   
     }
 }

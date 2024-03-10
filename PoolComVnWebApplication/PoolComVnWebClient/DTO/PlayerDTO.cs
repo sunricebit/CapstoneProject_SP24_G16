@@ -12,7 +12,7 @@ namespace PoolComVnWebClient.DTO
         public string PlayerName { get; set; } = null!;
         public int? CountryId { get; set; }
         public string? CountryName { get; set; }
-        public int Level { get; set; }
+        public int? Level { get; set; }
         public string? PhoneNumber { get; set; }
 
     }

@@ -30,13 +30,27 @@ namespace PoolComVnWebAPI.Controllers
         }
 
         [HttpGet("{tourId}")]
-        public IActionResult ViewTournament(int tourId)
+        public IActionResult GetTournament(int tourId)
         {
             try
             {
-                Tournament p = _tournamentDAO.GetTournament(tourId);
-
-                return Ok(p);
+                Tournament tour = _tournamentDAO.GetTournament(tourId);
+                TournamentDetailDTO tournamentDetailDTO = new TournamentDetailDTO() {
+                    Address = tour.Club.Address,
+                    ClubName = tour.Club.ClubName,
+                    TournamentId = tour.TourId,
+                    TournamentName = tour.TourName,
+                    Description = tour.Description,
+                    StartTime = tour.StartDate,
+                    EndTime = tour.EndDate,
+                    Flyer = tour.Flyer,
+                    GameType = tour.GameTypeId == Constant.Game8Ball ? Constant.String8Ball
+                                    : (tour.GameTypeId == Constant.Game9Ball ? Constant.String9Ball : Constant.String10Ball),
+                    Status = tour.Status,
+                    RaceWin = GetRaceWinNumbers(tour.RaceToString),
+                    RaceLose = GetRaceLoseNumbers(tour.RaceToString),
+                };
+                return Ok(tournamentDetailDTO);
             }
             catch (Exception e)
             {
@@ -44,6 +58,59 @@ namespace PoolComVnWebAPI.Controllers
                 throw e;
             }
 
+        }
+
+        private List<RaceNumber> GetRaceWinNumbers(string raceString)
+        {
+            List<RaceNumber> raceNumbers = new List<RaceNumber>();
+
+            string[] parts = raceString.Split(',');
+
+            foreach (var part in parts)
+            {
+                string[] subParts = part.Split('-');
+
+                if (subParts.Length == 2 && int.TryParse(subParts[1], out int gameToWin) && subParts[0].StartsWith("W"))
+                {
+                    string round = "R" + subParts[0].Substring(1);
+                    RaceNumber raceNumber = new RaceNumber
+                    {
+                        Round = subParts[0],
+                        GameToWin = gameToWin
+                    };
+
+                    raceNumbers.Add(raceNumber);
+                }
+            }
+
+            raceNumbers.Last().Round = "CK";
+            return raceNumbers;
+        }
+
+        private List<RaceNumber> GetRaceLoseNumbers(string raceString)
+        {
+            List<RaceNumber> raceNumbers = new List<RaceNumber>();
+
+            string[] parts = raceString.Split(',');
+
+            foreach (var part in parts)
+            {
+                string[] subParts = part.Split('-');
+
+                if (subParts.Length == 2 && int.TryParse(subParts[1], out int gameToWin) && subParts[0].StartsWith("L"))
+                {
+                    string round = "R" + subParts[0].Substring(1);
+                    RaceNumber raceNumber = new RaceNumber
+                    {
+                        Round = subParts[0],
+                        GameToWin = gameToWin
+                    };
+
+                    raceNumbers.Add(raceNumber);
+                }
+            }
+
+            return raceNumbers;
         }
 
         [HttpPost("{tourId}")]
