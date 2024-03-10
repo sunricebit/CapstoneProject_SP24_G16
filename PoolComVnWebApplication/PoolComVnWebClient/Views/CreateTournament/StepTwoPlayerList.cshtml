@@ -47,7 +47,7 @@
                         <div class="step-two-nav" id="system-list">Toàn hệ thống (500)</div>
                     </div>
                 </div>
-                <!-- Danh sách tất cả -->
+                
                 <div class="display-content">
                     <div class="d-flex justify-content-between">
                         <div>
@@ -57,28 +57,13 @@
                                 <option value="Chưa nộp">Chưa nộp</option>
                             </select>
                             <button class="club-player" disabled>Thêm vào thành viên</button>
-                            <!-- Hiển thị nút "Nhập từ Excel" -->
-                            <button class="import-excel" onclick="toggleExcelImportModal()">Nhập từ Excel</button>
 
-                            <!-- Màn hình mockup Nhập từ Excel -->
-                            <div class="excel-import-modal d-none">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content" style="border: 2px solid #ccc; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); padding: 20px; background-color: #fff;margin-top: 10px;">
-                                        <span class="close-modal" onclick="toggleExcelImportModal()">&times;</span>
-                                        <h2 class="modal-title">Nhập từ Excel</h2>
-                                        <p class="modal-description">Chọn file Excel để import danh sách người chơi.</p>
-                                        <div class="excel-form">
-                                            <!-- Add your Excel import form or content here -->
-                                            <label for="excelFile">Chọn file Excel:</label>
-                                            <input type="file" id="excelFile" name="excelFile" accept=".xlsx, .xls">
-                                        </div>
-                                        <div class="modal-buttons mt-3">
-                                            <button class="btn btn-success" onclick="importExcel()">Import</button>
-                                            <button class="btn btn-primary" onclick="downloadExcelTemplate()">Download Template</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <form method="post" enctype="multipart/form-data" asp-controller="CreateTournament" asp-action="ImportPlayers">
+                                <input type="file" name="ImportPlayers" accept=".xls, .xlsx" />
+                                <button type="submit">Import Players</button>
+                            </form>
+
+                            <button class="import-excel" onclick="downloadTemplate()">Download Template</button>
 
                         </div>
                         <div class="player-search d-flex align-items-end">
@@ -86,7 +71,7 @@
                             <input class="" />
                         </div>
                     </div>
-
+                    
                     <div class="pt-3">
                         <div class="table-overflow">
                             <table class="players-table">
@@ -94,33 +79,141 @@
                                     <th>
                                         <input class="all-checkbox" type="checkbox">
                                     </th>
-                                    <th>#</th>
+                                    <th>STT</th>
                                     <th>Tên</th>
                                     <th>Quốc gia</th>
                                     <th>Số điện thoại</th>
+                                    <th>Email</th>
                                     <th class="text-center">Hạng</th>
                                     <th class="player-fee">Lệ phí</th>
                                     <th>Hành động</th>
                                 </tr>
                                 <tbody>
+                                    @if (ViewBag.ImportedPlayers != null)
+                                    {
+                                        int stt = 1;
+                                        foreach (var player in ViewBag.ImportedPlayers)
+                                        {
+                                            <tr>
+                                                    <input type="hidden" id="selectedPlayersInput" name="selectedPlayers" />
+                                                    <td>
+                                                        <input type="checkbox" class="individual-checkbox" value="@player.PlayerId" 
+                                                        data-player-name="@player.PlayerName" 
+                                                        data-country-name="@player.CountryName"
+                                                        data-phonenumber ="@player.PhoneNumber"
+                                                        data-email ="@player.Email"
+                                                        data-level ="@player.Level"
+                                                        data-is-payed="@player.IsPayed">
+                                                </td>
+                                                <td>@stt</td>
+                                                    <td >@player.PlayerName</td>
+                                                    <td >@player.CountryName</td>
+                                                    <td >@player.PhoneNumber</td>
+                                                    <td >@player.Email</td>
+                                                <td class="text-center">@player.Level</td>
+                                                <td class="player-fee">
+                                                    @if (player.IsPayed)
+                                                    {
+                                                        <span>Đã nộp</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Chưa nộp</span>
+                                                    }
+                                                </td>
+                                                <td>
+                                                   
+                                                </td>
+                                            </tr>
+                                            stt++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="9">No players available</td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                         </div>
 
                         <div class="tour-input pt-5">
-                            <button class="submit-btn" type="submit">Lưu và chuyển sang bước 3</button>
+                                <button class="submit-btn" onclick="submitForm()">Lưu và chuyển sang bước 3</button>
                         </div>
                     </div>
+                    
                 </div>
 
-                
+               
             </div>
         </div>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-    //Handle entry checkbox
+    
+    function downloadTemplate() {
+        
+        var hiddenAnchor = document.createElement('a');
+        hiddenAnchor.href = 'https://firebasestorage.googleapis.com/v0/b/poolcomvn-82664.appspot.com/o/Tournaments%2FPlayerTemplate%2FPlayerTemplate.xlsx?alt=media&token=b6b38b05-5643-4bce-a114-6e0f6e348957';
+        hiddenAnchor.target = '_blank'; 
+        hiddenAnchor.download = 'PlayerTemplate.xlsx';
+        document.body.appendChild(hiddenAnchor);
+        hiddenAnchor.click();
+        document.body.removeChild(hiddenAnchor);
+    } 
+    function submitForm() {
+        var selectedPlayers = [];
+
+        var checkboxes = document.querySelectorAll('.individual-checkbox');
+
+        checkboxes.forEach(function (checkbox) {
+            var playerName = checkbox.getAttribute('data-player-name');
+            var countryName = checkbox.getAttribute('data-country-name');
+            var phoneNumber = checkbox.getAttribute('data-phonenumber');
+            var email = checkbox.getAttribute('data-email');
+            var level = checkbox.getAttribute('data-level');
+            var isPayed = checkbox.getAttribute('data-is-payed');
+
+            selectedPlayers.push({
+                PlayerId: parseInt(checkbox.value),
+                PlayerName: playerName,
+                CountryName: countryName,
+                PhoneNumber: phoneNumber,
+                Email: email,
+                Level: parseInt(level),
+                IsPayed: isPayed === "true" ? true : false
+                
+            });
+        });
+
+        var selectedPlayersJson = JSON.stringify(selectedPlayers);
+        console.log('Selected Players:', selectedPlayers);
+        console.log('Selected Players JSON:', selectedPlayersJson);
+        fetch('https://localhost:5000/api/Player/AddPlayerToTournament', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: selectedPlayersJson,
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                
+                console.log('Server Response:', data);
+            })
+            .catch(error => {
+               
+                console.error('Error during AJAX request:', error);
+            });
+    }
+   
     const allCheckboxBtn = document.querySelector('.all-checkbox');
     const checkboxList = document.querySelectorAll('.one-checkbox');
     const tourFee = document.querySelector('.create-tour-fee');
@@ -236,122 +329,7 @@
         }, 100);
     }
 
-    //close player-edit
-    // const closeBtn = document.querySelector('.edit-close');
-    // const playerEdit = document.querySelector('.player-edit');
-    // closeBtn.addEventListener('click', () => {
-    //     playerEdit.classList.add('d-none');
-    // })
+  
 
-    //edit button
-    const editBtns = document.querySelectorAll('.edit-button');
-    editBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            playerEdit.classList.remove('d-none');
-        })
-    })
-
-    function toggleExcelImportModal() {
-        const excelImportModal = document.querySelector('.excel-import-modal');
-        excelImportModal.classList.toggle('d-none');
-    }
-
-    // Hàm gọi API ImportExcel
-    function callImportExcelAPI(file) {
-        // Tạo FormData để chứa dữ liệu tệp tin
-        var formData = new FormData();
-        formData.append('file', file);
-
-        // Gọi API sử dụng AJAX
-        $.ajax({
-            url: 'https://localhost:5000/api/Player/ImportExcel', // Đường dẫn API
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (data) {
-                // Xử lý kết quả thành công
-                displayImportedData(data);
-            },
-            error: function (error) {
-                // Xử lý lỗi
-                console.error('Lỗi khi gọi API ImportExcel:', error);
-            }
-        });
-    }
-    function displayImportedData(data) {
-        var playersTable = document.querySelector('.players-table tbody');
-
-        // Loop through the data and append rows to the table
-        data.forEach(function (player) {
-            var row = document.createElement('tr');
-
-            // Create and append cells for each player property
-            var checkboxCell = document.createElement('td');
-            checkboxCell.innerHTML = '<input class="one-checkbox" type="checkbox">';
-            row.appendChild(checkboxCell);
-
-            var indexCell = document.createElement('td');
-            indexCell.textContent = playersTable.rows.length + 1; // Assuming index is based on the current row count
-            row.appendChild(indexCell);
-
-            var nameCell = document.createElement('td');
-            nameCell.textContent = player.Name;
-            row.appendChild(nameCell);
-
-            var countryCell = document.createElement('td');
-            countryCell.textContent = player.Country;
-            row.appendChild(countryCell);
-
-            var phoneNumberCell = document.createElement('td');
-            phoneNumberCell.textContent = player.PhoneNumber;
-            row.appendChild(phoneNumberCell);
-
-            var rankCell = document.createElement('td');
-            rankCell.textContent = player.Rank;
-            row.appendChild(rankCell);
-
-            var feeCell = document.createElement('td');
-            feeCell.textContent = player.Fee;
-            row.appendChild(feeCell);
-
-            var actionCell = document.createElement('td');
-            actionCell.innerHTML = '<button class="edit-button">Edit</button>';
-            row.appendChild(actionCell);
-
-            playersTable.appendChild(row);
-        });
-
-        // Show a notification (you can replace this with a more sophisticated notification library)
-        alert('Data added successfully!');
-    }
-
-    // Hàm gọi API DownloadTemplate
-    function callDownloadTemplateAPI() {
-        // Tạo một thẻ <a> ẩn để gửi yêu cầu tải xuống
-        var link = document.createElement('a');
-        link.href = 'https://localhost:5000/api/Player/DownloadTemplate';
-        link.target = '_blank';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-
-    // Hàm xử lý sự kiện khi nhấn nút Import
-    function importExcel() {
-        var excelFileInput = document.getElementById('excelFile');
-        var file = excelFileInput.files[0];
-
-        if (file) {
-            callImportExcelAPI(file);
-        } else {
-            alert('Vui lòng chọn một tệp Excel để import.');
-        }
-    }
-
-    // Hàm xử lý sự kiện khi nhấn nút Download Template
-    function downloadExcelTemplate() {
-        callDownloadTemplateAPI();
-    }
+   
 </script>

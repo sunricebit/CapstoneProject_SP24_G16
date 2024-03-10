@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using OfficeOpenXml;
 using PoolComVnWebClient.Common;
 using PoolComVnWebClient.DTO;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -56,6 +59,92 @@ namespace PoolComVnWebClient.Controllers
         {
             return View();
         }
+        [HttpPost("ImportPlayers")]
+        public async Task<IActionResult>  ImportPlayers(IFormFile ImportPlayers)
+        {
+
+
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+            try
+            {
+                if (ImportPlayers == null || ImportPlayers.Length <= 0)
+                {
+                    return BadRequest("Invalid file.");
+                }
+
+                var fileExtension = Path.GetExtension(ImportPlayers.FileName)?.ToLower();
+                var importedPlayers = new List<PlayerDTO>();
+                if (fileExtension == ".xls" || fileExtension == ".xlsx")
+                {
+
+                    using (var package = new ExcelPackage(ImportPlayers.OpenReadStream()))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0];
+
+                        for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                        {
+                            var playerName = worksheet.Cells[row, 1].Text?.Trim();
+                            var countryName = worksheet.Cells[row, 2].Text?.Trim();
+                            var phoneNumber = worksheet.Cells[row, 3].Text?.Trim();
+                            var email = worksheet.Cells[row, 4].Text?.Trim();
+                            var levelText = worksheet.Cells[row, 5].Text?.Trim();
+
+                            var feeText = worksheet.Cells[row, 6].Text?.Trim();
+
+                            if (string.IsNullOrEmpty(playerName) || string.IsNullOrEmpty(countryName) ||
+                                string.IsNullOrEmpty(phoneNumber) || string.IsNullOrEmpty(levelText) ||
+                                string.IsNullOrEmpty(email) || string.IsNullOrEmpty(feeText))
+                            {
+                                continue;
+                            }
+                            bool fee;
+                            if (feeText == "Rồi")
+                            {
+                                fee = true;
+
+                            }
+                            else
+                            {
+                                fee = false;
+                            }
+
+
+                            if (!int.TryParse(levelText, out int level))
+                            {
+                                continue;
+                            }
+
+                            var player = new PlayerDTO
+                            {
+                                PlayerId = row,
+                                PlayerName = playerName,
+                                CountryName = countryName,
+                                PhoneNumber = phoneNumber,
+                                Email = email,
+                                Level = level,
+                                IsPayed = fee
+                            };
+
+                            importedPlayers.Add(player);
+                        }
+                        ViewBag.ImportedPlayers = importedPlayers;
+
+                    }
+                    return View("StepTwoPlayerList");
+                }
+                else
+                {
+                    return View("ErrorView");
+                }
+
+            }
+            catch (IOException ex)
+            {
+                return View();
+            }
+
+        }
+       
 
         [HttpGet]
         public async Task<IActionResult> StepTwoJoinList()

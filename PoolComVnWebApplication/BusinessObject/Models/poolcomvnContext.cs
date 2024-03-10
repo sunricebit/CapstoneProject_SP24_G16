@@ -165,6 +165,10 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.CountryId).HasColumnName("CountryID");
 
+                entity.Property(e => e.Email).HasMaxLength(50);
+
+                entity.Property(e => e.IsPayed).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.PhoneNumber).HasMaxLength(50);
 
                 entity.Property(e => e.TourId).HasColumnName("TourID");
