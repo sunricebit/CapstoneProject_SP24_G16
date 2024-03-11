@@ -188,6 +188,7 @@ namespace PoolComVnWebClient.Controllers
         {
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+             tourID = 10;
             var bannerContent = new MultipartFormDataContent();
             try
             {
