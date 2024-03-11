@@ -1,42 +1,12 @@
 ﻿@using PoolComVnWebClient.DTO
 @{
     Layout = "~/Views/Shared/_CreateTournamentLayout.cshtml";
+    int tourId = ViewBag.TourId;
 }
 @model List<PlayerDTO>
 
 <div class="container-full">
     <div class="create-tour d-flex justify-content-end">
-        <div class="tour-step-nav">
-            <div class="tour-step">
-                <div class="step-number">1</div>
-                <div class="step-title">Cài đặt</div>
-            </div>
-            <div class="step-network-line"></div>
-            <div class="tour-step">
-                <div class="step-number active">2</div>
-                <div class="step-title">Người chơi</div>
-            </div>
-            <div class="step-network-line"></div>
-            <div class="tour-step">
-                <div class="step-number">3</div>
-                <div class="step-title">Bàn đấu</div>
-            </div>
-            <div class="step-network-line"></div>
-            <div class="tour-step">
-                <div class="step-number">4</div>
-                <div class="step-title">Ảnh bìa</div>
-            </div>
-            <div class="step-network-line"></div>
-            <div class="tour-step">
-                <div class="step-number">5</div>
-                <div class="step-title">Xếp trận</div>
-            </div>
-            <div class="step-network-line"></div>
-            <div class="tour-step">
-                <div class="step-number">6</div>
-                <div class="step-title">Hoàn thành</div>
-            </div>
-        </div>
         <div class="create-tour-display col-lg-10">
             <div class="create-step-two">
                 <div class="display-title d-flex justify-content-between">
@@ -60,6 +30,7 @@
 
                             <form method="post" enctype="multipart/form-data" asp-controller="CreateTournament" asp-action="ImportPlayers">
                                 <input type="file" name="ImportPlayers" accept=".xls, .xlsx" />
+                                <input type="hidden" id="TourId" name="tourId" value="@tourId"/>
                                 <button type="submit">Import Players</button>
                             </form>
 
@@ -103,7 +74,8 @@
                                                         data-phonenumber ="@player.PhoneNumber"
                                                         data-email ="@player.Email"
                                                         data-level ="@player.Level"
-                                                        data-is-payed="@player.IsPayed">
+                                                        data-is-payed="@player.IsPayed"
+                                                        data-tourId="@tourId">
                                                 </td>
                                                 <td>@stt</td>
                                                     <td >@player.PlayerName</td>
@@ -165,7 +137,7 @@
     } 
     function submitForm() {
         var selectedPlayers = [];
-
+        var tourIdValue = document.getElementById('TourId').value;
         var checkboxes = document.querySelectorAll('.individual-checkbox');
 
         checkboxes.forEach(function (checkbox) {
@@ -175,6 +147,7 @@
             var email = checkbox.getAttribute('data-email');
             var level = checkbox.getAttribute('data-level');
             var isPayed = checkbox.getAttribute('data-is-payed');
+            var tourId = checkbox.getAttribute('data-tourId');
 
             selectedPlayers.push({
                 PlayerId: parseInt(checkbox.value),
@@ -183,8 +156,8 @@
                 PhoneNumber: phoneNumber,
                 Email: email,
                 Level: parseInt(level),
-                IsPayed: isPayed === "true" ? true : false
-                
+                IsPayed: isPayed === "true" ? true : false,
+                TourId: parseInt(tourId),
             });
         });
 
@@ -212,6 +185,8 @@
                
                 console.error('Error during AJAX request:', error);
             });
+            console.log("abc");
+        window.location.href = '/CreateTournament/StepThreeAddTable?tourId=' + parseInt(tourIdValue);
     }
    
     const allCheckboxBtn = document.querySelector('.all-checkbox');
