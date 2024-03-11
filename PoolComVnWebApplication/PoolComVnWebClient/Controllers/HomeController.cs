@@ -19,13 +19,8 @@ namespace PoolComVnWebClient.Controllers
             return View();
         }
 
-        [HttpGet]
+        [HttpGet("NewsDetails")]
         public IActionResult NewsDetail()
-        {
-            return View();
-        }
-
-        public IActionResult Tournament()
         {
             return View();
         }

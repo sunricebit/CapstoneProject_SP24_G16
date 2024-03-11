@@ -13,6 +13,7 @@ namespace BusinessObject.Models
         public DateTime UpdatedDate { get; set; }
         public string? Link { get; set; }
         public string? Flyer { get; set; }
+        public bool? Status { get; set; }
 
         public virtual Account Acc { get; set; } = null!;
     }

@@ -1,5 +1,7 @@
 ﻿using BusinessObject.Models;
 using DataAccess;
+using Firebase.Auth;
+using Firebase.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +16,10 @@ namespace PoolComVnWebAPI.Controllers
     {
         private readonly TournamentDAO _tournamentDAO;
         private readonly ClubDAO _clubDAO;
+        private static string ApiKey = "AIzaSyDbVNJE6bbQdXlcr3TZqxkZh3xqi5CqKIc";
+        private static string Bucket = "poolcomvn-82664.appspot.com";
+        private static string AuthEmail = "vuducduy@gmail.com";
+        private static string AuthPassword = "123456";
 
         public TournamentController(TournamentDAO tournamentDAO, ClubDAO clubDAO)
         {
@@ -29,14 +35,34 @@ namespace PoolComVnWebAPI.Controllers
             return Ok(tournaments);
         }
 
-        [HttpGet("{tourId}")]
-        public IActionResult ViewTournament(int tourId)
+        [HttpGet("GetTournament")]
+        public IActionResult GetTournament(int tourId)
         {
             try
             {
-                Tournament p = _tournamentDAO.GetTournament(tourId);
-
-                return Ok(p);
+                Tournament tour = _tournamentDAO.GetTournament(tourId);
+                TournamentDetailDTO tournamentDetailDTO = new TournamentDetailDTO() {
+                    Address = tour.Club.Address,
+                    ClubName = tour.Club.ClubName,
+                    TournamentId = tour.TourId,
+                    TournamentName = tour.TourName,
+                    Description = tour.Description,
+                    StartTime = tour.StartDate,
+                    EndTime = tour.EndDate,
+                    Flyer = tour.Flyer,
+                    GameType = tour.GameTypeId == Constant.Game8Ball ? Constant.String8Ball
+                                    : (tour.GameTypeId == Constant.Game9Ball ? Constant.String9Ball : Constant.String10Ball),
+                    Status = tour.Status,
+                    TourTypeId = tour.TournamentTypeId,
+                    RaceWin = GetRaceWinNumbers(tour.RaceToString),
+                    RaceLose = GetRaceLoseNumbers(tour.RaceToString),
+                    RegisterDate = tour.RegistrationDeadline,
+                    MaxPlayer = tour.MaxPlayerNumber,
+                    Access = tour.Access == null ? true : tour.Access.Value,
+                    EntryFee = tour.EntryFee,
+                    TotalPrize = tour.TotalPrize,
+                };
+                return Ok(tournamentDetailDTO);
             }
             catch (Exception e)
             {
@@ -44,6 +70,59 @@ namespace PoolComVnWebAPI.Controllers
                 throw e;
             }
 
+        }
+
+        private List<RaceNumber> GetRaceWinNumbers(string raceString)
+        {
+            List<RaceNumber> raceNumbers = new List<RaceNumber>();
+
+            string[] parts = raceString.Split(',');
+
+            foreach (var part in parts)
+            {
+                string[] subParts = part.Split('-');
+
+                if (subParts.Length == 2 && int.TryParse(subParts[1], out int gameToWin) && subParts[0].StartsWith("W"))
+                {
+                    string round = "R" + subParts[0].Substring(1);
+                    RaceNumber raceNumber = new RaceNumber
+                    {
+                        Round = subParts[0],
+                        GameToWin = gameToWin
+                    };
+
+                    raceNumbers.Add(raceNumber);
+                }
+            }
+
+            raceNumbers.Last().Round = "CK";
+            return raceNumbers;
+        }
+
+        private List<RaceNumber> GetRaceLoseNumbers(string raceString)
+        {
+            List<RaceNumber> raceNumbers = new List<RaceNumber>();
+
+            string[] parts = raceString.Split(',');
+
+            foreach (var part in parts)
+            {
+                string[] subParts = part.Split('-');
+
+                if (subParts.Length == 2 && int.TryParse(subParts[1], out int gameToWin) && subParts[0].StartsWith("L"))
+                {
+                    string round = "R" + subParts[0].Substring(1);
+                    RaceNumber raceNumber = new RaceNumber
+                    {
+                        Round = subParts[0],
+                        GameToWin = gameToWin
+                    };
+
+                    raceNumbers.Add(raceNumber);
+                }
+            }
+
+            return raceNumbers;
         }
 
         [HttpPost("{tourId}")]
@@ -95,6 +174,133 @@ namespace PoolComVnWebAPI.Controllers
                 };
                 _tournamentDAO.CreateTournament(tour);
                 return Ok(_tournamentDAO.GetLastestTournament().TourId);
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+        [HttpPost("CreateTourStFour")]
+       // [Authorize]
+
+        public async Task<ActionResult> CreateTourStFour([FromForm] List<IFormFile> banner, int tourID)
+        {
+           
+            //var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+       
+            //var handler = new JwtSecurityTokenHandler();
+            //var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+
+           
+            //var roleClaim = jsonToken?.Claims.FirstOrDefault(claim => claim.Type.Equals("Role"));
+            //var account = jsonToken?.Claims.FirstOrDefault(claim => claim.Type.Equals("Account"));
+            ////if (!Constant.BusinessRole.ToString().Equals(roleClaim.Value))
+            ////{
+            ////    return BadRequest("Unauthorize");
+            ////}
+
+            //int clubId = _clubDAO.GetClubIdByAccountId(Int32.Parse(account.Value));
+
+            try
+            {
+                if (banner != null)
+                {
+                    foreach (var ban in banner)
+                    {
+                        if (ban != null && ban.Length > 0)
+                        {
+                            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(ban.FileName);
+                            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", fileName);
+
+                            using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
+                            {
+                                ban.CopyTo(memoryStream);
+
+
+                            }
+                            var fileStream2 = new FileStream(filePath, FileMode.Open);
+                            var downloadLink = await UploadFromFirebase(fileStream2, ban.FileName);
+                            fileStream2.Close();
+                            System.IO.File.Delete(filePath);
+                            Tournament tour = _tournamentDAO.GetTournament(tourID);
+                            tour.Flyer = downloadLink;
+                            _tournamentDAO.UpdateTournament(tour);
+                        }
+
+
+                    }
+                }
+
+                //  _tournamentDAO.CreateTournament(tour);
+                //return Ok(_tournamentDAO.GetLastestTournament().TourId);
+                return Ok(tourID);
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+        private async Task<string> UploadFromFirebase(FileStream stream, string filename)
+        {
+            var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
+            var a = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
+            var cancellation = new CancellationTokenSource();
+            var task = new FirebaseStorage(
+                Bucket,
+                new FirebaseStorageOptions
+                {
+                    AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                    ThrowOnCancel = true
+                }
+                ).Child("Tournaments")
+                 .Child(filename)
+                 .PutAsync(stream, cancellation.Token);
+            try
+            {
+                string link = await task;
+                return link;
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine("Exception was thrown : {0}", ex);
+                return null;
+            }
+        }
+        
+
+
+
+        [HttpGet("GetAllTour")]
+        public IActionResult GetAllTour()
+        {
+            try
+            {
+                List<TournamentOutputDTO> allTourDto = new List<TournamentOutputDTO>();
+                var allTourLst = _tournamentDAO.GetAllTournament();
+                foreach(var item in allTourLst)
+                {
+                    TournamentOutputDTO tour = new TournamentOutputDTO()
+                    {
+                        TournamentId = item.TourId,
+                        TournamentName = item.TourName,
+                        StartTime = item.StartDate,
+                        EndTime = item.EndDate,
+                        Address = item.Club.Address,
+                        ClubName = item.Club.ClubName,
+                        Description = item.Description,
+                        GameType = item.GameTypeId == Constant.Game8Ball ? Constant.String8Ball 
+                                    : (item.GameTypeId == Constant.Game9Ball ? Constant.String9Ball : Constant.String10Ball),
+                        Status = item.Status,
+                        Flyer = item.Flyer,
+                    };
+                    allTourDto.Add(tour);
+                }
+                return Ok(allTourDto);
             }
             catch (Exception e)
             {

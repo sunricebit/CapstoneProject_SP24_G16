@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using OfficeOpenXml;
 using PoolComVnWebClient.Common;
 using PoolComVnWebClient.DTO;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -46,9 +49,8 @@ namespace PoolComVnWebClient.Controllers
             else
             {
                 var status = response.StatusCode;
+                return RedirectToAction("InternalServerError", "Error");
             }
-
-            return RedirectToAction("InternalServerError", "Error");
         }
 
         [HttpGet]
@@ -56,6 +58,92 @@ namespace PoolComVnWebClient.Controllers
         {
             return View();
         }
+
+        [HttpPost("ImportPlayers")]
+        public async Task<IActionResult>  ImportPlayers(IFormFile ImportPlayers, int tourId)
+        {
+            ViewBag.TourId = tourId;
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+            try
+            {
+                if (ImportPlayers == null || ImportPlayers.Length <= 0)
+                {
+                    return BadRequest("Invalid file.");
+                }
+
+                var fileExtension = Path.GetExtension(ImportPlayers.FileName)?.ToLower();
+                var importedPlayers = new List<PlayerDTO>();
+                if (fileExtension == ".xls" || fileExtension == ".xlsx")
+                {
+
+                    using (var package = new ExcelPackage(ImportPlayers.OpenReadStream()))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0];
+
+                        for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                        {
+                            var playerName = worksheet.Cells[row, 1].Text?.Trim();
+                            var countryName = worksheet.Cells[row, 2].Text?.Trim();
+                            var phoneNumber = worksheet.Cells[row, 3].Text?.Trim();
+                            var email = worksheet.Cells[row, 4].Text?.Trim();
+                            var levelText = worksheet.Cells[row, 5].Text?.Trim();
+
+                            var feeText = worksheet.Cells[row, 6].Text?.Trim();
+
+                            if (string.IsNullOrEmpty(playerName) || string.IsNullOrEmpty(countryName) ||
+                                string.IsNullOrEmpty(phoneNumber) || string.IsNullOrEmpty(levelText) ||
+                                string.IsNullOrEmpty(email) || string.IsNullOrEmpty(feeText))
+                            {
+                                continue;
+                            }
+                            bool fee;
+                            if (feeText == "Rồi")
+                            {
+                                fee = true;
+
+                            }
+                            else
+                            {
+                                fee = false;
+                            }
+
+
+                            if (!int.TryParse(levelText, out int level))
+                            {
+                                continue;
+                            }
+
+                            var player = new PlayerDTO
+                            {
+                                PlayerId = row,
+                                PlayerName = playerName,
+                                CountryName = countryName,
+                                PhoneNumber = phoneNumber,
+                                Email = email,
+                                Level = level,
+                                IsPayed = fee
+                            };
+
+                            importedPlayers.Add(player);
+                        }
+                        ViewBag.ImportedPlayers = importedPlayers;
+
+                    }
+                    return View("StepTwoPlayerList");
+                }
+                else
+                {
+                    return View("ErrorView");
+                }
+
+            }
+            catch (IOException ex)
+            {
+                return View();
+            }
+
+        }
+       
 
         [HttpGet]
         public async Task<IActionResult> StepTwoJoinList()
@@ -80,15 +168,67 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult StepThreeAddTable()
+        public async Task<IActionResult> StepThreeAddTable(int tourId)
         {
-            return View();
+            ViewBag.TourId = tourId;
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            var response = await client.GetFromJsonAsync<IEnumerable<TableDTO>>("https://localhost:5000/api/Table/GetAllTablesForClub");
+            var listtable= response.ToList();
+            return View(listtable);
         }
 
         [HttpGet]
-        public IActionResult StepFourAddBanner()
+        public IActionResult StepFourAddBanner(int tourID)
         {
+            ViewBag.TourId = tourID;
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> StepFourAddBanner(IFormFile banner, int tourID)
+        {
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            var bannerContent = new MultipartFormDataContent();
+            try
+            {
+                var stream = new MemoryStream();
+                
+                    await banner.CopyToAsync(stream);
+                    stream.Seek(0, SeekOrigin.Begin);
+
+                    bannerContent.Add(new StreamContent(stream), "banner", banner.FileName);
+
+                  
+                
+
+                bannerContent.Add(new StringContent(tourID.ToString()), "tourID");
+
+                var response = await client.PostAsync(ApiUrl + "/CreateTourStFour", bannerContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    ViewBag.TourId = await response.Content.ReadFromJsonAsync<int>();
+                    return View("StepFiveArrange");
+                }
+                else
+                {
+                    var status = response.StatusCode;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+            finally
+            {
+                
+                bannerContent?.Dispose();
+            }
+
+            return RedirectToAction("InternalServerError", "Error");
         }
 
         [HttpGet]

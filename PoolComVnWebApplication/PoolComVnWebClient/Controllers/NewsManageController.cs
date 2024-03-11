@@ -20,14 +20,14 @@ namespace PoolComVnWebClient.Controllers
             ApiUrl = ApiUrl + "/News";
         }
 
-        public IActionResult Index()
+        public  IActionResult Index()
         {
             
             var response = client.GetAsync($"{ApiUrl}").Result;
             if (response.IsSuccessStatusCode)
             {
                 var jsonContent = response.Content.ReadAsStringAsync().Result;
-                var newsList = JsonConvert.DeserializeObject<NewsDTO>(jsonContent);
+                var newsList = JsonConvert.DeserializeObject<List<NewsDTO>>(jsonContent);
                 return View(newsList);
             }
             else
@@ -77,7 +77,6 @@ namespace PoolComVnWebClient.Controllers
             }
             else
             {
-            
                 ModelState.AddModelError(string.Empty, "Lỗi khi lấy chi tiết tin tức.");
                 return View();
             }

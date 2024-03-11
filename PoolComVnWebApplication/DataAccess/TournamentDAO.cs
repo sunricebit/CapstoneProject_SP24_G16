@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,8 @@ namespace DataAccess
         {
             try
             {
-                var tournament = _context.Tournaments.FirstOrDefault(item => item.TourId == tourId);
+                var tournament = _context.Tournaments.Include(x => x.Club)
+                    .FirstOrDefault(item => item.TourId == tourId);
 
                 return tournament;
             }
@@ -34,7 +36,7 @@ namespace DataAccess
         {
             try
             {
-                var tournament = _context.Tournaments.Last();
+                var tournament = _context.Tournaments.OrderByDescending(e => e.TourId).FirstOrDefault();
 
                 return tournament;
             }
@@ -44,11 +46,11 @@ namespace DataAccess
             }
         }
 
-        public IEnumerable<Tournament> GetAllTournament()
+        public List<Tournament> GetAllTournament()
         {
             try
             {
-                var tournaments = _context.Tournaments;
+                var tournaments = _context.Tournaments.Include(t => t.Club).ToList();
                 return tournaments;
             }
             catch (Exception e)

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PoolComVnWebAPI.DTO;
+using System.IO;
 using System.Net.Sockets;
 
 namespace PoolComVnWebAPI.Controllers
@@ -92,8 +93,8 @@ namespace PoolComVnWebAPI.Controllers
         }
 
      
-        [HttpPost]
-        public async Task<ActionResult> Post([FromForm] NewsDTO newsDTO, [FromForm] List<IFormFile> images)
+        [HttpPost("Add")]
+        public async Task<ActionResult> Post([FromForm] NewsDTO newsDTO, [FromForm] List<IFormFile> banner, [FromForm] List<IFormFile> images)
         {
             try
             {
@@ -116,27 +117,56 @@ namespace PoolComVnWebAPI.Controllers
                     Acc = account
                     
                 };
-                List<string> imageUrls = new List<string>();
 
-                foreach (var image in images)
+                if (banner != null)
                 {
-                    using (MemoryStream memoryStream = new MemoryStream())
+                    foreach (var ban in banner)
                     {
-                        image.CopyTo(memoryStream);
-
-
-                        string imageUrl = await UploadFromFirebase(memoryStream, image.FileName);
-
-                        if (!string.IsNullOrEmpty(imageUrl))
+                        if (ban != null && ban.Length > 0)
                         {
+                            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(ban.FileName);
+                            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", fileName);
 
-                            imageUrls.Add(imageUrl);
+                            using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
+                            {
+                            ban.CopyTo(memoryStream);
+                           
+
+                            }
+                            var fileStream2 = new FileStream(filePath, FileMode.Open);
+                            var downloadLink = await UploadFromFirebase(fileStream2, ban.FileName,"News", newsDTO.Title,0);
+                            fileStream2.Close();
+                            System.IO.File.Delete(filePath);
+
                         }
-                        news.Flyer = imageUrl;
+
+
                     }
                 }
-                
+                var order = 1;
+                foreach (var image in images)
+                {
 
+                    if (image != null && image.Length > 0)
+                    {
+                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", fileName);
+                        using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            image.CopyTo(memoryStream);
+                            
+                            
+                            
+                        }
+                        var fileStream2 = new FileStream(filePath, FileMode.Open);
+                        var downloadLink = await UploadFromFirebase(fileStream2, image.FileName, "News", newsDTO.Title, order);
+                        order++;
+                        fileStream2.Close();
+                        System.IO.File.Delete(filePath);
+                    }
+                }
+
+                news.Flyer = $"https://console.firebase.google.com/project/poolcomvn-82664/storage/poolcomvn-82664.appspot.com/files/~2FNews~%2F{Uri.EscapeDataString(newsDTO.Title)}";
                 _newsDAO.AddNews(news);
                 return CreatedAtAction(nameof(Get), new { id = news.NewsId }, newsDTO);
             }
@@ -147,7 +177,7 @@ namespace PoolComVnWebAPI.Controllers
         }
 
       
-        [HttpPut("{id}")]
+        [HttpPost("Update")]
         public ActionResult Put(int id, [FromBody] NewsDTO updatedNewsDTO)
         {
             try
@@ -191,15 +221,12 @@ namespace PoolComVnWebAPI.Controllers
         }
 
 
-        [HttpDelete("{id}")]
-        public ActionResult Delete(int id, [FromBody] NewsDTO deletedNewsDTO)
+        [HttpPost("Delete")]
+        public ActionResult Delete(int id)
         {
             try
             {
-                if (id != deletedNewsDTO.NewsId)
-                {
-                    return BadRequest("Invalid News ID");
-                }
+                
 
                 _newsDAO.DeleteNews(id);
                 return NoContent();
@@ -209,36 +236,89 @@ namespace PoolComVnWebAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
-        private async Task<string> UploadFromFirebase(MemoryStream stream, string filename)
+
+        private async Task<string> UploadFromFirebase(FileStream stream, string filename, string folderName, string newsTitle, int order)
         {
             var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
             var a = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
             var cancellation = new CancellationTokenSource();
-            var task = new FirebaseStorage(
-         Bucket,
-         new FirebaseStorageOptions
-         {
-             AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
-             ThrowOnCancel = true
-         }
-     ).Child("News")
-      .Child(filename)
-      .PutAsync(stream, cancellation.Token);
+            if (order == 0) {
+                var task = new FirebaseStorage(
+                    Bucket,
+                    new FirebaseStorageOptions
+                    {
+                        AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                        ThrowOnCancel = true
+                    }
+                ).Child(folderName)
+                .Child(newsTitle)
+                 .Child($"Banner")
+                 .PutAsync(stream, cancellation.Token);
+                try
+                {
+                    await task;
+                    return filename;
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception was thrown : {0}", ex);
+                    return null;
+                }
+            }
+            else
+            {
+                var orderedFileName = $"Image{order}{Path.GetExtension(stream.Name)}";
+                var task = new FirebaseStorage(
+                    Bucket,
+                    new FirebaseStorageOptions
+                    {
+                        AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                        ThrowOnCancel = true
+                    }
+                ).Child(folderName)
+                .Child(newsTitle)
+                 .Child(orderedFileName)
+                 .PutAsync(stream, cancellation.Token);
+                try
+                {
+                    await task;
+                    return filename;
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception was thrown : {0}", ex);
+                    return null;
+                }
+            }
+           
+        }
+        private async Task DeleteFromFirebase(string filename)
+        {
             try
             {
-                string link = await task;
-                return link;
+                var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
+                var a = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
 
+                var cancellation = new CancellationTokenSource();
+                var storage = new FirebaseStorage(
+                    Bucket,
+                    new FirebaseStorageOptions
+                    {
+                        AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                        ThrowOnCancel = true
+                    }
+                );
+                var oldImagesPath = $"News/{filename}";
+                await storage.Child(oldImagesPath).DeleteAsync();
             }
             catch (Exception ex)
             {
-
-                Console.WriteLine("Exception was thrown : {0}", ex);
-                return null;
+                Console.WriteLine("Exception occurred during deletion: {0}", ex);
             }
         }
-     
+
 
 
 

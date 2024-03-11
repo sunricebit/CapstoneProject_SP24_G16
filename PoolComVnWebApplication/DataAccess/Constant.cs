@@ -34,6 +34,9 @@ namespace DataAccess
         public const int Game8Ball = 1;
         public const int Game9Ball = 2;
         public const int Game10Ball = 3;
+        public const string String8Ball = "8 bi";
+        public const string String9Ball = "9 bi";
+        public const string String10Ball = "10 bi";
 
         public const int SingleEliminate = 1;
         public const int DoubleEliminate = 2;

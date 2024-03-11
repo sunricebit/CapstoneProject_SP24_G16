@@ -38,8 +38,8 @@ namespace BusinessObject.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var builder = new ConfigurationBuilder()
-                                        .SetBasePath(Directory.GetCurrentDirectory())
-                                        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                                         .SetBasePath(Directory.GetCurrentDirectory())
+                                         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             IConfigurationRoot configuration = builder.Build();
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("PoolCom"));
         }
@@ -164,6 +164,10 @@ namespace BusinessObject.Models
                 entity.Property(e => e.PlayerId).HasColumnName("PlayerID");
 
                 entity.Property(e => e.CountryId).HasColumnName("CountryID");
+
+                entity.Property(e => e.Email).HasMaxLength(50);
+
+                entity.Property(e => e.IsPayed).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.PhoneNumber).HasMaxLength(50);
 

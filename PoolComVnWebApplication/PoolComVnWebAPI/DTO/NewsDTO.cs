@@ -15,7 +15,8 @@ namespace PoolComVnWebAPI.DTO
         public string? Link { get; set; }
         public string? Flyer { get; set; }
         public string? AccountName { get; set; }
-        
-        }
+        public bool? Status { get; set; }
+
+    }
    
 }

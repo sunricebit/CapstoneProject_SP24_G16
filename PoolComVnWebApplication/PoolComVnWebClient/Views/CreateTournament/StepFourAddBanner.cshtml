@@ -1,10 +1,11 @@
 ﻿@{
     Layout = "~/Views/Shared/_CreateTournamentLayout.cshtml";
+    int tourId = ViewBag.TourId;
 }
 
 <div class="container-full">
     <div class="create-tour d-flex justify-content-end">
-        <div class="create-tour-display col-lg-10">
+        <form class="create-tour-display col-lg-10" method="post" enctype="multipart/form-data" asp-controller="CreateTournament" asp-action="StepFourAddBanner">
             <div class="create-step-one">
                 <div class="display-title">Thêm ảnh bìa</div>
                 <div class="display-content">
@@ -13,26 +14,32 @@
                             <span>Hãy tải ảnh có kích thước 3x2 để được hiển thị tốt nhất.</span>
                         </div>
                     </div>
-                    <div class="upload-img">
-                        <input type="file" class="imageInput mt-1" accept="image/*" />
-                        <div class="upload-title d-flex align-items-center justify-content-center">
+                    <div class="upload-img ">
+
+                        <input type="file" name="banner" class="imageInput mt-1" accept="image/*" />
+                        <div class="upload-title d-flex justify-content-center align-items-center">
                             <div>
-                                <i class="fa-regular fa-image"></i>
-                                <p>Bấm vào đây để tải ảnh bìa.</p>
+                                <div>
+                                    <i class="fa-regular fa-image"></i>
+                                </div>
+                                <div>
+                                    <p>Bấm vào đây để tải ảnh bìa.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="preview-image-bg m-0">
                             <img class="preview-image" />
                         </div>
-                        <!-- lấy tên ảnh -->
                         <input id="file-name" class="d-none" />
+                        <input type="hidden" id="TourId" name="tourId" value="@tourId" />
                     </div>
                     <div class="tour-input">
                         <button class="submit-btn" type="submit">Lưu và chuyển sang bước 5</button>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
+
     </div>
 </div>
 

@@ -1,6 +1,9 @@
-﻿@{
+﻿@using PoolComVnWebClient.DTO
+@{
     Layout = "~/Views/Shared/_CreateTournamentLayout.cshtml";
+    int tourId = ViewBag.TourId;
 }
+@model List<TableDTO>
 
 <div class="container-full">
     <div class="create-tour d-flex justify-content-end">
@@ -34,106 +37,38 @@
                                     <th>Nhãn</th>
                                     <th class="text-center">Ảnh</th>
                                     <th class="text-center">Kích thước</th>
-                                    <th>Hãng</th>
                                     <th>Tên bàn</th>
                                     <th>Hành động</th>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <input class="one-checkbox" type="checkbox">
-                                    </td>
-                                    <td>1</td>
-                                    <td>Bàn 1</td>
-                                    <td class="d-flex justify-content-center">
-                                        <img src="/Image/rassonTable.png"
-                                             alt="">
-                                    </td>
-                                    <td class="text-center">9 ft</td>
-                                    <td>Rasson</td>
-                                    <td>Rasson OX 9ft</td>
-                                    <td>
-                                        <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input class="one-checkbox" type="checkbox">
-                                    </td>
-                                    <td>1</td>
-                                    <td>Bàn 1</td>
-                                    <td class="d-flex justify-content-center">
-                                        <img src="/Image/rassonTable.png"
-                                             alt="">
-                                    </td>
-                                    <td class="text-center">9 ft</td>
-                                    <td>Rasson</td>
-                                    <td>Rasson OX 9ft</td>
-                                    <td>
-                                        <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input class="one-checkbox" type="checkbox">
-                                    </td>
-                                    <td>1</td>
-                                    <td>Bàn 1</td>
-                                    <td class="d-flex justify-content-center">
-                                        <img src="/Image/rassonTable.png"
-                                             alt="">
-                                    </td>
-                                    <td class="text-center">9 ft</td>
-                                    <td>Rasson</td>
-                                    <td>Rasson OX 9ft</td>
-                                    <td>
-                                        <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input class="one-checkbox" type="checkbox">
-                                    </td>
-                                    <td>1</td>
-                                    <td>Bàn 1</td>
-                                    <td class="d-flex justify-content-center">
-                                        <img src="/Image/rassonTable.png"
-                                             alt="">
-                                    </td>
-                                    <td class="text-center">9 ft</td>
-                                    <td>Rasson</td>
-                                    <td>Rasson OX 9ft</td>
-                                    <td>
-                                        <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input class="one-checkbox" type="checkbox">
-                                    </td>
-                                    <td>1</td>
-                                    <td>Bàn 1</td>
-                                    <td class="d-flex justify-content-center">
-                                        <img src="/Image/rassonTable.png"
-                                             alt="">
-                                    </td>
-                                    <td class="text-center">9 ft</td>
-                                    <td>Rasson</td>
-                                    <td>Rasson OX 9ft</td>
-                                    <td>
-                                        <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                        <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                    </td>
-                                </tr>
+                                @{
+                                    int SoThuTu = 1;
+                                }
+                                @foreach (var table in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input class="one-checkbox" type="checkbox">
+                                        </td>
+                                        <td>@SoThuTu</td>
+                                        <td>@table.TableName</td>
+                                        <td class="d-flex justify-content-center">
+                                            <img src="@table.Image" alt="">
+                                        </td>
+                                        <td class="text-center">@table.Size</td>
+                                        <td>@table.TableName</td>
+                                        <td>
+                                            <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
+                                            <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
+                                        </td>
+                                    </tr>
+                                    SoThuTu++;
+                                }
                             </table>
                         </div>
                     </div>
 
                     <div class="tour-input pt-5">
-                        <button class="submit-btn" type="submit">Lưu và chuyển sang bước 4</button>
+                        <button class="submit-btn" type="submit" onclick="saveAndNavigateToStep4(@tourId)">Lưu và chuyển sang bước 4</button>
                     </div>
                 </div>
             </div>
@@ -173,6 +108,12 @@
 </div>
 
 <script>
+
+    function saveAndNavigateToStep4(tourId) {
+        console.log(tourId);
+        window.location.href = '/CreateTournament/StepFourAddBanner?tourId=' + parseInt(tourId);
+    }
+
     //Handle entry checkbox
     const allCheckboxBtn = document.querySelector('.all-checkbox');
     const checkboxList = document.querySelectorAll('.one-checkbox');
