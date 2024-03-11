@@ -2484,327 +2484,329 @@ tr:not(:first-child).isFinish {
     margin: 50px;
 }
 
-    .create-tour .tour-step-nav {
-        position: fixed;
-        top: 100px;
-        left: 50px;
-    }
+.tour-step-nav {
+    position: fixed;
+    top: 100px;
+    left: 50px;
+    z-index: 5;
+}
 
-    .create-tour .tour-step {
-        display: flex;
-    }
+.tour-step {
+    display: flex;
+}
 
-        .create-tour .tour-step .step-number {
-            line-height: 40px;
-            width: 40px;
-            border-radius: 50%;
-            background: #4d5c60;
-            color: #fff;
-            font-weight: 700;
-            text-align: center;
-            font-size: 20px;
-            border: 2px solid #ccc;
-            margin-right: 10px;
-        }
-
-            .create-tour .tour-step .step-number:hover {
-                background: #3b4649;
-                cursor: pointer;
-            }
-
-            .create-tour .tour-step .step-number.active {
-                background: #9c1515;
-            }
-
-        .create-tour .tour-step .step-title {
-            font-weight: 600;
-            color: #fff;
-            line-height: 40px;
-        }
-
-    .create-tour .step-network-line {
-        width: 20px;
-        height: 50px;
-        border-right: 2px solid #ccc;
-    }
-
-    .create-tour .create-tour-display {
-        background-color: #0000003f;
-        border-radius: 20px;
-    }
-
-    .create-tour .display-title {
-        font-size: 24px;
+    .tour-step .step-number {
+        line-height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        background: #4d5c60;
+        color: #fff;
         font-weight: 700;
-        border-bottom: 2px #fff solid;
+        text-align: center;
+        font-size: 20px;
+        border: 2px solid #ccc;
+        margin-right: 10px;
+    }
+
+        .tour-step .step-number:hover {
+            background: #3b4649;
+            cursor: pointer;
+        }
+
+        .tour-step .step-number.active {
+            background: #9c1515;
+        }
+
+    .tour-step .step-title {
+        font-weight: 600;
         color: #fff;
-        padding-left: 20px;
-        line-height: 50px;
+        line-height: 40px;
     }
 
-    .create-tour .display-content {
-        margin: 30px 20px;
-    }
+.step-network-line {
+    width: 20px;
+    height: 50px;
+    border-right: 2px solid #ccc;
+}
 
-        .create-tour .display-content.full-screen,
-        .container-bracket.full-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            margin: 0;
-        }
+.create-tour .create-tour-display {
+    background-color: #0000003f;
+    border-radius: 20px;
+}
 
-            .create-tour .display-content.full-screen .bracket-tab,
-            .container-bracket.full-screen .bracket-tab {
-                height: 100vh;
-            }
+.create-tour .display-title {
+    font-size: 24px;
+    font-weight: 700;
+    border-bottom: 2px #fff solid;
+    color: #fff;
+    padding-left: 20px;
+    line-height: 50px;
+}
 
-            .create-tour .display-content.full-screen .zoom-btns {
-                right: 50px;
-            }
+.create-tour .display-content {
+    margin: 30px 20px;
+}
 
-    .create-tour .tour-input {
-        margin-bottom: 20px;
-    }
-
-        .create-tour .tour-input .input-title {
-            height: 32px;
-            color: #fff;
-            font-size: 14px;
-            font-style: italic;
-        }
-
-            .create-tour .tour-input .input-title.checkbox {
-                font-size: 16px;
-                font-style: normal;
-                padding: 10px;
-            }
-
-        .create-tour .tour-input .input-requir {
-            color: #ff3838;
-            font-size: 20px;
-            font-weight: 900;
-        }
-
-        .create-tour .tour-input .input-content {
-            background-color: #00000000;
-            outline: none;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            border-bottom: 3px solid #fff;
-            padding: 5px 10px;
-            width: 80%;
-            caret-color: #fff;
-            color: #fff;
-        }
-
-        .create-tour .tour-input textarea.input-content {
-            min-height: 100px;
-        }
-
-        .create-tour .tour-input .input-date {
-            width: 300px;
-            padding: 5px 10px;
-            border-radius: 5px;
-            border: 1px #ccc solid;
-        }
-
-        .create-tour .tour-input select.input-content option {
-            color: #000;
-        }
-
-        .create-tour .tour-input select.input-content:disabled {
-            background: #0000003f;
-        }
-
-        .create-tour .tour-input .stage-checkbox-input {
-            height: 16px;
-            width: 16px;
-        }
-
-    .create-tour .race-round {
-        width: 80%;
-    }
-
-    .create-tour .tour-input-line {
-        width: 40%;
-    }
-
-    .create-tour .race-round .race-branch {
-        color: #fff;
-        width: 120px;
-        font-size: 14px;
-        font-style: italic;
-        margin: 10px 0;
-    }
-
-    .create-tour .round-name {
-        font-size: 14px;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .create-tour .display-content.full-screen,
+    .container-bracket.full-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
         margin: 0;
     }
 
-    .create-tour .race-round input {
+        .create-tour .display-content.full-screen .bracket-tab,
+        .container-bracket.full-screen .bracket-tab {
+            height: 100vh;
+        }
+
+        .create-tour .display-content.full-screen .zoom-btns {
+            right: 50px;
+        }
+
+.create-tour .tour-input {
+    margin-bottom: 20px;
+}
+
+    .create-tour .tour-input .input-title {
+        height: 32px;
+        color: #fff;
+        font-size: 14px;
+        font-style: italic;
+    }
+
+        .create-tour .tour-input .input-title.checkbox {
+            font-size: 16px;
+            font-style: normal;
+            padding: 10px;
+        }
+
+    .create-tour .tour-input .input-requir {
+        color: #ff3838;
+        font-size: 20px;
+        font-weight: 900;
+    }
+
+    .create-tour .tour-input .input-content {
         background-color: #00000000;
         outline: none;
         border-radius: 5px;
         border: 1px solid #ddd;
         border-bottom: 3px solid #fff;
         padding: 5px 10px;
+        width: 80%;
         caret-color: #fff;
         color: #fff;
-        margin: 10px 0;
     }
 
-        .create-tour .race-round input.multi {
-            box-shadow: 0px 0px 2px 2px #c20a4d;
-        }
-
-    .create-tour .race-round .remove-group,
-    .create-tour .race-round .add-group,
-    .create-tour .create-tour-fee,
-    .create-tour .club-player,
-    .create-tour .import-excel,
-    .create-tour .list-player {
-        width: 160px;
-        height: 40px;
-        background: #ccc;
-        border: 1px #fff solid;
-        color: #000;
-        margin: 20px 12px;
-        border-radius: 10px;
-        font-weight: 600;
+    .create-tour .tour-input textarea.input-content {
+        min-height: 100px;
     }
 
-        .create-tour .race-round .remove-group:hover,
-        .create-tour .race-round .add-group:hover,
-        .create-tour .create-tour-fee:hover,
-        .create-tour .club-player:hover,
-        .create-tour .list-player:hover {
-            background-color: #aaa;
-            color: #fff;
-        }
-
-    .create-tour .race-round .race-note {
-        font-size: 14px;
-        color: #ccc;
-    }
-
-    .create-tour .tour-input .arrange-list {
-        color: #fff;
-    }
-
-    .create-tour .tour-input .input-arrange,
-    .create-tour .tour-input .input-access {
-        height: 16px;
-        width: 16px;
-    }
-
-    .create-tour .tour-input .submit-btn {
-        padding: 10px 20px;
-        background: #41f3c0;
-        border-radius: 10px;
-        font-weight: 600;
-    }
-
-        .create-tour .tour-input .submit-btn:hover {
-            background-color: #47BC9A;
-            color: #fff;
-        }
-
-    .create-tour .step-two-nav {
-        font-size: 16px;
-        padding: 0px 20px;
-        border-left: 2px #fff solid;
-        width: 200px;
-        text-align: center;
-        background-color: #242424a6;
-    }
-
-        .create-tour .step-two-nav:last-child {
-            border-top-right-radius: 20px;
-        }
-
-        .create-tour .step-two-nav:hover {
-            background: #181515;
-            cursor: pointer;
-        }
-
-        .create-tour .step-two-nav.active {
-            background: #181515;
-        }
-
-    .create-tour .table-overflow tr td:first-child input,
-    .create-tour .table-overflow tr th:first-child input {
-        height: 16px;
-        width: 16px;
-        font-size: 16px;
-    }
-
-    .create-tour .table-overflow tr td:last-child a i {
-        color: #3b4649;
-        transition: transform 0.3s ease;
-    }
-
-    .create-tour .table-overflow tr td:last-child a:hover i {
-        transform: scale(1.3);
-    }
-
-    .create-tour .player-search {
-        background-color: transparent;
-        border-bottom: 1px solid #fff;
+    .create-tour .tour-input .input-date {
         width: 300px;
+        padding: 5px 10px;
+        border-radius: 5px;
+        border: 1px #ccc solid;
+    }
+
+    .create-tour .tour-input select.input-content option {
+        color: #000;
+    }
+
+    .create-tour .tour-input select.input-content:disabled {
+        background: #0000003f;
+    }
+
+    .create-tour .tour-input .stage-checkbox-input {
+        height: 16px;
+        width: 16px;
+    }
+
+.create-tour .race-round {
+    width: 80%;
+}
+
+.create-tour .tour-input-line {
+    width: 40%;
+}
+
+.create-tour .race-round .race-branch {
+    color: #fff;
+    width: 120px;
+    font-size: 14px;
+    font-style: italic;
+    margin: 10px 0;
+}
+
+.create-tour .round-name {
+    font-size: 14px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+.create-tour .race-round input {
+    background-color: #00000000;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    border-bottom: 3px solid #fff;
+    padding: 5px 10px;
+    caret-color: #fff;
+    color: #fff;
+    margin: 10px 0;
+}
+
+    .create-tour .race-round input.multi {
+        box-shadow: 0px 0px 2px 2px #c20a4d;
+    }
+
+.create-tour .race-round .remove-group,
+.create-tour .race-round .add-group,
+.create-tour .create-tour-fee,
+.create-tour .club-player,
+.create-tour .import-excel,
+.create-tour .list-player,
+.import-form button {
+    width: 160px;
+    height: 40px;
+    background: #ccc;
+    border: 1px #fff solid;
+    color: #000;
+    margin: 20px 12px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+    .create-tour .race-round .remove-group:hover,
+    .create-tour .race-round .add-group:hover,
+    .create-tour .create-tour-fee:hover,
+    .create-tour .club-player:hover,
+    .create-tour .list-player:hover {
+        background-color: #aaa;
         color: #fff;
     }
 
-        .create-tour .player-search input {
-            background-color: transparent;
-            border: none;
-            outline: none;
-            caret-color: #fff;
-            margin-left: 10px;
-            color: #fff;
-            width: 280px;
-        }
+.create-tour .race-round .race-note {
+    font-size: 14px;
+    color: #ccc;
+}
 
-        .create-tour .player-search i {
-            margin-bottom: 5px;
-        }
+.create-tour .tour-input .arrange-list {
+    color: #fff;
+}
 
-    .create-tour .create-tour-fee,
-    .create-tour .club-player,
-    .create-tour .list-player {
-        margin: 0 10px 0 0;
-        padding: 5px 20px;
-        width: 200px;
+.create-tour .tour-input .input-arrange,
+.create-tour .tour-input .input-access {
+    height: 16px;
+    width: 16px;
+}
+
+.create-tour .tour-input .submit-btn {
+    padding: 10px 20px;
+    background: #41f3c0;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+    .create-tour .tour-input .submit-btn:hover {
+        background-color: #47BC9A;
+        color: #fff;
     }
 
-        .create-tour .create-tour-fee:hover {
-            background: #ccc;
-            color: #000;
-            cursor: pointer;
-        }
+.create-tour .step-two-nav {
+    font-size: 16px;
+    padding: 0px 20px;
+    border-left: 2px #fff solid;
+    width: 200px;
+    text-align: center;
+    background-color: #242424a6;
+}
 
-        .create-tour .create-tour-fee:disabled {
-            opacity: 0.6;
-            cursor: auto;
-        }
-
-        .create-tour .club-player:disabled,
-        .create-tour .list-player:disabled {
-            background-color: #ccc;
-            color: #000;
-            opacity: 0.6;
-        }
-
-    .create-tour .table-overflow .player-fee {
-        width: 100px;
+    .create-tour .step-two-nav:last-child {
+        border-top-right-radius: 20px;
     }
+
+    .create-tour .step-two-nav:hover {
+        background: #181515;
+        cursor: pointer;
+    }
+
+    .create-tour .step-two-nav.active {
+        background: #181515;
+    }
+
+.create-tour .table-overflow tr td:first-child input,
+.create-tour .table-overflow tr th:first-child input {
+    height: 16px;
+    width: 16px;
+    font-size: 16px;
+}
+
+.create-tour .table-overflow tr td:last-child a i {
+    color: #3b4649;
+    transition: transform 0.3s ease;
+}
+
+.create-tour .table-overflow tr td:last-child a:hover i {
+    transform: scale(1.3);
+}
+
+.create-tour .player-search {
+    background-color: transparent;
+    border-bottom: 1px solid #fff;
+    width: 300px;
+    color: #fff;
+}
+
+    .create-tour .player-search input {
+        background-color: transparent;
+        border: none;
+        outline: none;
+        caret-color: #fff;
+        margin-left: 10px;
+        color: #fff;
+        width: 280px;
+    }
+
+    .create-tour .player-search i {
+        margin-bottom: 5px;
+    }
+
+.create-tour .create-tour-fee,
+.create-tour .club-player,
+.create-tour .list-player {
+    margin: 0 10px 0 0;
+    padding: 5px 20px;
+    width: 200px;
+}
+
+    .create-tour .create-tour-fee:hover {
+        background: #ccc;
+        color: #000;
+        cursor: pointer;
+    }
+
+    .create-tour .create-tour-fee:disabled {
+        opacity: 0.6;
+        cursor: auto;
+    }
+
+    .create-tour .club-player:disabled,
+    .create-tour .list-player:disabled {
+        background-color: #ccc;
+        color: #000;
+        opacity: 0.6;
+    }
+
+.create-tour .table-overflow .player-fee {
+    width: 100px;
+}
 
 .container-full .success-box {
     position: absolute;
@@ -2908,7 +2910,8 @@ tr:not(:first-child).isFinish {
                 }
 
 
-.create-tour .import-excel {
+.create-tour .import-excel,
+.import-form button {
     background-color: #346585;
     border: 1px #ccc solid;
     color: #fff;
@@ -2918,6 +2921,57 @@ tr:not(:first-child).isFinish {
     .create-tour .import-excel:hover {
         background: #648fc0;
     }
+
+.import-form {
+    margin-top: 20px;
+}
+
+    .import-form button {
+        background: #346585;
+    }
+
+        .import-form button:hover {
+            background: #648fc0;
+        }
+
+    .import-form .import-input {
+        background: #ccc;
+        width: 415px;
+        height:40px;
+        margin-right: 15px;
+        position: relative;
+        border-radius: 20px;
+    }
+
+        .import-form .import-input span {
+            position: absolute;
+            width: 415px;
+            top: 0;
+            left: 0;
+            text-align: center;
+            line-height: 40px;
+            font-weight: 600;
+            z-index: 1;
+        }
+
+        .import-form .import-input:hover {
+            background: #fff;
+        }
+
+        .import-form input {
+            width: 415px;
+            opacity: 0;
+            height: 40px;
+            z-index:2;
+            position:absolute;
+            top:0;
+            left:0;
+        }
+
+            .import-form input:hover {
+                cursor: pointer;
+            }
+
 
 /* stepThreeAddTable.html */
 .create-tour .table-overflow td:nth-child(4) img {
