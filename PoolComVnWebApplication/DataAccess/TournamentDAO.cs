@@ -36,7 +36,7 @@ namespace DataAccess
         {
             try
             {
-                var tournament = _context.Tournaments.Last();
+                var tournament = _context.Tournaments.OrderByDescending(e => e.TourId).FirstOrDefault();
 
                 return tournament;
             }
