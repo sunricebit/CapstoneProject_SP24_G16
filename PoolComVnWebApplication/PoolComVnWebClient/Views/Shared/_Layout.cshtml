@@ -27,11 +27,7 @@
                     <li><a asp-controller="home" asp-action="GameRules">Luật chơi</a></li>
                     <li><a asp-controller="home" asp-action="Contact">Liên hệ</a></li>
                     <li><a href="">Mở rộng</a></li>
-                </ul>
-                <div class="login col-2 text-center d-none">
-                    <a asp-controller="Authentication" asp-action="Login">Đăng nhập</a>
-                </div>
-           
+                </ul>                  
                     @if (User.Identity.IsAuthenticated)
                     {
                         <div class="user-name text-center">

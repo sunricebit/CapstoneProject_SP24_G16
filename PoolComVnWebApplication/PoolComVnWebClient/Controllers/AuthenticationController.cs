@@ -59,9 +59,7 @@ namespace PoolComVnWebClient.Controllers
                 });
             }
             else
-            {
-                
-            }
+            {}
             return RedirectToAction("Index", "Home");
         }
 

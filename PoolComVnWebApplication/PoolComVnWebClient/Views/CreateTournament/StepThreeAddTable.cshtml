@@ -1,6 +1,7 @@
 ﻿@using PoolComVnWebClient.DTO
 @{
     Layout = "~/Views/Shared/_CreateTournamentLayout.cshtml";
+    int SoThuTu = 1;
 }
 @model List<TableDTO>
 
@@ -70,35 +71,39 @@
                                     <th>Tên bàn</th>
                                     <th>Hành động</th>
                                 </tr>
-                                @{
-                                    int SoThuTu = 1;
-                                }
-                                @foreach (var table in Model)
-                                {
-                                    <tr>
-                                        <td>
-                                            <input class="one-checkbox" type="checkbox">
-                                        </td>
-                                        <td>@SoThuTu</td>
-                                        <td>@table.TableName</td>
-                                        <td class="d-flex justify-content-center">
-                                            <img src="@table.Image" alt="">
-                                        </td>
-                                        <td class="text-center">@table.Size</td>
-                                        <td>@table.TableName</td>
-                                        <td>
-                                            <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                                            <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                                        </td>
-                                    </tr>
-                                    SoThuTu++;
-                                }
+                                    @foreach (var table in Model)
+                                    {
+                                        <tr>
+                                           
+                                            <td>
+                                            <input type="hidden" id="selectedTablesInput" name="selectedTables" />
+                                                <input type="checkbox" class="individual-checkbox" value="@table.TableId"
+                                                       data-tagname="@table.TagName"
+                                                       data-image="@table.Image"
+                                                       data-size="@table.Size"
+                                                       data-table-name="@table.TableName" />
+                                            </td>
+
+                                            <td>@SoThuTu</td>
+                                            <td>@table.TagName</td>
+                                            <td class="d-flex justify-content-center">
+                                                <img src="@table.Image" alt="">
+                                            </td>
+                                            <td class="text-center">@table.Size</td>
+                                            <td>@table.TableName</td>
+                                            <td>
+                                                <a class="edit-button" href="#"><i class="fa-solid fa-pencil p-2"></i></a>
+                                                <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
+                                            </td>
+                                        </tr>
+                                        SoThuTu++;
+                                    }
                             </table>
                         </div>
                     </div>
 
                     <div class="tour-input pt-5">
-                        <button class="submit-btn" type="submit">Lưu và chuyển sang bước 4</button>
+                        <button class="submit-btn" onclick="submitForm()">Lưu và chuyển sang bước 4</button>
                     </div>
                 </div>
             </div>
@@ -136,8 +141,57 @@
         </div>
     </div>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
+
+    function submitForm() {
+        var selectedTables = [];
+
+        var checkboxes = document.querySelectorAll('.individual-checkbox:checked');
+
+        checkboxes.forEach(function (checkbox) {
+            var tagName = checkbox.getAttribute('data-tagname');
+            var image = checkbox.getAttribute('data-image');
+            var size = checkbox.getAttribute('data-size');
+            var tableName = checkbox.getAttribute('data-table-name');
+
+            selectedTables.push({
+                TableID: parseInt(checkbox.value),
+                TagName: tagName,
+                Image: image,
+                Size: size,
+                TableName: tableName,
+
+            });
+        });
+
+        var selectedTablesJson = JSON.stringify(selectedTables);
+        console.log('Selected Tables:', selectedTables);
+        console.log('Selected Tables JSON:', selectedTablesJson);
+        fetch('https://localhost:5000/api/Table/UpdateTableToTournament', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: selectedTablesJson,
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+
+                console.log('Server Response:', data);
+
+            })
+            .catch(error => {
+
+                console.error('Error during AJAX request:', error);
+            });
+    }
+
     //Handle entry checkbox
     const allCheckboxBtn = document.querySelector('.all-checkbox');
     const checkboxList = document.querySelectorAll('.one-checkbox');

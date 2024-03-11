@@ -93,6 +93,30 @@ namespace PoolComVnWebAPI.Controllers
             return CreatedAtAction("GetTableById", new { id = table.TableId }, tableDTO);
         }
 
+        [HttpPost("UpdateTableToTournament")]
+        public IActionResult UpdateTableToTournament([FromBody] List<TableDTO> tableDtos)
+        {
+            try
+            {
+                if (tableDtos == null || tableDtos.Count == 0)
+                {
+                    return BadRequest("No table provided.");
+                }
+
+                // Update existing tables to set IsUseInTour to true
+                var tableIds = tableDtos.Select(t => t.TableId).ToList();
+                _tableDAO.UpdateIsUseInTourStatus(tableIds, true);
+
+                return Ok("Tables updated in the tournament successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
+        }
+
+
+
         [HttpGet("Update/{id}")]
         public IActionResult UpdateTable(int id, [FromBody] TableDTO updatedTableDTO)
         {
@@ -123,5 +147,7 @@ namespace PoolComVnWebAPI.Controllers
 
             return Ok();
         }
+
+        
     }
 }
