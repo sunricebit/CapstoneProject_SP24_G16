@@ -49,9 +49,8 @@ namespace PoolComVnWebClient.Controllers
             else
             {
                 var status = response.StatusCode;
+                return RedirectToAction("InternalServerError", "Error");
             }
-
-            return RedirectToAction("InternalServerError", "Error");
         }
 
         [HttpGet]
@@ -59,11 +58,11 @@ namespace PoolComVnWebClient.Controllers
         {
             return View();
         }
+
         [HttpPost("ImportPlayers")]
-        public async Task<IActionResult>  ImportPlayers(IFormFile ImportPlayers)
+        public async Task<IActionResult>  ImportPlayers(IFormFile ImportPlayers, int tourId)
         {
-
-
+            ViewBag.TourId = tourId;
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
             try
             {
@@ -169,8 +168,9 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> StepThreeAddTable()
+        public async Task<IActionResult> StepThreeAddTable(int tourId)
         {
+            ViewBag.TourId = tourId;
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
             var response = await client.GetFromJsonAsync<IEnumerable<TableDTO>>("https://localhost:5000/api/Table/GetAllTablesForClub");
@@ -179,10 +179,12 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult StepFourAddBanner()
+        public IActionResult StepFourAddBanner(int tourID)
         {
+            ViewBag.TourId = tourID;
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> StepFourAddBanner(IFormFile banner, int tourID)
         {
