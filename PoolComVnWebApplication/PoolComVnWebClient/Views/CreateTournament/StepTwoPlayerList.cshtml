@@ -1,6 +1,7 @@
 ﻿@using PoolComVnWebClient.DTO
 @{
     Layout = "~/Views/Shared/_CreateTournamentLayout.cshtml";
+    int tourId = ViewBag.TourId;
 }
 @model List<PlayerDTO>
 
@@ -60,6 +61,7 @@
 
                             <form method="post" enctype="multipart/form-data" asp-controller="CreateTournament" asp-action="ImportPlayers">
                                 <input type="file" name="ImportPlayers" accept=".xls, .xlsx" />
+                                <input type="hidden" id="TourId" name="tourId" value="@tourId"/>
                                 <button type="submit">Import Players</button>
                             </form>
 
@@ -103,7 +105,8 @@
                                                         data-phonenumber ="@player.PhoneNumber"
                                                         data-email ="@player.Email"
                                                         data-level ="@player.Level"
-                                                        data-is-payed="@player.IsPayed">
+                                                        data-is-payed="@player.IsPayed"
+                                                        data-tourId="@tourId">
                                                 </td>
                                                 <td>@stt</td>
                                                     <td >@player.PlayerName</td>
@@ -165,7 +168,7 @@
     } 
     function submitForm() {
         var selectedPlayers = [];
-
+        var tourIdValue = document.getElementById('TourId').value;
         var checkboxes = document.querySelectorAll('.individual-checkbox');
 
         checkboxes.forEach(function (checkbox) {
@@ -175,6 +178,7 @@
             var email = checkbox.getAttribute('data-email');
             var level = checkbox.getAttribute('data-level');
             var isPayed = checkbox.getAttribute('data-is-payed');
+            var tourId = checkbox.getAttribute('data-tourId');
 
             selectedPlayers.push({
                 PlayerId: parseInt(checkbox.value),
@@ -183,8 +187,8 @@
                 PhoneNumber: phoneNumber,
                 Email: email,
                 Level: parseInt(level),
-                IsPayed: isPayed === "true" ? true : false
-                
+                IsPayed: isPayed === "true" ? true : false,
+                TourId: parseInt(tourId),
             });
         });
 
@@ -212,6 +216,8 @@
                
                 console.error('Error during AJAX request:', error);
             });
+            console.log("abc");
+        window.location.href = '/CreateTournament/StepThreeAddTable?tourId=' + parseInt(tourIdValue);
     }
    
     const allCheckboxBtn = document.querySelector('.all-checkbox');

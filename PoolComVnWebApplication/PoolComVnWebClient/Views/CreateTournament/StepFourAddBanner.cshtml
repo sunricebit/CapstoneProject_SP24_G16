@@ -1,5 +1,6 @@
 ﻿@{
     Layout = "~/Views/Shared/_CreateTournamentLayout.cshtml";
+    int tourId = ViewBag.TourId;
 }
 
 <div class="container-full">
@@ -62,6 +63,7 @@
                             <img class="preview-image" />
                         </div>
                         <input id="file-name" class="d-none" />
+                        <input type="hidden" id="TourId" name="tourId" value="@tourId" />
                     </div>
                     <div class="tour-input">
                         <button class="submit-btn" type="submit">Lưu và chuyển sang bước 5</button>

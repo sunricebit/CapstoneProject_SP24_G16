@@ -1,6 +1,7 @@
 ﻿@using PoolComVnWebClient.DTO
 @{
     Layout = "~/Views/Shared/_CreateTournamentLayout.cshtml";
+    int tourId = ViewBag.TourId;
 }
 @model List<TableDTO>
 
@@ -98,7 +99,7 @@
                     </div>
 
                     <div class="tour-input pt-5">
-                        <button class="submit-btn" type="submit">Lưu và chuyển sang bước 4</button>
+                        <button class="submit-btn" type="submit" onclick="saveAndNavigateToStep4(@tourId)">Lưu và chuyển sang bước 4</button>
                     </div>
                 </div>
             </div>
@@ -138,6 +139,12 @@
 </div>
 
 <script>
+
+    function saveAndNavigateToStep4(tourId) {
+        console.log(tourId);
+        window.location.href = '/CreateTournament/StepFourAddBanner?tourId=' + parseInt(tourId);
+    }
+
     //Handle entry checkbox
     const allCheckboxBtn = document.querySelector('.all-checkbox');
     const checkboxList = document.querySelectorAll('.one-checkbox');
