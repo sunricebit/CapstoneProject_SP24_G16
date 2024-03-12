@@ -19,7 +19,7 @@
                 <i class="fa-solid fa-bars nav-icon"></i>
             </div>
             <div class="logo-image d-flex justify-content-center align-items-center">
-                <a href="/Home">
+                <a href="">
                     <img src="~/images/logo.png" alt="PoolCom">
                     <span class="">PoolCom.</span>
                 </a>
@@ -28,26 +28,14 @@
             <div class="user-menu-btn">
                 <i class="fa-solid fa-user user-icon"></i>
                 <ul class="user-menu text-center">
-                    <li><a href="">Profile</a></li>
-                    <li><a href="">Logout</a></li>
+                    <li><a href="">Hồ sơ</a></li>
+                    <li><a href="">Đăng xuất</a></li>
                 </ul>
             </div>
             <div class="menu-body ">
-                <div class="exchange-nav d-flex justify-content-center align-items-center">
-                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
-                </div>
-                <div class="general-nav mx-0">
-                    <div class="nav-body my-0 d-flex justify-content-lg-start
-                        justify-content-center row">
-                        <a href="">Tin tức</a>
-                        <a href="">Giải đấu</a>
-                        <a href="">Câu lạc bộ</a>
-                        <a href="">Xếp hạng</a>
-                        <a href="">Luật chơi</a>
-                        <a href="">Liên hệ</a>
-                        <a href="">Mở rộng</a>
-                    </div>
-                </div>
+                <a href="tournament.html" class="exchange-nav d-flex justify-content-center align-items-center">
+                    <i class="fa-solid fa-circle-arrow-left fa-shake"></i>
+                </a>
                 <div class="tour-manage-nav d-flex justify-content-lg-start
                     justify-content-start row mx-0">
                     <a href="" class="tour-nav-btn">Tổng quan</a>
@@ -85,40 +73,6 @@
         }
         menuVisible = !menuVisible;
     });
-
-    let isTourNavOn = true;
-
-    exchangNavBtn.addEventListener('click', () => {
-        if (isTourNavOn) {
-            generalNav.classList.remove('d-none');
-            generalNav.classList.add('d-flex');
-            tourManageNav.classList.remove('d-flex');
-            tourManageNav.classList.add('d-none');
-        } else {
-            generalNav.classList.add('d-none');
-            generalNav.classList.remove('d-flex');
-            tourManageNav.classList.add('d-flex');
-            tourManageNav.classList.remove('d-none');
-        }
-
-        isTourNavOn = !isTourNavOn;
-    })
-
-
-    //Handle tour-nav
-    const tourNavBtnList = document.querySelectorAll('.tour-nav-btn');
-    tourNavBtnList.forEach((tourNavBtn) => {
-        tourNavBtn.addEventListener('click', (event) => {
-            event.preventDefault();
-            tourNavBtn.classList.add('active');
-
-            tourNavBtnList.forEach((btn) => {
-                if (btn !== tourNavBtn) {
-                    btn.classList.remove('active');
-                }
-            });
-        });
-    })
 
 </script>
 

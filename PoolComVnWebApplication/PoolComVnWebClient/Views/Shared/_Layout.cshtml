@@ -36,7 +36,7 @@
                         </div>
                         <ul class="user-menu text-center">
                             <li><a href="">Profile</a></li>
-                            <li><a asp-controller="Authentication" asp-action="Logout">Logout</a></li>
+                            <li><a asp-controller="Authentication" asp-action="Logout">Đăng xuất</a></li>
                         </ul>
                     }
                     else
@@ -52,20 +52,32 @@
             </div>
         </nav>
         <div class="small-user d-xl-none justify-content-end">
-            <div class="option-menu row">
-                <div class="col-lg-3"></div>
-                <ul class="option-items col-lg-3 col-6">
-                    <li><a href="/NewsManage/Index">Tin tức</a></li>
-                    <li><a href="/Tournament/TournamentList">Giải đấu</a></li>
-                    <li><a href="">Câu lạc bộ</a></li>
-                    <li><a href="#">Xếp hạng</a></li>
-                </ul>
-                <ul class="option-items col-lg-3 col-6">
-                    <li><a asp-controller="home" asp-action="GameRules">Luật chơi</a></li>
-                    <li><a asp-controller="home" asp-action="Contact">Liên hệ</a></li>
-                    <li><a href="">Mở rộng</a></li>
-                </ul>
-                <div class="col-lg-3"></div>
+            <div class="option-menu">
+                <div class="row">
+                    <div class="col-lg-3"></div>
+                    <ul class="option-items col-lg-3 col-6">
+                        <li><a href="">Tin tức</a></li>
+                        <li><a href="">Giải đấu</a></li>
+                        <li><a href="">Giao lưu</a></li>
+                        <li><a href="">Câu lạc bộ</a></li>
+                    </ul>
+                    <ul class="option-items col-lg-3 col-6">
+                        <li><a href="#">Xếp hạng</a></li>
+                        <li><a href="#">Dịch vụ</a></li>
+                        <li><a href="#">Luật chơi</a></li>
+                        <li><a href="#">Liên hệ</a></li>
+                    </ul>
+                    <div class="col-lg-3"></div>
+                </div>
+                <div class="small-user-menu row">
+                    <div class="col-lg-3"></div>
+                    <a class="col-lg-3 col-6" href="">Hồ sơ</a>
+                    <a class="col-lg-3 col-6" href="">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Đăng xuất
+                    </a>
+                    <div class="col-lg-3"></div>
+                </div>
             </div>
         </div>
     </header>

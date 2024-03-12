@@ -1,6 +1,10 @@
-﻿@using PoolComVnWebClient.DTO;
+﻿@{
+    Layout = "~/Views/Shared/_TournamentLayout.cshtml";
+}
+
+@using PoolComVnWebClient.DTO;
 @model List<NewsDTO> ;
-<div class="container">
+<div class="container-full">
     <div class="news-manage">
         <div class="manage-header">Quản lí bài viết</div>
         <div class="mt-5 d-flex justify-content-between">
@@ -31,26 +35,72 @@
                     <th class="news-id">#</th>
                     <th class="image">Ảnh</th>
                     <th class="title">Tiêu đề</th>
-                    <th class="create-date">Ngày tạo</th>
-                    <th class="update-date">Thay đổi</th>
-                    <th class="action">Hành động</th>
+                    <th class="w150">Ngày tạo</th>
+                    <th class="w150">Thay đổi</th>
+                    <th class="text-center account-status w150">
+                        Trạng thái
+                        <i class="fa-solid fa-caret-down fa-flip"></i>
+                        <ul class="type-list">
+                            <li>Hiển thị</li>
+                            <li>Ẩn</li>
+                        </ul>
+                    </th>
+                    <th class="w150 text-center">Hành động</th>
                 </tr>
                 @for (int i = 0; i < Model.Count; i++)
                 {
                     var news = Model[i];
                     <tr>
                         <td>@(i + 1)</td>
-                        <td><img src="~/images/new_1.jpg" /></td>
+                        <td>
+                            <div class="img-frame">
+                                <img src="~/images/new_1.jpg" />
+                            </div>
+                        </td>
                         <td>@news.Title</td>
                         <td>@news.CreatedDate</td>
                         <td>@news.UpdatedDate</td>
                         <td>
+                            <div class="user-status isActive">Hiển thị</div>
+                        </td>
+                        <td class="text-center">
                             <a href="#"><i class="fa-solid fa-pencil p-2"></i></a>
+                            <a href="#"><i class="view-btn fa-solid fa-eye-slash p-2"></i></a>
                             <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
                         </td>
+
+                        @*<td>30/10/2023<br>Nam Vu</td>
+                    <td>30/10/2023<br>Nam Vu</td>*@
                     </tr>
                 }
             </table>
         </div>
     </div>
 </div>
+
+<script>
+    //Handle view btn
+    const viewBtnList = document.querySelectorAll('.view-btn');
+    viewBtnList.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (btn.classList.contains('fa-eye')) {
+                btn.classList.remove('fa-eye');
+                btn.classList.add('fa-eye-slash');
+                const trParent = btn.parentNode.parentNode.parentNode;
+                const userStatus = trParent.querySelector('.user-status');
+                userStatus.classList.add('isActive');
+                userStatus.classList.remove('isUnActive');
+                userStatus.textContent = 'Hiển thị';
+            } else {
+                btn.classList.add('fa-eye');
+                btn.classList.remove('fa-eye-slash');
+                const trParent = btn.parentNode.parentNode.parentNode;
+                const userStatus = trParent.querySelector('.user-status');
+                userStatus.classList.remove('isActive');
+                userStatus.classList.add('isUnActive');
+                userStatus.textContent = 'Ẩn';
+            }
+        })
+    })
+</script>
