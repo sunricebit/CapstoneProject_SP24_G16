@@ -1,7 +1,7 @@
 ﻿@using PoolComVnWebClient.DTO
 @{
     Layout = "~/Views/Shared/_CreateTournamentLayout.cshtml";
-    int tourId = ViewBag.TourId;
+    int? tourId = ViewBag.TourId as int?;
 }
 @model List<PlayerDTO>
 

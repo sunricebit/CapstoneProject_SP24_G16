@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using Firebase.Auth;
+using Firebase.Storage;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using OfficeOpenXml;
@@ -15,6 +17,10 @@ namespace PoolComVnWebClient.Controllers
     {
         private readonly HttpClient client = null;
         private string ApiUrl = Constant.ApiUrl;
+        private string ApiKey = FirebaseAPI.ApiKey;
+        private string Bucket = FirebaseAPI.Bucket;
+        private string AuthEmail = FirebaseAPI.AuthEmail;
+        private  string AuthPassword = FirebaseAPI.AuthPassword;
 
         public CreateTournamentController()
         {
@@ -143,7 +149,36 @@ namespace PoolComVnWebClient.Controllers
             }
 
         }
-       
+        public async Task<string> UploadFromFirebase(FileStream stream, string filename)
+        {
+            var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
+            var a = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
+            var cancellation = new CancellationTokenSource();
+            var task = new FirebaseStorage(
+                Bucket,
+                new FirebaseStorageOptions
+                {
+                    AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                    ThrowOnCancel = true
+                }
+                ).Child("Tournaments")
+                 .Child(filename)
+                 .PutAsync(stream, cancellation.Token);
+            try
+            {
+                string link = await task;
+                return link;
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine("Exception was thrown : {0}", ex);
+                return null;
+            }
+        }
+
+
 
         [HttpGet]
         public async Task<IActionResult> StepTwoJoinList()
@@ -188,25 +223,38 @@ namespace PoolComVnWebClient.Controllers
         [HttpPost]
         public async Task<IActionResult> StepFourAddBanner(IFormFile banner, int tourID)
         {
+            tourID = 26;
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            StepFourAddBannerDTO BannerDTO = new StepFourAddBannerDTO();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
-             tourID = 10;
             var bannerContent = new MultipartFormDataContent();
             try
             {
-                var stream = new MemoryStream();
-                
-                    await banner.CopyToAsync(stream);
-                    stream.Seek(0, SeekOrigin.Begin);
 
-                    bannerContent.Add(new StreamContent(stream), "banner", banner.FileName);
+                if (banner != null && banner.Length > 0)
+                {
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(banner.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase", fileName);
 
-                  
-                
+                    using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        banner.CopyTo(memoryStream);
 
-                bannerContent.Add(new StringContent(tourID.ToString()), "tourID");
 
-                var response = await client.PostAsync(ApiUrl + "/CreateTourStFour", bannerContent);
+                    }
+                    var fileStream2 = new FileStream(filePath, FileMode.Open);
+                    var downloadLink = await UploadFromFirebase(fileStream2, banner.FileName);
+                    fileStream2.Close();
+                    string Flyer = downloadLink;
+                    System.IO.File.Delete(filePath);
+                    BannerDTO.Flyer = Flyer;
+                }
+                BannerDTO.TourId = tourID;
+               
+
+               
+
+                var response = await client.PostAsJsonAsync(ApiUrl + "/CreateTourStFour", BannerDTO);
 
                 if (response.IsSuccessStatusCode)
                 {

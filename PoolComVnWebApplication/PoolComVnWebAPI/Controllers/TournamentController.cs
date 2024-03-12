@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PoolComVnWebAPI.DTO;
 using System.IdentityModel.Tokens.Jwt;
+using static PoolComVnWebAPI.DTO.CreateTourStepOneDTO;
 
 namespace PoolComVnWebAPI.Controllers
 {
@@ -184,7 +185,7 @@ namespace PoolComVnWebAPI.Controllers
         [HttpPost("CreateTourStFour")]
        // [Authorize]
 
-        public async Task<ActionResult> CreateTourStFour([FromForm] List<IFormFile> banner, int tourID)
+        public async Task<ActionResult> CreateTourStFour([FromBody] CreateTourStepFourDTO BannerDTO)
         {
            
             //var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
@@ -205,70 +206,26 @@ namespace PoolComVnWebAPI.Controllers
 
             try
             {
-                if (banner != null)
-                {
-                    foreach (var ban in banner)
-                    {
-                        if (ban != null && ban.Length > 0)
-                        {
-                            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(ban.FileName);
-                            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", fileName);
-
-                            using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
-                            {
-                                ban.CopyTo(memoryStream);
-
-
-                            }
-                            var fileStream2 = new FileStream(filePath, FileMode.Open);
-                            var downloadLink = await UploadFromFirebase(fileStream2, ban.FileName);
-                            fileStream2.Close();
-                            System.IO.File.Delete(filePath);
-                            Tournament tour = _tournamentDAO.GetTournament(tourID);
-                            tour.Flyer = downloadLink;
+                
+                    
+                       
+                            Tournament tour = _tournamentDAO.GetTournament(BannerDTO.TourID);
+                            tour.Flyer = BannerDTO.Flyer;
                             _tournamentDAO.UpdateTournament(tour);
-                        }
+                        
 
 
-                    }
-                }
+                    
+                
 
                 //  _tournamentDAO.CreateTournament(tour);
                 //return Ok(_tournamentDAO.GetLastestTournament().TourId);
-                return Ok(tourID);
+                return Ok(BannerDTO.TourID);
             }
             catch (Exception e)
             {
 
                 throw e;
-            }
-        }
-        private async Task<string> UploadFromFirebase(FileStream stream, string filename)
-        {
-            var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
-            var a = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
-            var cancellation = new CancellationTokenSource();
-            var task = new FirebaseStorage(
-                Bucket,
-                new FirebaseStorageOptions
-                {
-                    AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
-                    ThrowOnCancel = true
-                }
-                ).Child("Tournaments")
-                 .Child(filename)
-                 .PutAsync(stream, cancellation.Token);
-            try
-            {
-                string link = await task;
-                return link;
-
-            }
-            catch (Exception ex)
-            {
-
-                Console.WriteLine("Exception was thrown : {0}", ex);
-                return null;
             }
         }
         
