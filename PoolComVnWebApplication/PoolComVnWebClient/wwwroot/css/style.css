@@ -133,6 +133,7 @@ button {
 
     .small-user .option-menu li {
         padding: 20px;
+        text-align: center;
     }
 
     .small-user .option-menu a {
@@ -142,11 +143,12 @@ button {
     }
 
     .small-user .option-menu .small-user-menu {
-        border-bottom: 1px solid #fff;
+        border-top: 1px solid #fff;
     }
 
         .small-user .option-menu .small-user-menu a {
             padding: 32px;
+            text-align: center;
         }
 
 
@@ -480,7 +482,7 @@ footer {
 }
 
     .container .news-detail img {
-        width: 100%;
+        max-width: 500px;
         background-position: center center;
         border-radius: 10px;
     }
@@ -498,6 +500,7 @@ footer {
         margin-top: 20px;
         font-weight: 500;
         text-align: justify;
+        color: #000;
     }
 
 .container .news-other .news-item {
@@ -513,6 +516,12 @@ footer {
         color: #000;
         text-align: left;
         padding-left: 20px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .container .news-other .news-item:hover img {
+        transform: scale(1.1);
     }
 
     .container .news-other .news-item:hover .news-title {
@@ -527,7 +536,8 @@ footer {
 }
 
     .tournament .tour-nav,
-    .gameRule .gameRule-nav {
+    .gameRule .gameRule-nav,
+    .news-manage .manage-account {
         border-bottom: #fff solid 3px;
     }
 
@@ -535,7 +545,8 @@ footer {
         .tournament .tour-nav .special-tour,
         .gameRule .gameRule-nav .eight-ball,
         .gameRule .gameRule-nav .nine-ball,
-        .gameRule .gameRule-nav .ten-ball {
+        .gameRule .gameRule-nav .ten-ball,
+        .news-manage .manage-account .account {
             width: 240px;
             height: 48px;
             background: none;
@@ -552,7 +563,8 @@ footer {
             .tournament .tour-nav .special-tour:hover,
             .gameRule .gameRule-nav .eight-ball:hover,
             .gameRule .gameRule-nav .nine-ball:hover,
-            .gameRule .gameRule-nav .ten-ball:hover {
+            .gameRule .gameRule-nav .ten-ball:hover,
+            .news-manage .manage-account .account:hover {
                 font-size: 20px;
                 font-style: italic;
             }
@@ -561,7 +573,8 @@ footer {
             .tournament .tour-nav .special-tour.active,
             .gameRule .gameRule-nav .eight-ball.active,
             .gameRule .gameRule-nav .nine-ball.active,
-            .gameRule .gameRule-nav .ten-ball.active {
+            .gameRule .gameRule-nav .ten-ball.active,
+            .news-manage .manage-account .account.active {
                 font-style: italic;
                 font-size: 20px;
                 border-top-right-radius: 40px;
@@ -987,6 +1000,7 @@ footer {
         display: none;
         padding: 0;
         z-index: 100;
+        border-bottom-left-radius: 20px;
     }
 
         .manage-nav .user-menu li {
@@ -1088,13 +1102,17 @@ footer {
 
         .tour-manage-nav .tour-nav-btn:hover {
             font-style: italic;
-            background-color: #00d9ff;
-            color: #000;
         }
 
-        .tour-manage-nav .tour-nav-btn.active:hover {
-            font-style: none;
+        .tour-manage-nav .tour-nav-btn.active {
+            background-color: #00d9ff;
+            color: #000;
+            font-style: italic;
         }
+
+            .tour-manage-nav .tour-nav-btn.active:hover {
+                font-style: none;
+            }
 
 .manager-container {
     width: 100%;
@@ -1871,7 +1889,7 @@ tr:not(:first-child).isFinish {
 
 /* newsManage.html */
 .news-manage {
-    margin: 100px 0;
+    margin: 50px 50px;
 }
 
     .news-manage .manage-header {
@@ -1882,18 +1900,23 @@ tr:not(:first-child).isFinish {
         font-style: italic;
     }
 
-    .news-manage .addBtn {
+    .news-manage .addBtn,
+    .news-manage .addBtn-account {
         text-decoration: none;
         background-color: white;
-        width: 160px;
+        min-width: 100px;
+        padding: 0 20px;
         height: 40px;
         color: #000;
         border-radius: 20px;
         font-size: 20px;
         font-weight: 600;
+        margin-right: 50px;
     }
 
-        .news-manage .addBtn:hover {
+
+        .news-manage .addBtn:hover,
+        .news-manage .addBtn-account:hover {
             background: linear-gradient(#acc4e0 50%, #648fc0);
         }
 
@@ -1927,6 +1950,7 @@ tr:not(:first-child).isFinish {
 
     .news-manage .manage-body {
         background-color: white;
+        overflow-x: auto;
     }
 
         .news-manage .manage-body table {
@@ -1942,45 +1966,141 @@ tr:not(:first-child).isFinish {
             padding: 10px;
         }
 
+        .news-manage .manage-body tr td:nth-child(2) {
+            display: flex;
+            justify-content: center;
+        }
+
+        .news-manage .manage-body .img-frame,
+        .news-manage .manage-body .img-frame-account {
+            width: 120px;
+            height: 80px;
+            background-size: cover;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .news-manage .manage-body .img-frame-account {
+            width: 80px;
+        }
+
 
         .news-manage .manage-body .news-id {
             width: 50px;
         }
 
-        .news-manage .manage-body img {
-            width: 100px;
-        }
-
-        .news-manage .manage-body .create-date {
-            width: 100px;
-        }
-
-        .news-manage .manage-body .update-date {
-            width: 160px;
-        }
-
-        .news-manage .manage-body .action {
+        .news-manage .manage-body .img-frame-account img {
             width: 120px;
+        }
+
+        .news-manage .manage-body .img-frame img {
+            width: 120px;
+        }
+
+        .news-manage .manage-body .w100 {
+            min-width: 100px;
+        }
+
+        .news-manage .manage-body .w150 {
+            min-width: 150px;
+        }
+
+        .news-manage .manage-body .w200 {
+            min-width: 200px;
+        }
+
+        .news-manage .manage-body .title {
+            min-width: 500px;
         }
 
     .news-manage table tr:nth-child(odd) {
         background-color: #efefef;
     }
 
-    .news-manage .manage-body .fa-pencil,
-    .news-manage .manage-body .fa-trash-can {
+    .news-manage .manage-body i {
         color: #000000;
     }
 
-        .news-manage .manage-body .fa-pencil:hover,
-        .news-manage .manage-body .fa-trash-can:hover {
+        .news-manage .manage-body i:hover {
             opacity: 0.6;
+            transform: scale(1.2);
+            transition: transform 0.3s ease;
         }
+
+    .news-manage .manage-body .account-status {
+        position: relative;
+    }
+
+        .news-manage .manage-body .account-status:hover {
+            cursor: pointer;
+        }
+
+            .news-manage .manage-body .account-status:hover .type-list {
+                display: block;
+            }
+
+    .news-manage .manage-body .type-list {
+        display: none;
+        position: absolute;
+        top: 44px;
+        left: 0;
+        background: #346585;
+        list-style: none;
+        width: 150px;
+        box-shadow: 0 3px 10px 2px #3d3d3d;
+        padding: 0;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        overflow: hidden;
+    }
+
+        .news-manage .manage-body .type-list li {
+            line-height: 28px;
+            color: #fff;
+            padding: 10px;
+            font-weight: 500;
+            border-top: #fff 1px solid;
+        }
+
+            .news-manage .manage-body .type-list li:hover {
+                background: #acc4e0;
+                color: #000;
+            }
+
+    .news-manage .manage-body .status {
+        width: 120px;
+    }
+
+    .news-manage .manage-body .user-status {
+        font-size: 10px;
+        width: 60px;
+        text-align: center;
+        color: white;
+        border-radius: 5px;
+        height: 20px;
+        line-height: 20px;
+        margin-left: 35px;
+    }
+
+        .news-manage .manage-body .user-status.isActive {
+            background-color: #346585;
+        }
+
+        .news-manage .manage-body .user-status.isUnActive {
+            background-color: #9c1515;
+        }
+
+    .news-manage .manage-body .view-btn {
+        width: 40px;
+        text-align: center;
+    }
 
 /* addNews.html */
 .add-news {
     background-color: white;
-    margin: 100px 10%;
+    margin: 50px 10%;
     overflow: hidden;
     border-radius: 10px;
 }
@@ -3770,8 +3890,6 @@ tr:not(:first-child).isFinish {
     .large-screen {
         display: contents;
     }
-
-
 
     .main-nav .nav-menu li:hover a,
     .main-nav .login:hover a {
