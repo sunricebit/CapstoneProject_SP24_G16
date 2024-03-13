@@ -1,7 +1,7 @@
 ﻿@using PoolComVnWebClient.DTO
 @{
     Layout = "~/Views/Shared/_CreateTournamentLayout.cshtml";
-    int tourId = ViewBag.TourId;
+    int? tourId = ViewBag.TourId as int?;
 }
 @model List<PlayerDTO>
 
@@ -17,7 +17,7 @@
                         <a class="step-two-nav" id="system-list" asp-controller="CreateTournament" asp-action="StepTwoPlayerSystem">Toàn hệ thống (500)</a>
                     </div>
                 </div>
-                
+
                 <div class="display-content">
                     <div class="d-flex justify-content-between">
                         <div>
@@ -27,22 +27,23 @@
                                 <option value="Chưa nộp">Chưa nộp</option>
                             </select>
                             <button class="club-player" disabled>Thêm vào thành viên</button>
+                            <button class="import-excel" onclick="downloadTemplate()">Tải mẫu</button>
 
-                            <form method="post" enctype="multipart/form-data" asp-controller="CreateTournament" asp-action="ImportPlayers">
-                                <input type="file" name="ImportPlayers" accept=".xls, .xlsx" />
-                                <input type="hidden" id="TourId" name="tourId" value="@tourId"/>
-                                <button type="submit">Import Players</button>
+                            <form method="post" enctype="multipart/form-data" class="import-form d-flex"
+                            asp-controller="CreateTournament" asp-action="ImportPlayers">
+                                <div class="import-input">
+                                    <span>Chọn tệp để tải lên</span>
+                                    <input type="file" name="ImportPlayers" accept=".xls, .xlsx" />
+                                </div>
+                                <button type="submit">Nhập danh sách</button>
                             </form>
-
-                            <button class="import-excel" onclick="downloadTemplate()">Download Template</button>
-
                         </div>
                         <div class="player-search d-flex align-items-end">
                             <i class="fa-solid fa-magnifying-glass"></i>
                             <input class="" />
                         </div>
                     </div>
-                    
+
                     <div class="pt-3">
                         <div class="table-overflow">
                             <table class="players-table">
@@ -59,82 +60,78 @@
                                     <th class="player-fee">Lệ phí</th>
                                     <th>Hành động</th>
                                 </tr>
-                                <tbody>
-                                    @if (ViewBag.ImportedPlayers != null)
-                                    {
-                                        int stt = 1;
-                                        foreach (var player in ViewBag.ImportedPlayers)
-                                        {
-                                            <tr>
-                                                    <input type="hidden" id="selectedPlayersInput" name="selectedPlayers" />
-                                                    <td>
-                                                        <input type="checkbox" class="individual-checkbox" value="@player.PlayerId" 
-                                                        data-player-name="@player.PlayerName" 
-                                                        data-country-name="@player.CountryName"
-                                                        data-phonenumber ="@player.PhoneNumber"
-                                                        data-email ="@player.Email"
-                                                        data-level ="@player.Level"
-                                                        data-is-payed="@player.IsPayed"
-                                                        data-tourId="@tourId">
-                                                </td>
-                                                <td>@stt</td>
-                                                    <td >@player.PlayerName</td>
-                                                    <td >@player.CountryName</td>
-                                                    <td >@player.PhoneNumber</td>
-                                                    <td >@player.Email</td>
-                                                <td class="text-center">@player.Level</td>
-                                                <td class="player-fee">
-                                                    @if (player.IsPayed)
-                                                    {
-                                                        <span>Đã nộp</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span>Chưa nộp</span>
-                                                    }
-                                                </td>
-                                                <td>
-                                                   
-                                                </td>
-                                            </tr>
-                                            stt++;
-                                        }
-                                    }
-                                    else
+                                @if (ViewBag.ImportedPlayers != null)
+                                {
+                                    int stt = 1;
+                                    foreach (var player in ViewBag.ImportedPlayers)
                                     {
                                         <tr>
-                                            <td colspan="9">No players available</td>
+                                            <input hidden id="selectedPlayersInput" name="selectedPlayers" />
+                                            <td>
+                                                <input type="checkbox" class="individual-checkbox one-checkbox" value="@player.PlayerId"
+                                                       data-player-name="@player.PlayerName"
+                                                       data-country-name="@player.CountryName"
+                                                       data-phonenumber="@player.PhoneNumber"
+                                                       data-email="@player.Email"
+                                                       data-level="@player.Level"
+                                                       data-is-payed="@player.IsPayed">
+                                            </td>
+                                            <td>@stt</td>
+                                            <td>@player.PlayerName</td>
+                                            <td>@player.CountryName</td>
+                                            <td>@player.PhoneNumber</td>
+                                            <td>@player.Email</td>
+                                            <td class="text-center">@player.Level</td>
+                                            <td class="player-fee">
+                                                @if (player.IsPayed)
+                                                {
+                                                    <span>Đã nộp</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>Chưa nộp</span>
+                                                }
+                                            </td>
+                                            <td>
+                                            </td>
                                         </tr>
+                                        stt++;
                                     }
-                                </tbody>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="9">No players available</td>
+                                    </tr>
+                                }
                             </table>
                         </div>
 
                         <div class="tour-input pt-5">
-                                <button class="submit-btn" onclick="submitForm()">Lưu và chuyển sang bước 3</button>
+                            <button class="submit-btn" onclick="submitForm()">Lưu và chuyển sang bước 3</button>
                         </div>
                     </div>
-                    
+
                 </div>
 
-               
+
             </div>
         </div>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-    
+
     function downloadTemplate() {
-        
+
         var hiddenAnchor = document.createElement('a');
         hiddenAnchor.href = 'https://firebasestorage.googleapis.com/v0/b/poolcomvn-82664.appspot.com/o/Tournaments%2FPlayerTemplate%2FPlayerTemplate.xlsx?alt=media&token=b6b38b05-5643-4bce-a114-6e0f6e348957';
-        hiddenAnchor.target = '_blank'; 
+        hiddenAnchor.target = '_blank';
         hiddenAnchor.download = 'PlayerTemplate.xlsx';
         document.body.appendChild(hiddenAnchor);
         hiddenAnchor.click();
         document.body.removeChild(hiddenAnchor);
-    } 
+    }
     function submitForm() {
         var selectedPlayers = [];
         var tourIdValue = document.getElementById('TourId').value;
@@ -156,8 +153,8 @@
                 PhoneNumber: phoneNumber,
                 Email: email,
                 Level: parseInt(level),
-                IsPayed: isPayed === "true" ? true : false,
-                TourId: parseInt(tourId),
+                IsPayed: isPayed === "true" ? true : false
+
             });
         });
 
@@ -178,17 +175,17 @@
                 return response.json();
             })
             .then(data => {
-                
+
                 console.log('Server Response:', data);
             })
             .catch(error => {
-               
+
                 console.error('Error during AJAX request:', error);
             });
             console.log("abc");
         window.location.href = '/CreateTournament/StepThreeAddTable?tourId=' + parseInt(tourIdValue);
     }
-   
+
     const allCheckboxBtn = document.querySelector('.all-checkbox');
     const checkboxList = document.querySelectorAll('.one-checkbox');
     const tourFee = document.querySelector('.create-tour-fee');
@@ -304,7 +301,7 @@
         }, 100);
     }
 
-  
 
-   
+
+
 </script>
