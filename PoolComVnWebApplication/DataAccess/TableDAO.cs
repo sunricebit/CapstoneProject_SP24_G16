@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,6 +25,11 @@ namespace DataAccess
         // Create
         public void AddTable(Table table)
         {
+            if (table == null)
+            {
+                throw new ArgumentNullException(nameof(table));
+
+            }
             _context.Tables.Add(table);
             _context.SaveChanges();
         }
@@ -59,7 +65,20 @@ namespace DataAccess
                 _context.SaveChanges();
             }
         }
+        public void UpdateIsUseInTourStatus(List<int> tableIds, bool isUseInTour)
+        {
+            // Retrieve the tables to be updated
+            var tablesToUpdate = _context.Tables.Where(t => tableIds.Contains(t.TableId));
 
+            // Update the IsUseInTour property
+            foreach (var table in tablesToUpdate)
+            {
+                table.IsUseInTour = isUseInTour;
+            }
+
+            // Save changes to the database
+            _context.SaveChanges();
+        }
         // Delete
         public void DeleteTable(int tableId)
         {

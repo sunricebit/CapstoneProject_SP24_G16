@@ -1,0 +1,354 @@
+﻿@{
+    Layout = "~/Views/Shared/_TournamentLayout.cshtml";
+}
+
+<div class="container-full">
+    <div class="news-manage">
+        <div class="manage-account d-flex">
+            <button class="manager-account account active">Quản lí</button>
+            <button class="club-account account mx-2">Câu lạc bộ</button>
+            <button class="user-account account mx-2">Người chơi</button>
+        </div>
+
+        <!-- Manager account Start-->
+        <div class="manager-content">
+            <div class="mt-5 d-flex justify-content-between">
+                <a href="" class="addBtn-account d-flex justify-content-center align-items-center">
+                    Tạo tài khoản
+                    <i class="fa-solid fa-user-plus px-3"></i>
+                </a>
+                <div class="manageSearch d-flex">
+                    <input class="news-input" placeholder="Tên, địa chỉ,..." />
+                    <div class="searchBtn px-3 align-items-center">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="manage-body mt-3">
+                <table>
+                    <tr>
+                        <th class="news-id">#</th>
+                        <th class="text-center">Ảnh</th>
+                        <th class="update-date">Email đăng kí</th>
+                        <th class="text-center w150">Số điện thoại</th>
+                        <th class="text-center w150">Loại tài khoản</th>
+                        <th class="text-center account-status w150">
+                            Trạng thái
+                            <i class="fa-solid fa-caret-down fa-flip"></i>
+                            <ul class="type-list">
+                                <li>Hoạt động</li>
+                                <li>Khóa</li>
+                            </ul>
+                        </th>
+                        <th class="w100 text-center">Hành động</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <div class="img-frame-account">
+                                <img src="~/images/new_1.jpg" />
+                            </div>
+                        </td>
+                        <td>namvhhe153701@fpt.edu.vn</td>
+                        <td class="text-center">0923459456</td>
+                        <td class="text-center">Quản lí</td>
+                        <td class="status">
+                            <div class="user-status isActive">Hoạt động</div>
+                        </td>
+                        <td class="text-center">
+                            <a href="#"><i class="ban-btn fa-solid fa-lock p-2"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <div class="img-frame-account">
+                                <img src="~/images/new_1.jpg" />
+                            </div>
+                        </td>
+                        <td>namvhhe153701@fpt.edu.vn</td>
+                        <td class="text-center">0923459456</td>
+                        <td class="text-center">Quản lí</td>
+                        <td class="status">
+                            <div class="user-status isUnActive">Khóa</div>
+                        </td>
+                        <td class="text-center">
+                            <a href="#"><i class="ban-btn fa-solid fa-lock-open p-2"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <div class="img-frame-account">
+                                <img src="~/images/new_1.jpg" />
+                            </div>
+                        </td>
+                        <td>namvhhe153701@fpt.edu.vn</td>
+                        <td class="text-center">0923459456</td>
+                        <td class="text-center">Quản lí</td>
+                        <td class="status">
+                            <div class="user-status isActive">Hoạt động</div>
+                        </td>
+                        <td class="text-center">
+                            <a href="#"><i class="ban-btn fa-solid fa-lock p-2"></i></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!-- Manager account End-->
+        <!-- Club account Start-->
+        <div class="club-content d-none">
+            <div class="mt-5 d-flex justify-content-end">
+                <div class="manageSearch d-flex">
+                    <input class="news-input" placeholder="Tên, địa chỉ,..." />
+                    <div class="searchBtn px-3 align-items-center">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="manage-body mt-3">
+                <table>
+                    <tr>
+                        <th class="news-id">#</th>
+                        <th class="text-center">Ảnh</th>
+                        <th class="w150">Tên câu lạc bộ</th>
+                        <th class="w150">Email đăng kí</th>
+                        <th class="text-center w150">Số điện thoại</th>
+                        <th class="text-center w200">Địa chỉ</th>
+                        <th class="text-center w150">Loại tài khoản</th>
+                        <th class="text-center account-status w150">
+                            Trạng thái
+                            <i class="fa-solid fa-caret-down fa-flip"></i>
+                            <ul class="type-list w150">
+                                <li>Hoạt động</li>
+                                <li>Khóa</li>
+                            </ul>
+                        </th>
+                        <th class="text-center w100">Hành động</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <div class="img-frame-account">
+                                <img src="~/images/new_1.jpg" />
+                            </div>
+                        </td>
+                        <td>Moon club 123</td>
+                        <td>namvhhe153701@fpt.edu.vn</td>
+                        <td class="text-center">0923459456</td>
+                        <td class="text-center">Quảng Ninh, Việt Nam</td>
+                        <td class="text-center">Câu lạc bộ</td>
+                        <td class="status">
+                            <div class="user-status isActive">Hoạt động</div>
+                        </td>
+                        <td class="text-center">
+                            <a href="#"><i class="ban-btn fa-solid fa-lock p-2"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <div class="img-frame-account">
+                                <img src="~/images/new_1.jpg" />
+                            </div>
+                        </td>
+                        <td>Moon club 123</td>
+                        <td>namvhhe153701@fpt.edu.vn</td>
+                        <td class="text-center">0923459456</td>
+                        <td class="text-center">Quảng Ninh</td>
+                        <td class="text-center">Câu lạc bộ</td>
+                        <td class="status">
+                            <div class="user-status isUnActive">Khóa</div>
+                        </td>
+                        <td class="text-center">
+                            <a href="#"><i class="ban-btn fa-solid fa-lock-open p-2"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <div class="img-frame-account">
+                                <img src="~/images/new_1.jpg" />
+                            </div>
+                        </td>
+                        <td>Moon club 123</td>
+                        <td>namvhhe153701@fpt.edu.vn</td>
+                        <td class="text-center">0923459456</td>
+                        <td class="text-center">Quảng Ninh</td>
+                        <td class="text-center">Câu lạc bộ</td>
+                        <td class="status">
+                            <div class="user-status isActive">Hoạt động</div>
+                        </td>
+                        <td class="text-center">
+                            <a href="#"><i class="ban-btn fa-solid fa-lock p-2"></i></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!-- Club account End-->
+        <!-- User account Start-->
+        <div class="user-content d-none">
+            <div class="mt-5 d-flex justify-content-end">
+                <div class="manageSearch d-flex">
+                    <input class="news-input" placeholder="Tên, địa chỉ,..." />
+                    <div class="searchBtn px-3 align-items-center">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="manage-body mt-3">
+                <table>
+                    <tr>
+                        <th class="news-id">#</th>
+                        <th class="text-center">Ảnh</th>
+                        <th class="w150">Tên</th>
+                        <th class="w150">Email đăng kí</th>
+                        <th class="text-center w150">Số điện thoại</th>
+                        <th class="text-center w150">Loại tài khoản</th>
+                        <th class="text-center account-status w150">
+                            Trạng thái
+                            <i class="fa-solid fa-caret-down fa-flip"></i>
+                            <ul class="type-list w150">
+                                <li>Hoạt động</li>
+                                <li>Khóa</li>
+                            </ul>
+                        </th>
+                        <th class="text-center w100">Hành động</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <div class="img-frame-account">
+                                <img src="~/images/new_1.jpg" />
+                            </div>
+                        </td>
+                        <td>Vũ Hoài Nam</td>
+                        <td>namvhhe153701@fpt.edu.vn</td>
+                        <td class="text-center">0923459456</td>
+                        <td class="text-center">Người chơi</td>
+                        <td class="status">
+                            <div class="user-status isActive">Hoạt động</div>
+                        </td>
+                        <td class="text-center">
+                            <a href="#"><i class="ban-btn fa-solid fa-lock p-2"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <div class="img-frame-account">
+                                <img src="~/images/new_1.jpg" />
+                            </div>
+                        </td>
+                        <td>Vũ Hoài Nam</td>
+                        <td>namvhhe153701@fpt.edu.vn</td>
+                        <td class="text-center">0923459456</td>
+                        <td class="text-center">Người chơi</td>
+                        <td class="status">
+                            <div class="user-status isUnActive">Khóa</div>
+                        </td>
+                        <td class="text-center">
+                            <a href="#"><i class="ban-btn fa-solid fa-lock-open p-2"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <div class="img-frame-account">
+                                <img src="~/images/new_1.jpg" />
+                            </div>
+                        </td>
+                        <td>Vũ Hoài Nam</td>
+                        <td>namvhhe153701@fpt.edu.vn</td>
+                        <td class="text-center">0923459456</td>
+                        <td class="text-center">Người chơi</td>
+                        <td class="status">
+                            <div class="user-status isActive">Hoạt động</div>
+                        </td>
+                        <td class="text-center">
+                            <a href="#"><i class="ban-btn fa-solid fa-lock p-2"></i></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!-- User account End -->
+    </div>
+</div>
+
+<script>
+    //Handle ban btn
+    const banBtnList = document.querySelectorAll('.ban-btn');
+    banBtnList.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (btn.classList.contains('fa-lock-open')) {
+                btn.classList.remove('fa-lock-open');
+                btn.classList.add('fa-lock');
+                const trParent = btn.parentNode.parentNode.parentNode;
+                const userStatus = trParent.querySelector('.user-status');
+                userStatus.classList.add('isActive');
+                userStatus.classList.remove('isUnActive');
+                userStatus.textContent = 'Hoạt động';
+            } else {
+                btn.classList.add('fa-lock-open');
+                btn.classList.remove('fa-lock');
+                const trParent = btn.parentNode.parentNode.parentNode;
+                const userStatus = trParent.querySelector('.user-status');
+                userStatus.classList.remove('isActive');
+                userStatus.classList.add('isUnActive');
+                userStatus.textContent = 'Khóa';
+            }
+        })
+    })
+
+    //Handle click nav
+    const accountTypeBtnList = document.querySelectorAll('.account');
+    accountTypeBtnList.forEach(accountTypeBtn => {
+        accountTypeBtn.addEventListener('click', () => {
+            accountTypeBtnList.forEach(btn => {
+                btn.classList.remove('active');
+            })
+            accountTypeBtn.classList.add('active');
+        })
+    })
+
+    //Handle each btn on nav
+    const managerAcc = document.querySelector('.manager-account');
+    const clubAcc = document.querySelector('.club-account');
+    const userAcc = document.querySelector('.user-account');
+
+    const managerContent = document.querySelector('.manager-content');
+    const clubContent = document.querySelector('.club-content');
+    const userContent = document.querySelector('.user-content');
+
+    managerAcc.addEventListener('click', () => {
+        offActiveBtn();
+        managerContent.classList.remove('d-none');
+    });
+
+    clubAcc.addEventListener('click', () => {
+        offActiveBtn();
+        clubContent.classList.remove('d-none');
+    });
+
+    userAcc.addEventListener('click', () => {
+        offActiveBtn();
+        userContent.classList.remove('d-none');
+    });
+
+
+    function offActiveBtn() {
+        if (!managerContent.classList.contains('d-none')) {
+            managerContent.classList.add('d-none');
+        }
+        if (!clubContent.classList.contains('d-none')) {
+            clubContent.classList.add('d-none');
+        }
+        if (!userContent.classList.contains('d-none')) {
+            userContent.classList.add('d-none');
+        }
+    }
+</script>
