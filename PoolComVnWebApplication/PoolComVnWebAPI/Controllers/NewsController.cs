@@ -94,7 +94,7 @@ namespace PoolComVnWebAPI.Controllers
 
      
         [HttpPost("Add")]
-        public async Task<ActionResult> Post([FromForm] NewsDTO newsDTO, [FromForm] List<IFormFile> banner, [FromForm] List<IFormFile> images)
+        public  ActionResult Post([FromForm] NewsDTO newsDTO)
         {
             try
             {
@@ -115,56 +115,8 @@ namespace PoolComVnWebAPI.Controllers
                     UpdatedDate = newsDTO.UpdatedDate,
                     Link = newsDTO.Link,
                     Acc = account
-                    
+
                 };
-
-                if (banner != null)
-                {
-                    foreach (var ban in banner)
-                    {
-                        if (ban != null && ban.Length > 0)
-                        {
-                            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(ban.FileName);
-                            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", fileName);
-
-                            using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
-                            {
-                            ban.CopyTo(memoryStream);
-                           
-
-                            }
-                            var fileStream2 = new FileStream(filePath, FileMode.Open);
-                            var downloadLink = await UploadFromFirebase(fileStream2, ban.FileName,"News", newsDTO.Title,0);
-                            fileStream2.Close();
-                            System.IO.File.Delete(filePath);
-
-                        }
-
-
-                    }
-                }
-                var order = 1;
-                foreach (var image in images)
-                {
-
-                    if (image != null && image.Length > 0)
-                    {
-                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", fileName);
-                        using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
-                        {
-                            image.CopyTo(memoryStream);
-                            
-                            
-                            
-                        }
-                        var fileStream2 = new FileStream(filePath, FileMode.Open);
-                        var downloadLink = await UploadFromFirebase(fileStream2, image.FileName, "News", newsDTO.Title, order);
-                        order++;
-                        fileStream2.Close();
-                        System.IO.File.Delete(filePath);
-                    }
-                }
 
                 news.Flyer = $"https://console.firebase.google.com/project/poolcomvn-82664/storage/poolcomvn-82664.appspot.com/files/~2FNews~%2F{Uri.EscapeDataString(newsDTO.Title)}";
                 _newsDAO.AddNews(news);
@@ -226,9 +178,7 @@ namespace PoolComVnWebAPI.Controllers
         {
             try
             {
-                
-
-                _newsDAO.DeleteNews(id);
+                _newsDAO.ChangeNewsStatus(id, false); 
                 return NoContent();
             }
             catch (Exception ex)
