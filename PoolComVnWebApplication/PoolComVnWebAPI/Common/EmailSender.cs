@@ -5,7 +5,7 @@ namespace PoolComVnWebAPI.Common
 {
     public class EmailSender : IEmailSender
     {
-        public Task SendMailAsync(string email, string username)
+        public Task SendMailAsync(string email, string username, string verifyCode)
         {
             var mail = "poolcomvn@gmail.com";
             var pw = "vyfi yuwu qwrx znhm";
@@ -17,12 +17,12 @@ namespace PoolComVnWebAPI.Common
 
             var message = new MailMessage(from: mail, to: email);
             message.Subject = "Verify Code - PoolComVN";
-            message.Body = CreateVerifyEmail(username);
+            message.Body = CreateVerifyEmail(username, verifyCode);
             message.IsBodyHtml = true;
             return client.SendMailAsync(message);
         }
 
-        private string CreateVerifyEmail(string username)
+        private string CreateVerifyEmail(string username, string verifyCode)
         {
             // Lấy đường dẫn thư mục chứa controller (Template folder)
             string controllerDirectory = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(
@@ -39,6 +39,7 @@ namespace PoolComVnWebAPI.Common
                     body = reader.ReadToEnd();
                 }
                 body = body.Replace("{username}", username);
+                body = body.Replace("{verifyCode}", verifyCode);
                 return body;
             }
             catch (Exception e)

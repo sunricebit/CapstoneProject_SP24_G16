@@ -1,10 +1,21 @@
-﻿<div class="container">
+﻿@{
+    string message = ViewBag.Message;
+}
+<div class="container">
     <div class="login-page d-flex justify-content-center align-items-center">
         <div class="form-content d-flex col-10 col-lg-8 col-xl-6">
             <div class="login-form login-change d-flex ">
                 <div class="col-10">
                     <div class="login-title">Đăng nhập</div>
                     <form method="post" action="@Url.Action("Login", "Authentication")">
+                        @if (!string.IsNullOrEmpty(message))
+                        {
+                            <div class="container">
+                                <div class="notification text-center">
+                                    @message
+                                </div>
+                            </div>
+                        }
                         <div class="input-form">
                             <i class="fa-solid fa-user col-12"></i>
                             <input class="username-input col-12" name="email" type="text" placeholder="Email">
@@ -29,20 +40,20 @@
                             </div>
                         </div>
                         <div class="input-form d-flex justify-content-center">
-                            <input class="submit-btn" type="submit" value="Đăng nhập" >
+                            <input class="submit-btn" type="submit" value="Đăng nhập">
                         </div>
                         @*<div class="row justify-content-between">
-                            <div class="pt-2 text-center">or</div>
-                            <div class="col-12 mt-3 d-flex justify-content-center">
-                                <button class="login-other col-3 mx-2">
-                                    <i class="fa-brands fa-google-plus-g"></i>
-                                    <Span>Google</Span>
-                                </button>
-                                <button class="login-other col-3 mx-2">
-                                    <i class="fa-brands fa-facebook-f"></i>
-                                    <span>Facebook</span>
-                                </button>
-                            </div>
+                        <div class="pt-2 text-center">or</div>
+                        <div class="col-12 mt-3 d-flex justify-content-center">
+                        <button class="login-other col-3 mx-2">
+                        <i class="fa-brands fa-google-plus-g"></i>
+                        <Span>Google</Span>
+                        </button>
+                        <button class="login-other col-3 mx-2">
+                        <i class="fa-brands fa-facebook-f"></i>
+                        <span>Facebook</span>
+                        </button>
+                        </div>
 
                         </div>*@
                     </form>

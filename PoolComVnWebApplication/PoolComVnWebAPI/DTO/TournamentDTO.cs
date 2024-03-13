@@ -37,7 +37,7 @@
         public string P2Name { get; set; }
         public int P1Score { get; set; }
         public int P2Score { get; set; }
-        public int? LoseNextMatch { get; set; }
-        public int? WinNextMatch { get; set; }
+        public int LoseNextMatch { get; set; }
+        public int WinNextMatch { get; set; }
     }
 }

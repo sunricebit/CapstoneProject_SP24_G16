@@ -125,8 +125,8 @@ namespace PoolComVnWebAPI.Controllers
             return raceNumbers;
         }
 
-        [HttpPost("{tourId}")]
-        public IActionResult UpdateTournament()
+        [HttpPost]
+        public IActionResult UpdateTournament([FromBody] TournamentDTO tournamentDTO)
         {
             return Ok();
         }
@@ -271,8 +271,6 @@ namespace PoolComVnWebAPI.Controllers
                 return null;
             }
         }
-        
-
 
 
         [HttpGet("GetAllTour")]

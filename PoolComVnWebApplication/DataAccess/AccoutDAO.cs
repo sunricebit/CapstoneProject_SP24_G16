@@ -57,7 +57,7 @@ namespace DataAccess
                     Password = BCrypt.Net.BCrypt.HashPassword(pass, Constant.SaltRound),
                     RoleId = isBussiness ? Constant.BusinessRole : Constant.UserRole,
                     PhoneNumber = "Default",
-                    VerifyCode = "Default",
+                    Status = false,
                 };
                 _context.Accounts.Add(account);
                 _context.SaveChanges();
@@ -187,6 +187,41 @@ namespace DataAccess
         }
 
         /// <summary>
+        /// Get an account 
+        /// </summary>
+        public Account GetAccountByEmail(string email)
+        {
+            try
+            {
+                var account = _context.Accounts
+                    .FirstOrDefault(item => email.Equals(item.Email));
+
+                return account;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Failed to retrieve account: {e.Message}", e);
+            }
+        }
+
+        /// <summary>
+        /// Get an account 
+        /// </summary>
+        public Account GetAccountById(int accountId)
+        {
+            try
+            {
+                var account = _context.Accounts.FirstOrDefault(a => a.AccountId.Equals(accountId));
+
+                return account;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Failed to retrieve account: {e.Message}", e);
+            }
+        }
+
+        /// <summary>
         /// Check if a username exists.
         /// </summary>
         public bool IsUsernameExist(string username)
@@ -202,6 +237,56 @@ namespace DataAccess
         {
             var account = _context.Accounts.FirstOrDefault(item => email.Equals(item.Email));
             return account != null;
+        }
+
+        public int CheckAccountStatus(int accountId)
+        {
+            var account = _context.Accounts.FirstOrDefault(item => item.AccountId.Equals(accountId));
+            if (account.Status)
+            {
+                return Constant.AccountStatusReady;
+            }
+            else return string.IsNullOrEmpty(account.VerifyCode) ? Constant.AccountStatusBanned : Constant.AccountStatusVerify;
+        }
+
+        public bool CheckVerifyAccount(int accountId, string verifyCode)
+        {
+            var account = _context.Accounts.FirstOrDefault(a => a.AccountId.Equals(accountId));
+            if (verifyCode == account.VerifyCode)
+            {
+                account.VerifyCode = null;
+                return true;
+            }
+            return false;
+        }
+
+        public Account GetLastestAccount()
+        {
+            try
+            {
+                var account = _context.Accounts.OrderByDescending(a => a.AccountId).FirstOrDefault();
+
+                return account;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public void SetVerifyCode(int accountId, string verifyCode)
+        {
+            try
+            {
+                var account = _context.Accounts.FirstOrDefault(a => a.AccountId == accountId);
+                account.VerifyCode = verifyCode;
+                _context.Accounts.Update(account);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
     }
 }

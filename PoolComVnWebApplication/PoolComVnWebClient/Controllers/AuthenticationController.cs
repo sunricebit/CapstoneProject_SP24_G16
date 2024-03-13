@@ -1,22 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Mail;
-using System.Threading.Tasks;
-using System.Web;
-using Microsoft.Net.Http.Headers;
 using System.Net.Http.Headers;
 using PoolComVnWebClient.DTO;
 using PoolComVnWebClient.Common;
-using System.Reflection.Metadata.Ecma335;
 
 namespace PoolComVnWebClient.Controllers
 {
     public class AuthenticationController : Controller
     {
-        private readonly HttpClient client = null;
+        private readonly HttpClient client;
         private string ApiUrl = Constant.ApiUrl;
 
         public AuthenticationController()
@@ -28,8 +20,9 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string? message)
         {
+            ViewBag.Message = message;
             return View();
         }
 
@@ -55,12 +48,35 @@ namespace PoolComVnWebClient.Controllers
                     HttpOnly = true,
                     Secure = true,
                     SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict,
-                    Expires = DateTime.UtcNow.AddHours(1),
+                    Expires = DateTime.UtcNow.AddDays(1),
                 });
+
+                Response.Cookies.Append("Email", email, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddDays(1),
+                });
+
+                return RedirectToAction("Index", "Home");
+            }
+            else if (response.StatusCode == HttpStatusCode.Forbidden)
+            {
+                var responeGetId = await client.GetAsync(ApiUrl + "/GetIdByEmail?email=" + email);
+                int responseId = await responeGetId.Content.ReadFromJsonAsync<int>();
+                return await VerifyAccount(responseId, null);
+            } 
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                string errorMessage = "Email or password wrong!";
+                return Login(errorMessage);
             }
             else
-            {}
-            return RedirectToAction("Index", "Home");
+            {
+                string errorMessage = "Account had been banned by admin.";
+                return Login(errorMessage);
+            }
         }
 
         [HttpPost]
@@ -79,21 +95,73 @@ namespace PoolComVnWebClient.Controllers
             // Kiểm tra xem yêu cầu có thành công hay không
             if (response.IsSuccessStatusCode)
             {
-                // Nhận và giữ token từ phản hồi của server
-                var responseData = await response.Content.ReadFromJsonAsync<string>();
-
+                // Nhận accountId từ sever
+                var responseData = await response.Content.ReadFromJsonAsync<int>();
+                // Chuyển đến trang xác nhận đăng ký
+                return RedirectToAction("VerifyAccount", "Authentication", new
+                {
+                    accountId = responseData,
+                    message = string.Empty,
+                });
             }
             else
             {
+                var responseData = await response.Content.ReadFromJsonAsync<string>();
                 // Xử lý khi đăng ký không thành công
+                return RedirectToAction("Login", "Authentication", new { message = responseData });
             }
-            return RedirectToAction("Login", "Authentication");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> VerifyAccount(int accountId, string? message)
+        {
+            ViewBag.AccountId = accountId;
+            ViewBag.Message = message;
+            var response = await client.GetAsync(ApiUrl + "/SendVerifyCode?accountId=" + accountId);
+            return View("VerifyRegister");
         }
 
         [HttpPost]
-        public async Task<IActionResult> VerifyRegister()
+        public async Task<IActionResult> VerifyAccount(VerifyAccountDTO verifyAccountDTO)
         {
-            return View();
+            var response = await client.PostAsJsonAsync(ApiUrl + "/VerifyAccount", verifyAccountDTO);
+
+            // Kiểm tra xem yêu cầu có thành công hay không
+            if (response.IsSuccessStatusCode)
+            {
+                // Nhận và giữ token từ phản hồi của server
+                var responseMessage = await response.Content.ReadFromJsonAsync<VerifyDTO>();
+                Response.Cookies.Append("TokenJwt", responseMessage.token, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddDays(1),
+                });
+
+                Response.Cookies.Append("Email", responseMessage.Email, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddDays(1),
+                });
+
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                string message = "Verify Code wrong";
+                return await VerifyAccount(verifyAccountDTO.AccountId, message);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("TokenJWT");
+            Response.Cookies.Delete("Email");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

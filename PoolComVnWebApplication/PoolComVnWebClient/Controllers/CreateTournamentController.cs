@@ -13,7 +13,7 @@ namespace PoolComVnWebClient.Controllers
 {
     public class CreateTournamentController : Controller
     {
-        private readonly HttpClient client = null;
+        private readonly HttpClient client;
         private string ApiUrl = Constant.ApiUrl;
 
         public CreateTournamentController()
@@ -30,9 +30,27 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult StepOneCreateTournament()
+        public async Task<IActionResult> StepOneCreateTournament()
         {
-            return View();
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            List<int> rolesAccess = new List<int>();
+            
+            // Thêm các role được access
+            rolesAccess.Add(Constant.BusinessRole);
+            var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Authorization/CheckAuthorization", rolesAccess);
+            if (response.IsSuccessStatusCode)
+            {
+                return View();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return RedirectToAction("Unauthorized", "Error");
+            }
+            else
+            {
+                return RedirectToAction("NotAccess", "Error");
+            }
         }
 
         [HttpPost]
@@ -54,9 +72,27 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult StepTwoPlayerList()
+        public async Task<IActionResult> StepTwoPlayerList()
         {
-            return View();
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            List<int> rolesAccess = new List<int>();
+
+            // Thêm các role được access
+            rolesAccess.Add(Constant.BusinessRole);
+            var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Authorization/CheckAuthorization", rolesAccess);
+            if (response.IsSuccessStatusCode)
+            {
+                return View();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return RedirectToAction("Unauthorized", "Error");
+            }
+            else
+            {
+                return RedirectToAction("NotAccess", "Error");
+            }
         }
 
         [HttpPost("ImportPlayers")]
@@ -139,7 +175,7 @@ namespace PoolComVnWebClient.Controllers
             }
             catch (IOException ex)
             {
-                return View();
+                return RedirectToAction("InternalServerError", "Error", new { message = ex.Message});
             }
 
         }
@@ -148,13 +184,50 @@ namespace PoolComVnWebClient.Controllers
         [HttpGet]
         public async Task<IActionResult> StepTwoJoinList()
         {
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            List<int> rolesAccess = new List<int>();
+
+            // Thêm các role được access
+            rolesAccess.Add(Constant.BusinessRole);
+            var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Authorization/CheckAuthorization", rolesAccess);
+            if (response.IsSuccessStatusCode)
+            {
+                return View();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return RedirectToAction("Unauthorized", "Error");
+            }
+            else
+            {
+                return RedirectToAction("NotAccess", "Error");
+            }
             return View();
         }
 
         [HttpGet]
-        public IActionResult StepTwoMember()
+        public async Task<IActionResult> StepTwoMember()
         {
-            return View();
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            List<int> rolesAccess = new List<int>();
+
+            // Thêm các role được access
+            rolesAccess.Add(Constant.BusinessRole);
+            var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Authorization/CheckAuthorization", rolesAccess);
+            if (response.IsSuccessStatusCode)
+            {
+                return View();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return RedirectToAction("Unauthorized", "Error");
+            }
+            else
+            {
+                return RedirectToAction("NotAccess", "Error");
+            }
         }
 
         [HttpGet]
@@ -179,10 +252,28 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult StepFourAddBanner(int tourID)
+        public async Task<IActionResult> StepFourAddBanner(int tourID)
         {
-            ViewBag.TourId = tourID;
-            return View();
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            List<int> rolesAccess = new List<int>();
+
+            // Thêm các role được access
+            rolesAccess.Add(Constant.BusinessRole);
+            var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Authorization/CheckAuthorization", rolesAccess);
+            if (response.IsSuccessStatusCode)
+            {
+                ViewBag.TourId = tourID;
+                return View();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return RedirectToAction("Unauthorized", "Error");
+            }
+            else
+            {
+                return RedirectToAction("NotAccess", "Error");
+            }
         }
 
         [HttpPost]
@@ -232,33 +323,123 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult StepFiveArrange()
+        public async Task<IActionResult> StepFiveArrange()
         {
-            return View();
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            List<int> rolesAccess = new List<int>();
+
+            // Thêm các role được access
+            rolesAccess.Add(Constant.BusinessRole);
+            var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Authorization/CheckAuthorization", rolesAccess);
+            if (response.IsSuccessStatusCode)
+            {
+                return View();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return RedirectToAction("Unauthorized", "Error");
+            }
+            else
+            {
+                return RedirectToAction("NotAccess", "Error");
+            }
         }
 
         [HttpGet]
-        public IActionResult SystemRandom()
+        public async Task<IActionResult> SystemRandom()
         {
-            return View();
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            List<int> rolesAccess = new List<int>();
+
+            // Thêm các role được access
+            rolesAccess.Add(Constant.BusinessRole);
+            var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Authorization/CheckAuthorization", rolesAccess);
+            if (response.IsSuccessStatusCode)
+            {
+                return View();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return RedirectToAction("Unauthorized", "Error");
+            }
+            else
+            {
+                return RedirectToAction("NotAccess", "Error");
+            }
         }
 
         [HttpGet]
-        public IActionResult UserRandom()
+        public async Task<IActionResult> UserRandom()
         {
-            return View();
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            List<int> rolesAccess = new List<int>();
+
+            // Thêm các role được access
+            rolesAccess.Add(Constant.BusinessRole);
+            var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Authorization/CheckAuthorization", rolesAccess);
+            if (response.IsSuccessStatusCode)
+            {
+                return View();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return RedirectToAction("Unauthorized", "Error");
+            }
+            else
+            {
+                return RedirectToAction("NotAccess", "Error");
+            }
         }
 
         [HttpGet]
-        public IActionResult UserCustom()
+        public async Task<IActionResult> UserCustom()
         {
-            return View();
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            List<int> rolesAccess = new List<int>();
+
+            // Thêm các role được access
+            rolesAccess.Add(Constant.BusinessRole);
+            var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Authorization/CheckAuthorization", rolesAccess);
+            if (response.IsSuccessStatusCode)
+            {
+                return View();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return RedirectToAction("Unauthorized", "Error");
+            }
+            else
+            {
+                return RedirectToAction("NotAccess", "Error");
+            }
         }
 
         [HttpGet]
-        public IActionResult StepSixReview()
+        public async Task<IActionResult> StepSixReview()
         {
-            return View();
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            List<int> rolesAccess = new List<int>();
+
+            // Thêm các role được access
+            rolesAccess.Add(Constant.BusinessRole);
+            var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Authorization/CheckAuthorization", rolesAccess);
+            if (response.IsSuccessStatusCode)
+            {
+                return View();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return RedirectToAction("Unauthorized", "Error");
+            }
+            else
+            {
+                return RedirectToAction("NotAccess", "Error");
+            }
         }
 
 
