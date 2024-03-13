@@ -9,5 +9,10 @@ namespace PoolComVnWebClient.Controllers
         {
             return View();
         }
+
+        public IActionResult CreateManageAccount()
+        {
+            return View();
+        }
     }
 }
