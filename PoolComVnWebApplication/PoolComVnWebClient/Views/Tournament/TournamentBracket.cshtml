@@ -242,7 +242,7 @@
         numberMatchEachRound = 2 ** (roundNumber - i);
         for (j = 0; j < numberMatchEachRound; j++) {
             ++count;
-            // cột thua đấu với thua - cột đầu tiên
+            // cột thua đấu với thua (thắng đấu thắng ở nhánh thua) - cột đầu tiên
             loseBody +=
                 '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; right:' + ((i - 1) * (1.5 * matchDistance + 2 * width)) + 'px">'
                 + '<div class="left-line-lose" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'

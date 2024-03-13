@@ -81,21 +81,30 @@ namespace PoolComVnWebClient.Controllers
             // Kiểm tra xem yêu cầu có thành công hay không
             if (response.IsSuccessStatusCode)
             {
-                // Nhận và giữ token từ phản hồi của server
+                // Nhận accountId từ sever
                 var responseData = await response.Content.ReadFromJsonAsync<string>();
-
+                // Chuyển đến trang xác nhận đăng ký
+                return RedirectToAction("VerifyRegister", new { accountId = responseData});
             }
             else
             {
+                var responseData = await response.Content.ReadFromJsonAsync<string>();
                 // Xử lý khi đăng ký không thành công
             }
             return RedirectToAction("Login", "Authentication");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> VerifyRegister()
+        [HttpGet]
+        public IActionResult VerifyRegister(string accountId)
         {
+            ViewBag.AccountId = accountId;
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetVerify(int accountId, string verifyCode)
+        {
+            
         }
     }
 }

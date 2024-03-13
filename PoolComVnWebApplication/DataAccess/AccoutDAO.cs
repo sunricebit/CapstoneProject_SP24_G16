@@ -47,7 +47,7 @@ namespace DataAccess
         /// <summary>
         /// Register a new account.
         /// </summary>
-        public void RegisterAccount(string username, string email, string pass, bool isBussiness)
+        public void RegisterAccount(string username, string email, string pass, bool isBussiness, string verifyCode)
         {
             try
             {
@@ -57,7 +57,8 @@ namespace DataAccess
                     Password = BCrypt.Net.BCrypt.HashPassword(pass, Constant.SaltRound),
                     RoleId = isBussiness ? Constant.BusinessRole : Constant.UserRole,
                     PhoneNumber = "Default",
-                    VerifyCode = "Default",
+                    VerifyCode = verifyCode,
+                    Status = false,
                 };
                 _context.Accounts.Add(account);
                 _context.SaveChanges();
@@ -202,6 +203,21 @@ namespace DataAccess
         {
             var account = _context.Accounts.FirstOrDefault(item => email.Equals(item.Email));
             return account != null;
+        }
+
+        public int CheckAccountStatus(int accountId)
+        {
+            var account = _context.Accounts.FirstOrDefault(item => item.AccountId.Equals(accountId));
+            if (account.Status)
+            {
+                return Constant.AccountStatusReady;
+            }
+            else return account.VerifyCode == null ? Constant.AccountStatusBanned : Constant.AccountStatusVerify;
+        }
+
+        public bool CheckVerifyAccount(string email, string verifyCode)
+        {
+            
         }
     }
 }

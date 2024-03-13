@@ -155,7 +155,7 @@ namespace PoolComVnWebClient.Controllers
             }
             catch (IOException ex)
             {
-                return View();
+                return RedirectToAction("InternalServerError", "Error", new { message = ex.Message});
             }
 
         }

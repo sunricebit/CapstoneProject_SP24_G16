@@ -39,9 +39,7 @@ namespace PoolComVnWebAPI.Controllers
                 {
                     MatchId = match.MatchId,
                     PlayerInMatches = match.PlayerInMatches,
-                }
-                  
-                    ;
+                };
                 matchesDTOs.Add(matche2);
             }
                 
@@ -82,6 +80,7 @@ namespace PoolComVnWebAPI.Controllers
 
             return CreatedAtAction(nameof(Get), new { id = club.ClubId }, clubDto);
         }
+
         // PUT: api/Club/5
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] ClubDTO updatedClubDto)
