@@ -133,6 +133,7 @@ button {
 
     .small-user .option-menu li {
         padding: 20px;
+        text-align: center;
     }
 
     .small-user .option-menu a {
@@ -142,11 +143,12 @@ button {
     }
 
     .small-user .option-menu .small-user-menu {
-        border-bottom: 1px solid #fff;
+        border-top: 1px solid #fff;
     }
 
         .small-user .option-menu .small-user-menu a {
             padding: 32px;
+            text-align: center;
         }
 
 
@@ -480,7 +482,7 @@ footer {
 }
 
     .container .news-detail img {
-        width: 100%;
+        max-width: 500px;
         background-position: center center;
         border-radius: 10px;
     }
@@ -498,6 +500,7 @@ footer {
         margin-top: 20px;
         font-weight: 500;
         text-align: justify;
+        color: #000;
     }
 
 .container .news-other .news-item {
@@ -513,6 +516,12 @@ footer {
         color: #000;
         text-align: left;
         padding-left: 20px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .container .news-other .news-item:hover img {
+        transform: scale(1.1);
     }
 
     .container .news-other .news-item:hover .news-title {
@@ -527,7 +536,8 @@ footer {
 }
 
     .tournament .tour-nav,
-    .gameRule .gameRule-nav {
+    .gameRule .gameRule-nav,
+    .news-manage .manage-account {
         border-bottom: #fff solid 3px;
     }
 
@@ -535,7 +545,8 @@ footer {
         .tournament .tour-nav .special-tour,
         .gameRule .gameRule-nav .eight-ball,
         .gameRule .gameRule-nav .nine-ball,
-        .gameRule .gameRule-nav .ten-ball {
+        .gameRule .gameRule-nav .ten-ball,
+        .news-manage .manage-account .account {
             width: 240px;
             height: 48px;
             background: none;
@@ -552,7 +563,8 @@ footer {
             .tournament .tour-nav .special-tour:hover,
             .gameRule .gameRule-nav .eight-ball:hover,
             .gameRule .gameRule-nav .nine-ball:hover,
-            .gameRule .gameRule-nav .ten-ball:hover {
+            .gameRule .gameRule-nav .ten-ball:hover,
+            .news-manage .manage-account .account:hover {
                 font-size: 20px;
                 font-style: italic;
             }
@@ -561,7 +573,8 @@ footer {
             .tournament .tour-nav .special-tour.active,
             .gameRule .gameRule-nav .eight-ball.active,
             .gameRule .gameRule-nav .nine-ball.active,
-            .gameRule .gameRule-nav .ten-ball.active {
+            .gameRule .gameRule-nav .ten-ball.active,
+            .news-manage .manage-account .account.active {
                 font-style: italic;
                 font-size: 20px;
                 border-top-right-radius: 40px;
@@ -987,6 +1000,7 @@ footer {
         display: none;
         padding: 0;
         z-index: 100;
+        border-bottom-left-radius: 20px;
     }
 
         .manage-nav .user-menu li {
@@ -1088,13 +1102,17 @@ footer {
 
         .tour-manage-nav .tour-nav-btn:hover {
             font-style: italic;
-            background-color: #00d9ff;
-            color: #000;
         }
 
-        .tour-manage-nav .tour-nav-btn.active:hover {
-            font-style: none;
+        .tour-manage-nav .tour-nav-btn.active {
+            background-color: #00d9ff;
+            color: #000;
+            font-style: italic;
         }
+
+            .tour-manage-nav .tour-nav-btn.active:hover {
+                font-style: none;
+            }
 
 .manager-container {
     width: 100%;
@@ -1402,6 +1420,55 @@ footer {
     z-index: 2;
 }
 
+.start-tour {
+    width: 300px;
+    background: #3b4649;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    box-shadow: 0 0 10px 5px #000;
+}
+
+    .start-tour .start-logo {
+        width: 150px;
+        height: 150px;
+        margin: 0 50px 20px 50px;
+        overflow: hidden;
+    }
+
+        .start-tour .start-logo img {
+            width: 150px;
+        }
+
+    .start-tour .start-title {
+        color: #fff;
+        font-weight: 600;
+        text-align: center;
+        font-size: 18px;
+        text-shadow: 0 0 3px #02b7ff;
+    }
+
+    .start-tour .start-btn {
+        width: 200px;
+        height: 40px;
+        background-color: #41f3c0;
+        margin-top: 50px;
+        text-align: center;
+        line-height: 40px;
+        border-radius: 10px;
+        font-weight: 600;
+        box-shadow: 0 0 5px 3px #fff;
+        border: 1px #aaa solid;
+    }
+
+        .start-tour .start-btn:hover {
+            font-size: 18px;
+            box-shadow: 0 0 10px 5px #02b7ff;
+            transition: font-size 0.1s ease;
+            cursor: pointer;
+            border: 1px #fff solid;
+        }
+
 .bracket-tab .match-box {
     position: absolute;
     background-color: aquamarine;
@@ -1600,7 +1667,8 @@ footer {
                 transform: scale(1);
             }
 
-.match-display {
+.match-display,
+.start-display {
     position: fixed;
     width: 100%;
     height: 100vh;
@@ -1611,81 +1679,98 @@ footer {
     z-index: 100;
 }
 
-    .match-display .match-detail {
+    .match-display .match-detail,
+    .start-display .start-content {
         min-width: 500px;
+        min-height: 300px;
         background-color: #41f3c0;
         border-radius: 10px;
         border: 2px #aaa solid;
         overflow: hidden;
     }
 
-        .match-display .match-detail .match-header {
-            background: #000;
-            color: #fff;
+    .start-display .start-title {
+        font-size: 20px;
+        font-weight: 600;
+        width: 300px;
+        margin: 50px 100px;
+        text-align: center;
+    }
+
+    .match-display .match-detail .match-header,
+    .start-display .start-header {
+        background: #000;
+        color: #fff;
+        min-height: 40px;
+    }
+
+    .match-display .match-detail .match-title {
+        font-weight: 600;
+        padding: 10px;
+    }
+
+    .match-display .match-detail .match-close,
+    .start-display .start-close {
+        padding: 10px;
+        background: #c20a4d;
+        color: #fff;
+    }
+
+        .match-display .match-detail .match-close:hover,
+        .start-display .start-close:hover {
+            color: #000;
+            background: #aa0642;
+            cursor: pointer;
         }
 
-        .match-display .match-detail .match-title {
-            font-weight: 600;
-            padding: 10px;
+    .match-display .match-detail .details-body {
+        padding: 20px 50px;
+        min-height: 400px;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .match-display .match-detail .match-time {
+        font-size: 12px;
+        font-weight: 700;
+        margin: 20px 0 0 50px;
+    }
+
+    .match-display .match-detail .match-complete {
+        padding: 2px 10px;
+        margin: 20px 20px 0 0;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 700;
+        border: 1px solid #346585;
+    }
+
+    .match-display .match-detail .details-player {
+        font-size: 28px;
+        font-weight: 600;
+        border-bottom: 1px solid #455d64;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+
+        .match-display .match-detail .details-player img {
+            width: 42px;
+            height: 28px;
+            border-radius: 5px;
         }
 
-        .match-display .match-detail .match-close {
-            padding: 10px;
-            background: #c20a4d;
-            color: #fff;
+    .match-display .match-detail .score-board {
+        padding: 30px 0 20px 0;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+        .match-display .match-detail .score-board span {
+            line-height: 20px;
         }
 
-            .match-display .match-detail .match-close:hover {
-                color: #000;
-                background: #aa0642;
-                cursor: pointer;
-            }
-
-        .match-display .match-detail .details-body {
-            padding: 20px 50px;
-        }
-
-        .match-display .match-detail .match-time {
-            font-size: 12px;
-            font-weight: 700;
-            margin: 20px 0 0 50px;
-        }
-
-        .match-display .match-detail .match-complete {
-            padding: 2px 10px;
-            margin: 20px 20px 0 0;
-            border-radius: 10px;
-            font-size: 12px;
-            font-weight: 700;
-            border: 1px solid #346585;
-        }
-
-        .match-display .match-detail .details-player {
-            font-size: 28px;
-            font-weight: 600;
-            border-bottom: 1px solid #455d64;
-            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-        }
-
-            .match-display .match-detail .details-player img {
-                width: 42px;
-                height: 28px;
-                border-radius: 5px;
-            }
-
-        .match-display .match-detail .score-board {
-            padding: 30px 0 20px 0;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-            .match-display .match-detail .score-board span {
-                line-height: 20px;
-            }
-
-        .match-display .match-detail .name-board div {
-            padding-right: 10px;
-        }
+    .match-display .match-detail .name-board div {
+        padding-right: 10px;
+    }
 
 .board-line {
     border-bottom: 1px #fff solid;
@@ -1711,28 +1796,34 @@ footer {
 }
 
 .match-display .match-detail .lose-next,
-.match-display .match-detail .win-next {
-    width: 100px;
+.match-display .match-detail .win-next,
+.start-display .ok-start,
+.start-display .cancle-start {
+    width: 150px;
     padding: 5px 0;
     color: #fff;
     font-weight: 600;
     border-radius: 5px;
 }
 
-.match-display .match-detail .lose-next {
+.match-display .match-detail .lose-next,
+.start-display .cancle-start {
     background: #9c1515;
 }
 
-.match-display .match-detail .win-next {
+.match-display .match-detail .win-next,
+.start-display .ok-start {
     background: #127f4e;
 }
 
-.match-display .match-detail .lose-next:hover {
+.match-display .match-detail .lose-next:hover,
+.start-display .cancle-start:hover {
     background: #b91b1b;
     cursor: pointer;
 }
 
-.match-display .match-detail .win-next:hover {
+.match-display .match-detail .win-next:hover,
+.start-display .ok-start:hover {
     background: #18a163;
     cursor: pointer;
 }
@@ -1870,7 +1961,7 @@ tr:not(:first-child).isFinish {
 
 /* newsManage.html */
 .news-manage {
-    margin: 100px 0;
+    margin: 50px 50px;
 }
 
     .news-manage .manage-header {
@@ -1881,18 +1972,23 @@ tr:not(:first-child).isFinish {
         font-style: italic;
     }
 
-    .news-manage .addBtn {
+    .news-manage .addBtn,
+    .news-manage .addBtn-account {
         text-decoration: none;
         background-color: white;
-        width: 160px;
+        min-width: 100px;
+        padding: 0 20px;
         height: 40px;
         color: #000;
         border-radius: 20px;
         font-size: 20px;
         font-weight: 600;
+        margin-right: 50px;
     }
 
-        .news-manage .addBtn:hover {
+
+        .news-manage .addBtn:hover,
+        .news-manage .addBtn-account:hover {
             background: linear-gradient(#acc4e0 50%, #648fc0);
         }
 
@@ -1926,6 +2022,7 @@ tr:not(:first-child).isFinish {
 
     .news-manage .manage-body {
         background-color: white;
+        overflow-x: auto;
     }
 
         .news-manage .manage-body table {
@@ -1941,45 +2038,141 @@ tr:not(:first-child).isFinish {
             padding: 10px;
         }
 
+        .news-manage .manage-body tr td:nth-child(2) {
+            display: flex;
+            justify-content: center;
+        }
+
+        .news-manage .manage-body .img-frame,
+        .news-manage .manage-body .img-frame-account {
+            width: 120px;
+            height: 80px;
+            background-size: cover;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .news-manage .manage-body .img-frame-account {
+            width: 80px;
+        }
+
 
         .news-manage .manage-body .news-id {
             width: 50px;
         }
 
-        .news-manage .manage-body img {
-            width: 100px;
-        }
-
-        .news-manage .manage-body .create-date {
-            width: 100px;
-        }
-
-        .news-manage .manage-body .update-date {
-            width: 160px;
-        }
-
-        .news-manage .manage-body .action {
+        .news-manage .manage-body .img-frame-account img {
             width: 120px;
+        }
+
+        .news-manage .manage-body .img-frame img {
+            width: 120px;
+        }
+
+        .news-manage .manage-body .w100 {
+            min-width: 100px;
+        }
+
+        .news-manage .manage-body .w150 {
+            min-width: 150px;
+        }
+
+        .news-manage .manage-body .w200 {
+            min-width: 200px;
+        }
+
+        .news-manage .manage-body .title {
+            min-width: 500px;
         }
 
     .news-manage table tr:nth-child(odd) {
         background-color: #efefef;
     }
 
-    .news-manage .manage-body .fa-pencil,
-    .news-manage .manage-body .fa-trash-can {
+    .news-manage .manage-body i {
         color: #000000;
     }
 
-        .news-manage .manage-body .fa-pencil:hover,
-        .news-manage .manage-body .fa-trash-can:hover {
+        .news-manage .manage-body i:hover {
             opacity: 0.6;
+            transform: scale(1.2);
+            transition: transform 0.3s ease;
         }
+
+    .news-manage .manage-body .account-status {
+        position: relative;
+    }
+
+        .news-manage .manage-body .account-status:hover {
+            cursor: pointer;
+        }
+
+            .news-manage .manage-body .account-status:hover .type-list {
+                display: block;
+            }
+
+    .news-manage .manage-body .type-list {
+        display: none;
+        position: absolute;
+        top: 44px;
+        left: 0;
+        background: #346585;
+        list-style: none;
+        width: 150px;
+        box-shadow: 0 3px 10px 2px #3d3d3d;
+        padding: 0;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        overflow: hidden;
+    }
+
+        .news-manage .manage-body .type-list li {
+            line-height: 28px;
+            color: #fff;
+            padding: 10px;
+            font-weight: 500;
+            border-top: #fff 1px solid;
+        }
+
+            .news-manage .manage-body .type-list li:hover {
+                background: #acc4e0;
+                color: #000;
+            }
+
+    .news-manage .manage-body .status {
+        width: 120px;
+    }
+
+    .news-manage .manage-body .user-status {
+        font-size: 10px;
+        width: 60px;
+        text-align: center;
+        color: white;
+        border-radius: 5px;
+        height: 20px;
+        line-height: 20px;
+        margin-left: 35px;
+    }
+
+        .news-manage .manage-body .user-status.isActive {
+            background-color: #346585;
+        }
+
+        .news-manage .manage-body .user-status.isUnActive {
+            background-color: #9c1515;
+        }
+
+    .news-manage .manage-body .view-btn {
+        width: 40px;
+        text-align: center;
+    }
 
 /* addNews.html */
 .add-news {
     background-color: white;
-    margin: 100px 10%;
+    margin: 50px 10%;
     overflow: hidden;
     border-radius: 10px;
 }
@@ -2968,9 +3161,55 @@ tr:not(:first-child).isFinish {
             left:0;
         }
 
-            .import-form input:hover {
-                cursor: pointer;
-            }
+.import-form {
+    margin-top: 20px;
+}
+
+    .import-form button {
+        background: #346585;
+    }
+
+        .import-form button:hover {
+            background: #648fc0;
+        }
+
+    .import-form .import-input {
+        background: #ccc;
+        width: 415px;
+        height: 40px;
+        margin-right: 15px;
+        position: relative;
+        border-radius: 20px;
+    }
+
+        .import-form .import-input span {
+            position: absolute;
+            width: 415px;
+            top: 0;
+            left: 0;
+            text-align: center;
+            line-height: 40px;
+            font-weight: 600;
+            z-index: 1;
+        }
+
+        .import-form .import-input:hover {
+            background: #fff;
+        }
+
+    .import-form input {
+        width: 415px;
+        opacity: 0;
+        height: 40px;
+        z-index: 2;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+        .import-form input:hover {
+            cursor: pointer;
+        }
 
 
 /* stepThreeAddTable.html */
@@ -3517,7 +3756,8 @@ tr:not(:first-child).isFinish {
 
 .match-display .edit-score .player-point input,
 .match-display .edit-score .player-status select,
-.match-display .edit-table .table-name {
+.match-display .edit-table .table-name,
+.match-display .edit-table .schedule-time {
     width: 80px;
     line-height: 32px;
     height: 32px;
@@ -3539,20 +3779,22 @@ tr:not(:first-child).isFinish {
     font-size: 14px;
     font-weight: 600;
     font-style: italic;
-    width: 100px;
+    width: 150px;
 }
 
-.match-display .edit-table .table-name {
-    width: 320px;
+.match-display .edit-table .table-name,
+.match-display .edit-table .schedule-time {
+    width: 270px;
     padding: 0 20px;
 }
 
-    .match-display .edit-table .table-name:hover {
+    .match-display .edit-table .table-name:hover,
+    .match-display .edit-table .schedule-time:hover {
         cursor: pointer;
     }
 
 .match-display .save-btn {
-    width: 420px;
+    width: 100%;
     line-height: 40px;
     height: 40px;
     text-align: center;
@@ -3575,7 +3817,7 @@ tr:not(:first-child).isFinish {
 }
 
 .match-display .edit-table .search-box {
-    width: 310px;
+    width: 260px;
     top: 30px;
     left: 5px;
 }
@@ -3654,6 +3896,103 @@ tr:not(:first-child).isFinish {
             font-size: 18px;
             transition: font-size 0.2s ease;
         }
+
+/* createManageAccount.html */
+.create-manage-bg {
+    width: 100%;
+    height: calc(100vh - 50px);
+    position: relative;
+    z-index: 2;
+    margin-top: 50px;
+}
+
+    .create-manage-bg .create-manage-form {
+        width: 600px;
+        min-height: 500px;
+        background: #fff;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .create-manage-bg .create-header {
+        height: 50px;
+        text-align: center;
+        background-color: #aaa;
+        font-size: 20px;
+        line-height: 50px;
+        font-weight: 600;
+        position: relative;
+    }
+
+        .create-manage-bg .create-header .back-btn {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px;
+            background-color: #aa0642;
+            color: #fff;
+            font-size: 16px;
+        }
+
+            .create-manage-bg .create-header .back-btn:hover {
+                background: #c20a4d;
+                cursor: pointer;
+            }
+
+    .create-manage-bg .create-content {
+        padding: 50px;
+    }
+
+        .create-manage-bg .create-content .create-field {
+            margin-bottom: 30px;
+        }
+
+            .create-manage-bg .create-content .create-field input {
+                width: 100%;
+                padding: 5px 20px;
+                border-radius: 5px;
+                border: none;
+                border-bottom: 2px #346585 solid;
+                outline: none;
+            }
+
+        .create-manage-bg .create-content .field-title {
+            font-size: 14px;
+            font-weight: 600;
+            font-style: italic;
+        }
+
+        .create-manage-bg .create-content .create-submit {
+            margin-top: 50px;
+        }
+
+            .create-manage-bg .create-content .create-submit input {
+                font-weight: 600;
+                padding: 5px 20px;
+                width: 100%;
+                border-radius: 5px;
+                border: 1px #ccc solid;
+                border-bottom: 2px solid #aaa;
+                background: #62d7ef;
+            }
+
+                .create-manage-bg .create-content .create-submit input:hover {
+                    background-color: #02b7ff;
+                }
+
+        .create-manage-bg .create-content .create-status {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 30px;
+        }
+
+            .create-manage-bg .create-content .create-status.isSuccess {
+                color: #18a163;
+            }
+
+            .create-manage-bg .create-content .create-status.isFail {
+                color: #9c1515;
+            }
 
 /* Mobile: width <740px */
 @media only screen and (max-width: 739px) {
@@ -3766,8 +4105,6 @@ tr:not(:first-child).isFinish {
     .large-screen {
         display: contents;
     }
-
-
 
     .main-nav .nav-menu li:hover a,
     .main-nav .login:hover a {

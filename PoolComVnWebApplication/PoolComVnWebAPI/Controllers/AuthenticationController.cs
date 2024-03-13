@@ -34,25 +34,40 @@ namespace PoolComVnWebAPI.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody]LoginDTO loginDTO)
+        public IActionResult Login([FromBody] LoginDTO loginDTO)
         {
             Account account = _accountDAO.AuthenAccount(loginDTO.Email, loginDTO.Password);
             if (account != null)
             {
-                return Ok(new { token = GenerateToken(account) });
+                int checkAccount = _accountDAO.CheckAccountStatus(account.AccountId);
+                if (checkAccount == Constant.AccountStatusReady)
+                {
+                    return Ok(new { token = GenerateToken(account) });
+                }
+                else if (checkAccount == Constant.AccountStatusBanned)
+                {
+                    return BadRequest();
+                }
+                else
+                {
+                    return Forbid();
+                }
             }
             return Unauthorized();
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody]RegisterDTO registerDto)
+        public async Task<IActionResult> Register([FromBody] RegisterDTO registerDto)
         {
-            if (_accountDAO.IsEmailExist(registerDto.Email) || _accountDAO.IsUsernameExist(registerDto.Username)) {
-                return BadRequest();
+            if (_accountDAO.IsEmailExist(registerDto.Email) || _accountDAO.IsUsernameExist(registerDto.Username))
+            {
+                return BadRequest("Email or username already exist");
             }
-            _accountDAO.RegisterAccount(registerDto.Username, registerDto.Email, 
+
+            _accountDAO.RegisterAccount(registerDto.Username, registerDto.Email,
                 registerDto.Pass, registerDto.isBusiness);
-            return Ok();
+
+            return Ok(_accountDAO.GetLastestAccount().AccountId);
         }
 
         [HttpPost("testAuthorize")]
@@ -71,7 +86,7 @@ namespace PoolComVnWebAPI.Controllers
 
             if (Constant.UserRole.ToString().Equals(RoleClaim.Value))
             {
-                return Ok("authen thanh cong");
+                return Ok("authen Thanh cong");
             }
 
             // Xử lý khi không tìm thấy claim "roleId"
@@ -94,13 +109,37 @@ namespace PoolComVnWebAPI.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        
-
-        [HttpPost("verify")]
-        public async Task<IActionResult> SendVerifyCode()
+        [HttpGet("SendVerifyCode")]
+        public async Task<IActionResult> SendVerifyCode(int accountId)
         {
-            await _emailSender.SendMailAsync("Vhnam2209@gmail.com", "Nam Vu");
+            var account = _accountDAO.GetAccountById(accountId);
+            string verifyCode = TokenManager.GenerateSecretString(6);
+            _accountDAO.SetVerifyCode(accountId, verifyCode);
+            await _emailSender.SendMailAsync(account.Email, account.Email, verifyCode);
             return Ok();
+        }
+
+        [HttpPost("VerifyAccount")]
+        public IActionResult VerifyAccount([FromBody] VerifyAccountDTO verifyAccountDTO)
+        {
+            bool checkVerify = _accountDAO.CheckVerifyAccount(verifyAccountDTO.AccountId, verifyAccountDTO.VerifyCode);
+            var account = _accountDAO.GetAccountById(verifyAccountDTO.AccountId);
+            if (checkVerify)
+            {
+                return Ok(new
+                {
+                    token = GenerateToken(account),
+                    Email = account.Email
+                });
+            }
+            return Unauthorized();
+        }
+
+        [HttpGet("GetIdByEmail")]
+        public IActionResult GetIdByEmail(string email)
+        {
+            var id = _accountDAO.GetAccountByEmail(email).AccountId;
+            return Ok(id);
         }
     }
 }

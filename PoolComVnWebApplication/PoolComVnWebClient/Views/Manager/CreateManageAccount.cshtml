@@ -1,0 +1,44 @@
+﻿@{
+    Layout = "~/Views/Shared/_TournamentLayout.cshtml";
+}
+
+<div class="create-manage-bg d-flex justify-content-center align-items-center">
+    <form class="create-manage-form">
+        <div class="create-header">
+            Tạo tài khoản quản lí
+            <a href="" class="back-btn">
+                <i class="fa-solid fa-angle-left"></i>
+                Trở lại
+            </a>
+        </div>
+        <div class="create-content">
+            <div class="create-field">
+                <div class="field-title">
+                    Email
+                </div>
+                <input type="text">
+            </div>
+            <div class="create-field">
+                <div class="field-title">
+                    Mật khẩu
+                </div>
+                <input type="password">
+            </div>
+            <div class="create-field">
+                <div class="field-title">
+                    Nhập lại mật khẩu
+                </div>
+                <input type="password">
+            </div>
+            <div class="create-submit">
+                <input type="submit" value="Tạo tài khoản">
+            </div>
+            <div class="create-status text-center isSuccess">
+                Tạo tài khoản thành công.
+            </div>
+            <!-- <div class="create-status text-center isFail">
+                Tạo tài khoản không thành công.
+            </div> -->
+        </div>
+    </form>
+</div>

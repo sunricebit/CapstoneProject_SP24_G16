@@ -126,8 +126,8 @@ namespace PoolComVnWebAPI.Controllers
             return raceNumbers;
         }
 
-        [HttpPost("{tourId}")]
-        public IActionResult UpdateTournament()
+        [HttpPost]
+        public IActionResult UpdateTournament([FromBody] TournamentDTO tournamentDTO)
         {
             return Ok();
         }
@@ -228,8 +228,34 @@ namespace PoolComVnWebAPI.Controllers
                 throw e;
             }
         }
-        
+        private async Task<string> UploadFromFirebase(FileStream stream, string filename)
+        {
+            var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
+            var a = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
+            var cancellation = new CancellationTokenSource();
+            var task = new FirebaseStorage(
+                Bucket,
+                new FirebaseStorageOptions
+                {
+                    AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                    ThrowOnCancel = true
+                }
+                ).Child("Tournaments")
+                 .Child(filename)
+                 .PutAsync(stream, cancellation.Token);
+            try
+            {
+                string link = await task;
+                return link;
 
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine("Exception was thrown : {0}", ex);
+                return null;
+            }
+        }
 
 
         [HttpGet("GetAllTour")]

@@ -22,5 +22,8 @@ namespace PoolComVnWebClient.Controllers
             ViewBag.ErrorMessage = message;
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Unauthorized() => View();
     }
 }
