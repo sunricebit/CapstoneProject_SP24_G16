@@ -30,9 +30,25 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult StepOneCreateTournament()
+        public async Task<IActionResult> StepOneCreateTournament()
         {
-            return View();
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            List<int> rolesAccess = new List<int>();
+            rolesAccess.Add(Constant.BusinessRole);
+            var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Authorization/CheckAuthorization", rolesAccess);
+            if (response.IsSuccessStatusCode)
+            {
+                return View();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return RedirectToAction("Unauthorized", "Error");
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Error");
+            }
         }
 
         [HttpPost]
