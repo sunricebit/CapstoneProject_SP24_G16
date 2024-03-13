@@ -34,7 +34,7 @@ namespace PoolComVnWebAPI.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody]LoginDTO loginDTO)
+        public IActionResult Login([FromBody] LoginDTO loginDTO)
         {
             Account account = _accountDAO.AuthenAccount(loginDTO.Email, loginDTO.Password);
             if (account != null)
@@ -46,30 +46,28 @@ namespace PoolComVnWebAPI.Controllers
                 }
                 else if (checkAccount == Constant.AccountStatusBanned)
                 {
-                    return BadRequest("Account had been banned by admin.");
+                    return BadRequest();
                 }
                 else
                 {
-                    return BadRequest("Please verify your account!");
+                    return Forbid();
                 }
             }
             return Unauthorized();
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody]RegisterDTO registerDto)
+        public async Task<IActionResult> Register([FromBody] RegisterDTO registerDto)
         {
-            if (_accountDAO.IsEmailExist(registerDto.Email) || _accountDAO.IsUsernameExist(registerDto.Username)) {
+            if (_accountDAO.IsEmailExist(registerDto.Email) || _accountDAO.IsUsernameExist(registerDto.Username))
+            {
                 return BadRequest("Email or username already exist");
             }
-            string verifyCode = TokenManager.GenerateSecretString(6);
-            _accountDAO.RegisterAccount(registerDto.Username, registerDto.Email, 
-                registerDto.Pass, registerDto.isBusiness, verifyCode);
 
-            
-            await SendVerifyCode(registerDto.Email, registerDto.Username, verifyCode);
+            _accountDAO.RegisterAccount(registerDto.Username, registerDto.Email,
+                registerDto.Pass, registerDto.isBusiness);
 
-            return Ok(verifyCode);
+            return Ok(_accountDAO.GetLastestAccount().AccountId);
         }
 
         [HttpPost("testAuthorize")]
@@ -111,24 +109,37 @@ namespace PoolComVnWebAPI.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        [HttpPost("SendVerifyCode")]
-        public async Task<IActionResult> SendVerifyCode(string email, string username, string verifyCode)
+        [HttpGet("SendVerifyCode")]
+        public async Task<IActionResult> SendVerifyCode(int accountId)
         {
-            await _emailSender.SendMailAsync(email, username, verifyCode);
+            var account = _accountDAO.GetAccountById(accountId);
+            string verifyCode = TokenManager.GenerateSecretString(6);
+            _accountDAO.SetVerifyCode(accountId, verifyCode);
+            await _emailSender.SendMailAsync(account.Email, account.Email, verifyCode);
             return Ok();
         }
 
         [HttpPost("VerifyAccount")]
         public IActionResult VerifyAccount([FromBody] VerifyAccountDTO verifyAccountDTO)
         {
-            bool checkVerify = _accountDAO.CheckVerifyAccount(verifyAccountDTO.Email, verifyAccountDTO.VerifyCode);
+            bool checkVerify = _accountDAO.CheckVerifyAccount(verifyAccountDTO.AccountId, verifyAccountDTO.VerifyCode);
+            var account = _accountDAO.GetAccountById(verifyAccountDTO.AccountId);
             if (checkVerify)
             {
-                return Ok(new { token = GenerateToken(account) });
+                return Ok(new
+                {
+                    token = GenerateToken(account),
+                    Email = account.Email
+                });
             }
             return Unauthorized();
         }
 
-
+        [HttpGet("GetIdByEmail")]
+        public IActionResult GetIdByEmail(string email)
+        {
+            var id = _accountDAO.GetAccountByEmail(email).AccountId;
+            return Ok(id);
+        }
     }
 }

@@ -47,7 +47,7 @@ namespace DataAccess
         /// <summary>
         /// Register a new account.
         /// </summary>
-        public void RegisterAccount(string username, string email, string pass, bool isBussiness, string verifyCode)
+        public void RegisterAccount(string username, string email, string pass, bool isBussiness)
         {
             try
             {
@@ -57,7 +57,6 @@ namespace DataAccess
                     Password = BCrypt.Net.BCrypt.HashPassword(pass, Constant.SaltRound),
                     RoleId = isBussiness ? Constant.BusinessRole : Constant.UserRole,
                     PhoneNumber = "Default",
-                    VerifyCode = verifyCode,
                     Status = false,
                 };
                 _context.Accounts.Add(account);
@@ -188,6 +187,41 @@ namespace DataAccess
         }
 
         /// <summary>
+        /// Get an account 
+        /// </summary>
+        public Account GetAccountByEmail(string email)
+        {
+            try
+            {
+                var account = _context.Accounts
+                    .FirstOrDefault(item => email.Equals(item.Email));
+
+                return account;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Failed to retrieve account: {e.Message}", e);
+            }
+        }
+
+        /// <summary>
+        /// Get an account 
+        /// </summary>
+        public Account GetAccountById(int accountId)
+        {
+            try
+            {
+                var account = _context.Accounts.FirstOrDefault(a => a.AccountId.Equals(accountId));
+
+                return account;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Failed to retrieve account: {e.Message}", e);
+            }
+        }
+
+        /// <summary>
         /// Check if a username exists.
         /// </summary>
         public bool IsUsernameExist(string username)
@@ -212,12 +246,47 @@ namespace DataAccess
             {
                 return Constant.AccountStatusReady;
             }
-            else return account.VerifyCode == null ? Constant.AccountStatusBanned : Constant.AccountStatusVerify;
+            else return string.IsNullOrEmpty(account.VerifyCode) ? Constant.AccountStatusBanned : Constant.AccountStatusVerify;
         }
 
-        public bool CheckVerifyAccount(string email, string verifyCode)
+        public bool CheckVerifyAccount(int accountId, string verifyCode)
         {
-            
+            var account = _context.Accounts.FirstOrDefault(a => a.AccountId.Equals(accountId));
+            if (verifyCode == account.VerifyCode)
+            {
+                account.VerifyCode = null;
+                return true;
+            }
+            return false;
+        }
+
+        public Account GetLastestAccount()
+        {
+            try
+            {
+                var account = _context.Accounts.OrderByDescending(a => a.AccountId).FirstOrDefault();
+
+                return account;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public void SetVerifyCode(int accountId, string verifyCode)
+        {
+            try
+            {
+                var account = _context.Accounts.FirstOrDefault(a => a.AccountId == accountId);
+                account.VerifyCode = verifyCode;
+                _context.Accounts.Update(account);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
     }
 }
