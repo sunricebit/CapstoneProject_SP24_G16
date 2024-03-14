@@ -35,12 +35,12 @@ namespace DataAccess
             _context.News.Add(news);
             _context.SaveChanges();
         }
-        public void ChangeNewsStatus(int id, bool newStatus)
+        public void ChangeNewsStatus(int id)
         {
             var newsToUpdate = _context.News.FirstOrDefault( c=> c.NewsId==id); 
             if (newsToUpdate != null)
             {
-                newsToUpdate.Status = newStatus; 
+                if (newsToUpdate.Status == true) { newsToUpdate.Status = false; } else { newsToUpdate.Status = true; }; 
                 _context.SaveChanges();
             }
         }

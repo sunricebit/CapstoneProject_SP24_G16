@@ -23,12 +23,12 @@
                 </div>
                 <div class="col-lg-10 px-5 pt-2">
                     <strong class="mt-1">Thêm banner</strong>
-                    <input type="file" accept="image/*" id="banner-input" asp-for="BannerFile" />
+                    <input type="file" accept="image/*" id="banner-input" name="BannerFile" />
                     <div class="text-danger bannerErr px-2 py-1"></div>
                 </div>
                 <div class="col-lg-6 px-5 pt-5 d-flex justify-content-around">
                     <button type="submit" class="btn btn-success">Tạo mới</button>
-                    <a href="Index" class="btn btn-danger">HỦY</a>
+                    <a asp-action="Index" asp-controller="NewsManage" class="btn btn-danger">HỦY</a>
                 </div>
                 <div class="col-lg-6 px-5 pt-5" id="form-message"></div>
             </div>
