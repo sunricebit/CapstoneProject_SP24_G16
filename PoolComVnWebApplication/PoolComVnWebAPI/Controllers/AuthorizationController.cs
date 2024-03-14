@@ -13,8 +13,8 @@ namespace PoolComVnWebAPI.Controllers
 
         }
 
-        [HttpPost]
-        public IActionResult CheckAuthorization(List<int> rolesAccess)
+        [HttpPost("CheckAuthorization")]
+        public IActionResult CheckAuthorization([FromBody]List<int> rolesAccess)
         {
             // Lấy giá trị token từ header
             var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
