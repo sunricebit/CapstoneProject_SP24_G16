@@ -22,7 +22,7 @@
             //Console.WriteLine(x);
             //Console.WriteLine(y);
 
-            for (int i = 7; i <= 300; i++)
+            for (int i = 1; i <= 300; i++)
             {
                 int resultWin = win(i, n, d, x, y, w, a);
                 int resultLose = lose(i, n, d, x, y, w, a);
