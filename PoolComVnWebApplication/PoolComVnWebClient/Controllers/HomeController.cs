@@ -20,8 +20,6 @@ namespace PoolComVnWebClient.Controllers
             client.DefaultRequestHeaders.Accept.Add(contentType);
             ApiUrl = ApiUrl + "/News";
             _logger = logger;
-            client = new HttpClient();
-            var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             client.DefaultRequestHeaders.Accept.Add(contentType);
             ApiUrl = ApiUrl + "/News";
         }
