@@ -15,9 +15,11 @@ namespace PoolComVnWebClient.Controllers
         private string ApiUrl = Constant.ApiUrl;
         public HomeController(ILogger<HomeController> logger)
         {
-            _logger = logger;
             client = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+            client.DefaultRequestHeaders.Accept.Add(contentType);
+            ApiUrl = ApiUrl + "/News";
+            _logger = logger;
             client.DefaultRequestHeaders.Accept.Add(contentType);
             ApiUrl = ApiUrl + "/News";
         }
