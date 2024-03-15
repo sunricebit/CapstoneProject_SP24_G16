@@ -4,6 +4,7 @@ using PoolComVnWebClient.Common;
 using PoolComVnWebClient.DTO;
 using PoolComVnWebClient.Models;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Http.Headers;
 
 namespace PoolComVnWebClient.Controllers
@@ -15,11 +16,9 @@ namespace PoolComVnWebClient.Controllers
         private string ApiUrl = Constant.ApiUrl;
         public HomeController(ILogger<HomeController> logger)
         {
+            _logger = logger;
             client = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-            client.DefaultRequestHeaders.Accept.Add(contentType);
-            ApiUrl = ApiUrl + "/News";
-            _logger = logger;
             client.DefaultRequestHeaders.Accept.Add(contentType);
             ApiUrl = ApiUrl + "/News";
         }
@@ -52,9 +51,33 @@ namespace PoolComVnWebClient.Controllers
 
 
         [HttpGet]
-        public IActionResult NewsDetail()
+        public IActionResult NewsDetail(int id)
         {
-            return View();
+            var response = client.GetAsync($"{ApiUrl}/{id}").Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonContent = response.Content.ReadAsStringAsync().Result;
+                var newsDetails = JsonConvert.DeserializeObject<NewsDTO>(jsonContent);
+
+                var response2 = client.GetAsync($"{ApiUrl}/GetLatestNews?count=6").Result;
+                response2.EnsureSuccessStatusCode();
+
+                var jsonContent2 = response2.Content.ReadAsStringAsync().Result;
+                var newsList = JsonConvert.DeserializeObject<List<NewsDTO>>(jsonContent2);
+                ViewBag.OtherNewsList = newsList;
+                return View(newsDetails);
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+
+                return NotFound();
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Lỗi khi lấy chi tiết tin tức.");
+                return View();
+            }
         }
 
         [HttpGet]
