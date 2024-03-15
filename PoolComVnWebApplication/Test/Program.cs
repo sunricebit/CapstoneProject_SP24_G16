@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            int n = 64;
+            int n = 32;
             int d = 2;
 
 
@@ -19,10 +19,10 @@
 
             int y = 2 * x;
 
-            Console.WriteLine(x);
+            //Console.WriteLine(x);
             //Console.WriteLine(y);
 
-            for (int i = 1; i <= 123; i++)
+            for (int i = 7; i <= 300; i++)
             {
                 int resultWin = win(i, n, d, x, y, w, a);
                 int resultLose = lose(i, n, d, x, y, w, a);
@@ -58,6 +58,10 @@
             {
                 if (m > (y + d / 4))
                 {
+                    if (w == 1)
+                    {
+                        return m + d / 4 + 1;
+                    }
                     return m + d / 4;
                 }
                 else
@@ -112,13 +116,12 @@
                 for (int i = a - 3; i >= w; i--)
                 {
                     int count1 = 0;
-                    int count2 = 0;
                     for (int j = a - 1; j >= i + 1; j--)
                     {
                         count1 += Convert.ToInt32(Math.Pow(2, j));
                     }
 
-                    count2 = count1 + Convert.ToInt32(Math.Pow(2, i));
+                    int count2 = count1 + Convert.ToInt32(Math.Pow(2, i));
 
                     if (m > count1 && m <= count2)
                     {
@@ -136,6 +139,10 @@
             }
             else if (m % 2 == 1 && m > x && m <= (x + Convert.ToInt32(Math.Pow(2, (w - 1)))))
             {
+                if (w == 1)
+                {
+                    return y + m - x;
+                }
                 return y + (m - x + 1);
             }
             else if (m % 2 == 0 && m > x && m <= (x + Convert.ToInt32(Math.Pow(2, (w - 1)))))
