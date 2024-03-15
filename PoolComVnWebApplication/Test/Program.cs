@@ -4,8 +4,8 @@
     {
         static void Main(string[] args)
         {
-            int n = 32;
-            int d = 8;
+            int n = 64;
+            int d = 2;
 
 
             int a = Convert.ToInt32(Math.Log2(n));
@@ -19,10 +19,10 @@
 
             int y = 2 * x;
 
-            //Console.WriteLine(x);
+            Console.WriteLine(x);
             //Console.WriteLine(y);
 
-            for (int i = 1; i <= 61; i++)
+            for (int i = 1; i <= 123; i++)
             {
                 int resultWin = win(i, n, d, x, y, w, a);
                 int resultLose = lose(i, n, d, x, y, w, a);
@@ -111,20 +111,24 @@
             {
                 for (int i = a - 3; i >= w; i--)
                 {
-                    int count = 0;
-                    for (int j = a - 1; j >= i; j--)
+                    int count1 = 0;
+                    int count2 = 0;
+                    for (int j = a - 1; j >= i + 1; j--)
                     {
-                        count += Convert.ToInt32(Math.Pow(2, j));
+                        count1 += Convert.ToInt32(Math.Pow(2, j));
                     }
 
-                    if (m > (count - Convert.ToInt32(Math.Pow(2, i))) && m <= count)
+                    count2 = count1 + Convert.ToInt32(Math.Pow(2, i));
+
+                    if (m > count1 && m <= count2)
                     {
                         if (m % 2 == 1)
                         {
-                            return count - 1 + m;
+                            return x + d / 2 + count1 - (count2 - m) + 1;
                         }
-                        else if (m % 2 == 0){
-                            return count - 3 + m;
+                        else if (m % 2 == 0)
+                        {
+                            return x + d / 2 + count1 - (count2 - m) - 1;
                         }
                     }
                 }
