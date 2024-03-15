@@ -32,8 +32,8 @@ namespace PoolComVnWebAPI.Controllers
         {
             try
             {
-                
-                    var allNews = _newsDAO.GetAllNews();
+
+                var allNews = _newsDAO.GetAllNews();
 
                 var result = allNews.Select(news => new NewsDTO
                 {
@@ -49,17 +49,44 @@ namespace PoolComVnWebAPI.Controllers
                 }).ToList();
 
                 return Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    
-                    return BadRequest("Error while retrieving all news: " + ex.Message);
-                }
-            
-            
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest("Error while retrieving all news: " + ex.Message);
+            }
+
+
         }
 
-        
+        [HttpGet("GetLatestNews")]
+        public ActionResult<IEnumerable<NewsDTO>> GetLatestNews(int count)
+        {
+            try
+            {
+                var latestNews = _newsDAO.GetLatestNews(count);
+
+                var result = latestNews.Select(news => new NewsDTO
+                {
+                    NewsId = news.NewsId,
+                    Title = news.Title,
+                    Description = news.Description,
+                    AccId = news.AccId,
+                    CreatedDate = news.CreatedDate,
+                    UpdatedDate = news.UpdatedDate,
+                    Flyer = news.Flyer,
+                    Link = news.Link,
+                    AccountName = news.Acc?.Email
+                }).ToList();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error while retrieving latest news: " + ex.Message);
+            }
+        }
+
         [HttpGet("{id}")]
         public ActionResult<NewsDTO> Get(int id)
         {
@@ -69,7 +96,7 @@ namespace PoolComVnWebAPI.Controllers
 
                 if (news == null)
                 {
-                    return NotFound(); 
+                    return NotFound();
                 }
                 var result = new NewsDTO
                 {
@@ -92,17 +119,17 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
-     
+
         [HttpPost("Add")]
         public async Task<ActionResult> Post([FromForm] NewsDTO newsDTO, [FromForm] List<IFormFile> banner, [FromForm] List<IFormFile> images)
         {
             try
             {
-                var account =_newsDAO.GetAccount(newsDTO.AccId);
+                var account = _newsDAO.GetAccount(newsDTO.AccId);
 
                 if (account == null)
                 {
-                    
+
                     return BadRequest("Invalid AccID. No matching Account found.");
                 }
 
@@ -115,7 +142,7 @@ namespace PoolComVnWebAPI.Controllers
                     UpdatedDate = newsDTO.UpdatedDate,
                     Link = newsDTO.Link,
                     Acc = account
-                    
+
                 };
 
                 if (banner != null)
@@ -129,12 +156,12 @@ namespace PoolComVnWebAPI.Controllers
 
                             using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
                             {
-                            ban.CopyTo(memoryStream);
-                           
+                                ban.CopyTo(memoryStream);
+
 
                             }
                             var fileStream2 = new FileStream(filePath, FileMode.Open);
-                            var downloadLink = await UploadFromFirebase(fileStream2, ban.FileName,"News", newsDTO.Title,0);
+                            var downloadLink = await UploadFromFirebase(fileStream2, ban.FileName, "News", newsDTO.Title, 0);
                             fileStream2.Close();
                             System.IO.File.Delete(filePath);
 
@@ -154,9 +181,9 @@ namespace PoolComVnWebAPI.Controllers
                         using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
                         {
                             image.CopyTo(memoryStream);
-                            
-                            
-                            
+
+
+
                         }
                         var fileStream2 = new FileStream(filePath, FileMode.Open);
                         var downloadLink = await UploadFromFirebase(fileStream2, image.FileName, "News", newsDTO.Title, order);
@@ -176,7 +203,7 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
-      
+
         [HttpPost("Update")]
         public ActionResult Put(int id, [FromBody] NewsDTO updatedNewsDTO)
         {
@@ -184,7 +211,7 @@ namespace PoolComVnWebAPI.Controllers
             {
                 if (id != updatedNewsDTO.NewsId)
                 {
-                    return BadRequest("Invalid News ID"); 
+                    return BadRequest("Invalid News ID");
                 }
                 var account = _newsDAO.GetAccount(updatedNewsDTO.AccId);
 
@@ -200,7 +227,7 @@ namespace PoolComVnWebAPI.Controllers
 
                 if (existingNews == null)
                 {
-                    return NotFound(); 
+                    return NotFound();
                 }
 
                 existingNews.Title = updatedNewsDTO.Title;
@@ -210,13 +237,13 @@ namespace PoolComVnWebAPI.Controllers
                 existingNews.UpdatedDate = updatedNewsDTO.UpdatedDate;
                 existingNews.Link = updatedNewsDTO.Link;
                 existingNews.Flyer = updatedNewsDTO.Flyer;
-                existingNews.Acc = account; 
+                existingNews.Acc = account;
                 _newsDAO.UpdateNews(existingNews);
                 return NoContent();
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); 
+                return BadRequest(ex.Message);
             }
         }
 
@@ -226,7 +253,7 @@ namespace PoolComVnWebAPI.Controllers
         {
             try
             {
-                
+
 
                 _newsDAO.DeleteNews(id);
                 return NoContent();
@@ -242,7 +269,8 @@ namespace PoolComVnWebAPI.Controllers
             var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
             var a = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
             var cancellation = new CancellationTokenSource();
-            if (order == 0) {
+            if (order == 0)
+            {
                 var task = new FirebaseStorage(
                     Bucket,
                     new FirebaseStorageOptions
@@ -292,7 +320,7 @@ namespace PoolComVnWebAPI.Controllers
                     return null;
                 }
             }
-           
+
         }
         private async Task DeleteFromFirebase(string filename)
         {
