@@ -1,80 +1,33 @@
-﻿@{
+﻿@using PoolComVnWebClient.DTO
+@{
     ViewData["Title"] = "Home Page";
 }
+@model List<NewsDTO>
+@if (Model.Any())
+{
+    var latestNews = Model.First(); // Lấy tin tức mới nhất từ danh sách
 
-<a href="#">
-    <div class="news-header" style="background-image: url('../images/new_1.jpg');">
-        <div class="news-description">
-            JAYSON SHAW WINS BLOCKBUSTER AGAINST FEDOR GORST AS FINAL FOUR CONFIRMed
+    <a href="@Url.Action("NewsDetail", "Home", new { id = latestNews.NewsId })">
+        <div class="news-header" style="background-image: url('@latestNews.Flyer');">
+            <div class="news-description">
+                @latestNews.Title
+            </div>
         </div>
-    </div>
-</a>
+    </a>
+}
 <div class="container">
     <div class="row news-items">
         <div class="latest-new">TIN MỚI</div>
-        <a asp-controller="Home" asp-action="NewsDetail" class="col-md-6 col-lg-4 news-item">
-            <div class="news-date">14-10-2023</div>
-            <div class="news-image">
-                <img src="~/images/new_1.jpg" alt="" />
-            </div>
-            <div class="news-title">KO PING CHUNG DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-        </a>
-        <a href="#" class="col-md-6 col-lg-4 news-item">
-            <div class="news-date">14-10-2023</div>
-            <div class="news-image">
-                <img src="~/images/new_1.jpg" alt="" />
-            </div>
-            <div class="news-title">KO PING CHUNG DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-        </a>
-        <a href="#" class="col-md-6 col-lg-4 news-item">
-            <div class="news-date">14-10-2023</div>
-            <div class="news-image">
-                <img src="~/images/new_1.jpg" alt="" />
-            </div>
-            <div class="news-title">KO PING CHUNG DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-        </a>
-        <a href="#" class="col-md-6 col-lg-4 news-item">
-            <div class="news-date">14-10-2023</div>
-            <div class="news-image">
-                <img src="~/images/new_1.jpg" alt="" />
-            </div>
-            <div class="news-title">KO PING CHUNG DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-        </a>
-        <a href="#" class="col-md-6 col-lg-4 news-item">
-            <div class="news-date">14-10-2023</div>
-            <div class="news-image">
-                <img src="~/images/new_1.jpg" alt="" />
-            </div>
-            <div class="news-title">KO PING CHUNG DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-        </a>
-        <a href="#" class="col-md-6 col-lg-4 news-item">
-            <div class="news-date">14-10-2023</div>
-            <div class="news-image">
-                <img src="~/images/new_1.jpg" alt="" />
-            </div>
-            <div class="news-title">KO PING CHUNG DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-        </a>
-        <a href="#" class="col-md-6 col-lg-4 news-item">
-            <div class="news-date">14-10-2023</div>
-            <div class="news-image">
-                <img src="~/images/new_1.jpg" alt="" />
-            </div>
-            <div class="news-title">KO PING CHUNG DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-        </a>
-        <a href="#" class="col-md-6 col-lg-4 news-item">
-            <div class="news-date">14-10-2023</div>
-            <div class="news-image">
-                <img src="~/images/new_1.jpg" alt="" />
-            </div>
-            <div class="news-title">KO PING CHUNG DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-        </a>
-        <a href="#" class="col-md-6 col-lg-4 news-item">
-            <div class="news-date">14-10-2023</div>
-            <div class="news-image">
-                <img src="~/images/new_1.jpg" alt="" />
-            </div>
-            <div class="news-title">KO PING CHUNG DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-        </a>
+        @foreach (var news in Model)
+        {
+            <a href="@Url.Action("NewsDetail", "Home", new { id = news.NewsId })" class="col-md-6 col-lg-4 news-item">
+                <div class="news-date">@news.CreatedDate.ToString("dd/MM/yyyy")</div>
+                <div class="news-image">
+                    <img src="@news.Flyer" alt="" />
+                </div>
+                <div class="news-title">@news.Title</div>
+            </a>
+        }
         <div class="col-md-6 col-lg-12 mt-md-5 d-flex justify-content-center">
             <a href="#" class="news-load">
                 <div><i class="fa-duotone fa-plus fa-2xl"></i></div>
