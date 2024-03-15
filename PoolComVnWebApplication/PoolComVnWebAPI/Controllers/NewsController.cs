@@ -28,8 +28,8 @@ namespace PoolComVnWebAPI.Controllers
         {
             try
             {
-                
-                    var allNews = _newsDAO.GetAllNews();
+
+                var allNews = _newsDAO.GetAllNews();
 
                 var result = allNews.Select(news => new NewsDTO
                 {
@@ -46,17 +46,44 @@ namespace PoolComVnWebAPI.Controllers
                 }).ToList();
 
                 return Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    
-                    return BadRequest("Error while retrieving all news: " + ex.Message);
-                }
-            
-            
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest("Error while retrieving all news: " + ex.Message);
+            }
+
+
         }
 
-        
+        [HttpGet("GetLatestNews")]
+        public ActionResult<IEnumerable<NewsDTO>> GetLatestNews(int count)
+        {
+            try
+            {
+                var latestNews = _newsDAO.GetLatestNews(count);
+
+                var result = latestNews.Select(news => new NewsDTO
+                {
+                    NewsId = news.NewsId,
+                    Title = news.Title,
+                    Description = news.Description,
+                    AccId = news.AccId,
+                    CreatedDate = news.CreatedDate,
+                    UpdatedDate = news.UpdatedDate,
+                    Flyer = news.Flyer,
+                    Link = news.Link,
+                    AccountName = news.Acc?.Email
+                }).ToList();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error while retrieving latest news: " + ex.Message);
+            }
+        }
+
         [HttpGet("{id}")]
         public ActionResult<NewsDTO> Get(int id)
         {
@@ -66,7 +93,7 @@ namespace PoolComVnWebAPI.Controllers
 
                 if (news == null)
                 {
-                    return NotFound(); 
+                    return NotFound();
                 }
                 var result = new NewsDTO
                 {
@@ -90,17 +117,17 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
-     
+
         [HttpPost("Add")]
         public  ActionResult Post([FromBody] NewsDTO newsDTO)
         {
             try
             {
-                var account =_newsDAO.GetAccount(newsDTO.AccId);
+                var account = _newsDAO.GetAccount(newsDTO.AccId);
 
                 if (account == null)
                 {
-                    
+
                     return BadRequest("Invalid AccID. No matching Account found.");
                 }
 
@@ -127,7 +154,7 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
-      
+
         [HttpPost("Update")]
         public ActionResult Put( [FromBody] NewsDTO updatedNewsDTO)
         {
@@ -148,7 +175,7 @@ namespace PoolComVnWebAPI.Controllers
 
                 if (existingNews == null)
                 {
-                    return NotFound(); 
+                    return NotFound();
                 }
 
                 existingNews.Title = updatedNewsDTO.Title;
@@ -165,7 +192,7 @@ namespace PoolComVnWebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); 
+                return BadRequest(ex.Message);
             }
         }
 

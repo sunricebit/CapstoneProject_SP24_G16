@@ -295,7 +295,7 @@ footer {
 
 .container .login-page {
     width: 100%;
-    margin-top: 100px;
+    margin-top: 50px;
 }
 
     .container .login-page .form-content {
@@ -308,6 +308,7 @@ footer {
     width: 100%;
     background-color: #ffffff79;
     padding: 0px;
+    min-height: 600px;
 }
 
     .container .login-form .login-title {

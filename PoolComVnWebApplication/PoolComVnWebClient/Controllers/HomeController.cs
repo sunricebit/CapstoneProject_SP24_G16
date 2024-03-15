@@ -20,26 +20,40 @@ namespace PoolComVnWebClient.Controllers
             client.DefaultRequestHeaders.Accept.Add(contentType);
             ApiUrl = ApiUrl + "/News";
             _logger = logger;
+            client = new HttpClient();
+            var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+            client.DefaultRequestHeaders.Accept.Add(contentType);
+            ApiUrl = ApiUrl + "/News";
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var response = client.GetAsync($"{ApiUrl}").Result;
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var jsonContent = response.Content.ReadAsStringAsync().Result;
+                var response = await client.GetAsync($"{ApiUrl}/GetLatestNews?count=6"); // Lấy 6 tin tức mới nhất
+                response.EnsureSuccessStatusCode(); // Đảm bảo phản hồi thành công
+
+                var jsonContent = await response.Content.ReadAsStringAsync();
                 var newsList = JsonConvert.DeserializeObject<List<NewsDTO>>(jsonContent);
                 return View(newsList);
             }
-            else
+            catch (HttpRequestException ex)
             {
-                ModelState.AddModelError(string.Empty, "Lỗi khi lấy danh sách tin tức.");
+                // Xử lý lỗi nếu không thể kết nối đến API
+                ModelState.AddModelError(string.Empty, "Lỗi khi kết nối đến API: " + ex.Message);
+                return View();
+            }
+            catch (Exception ex)
+            {
+                // Xử lý các lỗi khác
+                ModelState.AddModelError(string.Empty, "Lỗi khi lấy danh sách tin tức: " + ex.Message);
                 return View();
             }
         }
 
-        [HttpGet("NewsDetails")]
+
+        [HttpGet]
         public IActionResult NewsDetail()
         {
             return View();

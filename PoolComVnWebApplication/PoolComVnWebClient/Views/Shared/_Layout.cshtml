@@ -34,19 +34,21 @@
                 </ul>
 
                 @*<div class="login col-2 text-center d-none">
-                    <a asp-controller="Authentication" asp-action="Login">Đăng nhập</a>
+                <a asp-controller="Authentication" asp-action="Login">Đăng nhập</a>
                 </div>*@
 
                 @if (email != null)
                 {
-                    <div class="user-name text-center">
-                        <span>@email</span>
-                        <i class="fa-solid fa-caret-left"></i>
+                    <div class="user col-2 d-flex justify-content-end">
+                        <div class="user-name text-center">
+                            <span>@email</span>
+                            <i class="fa-solid fa-caret-left"></i>
+                        </div>
+                        <ul class="user-menu text-center">
+                            <li><a href="">Profile</a></li>
+                            <li><a asp-controller="Authentication" asp-action="Logout">Logout</a></li>
+                        </ul>
                     </div>
-                    <ul class="user-menu text-center">
-                        <li><a href="">Profile</a></li>
-                        <li><a asp-controller="Authentication" asp-action="Logout">Logout</a></li>
-                    </ul>
                 }
                 else
                 {
@@ -147,7 +149,7 @@
 
     window.onscroll = function () {
         var currentScrollPos = window.pageYOffset;
-        mainNav = document.querySelector('.main-nav');
+        const mainNav = document.querySelector('.main-nav');
 
         if (prevScrollpos > currentScrollPos) {
             mainNav.style.top = "0";
