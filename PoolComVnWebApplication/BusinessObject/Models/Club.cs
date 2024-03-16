@@ -7,7 +7,6 @@ namespace BusinessObject.Models
     {
         public Club()
         {
-            Accounts = new HashSet<Account>();
             ClubPosts = new HashSet<ClubPost>();
             SoloMatches = new HashSet<SoloMatch>();
             Tables = new HashSet<Table>();
@@ -24,7 +23,6 @@ namespace BusinessObject.Models
         public byte? Status { get; set; }
 
         public virtual Account? Account { get; set; }
-        public virtual ICollection<Account> Accounts { get; set; }
         public virtual ICollection<ClubPost> ClubPosts { get; set; }
         public virtual ICollection<SoloMatch> SoloMatches { get; set; }
         public virtual ICollection<Table> Tables { get; set; }

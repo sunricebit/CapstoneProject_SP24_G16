@@ -38,8 +38,8 @@ namespace BusinessObject.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var builder = new ConfigurationBuilder()
-                                          .SetBasePath(Directory.GetCurrentDirectory())
-                                          .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                                            .SetBasePath(Directory.GetCurrentDirectory())
+                                            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             IConfigurationRoot configuration = builder.Build();
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("PoolCom"));
         }
@@ -48,8 +48,6 @@ namespace BusinessObject.Models
         {
             modelBuilder.Entity<Account>(entity =>
             {
-                entity.HasIndex(e => e.ClubId, "IX_Accounts_ClubId");
-
                 entity.HasIndex(e => e.RoleId, "IX_Accounts_RoleID");
 
                 entity.Property(e => e.AccountId).HasColumnName("AccountID");
@@ -58,10 +56,6 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.VerifyCode).HasColumnName("verifyCode");
 
-                entity.HasOne(d => d.Club)
-                    .WithMany(p => p.Accounts)
-                    .HasForeignKey(d => d.ClubId);
-
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Accounts)
                     .HasForeignKey(d => d.RoleId);
@@ -69,11 +63,14 @@ namespace BusinessObject.Models
 
             modelBuilder.Entity<Club>(entity =>
             {
+                entity.HasIndex(e => e.AccountId, "UQ_AccountID")
+                    .IsUnique();
+
                 entity.Property(e => e.AccountId).HasColumnName("AccountID");
 
                 entity.HasOne(d => d.Account)
-                    .WithMany(p => p.Clubs)
-                    .HasForeignKey(d => d.AccountId)
+                    .WithOne(p => p.Club)
+                    .HasForeignKey<Club>(d => d.AccountId)
                     .HasConstraintName("FK_Clubs_Accounts");
             });
 

@@ -150,8 +150,8 @@ namespace PoolComVnWebAPI.Controllers
             {
                 return BadRequest("Unauthorize");
             }
-
-            int clubId = _clubDAO.GetClubIdByAccountId(Int32.Parse(account.Value));
+            var club = _clubDAO.GetClubByAccountId(Int32.Parse(account.Value));
+            int clubId = club.ClubId;
 
             try
             {
