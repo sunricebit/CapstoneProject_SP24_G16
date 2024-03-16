@@ -1,0 +1,93 @@
+﻿@{
+    Layout = "~/Views/Shared/_ClubLayout.cshtml";
+}
+
+<div class="dashboard-container container">
+    <div class="row news-items p-0 m-0">
+        <div class="item-content d-flex justify-content-center">
+            <a href="#" class="create-btn d-flex justify-content-center align-items-center">
+                <div class="text-center">
+                    <i class="fa-solid fa-plus fa-beat"></i>
+                    <div>Tạo bài viết mới</div>
+                </div>
+            </a>
+        </div>
+        <div class="item-content d-flex justify-content-center">
+            <a href="#" class="news-item">
+                <div class="news-date">14-10-2023</div>
+                <div class="news-image">
+                    <img src="~/images/news.jpg" alt="" />
+                </div>
+                <div class="news-title">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
+            </a>
+        </div>
+        <div class="item-content d-flex justify-content-center">
+            <a href="#" class="news-item">
+                <div class="news-date">14-10-2023</div>
+                <div class="news-image">
+                    <img src="~/images/news.jpg" alt="" />
+                </div>
+                <div class="news-title">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
+            </a>
+        </div>
+        <div class="item-content d-flex justify-content-center">
+            <a href="#" class="news-item">
+                <div class="news-date">14-10-2023</div>
+                <div class="news-image">
+                    <img src="~/images/news.jpg" alt="" />
+                </div>
+                <div class="news-title">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
+            </a>
+        </div>
+        <div class="item-content d-flex justify-content-center">
+            <a href="#" class="news-item">
+                <div class="news-date">14-10-2023</div>
+                <div class="news-image">
+                    <img src="~/images/news.jpg" alt="" />
+                </div>
+                <div class="news-title">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
+            </a>
+        </div>
+        <div class="item-content d-flex justify-content-center">
+            <a href="#" class="news-item">
+                <div class="news-date">14-10-2023</div>
+                <div class="news-image">
+                    <img src="~/images/news.jpg" alt="" />
+                </div>
+                <div class="news-title">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
+            </a>
+        </div>
+        <div class="item-content d-flex justify-content-center">
+            <a href="#" class="news-item">
+                <div class="news-date">14-10-2023</div>
+                <div class="news-image">
+                    <img src="~/images/news.jpg" alt="" />
+                </div>
+                <div class="news-title">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
+            </a>
+        </div>
+        <div id="load-btn" class="item-content mt-md-5 d-flex justify-content-center">
+            <a href="#" class="news-load">
+                <div><i class="fa-duotone fa-plus fa-2xl"></i></div>
+                <div>Xem thêm</div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // check window width to set position of load button
+    window.addEventListener('resize', checkLoadButtonPosition)
+    function checkLoadButtonPosition() {
+        var pageWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        var loadBtn = document.getElementById("load-btn");
+        var threshold = 0.2 * pageWidth;
+        loadBtn.classList.add('col-md-6', 'col-lg-4');
+        loadBtn.classList.remove('col-12');
+        if (loadBtn.offsetLeft < threshold) {
+            loadBtn.classList.remove('col-md-6', 'col-lg-4');
+            loadBtn.classList.add('col-12');
+        }
+    }
+    checkLoadButtonPosition();
+</script>

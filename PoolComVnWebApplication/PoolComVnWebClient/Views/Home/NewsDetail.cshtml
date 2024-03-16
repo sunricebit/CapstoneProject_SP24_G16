@@ -1,49 +1,34 @@
-﻿<div class="container">
+﻿@using PoolComVnWebClient.DTO
+@model NewsDTO
+<div class="container">
     <div class="row news-details">
         <div class="news-detail col-lg-9 col-12">
             <div class="d-flex justify-content-center">
-                <img src="/Image/news.jpg" />
+                <img src="@Model.Flyer" />
             </div>
-            <div class="news-title">JAYSON SHAW WINS BLOCKBUSTER AGAINST FEDOR GORST AS FINAL FOUR CONFIRMed</div>
-            <div class="news-description">Defending US Open Pool champion Francisco Sanchez Ruiz has been knocked out of the tournament by Poland’s Daniel Maciol at Harrah’s Resort, Atlantic City – live on DAZN in the United States and broadcasters around the world.Defending US Open Pool champion Francisco Sanchez Ruiz has been knocked out of the tournament by Poland’s Daniel Maciol at Harrah’s Resort, Atlantic City – live on DAZN in the United States and broadcasters around the world.Defending US Open Pool champion Francisco Sanchez Ruiz has been knocked out of the tournament by Poland’s Daniel Maciol at Harrah’s Resort, Atlantic City – live on DAZN in the United States and broadcasters around the world.Defending US Open Pool champion Francisco Sanchez Ruiz has been knocked out of the tournament by Poland’s Daniel Maciol at Harrah’s Resort, Atlantic City – live on DAZN in the United States and broadcasters around the world.</div>
+            <div class="news-title">@Model.Title</div>
+            <div class="news-description">@Model.Description</div>
         </div>
         <div class="news-other col-lg-3 col-12 pt-lg-0 pt-5">
-            <a href="#" class="news-item row">
-                <div class="news-image col-4 p-0">
-                    <img src="~/images/new_1.jpg" alt="" />
-                </div>
-                <div class="news-title col-8">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-            </a>
-            <a href="#" class="news-item row">
-                <div class="news-image col-4 p-0">
-                    <img src="~/images/new_1.jpg" alt="" />
-                </div>
-                <div class="news-title col-8">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-            </a>
-            <a href="#" class="news-item row">
-                <div class="news-image col-4 p-0">
-                    <img src="~/images/new_1.jpg" alt="" />
-                </div>
-                <div class="news-title col-8">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-            </a>
-            <a href="#" class="news-item row">
-                <div class="news-image col-4 p-0">
-                    <img src="~/images/new_1.jpg" alt="" />
-                </div>
-                <div class="news-title col-8">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-            </a>
-            <a href="#" class="news-item row">
-                <div class="news-image col-4 p-0">
-                    <img src="~/images/new_1.jpg" alt="" />
-                </div>
-                <div class="news-title col-8">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-            </a>
-            <a href="#" class="news-item row">
-                <div class="news-image col-4 p-0">
-                    <img src="~/images/new_1.jpg" alt="" />
-                </div>
-                <div class="news-title col-8">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-            </a>
+            @if (ViewBag.OtherNewsList != null && ViewBag.OtherNewsList.Count > 0)
+            {
+                foreach (var news in ViewBag.OtherNewsList)
+                {
+                    if (news.NewsId != Model.NewsId)
+                    {
+                        <a href="@Url.Action("NewsDetail", "Home", new { id = news.NewsId })" class="news-item row">
+                            <div class="news-image col-4 p-0">
+                                <img src="@news.Flyer" alt="" />
+                            </div>
+                            <div class="news-title col-8">@news.Title</div>
+                        </a>
+                    }
+                }
+            }
+            else
+            {
+                <p>No other news available</p>
+            }
         </div>
     </div>
 </div>
