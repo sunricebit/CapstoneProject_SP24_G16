@@ -1,0 +1,156 @@
+﻿<div class="container">
+    <div class="tournament">
+        <div class="normal-body">
+            <div class="d-flex justify-content-end mt-4 row">
+                <div class="d-flex justify-content-end col-lg-6 col-12 order-1 order-lg-2">
+                    <div class="tour-search d-flex justify-content-end align-items-center">
+                        <i class="search-btn fa-solid fa-magnifying-glass"></i>
+                        <input class="search-input px-2" type="text" placeholder="Câu lạc bộ, địa chỉ,..." />
+                    </div>
+
+                    <div class="tour-filter d-flex align-items-center">
+                        <div class="filter-btn">
+                            <span>Bộ lọc</span>
+                            <i class="fa-solid fa-filter px-2"></i>
+                        </div>
+                        <form class="filter-body d-none">
+                            <div class="row d-flex justify-content-center">
+                                <div class="d-flex justify-content-center col-4">
+                                    <select class="tour-province col-4">
+                                        <option selected hidden value="0">Tỉnh</option>
+                                        <option>Hà Nội</option>
+                                        <option>Quảng Ninh</option>
+                                        <option>Hồ Chí Minh</option>
+                                    </select>
+                                </div>
+
+                                <div class="d-flex justify-content-center col-4">
+                                    <select class="tour-city col-4" disabled>
+                                        <option selected hidden>Khu vực</option>
+                                        <option>Cầu Giấy</option>
+                                        <option>Hà Đông</option>
+                                        <option>Long Biên</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="pt-5 d-flex justify-content-center">
+                                <div class="d-flex justify-content-center col-6">
+                                    <input type="submit" class="submit-btn" value="Tìm kiếm" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5 d-flex row">
+                <div class="club-list d-flex row justify-content-around">
+                    <div class="club-box">
+                        <div class="club-box-border">
+                            <div class="club-box-bg" style="background-image: url('/images/new_1.jpg');">
+                            </div>
+                            <div class="club-image">
+                                <img src="~/images/new_1.jpg" alt="">
+                            </div>
+                            <div class="club-info">
+                                <div class="club-name">Moon Club, Hạ Long, Quảng Ninh</div>
+                                <div class="club-address">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    <span>Ngõ 5, Cao Thắng, Hạ Long , Quảng Ninh, Việt Nam</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="club-box">
+                        <div class="club-box-border">
+                            <div class="club-box-bg" style="background-image: url('/images/moonClub.jpg');">
+                            </div>
+                            <div class="club-image">
+                                <img src="~/images/moonClub.jpg" alt="">
+                            </div>
+                            <div class="club-info">
+                                <div class="club-name">Moon Club, Hạ Long, Quảng Ninh</div>
+                                <div class="club-address">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    <span>Ngõ 5, Cao Thắng, Hạ Long , Quảng Ninh, Việt Nam</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="club-box">
+                        <div class="club-box-border">
+                            <div class="club-box-bg" style="background-image: url('/images/moonClub.jpg');">
+                            </div>
+                            <div class="club-image">
+                                <img src="~/images/moonClub.jpg" alt="">
+                            </div>
+                            <div class="club-info">
+                                <div class="club-name">Moon Club, Hạ Long, Quảng Ninh</div>
+                                <div class="club-address">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    <span>Ngõ 5, Cao Thắng, Hạ Long , Quảng Ninh, Việt Nam</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="club-box">
+                        <div class="club-box-border">
+                            <div class="club-box-bg" style="background-image: url('/images/moonClub.jpg');">
+                            </div>
+                            <div class="club-image">
+                                <img src="~/images/moonClub.jpg" alt="">
+                            </div>
+                            <div class="club-info">
+                                <div class="club-name">Moon Club, Hạ Long, Quảng Ninh</div>
+                                <div class="club-address">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    <span>Ngõ 5, Cao Thắng, Hạ Long , Quảng Ninh, Việt Nam</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="club-box">
+                        <div class="club-box-border">
+                            <div class="club-box-bg" style="background-image: url('/images/moonClub.jpg');">
+                            </div>
+                            <div class="club-image">
+                                <img src="~/images/moonClub.jpg" alt="">
+                            </div>
+                            <div class="club-info">
+                                <div class="club-name">Moon Club, Hạ Long, Quảng Ninh</div>
+                                <div class="club-address">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    <span>Ngõ 5, Cao Thắng, Hạ Long , Quảng Ninh, Việt Nam</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //tour-filter button
+    const filterBtn = document.querySelector('.filter-btn');
+    const filterBody = document.querySelector('.filter-body');
+    filterBtn.addEventListener('click', () => {
+        if (filterBody.classList.contains('d-none')) {
+            filterBody.classList.remove('d-none');
+            filterBody.classList.add('d-block');
+        } else {
+            filterBody.classList.add('d-none');
+            filterBody.classList.remove('d-block');
+        }
+    })
+
+    const tourProvince = document.querySelector('.tour-province');
+    const tourCity = document.querySelector('.tour-city');
+
+    tourProvince.addEventListener('change', () => {
+        var selectedValue = tourProvince.value;
+        if (selectedValue !== "0") {
+            tourCity.disabled = false;
+        }
+    })
+</script>
