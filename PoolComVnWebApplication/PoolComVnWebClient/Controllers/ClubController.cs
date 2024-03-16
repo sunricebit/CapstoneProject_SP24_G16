@@ -13,5 +13,15 @@ namespace PoolComVnWebClient.Controllers
         {
             return View();
         }
+
+        public IActionResult ClubSoloMatch()
+        {
+            return View();
+        }
+
+        public IActionResult ClubSoloMatchDetail()
+        {
+            return View();
+        }
     }
 }
