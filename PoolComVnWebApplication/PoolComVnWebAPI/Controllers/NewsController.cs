@@ -16,10 +16,6 @@ namespace PoolComVnWebAPI.Controllers
     public class NewsController : ControllerBase
     {
         private readonly NewsDAO _newsDAO;
-        private static string ApiKey = "AIzaSyDbVNJE6bbQdXlcr3TZqxkZh3xqi5CqKIc";
-        private static string Bucket = "poolcomvn-82664.appspot.com";
-        private static string AuthEmail = "vuducduy@gmail.com";
-        private static string AuthPassword = "123456";
 
 
         public NewsController(NewsDAO newsDAO)
@@ -32,10 +28,42 @@ namespace PoolComVnWebAPI.Controllers
         {
             try
             {
-                
-                    var allNews = _newsDAO.GetAllNews();
+
+                var allNews = _newsDAO.GetAllNews();
 
                 var result = allNews.Select(news => new NewsDTO
+                {
+                    NewsId = news.NewsId,
+                    Title = news.Title,
+                    Description = news.Description,
+                    AccId = news.AccId,
+                    CreatedDate = news.CreatedDate,
+                    UpdatedDate = news.UpdatedDate,
+                    Flyer = news.Flyer,
+                    Link = news.Link,
+                    AccountName = news.Acc?.Email,
+                    Status = news.Status
+                }).ToList();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest("Error while retrieving all news: " + ex.Message);
+            }
+
+
+        }
+
+        [HttpGet("GetLatestNews")]
+        public ActionResult<IEnumerable<NewsDTO>> GetLatestNews(int count)
+        {
+            try
+            {
+                var latestNews = _newsDAO.GetLatestNews(count);
+
+                var result = latestNews.Select(news => new NewsDTO
                 {
                     NewsId = news.NewsId,
                     Title = news.Title,
@@ -49,17 +77,13 @@ namespace PoolComVnWebAPI.Controllers
                 }).ToList();
 
                 return Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    
-                    return BadRequest("Error while retrieving all news: " + ex.Message);
-                }
-            
-            
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error while retrieving latest news: " + ex.Message);
+            }
         }
 
-        
         [HttpGet("{id}")]
         public ActionResult<NewsDTO> Get(int id)
         {
@@ -69,7 +93,7 @@ namespace PoolComVnWebAPI.Controllers
 
                 if (news == null)
                 {
-                    return NotFound(); 
+                    return NotFound();
                 }
                 var result = new NewsDTO
                 {
@@ -81,7 +105,8 @@ namespace PoolComVnWebAPI.Controllers
                     UpdatedDate = news.UpdatedDate,
                     Link = news.Link,
                     Flyer = news.Flyer,
-                    AccountName = news.Acc?.Email
+                    AccountName = news.Acc?.Email,
+                    Status = news.Status
                 };
 
                 return Ok(result);
@@ -92,17 +117,17 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
-     
+
         [HttpPost("Add")]
-        public async Task<ActionResult> Post([FromForm] NewsDTO newsDTO, [FromForm] List<IFormFile> banner, [FromForm] List<IFormFile> images)
+        public  ActionResult Post([FromBody] NewsDTO newsDTO)
         {
             try
             {
-                var account =_newsDAO.GetAccount(newsDTO.AccId);
+                var account = _newsDAO.GetAccount(newsDTO.AccId);
 
                 if (account == null)
                 {
-                    
+
                     return BadRequest("Invalid AccID. No matching Account found.");
                 }
 
@@ -114,59 +139,12 @@ namespace PoolComVnWebAPI.Controllers
                     CreatedDate = newsDTO.CreatedDate,
                     UpdatedDate = newsDTO.UpdatedDate,
                     Link = newsDTO.Link,
-                    Acc = account
-                    
+                    Acc = account,
+                    Status = newsDTO.Status
+
                 };
 
-                if (banner != null)
-                {
-                    foreach (var ban in banner)
-                    {
-                        if (ban != null && ban.Length > 0)
-                        {
-                            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(ban.FileName);
-                            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", fileName);
-
-                            using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
-                            {
-                            ban.CopyTo(memoryStream);
-                           
-
-                            }
-                            var fileStream2 = new FileStream(filePath, FileMode.Open);
-                            var downloadLink = await UploadFromFirebase(fileStream2, ban.FileName,"News", newsDTO.Title,0);
-                            fileStream2.Close();
-                            System.IO.File.Delete(filePath);
-
-                        }
-
-
-                    }
-                }
-                var order = 1;
-                foreach (var image in images)
-                {
-
-                    if (image != null && image.Length > 0)
-                    {
-                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
-                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", fileName);
-                        using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
-                        {
-                            image.CopyTo(memoryStream);
-                            
-                            
-                            
-                        }
-                        var fileStream2 = new FileStream(filePath, FileMode.Open);
-                        var downloadLink = await UploadFromFirebase(fileStream2, image.FileName, "News", newsDTO.Title, order);
-                        order++;
-                        fileStream2.Close();
-                        System.IO.File.Delete(filePath);
-                    }
-                }
-
-                news.Flyer = $"https://console.firebase.google.com/project/poolcomvn-82664/storage/poolcomvn-82664.appspot.com/files/~2FNews~%2F{Uri.EscapeDataString(newsDTO.Title)}";
+                news.Flyer = newsDTO.Flyer;
                 _newsDAO.AddNews(news);
                 return CreatedAtAction(nameof(Get), new { id = news.NewsId }, newsDTO);
             }
@@ -176,16 +154,13 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
-      
+
         [HttpPost("Update")]
-        public ActionResult Put(int id, [FromBody] NewsDTO updatedNewsDTO)
+        public ActionResult Put( [FromBody] NewsDTO updatedNewsDTO)
         {
             try
             {
-                if (id != updatedNewsDTO.NewsId)
-                {
-                    return BadRequest("Invalid News ID"); 
-                }
+               
                 var account = _newsDAO.GetAccount(updatedNewsDTO.AccId);
 
                 if (account == null)
@@ -196,11 +171,11 @@ namespace PoolComVnWebAPI.Controllers
 
 
 
-                var existingNews = _newsDAO.GetNewsById(id);
+                var existingNews = _newsDAO.GetNewsById(updatedNewsDTO.NewsId);
 
                 if (existingNews == null)
                 {
-                    return NotFound(); 
+                    return NotFound();
                 }
 
                 existingNews.Title = updatedNewsDTO.Title;
@@ -211,24 +186,8 @@ namespace PoolComVnWebAPI.Controllers
                 existingNews.Link = updatedNewsDTO.Link;
                 existingNews.Flyer = updatedNewsDTO.Flyer;
                 existingNews.Acc = account; 
+                existingNews.Status = updatedNewsDTO.Status;
                 _newsDAO.UpdateNews(existingNews);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message); 
-            }
-        }
-
-
-        [HttpPost("Delete")]
-        public ActionResult Delete(int id)
-        {
-            try
-            {
-                
-
-                _newsDAO.DeleteNews(id);
                 return NoContent();
             }
             catch (Exception ex)
@@ -237,87 +196,24 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
-        private async Task<string> UploadFromFirebase(FileStream stream, string filename, string folderName, string newsTitle, int order)
-        {
-            var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
-            var a = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
-            var cancellation = new CancellationTokenSource();
-            if (order == 0) {
-                var task = new FirebaseStorage(
-                    Bucket,
-                    new FirebaseStorageOptions
-                    {
-                        AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
-                        ThrowOnCancel = true
-                    }
-                ).Child(folderName)
-                .Child(newsTitle)
-                 .Child($"Banner")
-                 .PutAsync(stream, cancellation.Token);
-                try
-                {
-                    await task;
-                    return filename;
 
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Exception was thrown : {0}", ex);
-                    return null;
-                }
-            }
-            else
-            {
-                var orderedFileName = $"Image{order}{Path.GetExtension(stream.Name)}";
-                var task = new FirebaseStorage(
-                    Bucket,
-                    new FirebaseStorageOptions
-                    {
-                        AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
-                        ThrowOnCancel = true
-                    }
-                ).Child(folderName)
-                .Child(newsTitle)
-                 .Child(orderedFileName)
-                 .PutAsync(stream, cancellation.Token);
-                try
-                {
-                    await task;
-                    return filename;
-
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Exception was thrown : {0}", ex);
-                    return null;
-                }
-            }
-           
-        }
-        private async Task DeleteFromFirebase(string filename)
+        [HttpPost("ChangeStatus")]
+        public ActionResult ChangeStatus(int id)
         {
             try
             {
-                var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
-                var a = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
-
-                var cancellation = new CancellationTokenSource();
-                var storage = new FirebaseStorage(
-                    Bucket,
-                    new FirebaseStorageOptions
-                    {
-                        AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
-                        ThrowOnCancel = true
-                    }
-                );
-                var oldImagesPath = $"News/{filename}";
-                await storage.Child(oldImagesPath).DeleteAsync();
+                _newsDAO.ChangeNewsStatus(id); 
+                return NoContent();
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Exception occurred during deletion: {0}", ex);
+                return BadRequest(ex.Message);
             }
         }
+
+      
+        
+       
 
 
 

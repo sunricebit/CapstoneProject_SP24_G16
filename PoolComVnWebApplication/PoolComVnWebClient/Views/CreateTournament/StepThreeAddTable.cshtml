@@ -43,11 +43,10 @@
                                 </tr>
                                     @foreach (var table in Model)
                                     {
-                                        <tr>
-                                           
+                                        <tr>                                         
                                             <td>
-                                            <input type="hidden" id="selectedTablesInput" name="selectedTables" />
-                                                <input type="checkbox" class="individual-checkbox" value="@table.TableId"
+                                            <input hidden id="selectedTablesInput" name="selectedTables" />
+                                            <input type="checkbox" class="individual-checkbox one-checkbox" value="@table.TableId"
                                                        data-tagname="@table.TagName"
                                                        data-image="@table.Image"
                                                        data-size="@table.Size"

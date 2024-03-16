@@ -255,6 +255,9 @@ namespace DataAccess
             if (verifyCode == account.VerifyCode)
             {
                 account.VerifyCode = null;
+                account.Status = true;
+                _context.Update(account);
+                _context.SaveChanges();
                 return true;
             }
             return false;

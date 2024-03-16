@@ -26,12 +26,25 @@ namespace PoolComVnWebClient.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Login(string email, string password)
         {
             // Tạo đối tượng chứa thông tin đăng nhập
-            var loginInfo = new LoginDTO { 
-                Email = email, 
+            var loginInfo = new LoginDTO
+            {
+                Email = email,
                 Password = password
             };
 
@@ -66,7 +79,7 @@ namespace PoolComVnWebClient.Controllers
                 var responeGetId = await client.GetAsync(ApiUrl + "/GetIdByEmail?email=" + email);
                 int responseId = await responeGetId.Content.ReadFromJsonAsync<int>();
                 return await VerifyAccount(responseId, null);
-            } 
+            }
             else if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 string errorMessage = "Email or password wrong!";

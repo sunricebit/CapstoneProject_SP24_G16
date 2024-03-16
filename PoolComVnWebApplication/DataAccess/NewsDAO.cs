@@ -35,6 +35,15 @@ namespace DataAccess
             _context.News.Add(news);
             _context.SaveChanges();
         }
+        public void ChangeNewsStatus(int id)
+        {
+            var newsToUpdate = _context.News.FirstOrDefault( c=> c.NewsId==id); 
+            if (newsToUpdate != null)
+            {
+                if (newsToUpdate.Status == true) { newsToUpdate.Status = false; } else { newsToUpdate.Status = true; }; 
+                _context.SaveChanges();
+            }
+        }
         public News GetNewsById(int newsId)
         {
             try
@@ -63,6 +72,25 @@ namespace DataAccess
                 throw new Exception("Error while retrieving all news.", ex);
             }
         }
+
+        public List<News> GetLatestNews(int count)
+        {
+            try
+            {
+                // Retrieve the latest news items based on their creation date
+                return _context.News
+                    .Include(n => n.Acc)
+                    .OrderByDescending(n => n.CreatedDate)
+                    .Take(count)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                throw new Exception("Error while retrieving the latest news.", ex);
+            }
+        }
+
         public void UpdateNews(News updatedNews)
         {
             if (updatedNews == null)
