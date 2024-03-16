@@ -22,7 +22,6 @@ namespace PoolComVnWebClient.Controllers
 
         public  IActionResult Index()
         {
-            
             var response = client.GetAsync($"{ApiUrl}").Result;
             if (response.IsSuccessStatusCode)
             {
