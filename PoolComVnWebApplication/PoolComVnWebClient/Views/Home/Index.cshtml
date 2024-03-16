@@ -17,7 +17,7 @@
 <div class="container">
     <div class="row news-items">
         <div class="latest-new">TIN MỚI</div>
-        <div class="col-md-6 col-lg-4 d-flex justify-content-center">
+        @*<div class="col-md-6 col-lg-4 d-flex justify-content-center">
             <a href="#" class="news-item m-0">
                 <div class="news-date">14-10-2023</div>
                 <div class="news-image">
@@ -70,16 +70,18 @@
                 </div>
                 <div class="news-title">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
             </a>
-        </div>
+        </div>*@
         @foreach (var news in Model)
         {
-            <a href="@Url.Action("NewsDetail", "Home", new { id = news.NewsId })" class="col-md-6 col-lg-4 news-item">
+            <div class="col-md-6 col-lg-4 d-flex justify-content-center">
+            <a href="@Url.Action("NewsDetail", "Home", new { id = news.NewsId })" class="news-item">
                 <div class="news-date">@news.CreatedDate.ToString("dd/MM/yyyy")</div>
                 <div class="news-image">
                     <img src="@news.Flyer" alt="" />
                 </div>
                 <div class="news-title">@news.Title</div>
-            </a>
+                </a>
+            </div>
         }
         <div class="col-md-6 col-lg-12 mt-md-5 d-flex justify-content-center">
             <a href="#" class="news-load">
