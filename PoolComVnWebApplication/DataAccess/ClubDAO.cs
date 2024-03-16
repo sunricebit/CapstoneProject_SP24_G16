@@ -36,26 +36,41 @@ namespace DataAccess
             }
             
         }
-
-        // Read
         public Club GetClubById(int clubId)
         {
             return _context.Clubs.Find(clubId);
+        }
+        public Account GetAccount(int AccID)
+        {
+            var account = _context.Accounts.FirstOrDefault(a => a.AccountId == AccID);
+            return account;
+        }
+        public Club GetClubByName(string name)
+        {
+            try
+            {
+                
+                var club = _context.Clubs.FirstOrDefault(c => c.ClubName == name);
+
+                return club;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi lấy thông tin câu lạc bộ: {ex.Message}");
+                return null;
+            }
         }
 
         public List<Club> GetAllClubs()
         {
             return _context.Clubs.ToList();
         }
-
-        // Update
         public void UpdateClub(Club updatedClub)
         {
             var existingClub = _context.Clubs.Find(updatedClub.ClubId);
 
             if (existingClub != null)
             {
-                // Avoid updating ClubId
                 existingClub.ClubName = updatedClub.ClubName;
                 existingClub.Address = updatedClub.Address;
                 existingClub.Phone = updatedClub.Phone;
@@ -66,7 +81,6 @@ namespace DataAccess
             }
         }
 
-        // Delete
         public void DeleteClub(int clubId)
         {
             var clubToDelete = _context.Clubs.Find(clubId);
@@ -78,11 +92,11 @@ namespace DataAccess
             }
         }
 
-        public int GetClubIdByAccountId(int accountId)
+        public Club GetClubByAccountId(int accountId)
         {
             var club = _context.Clubs.FirstOrDefault(c => c.AccountId == accountId);
 
-            return club.ClubId;
+            return club;
         }
     }
 }

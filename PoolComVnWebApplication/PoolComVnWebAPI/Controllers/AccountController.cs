@@ -19,8 +19,6 @@ public class AccountController : ControllerBase
         try
         {
             var allAccounts = _accountDAO.GetAllAccounts();
-
-            // Use LINQ to project each Account to AccountDTO
             var allAccountDTOs = allAccounts.Select(account => new AccountDTO
             {
                 AccountID = account.AccountId,
@@ -30,7 +28,6 @@ public class AccountController : ControllerBase
                 PhoneNumber = account.PhoneNumber,
                 verifyCode = account.VerifyCode,
                 Status = account.Status
-                // Map other properties as needed
             });
 
             return Ok(allAccountDTOs);
@@ -38,6 +35,35 @@ public class AccountController : ControllerBase
         catch (Exception ex)
         {
             return BadRequest(ex.Message);
+        }
+    }
+    [HttpGet("GetAccountByEmail/{email}")]
+    public ActionResult<AccountDTO> GetAccountByEmail(string email)
+    {
+        try
+        {
+            var account = _accountDAO.GetAccountByEmail(email);
+
+            if (account == null)
+            {
+                return NotFound("Không tìm thấy tài khoản cho email đã cung cấp.");
+            }
+            var accountDto = new AccountDTO
+            {
+                AccountID= account.AccountId,
+                Email = account.Email,
+                PhoneNumber = account.PhoneNumber,
+                RoleID = account.RoleId,
+                verifyCode = account.VerifyCode,
+                Status = account.Status,
+                Password = account.Password
+            };
+
+            return Ok(accountDto);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Lỗi khi lấy thông tin tài khoản: {ex.Message}");
         }
     }
 

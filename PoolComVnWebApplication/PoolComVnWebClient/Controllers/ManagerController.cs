@@ -40,12 +40,9 @@ namespace PoolComVnWebClient.Controllers
             }
             else
             {
-                // Xử lý khi có lỗi xảy ra trong quá trình gửi yêu cầu API
-                // Ví dụ: trả về một view hiển thị thông báo lỗi
                 return View("Error");
             }
 
-            return View();
         }
 
         public IActionResult CreateManageAccount()

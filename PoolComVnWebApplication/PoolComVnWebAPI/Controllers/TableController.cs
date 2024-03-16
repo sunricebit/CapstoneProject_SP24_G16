@@ -69,8 +69,9 @@ namespace PoolComVnWebAPI.Controllers
             {
                 return BadRequest("Invalid AccountId claim");
             }
+            var club = _clubDAO.GetClubByAccountId(accountId);
 
-            int clubId = _clubDAO.GetClubIdByAccountId(accountId);
+            int clubId = club.ClubId;
 
             var tables = _tableDAO.GetAllTablesForClub(clubId);
 

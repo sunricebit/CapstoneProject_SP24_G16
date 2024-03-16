@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OfficeOpenXml.Table.PivotTable;
+using System.ComponentModel.DataAnnotations;
 
 namespace PoolComVnWebAPI.DTO
 {
@@ -10,5 +11,7 @@ namespace PoolComVnWebAPI.DTO
         public string Phone { get; set; }
         public string Facebook { get; set; }
         public string? Avatar { get; set; }
+        public byte? Status { get; set; }
+        public int? AccountId { get; set; }
     }
 }

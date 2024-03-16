@@ -47,6 +47,7 @@ namespace PoolComVnWebAPI.Controllers
             return Ok(matchesDTOs);
         }
 
+
         
         [HttpGet("{id}")]
         public ActionResult<ClubDTO> Get(int id)
@@ -62,25 +63,74 @@ namespace PoolComVnWebAPI.Controllers
             return Ok(clubDto);
         }
 
-       
-        [HttpPost]
-        public IActionResult Post([FromBody] ClubDTO clubDto)
+
+        [HttpPost("Add")]
+        public ActionResult Post([FromBody] ClubDTO clubDTO)
         {
-            if (clubDto == null)
+            try
             {
-                return BadRequest();
+               
+                var existingClub = _clubDAO.GetClubByName(clubDTO.ClubName);
+
+                if (existingClub != null)
+                {
+                    return BadRequest("Tên câu lạc bộ đã tồn tại trong hệ thống.");
+                }
+                int accountId = clubDTO.AccountId ?? 0;
+                var account = _clubDAO.GetAccount(accountId);
+
+                var club = new Club
+                {
+                    ClubName = clubDTO.ClubName,
+                    Facebook = clubDTO.Facebook,
+                    Phone = clubDTO.Phone,
+                    Address = clubDTO.Address,
+                    Avatar = clubDTO.Avatar,
+                    AccountId = clubDTO.AccountId,
+                    Status = clubDTO.Status,
+                    Account = account
+                };
+                _clubDAO.AddClub(club);
+                return CreatedAtAction(nameof(Get), new { id = club.ClubId }, clubDTO);
             }
+            catch (Exception ex)
+            {
+               
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("GetClubByAccountId")]
+        public ActionResult<ClubDTO> GetClubByAccountId(int accountID)
+        {
+            try
+            {
+                var club = _clubDAO.GetClubByAccountId(accountID);
 
-            var club = _mapper.Map<Club>(clubDto);
+                if (club == null)
+                {
+                    return NotFound("Không tìm thấy câu lạc bộ cho AccountId đã cung cấp.");
+                }
 
-            club.ClubId = 0;
+                var clubDto = new ClubDTO
+                {
 
-            _clubDAO.AddClub(club);
+                    ClubName = club.ClubName,
+                    Facebook = club.Facebook,
+                    Phone = club.Phone,
+                    Address = club.Address,
+                    Avatar = club.Avatar,
+                    AccountId = club.AccountId,
+                    Status = club.Status
+                };
 
-            return CreatedAtAction(nameof(Get), new { id = club.ClubId }, clubDto);
+                return Ok(clubDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Lỗi khi lấy câu lạc bộ: {ex.Message}");
+            }
         }
 
-        // PUT: api/Club/5
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] ClubDTO updatedClubDto)
         {
@@ -95,24 +145,15 @@ namespace PoolComVnWebAPI.Controllers
             {
                 return NotFound();
             }
-
-            // Use the ClubDTO properties to update the existingClub
             existingClub.ClubName = updatedClubDto.ClubName;
             existingClub.Address = updatedClubDto.Address;
             existingClub.Phone = updatedClubDto.Phone;
             existingClub.Facebook = updatedClubDto.Facebook;
             existingClub.Avatar = updatedClubDto.Avatar;
-
-            // Update the existing entity
             _clubDAO.UpdateClub(existingClub);
 
             return NoContent();
         }
-
-
-
-
-        // DELETE: api/Club/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

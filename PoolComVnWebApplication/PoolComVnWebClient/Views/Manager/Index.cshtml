@@ -126,8 +126,8 @@
                             <td class="text-center">@club.Phone</td>
                             <td class="text-center">@club.Address</td>
                             <td class="text-center">Câu lạc bộ</td>
-                           @* <td class="status">
-                                @if (club.Status)
+                            <td class="status">
+                                @if (club.Status == 1)
                                 {
                                     <div class="user-status isActive">Hoạt động</div>
                                 }
@@ -137,7 +137,7 @@
                                 }
                             </td>
                             <td class="text-center">
-                                @if (club.Status)
+                                @if (club.Status ==0)
                                 {
                                     <a href="#"><i class="ban-btn fa-solid fa-lock p-2"></i></a>
                                 }
@@ -145,7 +145,7 @@
                                 {
                                     <a href="#"><i class="ban-btn fa-solid fa-lock-open p-2"></i></a>
                                 }
-                            </td>*@
+                            </td>
                         </tr>
                     }
                 </table>

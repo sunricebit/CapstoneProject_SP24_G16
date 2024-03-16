@@ -77,7 +77,6 @@ namespace DataAccess
         {
             try
             {
-                // Retrieve the latest news items based on their creation date
                 return _context.News
                     .Include(n => n.Acc)
                     .OrderByDescending(n => n.CreatedDate)
@@ -86,7 +85,6 @@ namespace DataAccess
             }
             catch (Exception ex)
             {
-                // Handle any exceptions
                 throw new Exception("Error while retrieving the latest news.", ex);
             }
         }

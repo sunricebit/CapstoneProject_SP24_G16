@@ -149,15 +149,13 @@ namespace DataAccess
             return account;
         }
 
-        /// <summary>
-        /// Get an account by username from the database and determine the account type.
-        /// </summary>
+        
         public Account GetAccountByUsername(string username)
         {
             try
             {
                 var account = _context.Accounts
-                    .Include(a => a.Club) // Include the Club navigation property
+                    .Include(a => a.Club) 
                     .FirstOrDefault(item => username.Equals(item.Email));
 
                 if (account != null)
