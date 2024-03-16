@@ -12,9 +12,9 @@
                         <div class="step-two-nav arrange-btn">
                             Sắp xếp
                             <div class="arrange-menu">
-                                <a href="systemRandom.html">Hệ thống ngẫu nhiên</a>
-                                <a href="userRandom.html">Người dùng ngẫu nhiên</a>
-                                <a href="userCustom.html">Người dùng tùy chỉnh</a>
+                                <a href="@Url.Action("SystemRandom", "CreateTournament")">Hệ thống ngẫu nhiên</a>
+                                <a href="@Url.Action("UserRandom", "CreateTournament")">Người dùng ngẫu nhiên</a>
+                                <a href="@Url.Action("UserCustom", "CreateTournament")">Người dùng tùy chỉnh</a>
                             </div>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
     const winMatchBody = document.getElementById('winer-match-body');
     const playerNumber = 32;
     let roundNumber = Math.log2(playerNumber / 2);
-    const finalSinglePlayer = 2;
+    const finalSinglePlayer = 0;
     let finalSingleRound = roundNumber - Math.log2(finalSinglePlayer) + 1;
     var width = 250;
     var height = 60;

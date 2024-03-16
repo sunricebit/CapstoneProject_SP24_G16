@@ -19,14 +19,41 @@ namespace PoolComVnWebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetMacthForBracket(int tourId)
+        public IActionResult GetMatchForBracket(int tourId)
         {
             var lstMatch = _matchDAO.GetMatchOfTournaments(tourId);
             foreach (var match in lstMatch)
             {
                 MatchOfTournamentOutputDTO matchOfTournament = new MatchOfTournamentOutputDTO();
+
             }
             return Ok();
         }
+
+        [HttpGet]
+        public IActionResult RandomMatch(int tourId)
+        {
+            var lstMatch = _matchDAO.GetMatchOfTournaments(tourId);
+            foreach (var match in lstMatch)
+            {
+                MatchOfTournamentOutputDTO matchOfTournament = new MatchOfTournamentOutputDTO();
+
+            }
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult SaveMatchesRandom([FromBody] List<MatchOfTournamentOutputDTO> lstMatch)
+        {
+            //var lstMatch = _matchDAO.GetMatchOfTournaments(tourId);
+            foreach (var match in lstMatch)
+            {
+                MatchOfTournamentOutputDTO matchOfTournament = new MatchOfTournamentOutputDTO();
+
+            }
+            return Ok();
+        }
+
+
     }
 }

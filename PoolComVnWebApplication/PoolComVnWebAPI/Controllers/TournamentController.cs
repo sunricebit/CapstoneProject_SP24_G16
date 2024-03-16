@@ -182,6 +182,7 @@ namespace PoolComVnWebAPI.Controllers
                 throw e;
             }
         }
+
         [HttpPost("CreateTourStFour")]
        // [Authorize]
 
@@ -228,6 +229,7 @@ namespace PoolComVnWebAPI.Controllers
                 throw e;
             }
         }
+
         private async Task<string> UploadFromFirebase(FileStream stream, string filename)
         {
             var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
