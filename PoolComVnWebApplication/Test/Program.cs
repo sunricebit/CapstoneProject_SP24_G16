@@ -22,7 +22,7 @@
             //Console.WriteLine(x);
             //Console.WriteLine(y);
 
-            for (int i = 1; i <= 300; i++)
+            for (int i = 0; i <= 60; i++)
             {
                 int resultWin = win(i, n, d, x, y, w, a);
                 int resultLose = lose(i, n, d, x, y, w, a);
@@ -32,8 +32,6 @@
 
         public static int win(int m, int n, int d, int x, int y, int w, int a)
         {
-            int from = 0;
-            int to = 0;
             if (m % 2 == 1 && m <= x)
             {
                 return (n / 2 + (m + 1) / 2);
@@ -71,8 +69,8 @@
             }
             else
             {
-                from = x + d / 2 + 1;
-                to = x + d / 2 + Convert.ToInt32(Math.Pow(2, a - 2));
+                int from = x + d / 2 + 1;
+                int to = x + d / 2 + Convert.ToInt32(Math.Pow(2, a - 2));
                 for (int i = (a - 2); i >= (w - 1); i--)
                 {
                     if (m >= from && m <= to)
@@ -81,13 +79,13 @@
                     }
                     else if (m > to && m <= (to + Convert.ToInt32(Math.Pow(2, i))))
                     {
-                        if (m % 2 == 1)
+                        if ((m % 2 == 0 && d == 2) || m % 2 == 1 && d != 2)
                         {
-                            return Convert.ToInt32((m + 1) / 2 + 0.5 * to + Math.Pow(2, i));
+                            return Convert.ToInt32((m + 1 - to) / 2 + to + Math.Pow(2, i));
                         }
-                        else if (m % 2 == 0)
+                        else
                         {
-                            return Convert.ToInt32(m / 2 + 0.5 * to + Math.Pow(2, i));
+                            return Convert.ToInt32((m - to) / 2 + to + Math.Pow(2, i));
                         }
                     }
                     from += Convert.ToInt32(2 * Math.Pow(2, i));

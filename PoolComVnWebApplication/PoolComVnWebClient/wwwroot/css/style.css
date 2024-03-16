@@ -183,7 +183,8 @@ button {
     position: relative;
 }
 
-    .container .news-item {
+    .container .news-item,
+    .container-full .news-item {
         padding: 20px 0;
         text-align: center;
         position: relative;
@@ -204,23 +205,27 @@ button {
         text-align: center;
     }
 
-    .container .news-image {
+    .container .news-image,
+    .container-full .news-image {
         overflow: hidden;
         border-radius: 20px;
         width: 300px;
         height: 200px;
     }
 
-    .container .news-item img {
+    .container .news-item img,
+    .container-full .news-item img {
         display: block;
         width: 100%;
         transition: transform 0.3s;
     }
 
-        .container .news-item img:hover {
+        .container .news-item img:hover,
+        .container-full .news-item img:hover {
             transform: scale(1.1);
         }
 
+    .container .news-items .news-title,
     .container .news-items .news-title {
         color: white;
         padding: 10px;
@@ -477,21 +482,22 @@ footer {
 /* change password page same forgot password page */
 
 /* newsDetails.html */
-.container .news-details {
+.container-full .news-details {
     margin-top: 80px;
+    padding: 40px;
 }
 
-.container .news-detail {
+.container-full .news-detail {
     padding-right: 40px;
 }
 
-    .container .news-detail img {
+    .container-full .news-detail img {
         max-width: 500px;
         background-position: center center;
         border-radius: 10px;
     }
 
-    .container .news-detail .news-title {
+    .container-full .news-detail .news-title {
         padding: 20px;
         color: #fff;
         text-align: center;
@@ -500,35 +506,38 @@ footer {
         font-style: italic;
     }
 
-    .container .news-detail .news-description {
+    .container-full .news-detail .news-description {
         margin-top: 20px;
         font-weight: 500;
         text-align: justify;
         color: #000;
     }
 
-.container .news-other .news-item {
+.container-full .news-other .news-item {
     padding: 0;
     padding-bottom: 40px;
 }
 
-    .container .news-other .news-item .news-image {
+    .container-full .news-other .news-item .news-image {
         border-radius: 5px;
+        width: 120px;
+        height: 80px;
     }
 
-    .container .news-other .news-item .news-title {
+    .container-full .news-other .news-item .news-title {
         color: #000;
         text-align: left;
         padding-left: 20px;
         font-size: 14px;
         font-weight: 600;
+        width: calc(100% - 120px);
     }
 
-    .container .news-other .news-item:hover img {
+    .container-full .news-other .news-item:hover img {
         transform: scale(1.1);
     }
 
-    .container .news-other .news-item:hover .news-title {
+    .container-full .news-other .news-item:hover .news-title {
         color: #fff;
     }
 
@@ -4473,6 +4482,77 @@ tr:not(:first-child).isFinish {
         text-align: center;
         letter-spacing: 2px;
     }
+
+/* club.html */
+.club-list {
+}
+
+    .club-list .club-box {
+        width: 340px;
+        padding: 20px;
+        height: 480px;
+        border-radius: 20px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .club-list .club-box-border {
+        border: 5px #ddd solid;
+        border-radius: 20px;
+    }
+
+    .club-list .club-box .club-box-bg {
+        background-size: cover;
+        width: 100%;
+        height: 440px;
+        background-position: center;
+        border-radius: 20px;
+        filter: blur(5px);
+        opacity: 0.6;
+    }
+
+    .club-list .club-box .club-image {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        width: 280px;
+        height: 280px;
+        border-radius: 10px;
+        overflow: hidden;
+        border: #fff solid 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .club-list .club-box img {
+        height: 270px;
+    }
+
+    .club-list .club-box .club-info {
+        height: 100px;
+        width: 300px;
+        position: absolute;
+        top: 320px;
+        color: #fff;
+    }
+
+        .club-list .club-box .club-info .club-name {
+            font-size: 20px;
+            font-weight: 600;
+            text-shadow: 0 0 3px #0091ff;
+            text-align: center;
+            padding: 5px 20px;
+        }
+
+        .club-list .club-box .club-info .club-address {
+            font-size: 14px;
+            text-align: center;
+            padding: 5px 20px;
+            font-weight: 500;
+            font-style: italic;
+            text-shadow: 1px 0 3px #000;
+        }
 
 /* Mobile: width <740px */
 @media only screen and (max-width: 739px) {
