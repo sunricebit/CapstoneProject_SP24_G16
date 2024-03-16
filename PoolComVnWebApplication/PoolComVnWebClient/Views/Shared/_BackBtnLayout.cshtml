@@ -13,12 +13,27 @@
 
 <body>
     <div class="main-background"></div>
-    <div class="back-btn-nav">
-        <div class="back-btn">
-            <i class="fa-solid fa-chevron-left"></i>
-            <span>Trở lại</span>
-        </div>
-    </div>
+    <header>
+        <nav class="manage-nav">
+            <div class="back-btn">
+                <i class="fa-solid fa-chevron-left"></i>
+                <span>Trở lại</span>
+            </div>
+            <div class="logo-image d-flex justify-content-center align-items-center">
+                <a href="">
+                    <img src="~/images/logo.png" alt="PoolCom">
+                    <span class="">PoolCom.</span>
+                </a>
+            </div>
+            <div class="user-menu-btn">
+                <i class="fa-solid fa-user user-icon"></i>
+                <ul class="user-menu text-center">
+                    <li><a href="">Hồ sơ</a></li>
+                    <li><a href="">Đăng xuất</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
     @RenderBody()
 

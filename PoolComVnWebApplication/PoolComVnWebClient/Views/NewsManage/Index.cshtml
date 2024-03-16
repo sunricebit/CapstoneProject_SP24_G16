@@ -54,19 +54,32 @@
                         <td>@(i + 1)</td>
                         <td>
                             <div class="img-frame">
-                                <img src="~/images/new_1.jpg" />
+                                <img src="@news.Flyer" />
                             </div>
                         </td>
                         <td>@news.Title</td>
-                        <td>@news.CreatedDate</td>
-                        <td>@news.UpdatedDate</td>
+                        <td>@news.CreatedDate.ToString("yyyy-MM-dd")</td>
+                        <td>@news.UpdatedDate.ToString("yyyy-MM-dd")</td>
                         <td>
-                            <div class="user-status isActive">Hiển thị</div>
+                            @if (news.Status.HasValue && news.Status.Value)
+                            {
+                                <div class="user-status isActive">Hiển thị</div>
+                            }
+                            else if (news.Status.HasValue && !news.Status.Value)
+                            {
+                                <div class="user-status isActive">Ẩn</div>
+                            }
+                            else
+                            {
+                                <div class="user-status">Không biết</div>
+                            }
                         </td>
                         <td class="text-center">
-                            <a href="#"><i class="fa-solid fa-pencil p-2"></i></a>
-                            <a href="#"><i class="view-btn fa-solid fa-eye-slash p-2"></i></a>
-                            <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
+                            <a asp-action="NewsDetails" asp-controller="NewsManage" asp-route-id="@news.NewsId"><i class="fa-solid fa-pencil p-2"></i></a>
+                            <a asp-action="ChangeStatusNews" asp-controller="NewsManage" asp-route-id="@news.NewsId">
+                                <i class=" fa-solid fa-eye-slash p-2"></i>
+                            </a>
+                            
                         </td>
 
                         @*<td>30/10/2023<br>Nam Vu</td>
@@ -76,6 +89,20 @@
             </table>
         </div>
     </div>
+    @*Phân trang start*@
+    <div class="pagination d-flex justify-content-center align-items-center m-0">
+        <div class="pagination-content d-flex justify-content-center align-items-center m-0">
+            <div class="pagination-btn-big ">Trước</div>
+            <div class="pagination-btn active">1</div>
+            <div class="pagination-btn">2</div>
+            <div class="pagination-btn">3</div>
+            <div class="pagination-more">...</div>
+            <div class="pagination-btn">8</div>
+            <div class="pagination-btn">9</div>
+            <div class="pagination-btn-big ">Sau</div>
+        </div>
+    </div>
+    @*Phân trang end*@
 </div>
 
 <script>

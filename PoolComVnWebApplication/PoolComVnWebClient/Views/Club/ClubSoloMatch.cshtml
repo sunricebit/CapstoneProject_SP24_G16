@@ -1,0 +1,176 @@
+﻿@{
+    Layout = "~/Views/Shared/_ClubLayout.cshtml";
+}
+
+<div class="dashboard-container container">
+    <div class="tournament mt-0">
+        <div class="normal-body">
+            <div class="d-flex justify-content-between mt-4 row">
+                <div class="tour-circle d-flex justify-content-lg-start justify-content-end
+                pt-lg-0 pt-3 align-items-center col-lg-6 col-12 order-2 order-lg-1">
+                    <div class="schedule-circle"></div>
+                    <span>Lên lịch</span>
+                    <div class="start-circle"></div>
+                    <span>Đang chơi</span>
+                    <div class="finish-circle"></div>
+                    <span>Kết thúc</span>
+                </div>
+                <div class="d-flex justify-content-end col-lg-6 col-12 order-1 order-lg-2">
+                    <div class="tour-search d-flex justify-content-end align-items-center">
+                        <i class="search-btn fa-solid fa-magnifying-glass"></i>
+                        <input class="search-input px-2" type="text" placeholder="Trận đấu,..." />
+                    </div>
+
+                    <div class="tour-filter d-flex align-items-center">
+                        <div class="filter-btn">
+                            <span>Bộ lọc</span>
+                            <i class="fa-solid fa-filter px-2"></i>
+                        </div>
+                        <form class="filter-body d-none">
+                            <div class="">
+                                <div class="start-date d-flex align-items-center">
+                                    <div class="d-flex justify-content-center col-4">
+                                        <span>Ngày bắt đầu</span>
+                                    </div>
+                                    <div class="d-flex justify-content-center col-4">
+                                        <input type="date" />
+                                    </div>
+                                </div>
+                                <div class="end-date pt-3 d-flex align-items-center">
+                                    <div class="d-flex justify-content-center col-4">
+                                        <span>Ngày kết thúc</span>
+                                    </div>
+                                    <div class="d-flex justify-content-center col-4">
+                                        <input type="date" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-5 row">
+                                <div class="d-flex justify-content-center col-6">
+                                    <input type="button" class="reset-btn" value="Đặt lại" />
+                                </div>
+                                <div class="d-flex justify-content-center col-6">
+                                    <input type="submit" class="submit-btn" value="Tìm kiếm" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="schedule-item row mt-5">
+        <div class="item-status status-schedule"></div>
+        <div class="col-12">
+            <div class="d-flex justify-content-center">
+                <div class="item-date">19:30 - 16/03/2024</div>
+            </div>
+            <div class="d-flex justify-content-center pt-3">
+                <span class="item-name">Sếu đầu đỏ vs. Kiên sành điệu</span>
+            </div>
+            <div class="d-flex justify-content-center">
+                <span class="item-address">9 bi, chạm 21, phá luân phiên</span>
+            </div>
+            <div class="item-down d-flex justify-content-center pt-2"></div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center info-btn">
+            <a href="" class="btn-join">
+                <span>Chi tiết</span>
+                <i class="fa-solid fa-caret-right"></i>
+            </a>
+        </div>
+    </div>
+    <div class="schedule-item row mt-5">
+        <div class="item-status status-playing"></div>
+        <div class="col-12">
+            <div class="d-flex justify-content-center">
+                <div class="item-date">19:30 - 16/03/2024</div>
+            </div>
+            <div class="d-flex justify-content-center pt-3">
+                <span class="item-name">Sếu đầu đỏ vs. Kiên sành điệu</span>
+            </div>
+            <div class="d-flex justify-content-center">
+                <span class="item-address">9 bi, chạm 21, phá luân phiên</span>
+            </div>
+            <div class="item-down d-flex justify-content-center pt-2"></div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center info-btn">
+            <a href="" class="btn-join">
+                <span>Chi tiết</span>
+                <i class="fa-solid fa-caret-right"></i>
+            </a>
+        </div>
+    </div>
+    <div class="schedule-item row mt-5">
+        <div class="item-status status-finished"></div>
+        <div class="col-12">
+            <div class="d-flex justify-content-center">
+                <div class="item-date">19:30 - 16/03/2024</div>
+            </div>
+            <div class="d-flex justify-content-center pt-3">
+                <span class="item-name">Sếu đầu đỏ vs. Kiên sành điệu</span>
+            </div>
+            <div class="d-flex justify-content-center">
+                <span class="item-address">9 bi, chạm 21, phá luân phiên</span>
+            </div>
+            <div class="item-down d-flex justify-content-center pt-2"></div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center info-btn">
+            <a href="" class="btn-join">
+                <span>Chi tiết</span>
+                <i class="fa-solid fa-caret-right"></i>
+            </a>
+        </div>
+    </div>
+    <div class="schedule-item row mt-5">
+        <div class="item-status status-finished"></div>
+        <div class="col-12">
+            <div class="d-flex justify-content-center">
+                <div class="item-date">19:30 - 16/03/2024</div>
+            </div>
+            <div class="d-flex justify-content-center pt-3">
+                <span class="item-name">Sếu đầu đỏ vs. Kiên sành điệu</span>
+            </div>
+            <div class="d-flex justify-content-center">
+                <span class="item-address">9 bi, chạm 21, phá luân phiên</span>
+            </div>
+            <div class="item-down d-flex justify-content-center pt-2"></div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center info-btn">
+            <a href="" class="btn-join">
+                <span>Chi tiết</span>
+                <i class="fa-solid fa-caret-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="creat-tour d-flex justify-content-center align-items-center">
+        <div class="create-title">Tạo trận đấu</div>
+        <a href="" class="create-tour-btn d-flex justify-content-center align-items-center">
+            <i class="fa-solid fa-plus fa-beat"></i>
+        </a>
+    </div>
+</div>
+
+<script>
+    //tour-filter button
+    const filterBtn = document.querySelector('.filter-btn');
+    const filterBody = document.querySelector('.filter-body');
+    filterBtn.addEventListener('click', () => {
+        if (filterBody.classList.contains('d-none')) {
+            filterBody.classList.remove('d-none');
+            filterBody.classList.add('d-block');
+        } else {
+            filterBody.classList.add('d-none');
+            filterBody.classList.remove('d-block');
+        }
+    })
+
+    const filterForm = document.querySelector('.filter-body');
+    const resetBtn = document.querySelector('.reset-btn');
+    resetBtn.addEventListener('click', () => {
+        filterForm.reset();
+        tourCity.classList.add('d-none');
+    })
+</script>

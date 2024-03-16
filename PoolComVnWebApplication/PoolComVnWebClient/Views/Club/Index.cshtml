@@ -1,87 +1,72 @@
-﻿@using PoolComVnWebClient.DTO
-@{
-    ViewData["Title"] = "Home Page";
+﻿@{
+    Layout = "~/Views/Shared/_ClubLayout.cshtml";
 }
-@model List<NewsDTO>
-@if (Model.Any())
-{
-    var latestNews = Model.First(); // Lấy tin tức mới nhất từ danh sách
-    <a href="@Url.Action("NewsDetail", "Home", new { id = latestNews.NewsId })">
-        <div class="news-header" style="background-image: url('@latestNews.Flyer');">
-            <div class="news-description">
-                @latestNews.Title
-            </div>
+
+<div class="dashboard-container container">
+    <div class="row news-items p-0 m-0">
+        <div class="item-content d-flex justify-content-center">
+            <a href="#" class="create-btn d-flex justify-content-center align-items-center">
+                <div class="text-center">
+                    <i class="fa-solid fa-plus fa-beat"></i>
+                    <div>Tạo bài viết mới</div>
+                </div>
+            </a>
         </div>
-    </a>
-}
-<div class="container">
-    <div class="row news-items">
-        <div class="latest-new">TIN MỚI</div>
-        <div class="col-md-6 col-lg-4 d-flex justify-content-center">
-            <a href="#" class="news-item m-0">
+        <div class="item-content d-flex justify-content-center">
+            <a href="#" class="news-item">
                 <div class="news-date">14-10-2023</div>
                 <div class="news-image">
-                    <img src="~/images/new_1.jpg" alt="" />
+                    <img src="~/images/news.jpg" alt="" />
                 </div>
                 <div class="news-title">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
             </a>
         </div>
-        <div class="col-md-6 col-lg-4 d-flex justify-content-center">
-            <a href="#" class="news-item m-0">
+        <div class="item-content d-flex justify-content-center">
+            <a href="#" class="news-item">
                 <div class="news-date">14-10-2023</div>
                 <div class="news-image">
-                    <img src="~/images/new_1.jpg" alt="" />
+                    <img src="~/images/news.jpg" alt="" />
                 </div>
                 <div class="news-title">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
             </a>
         </div>
-        <div class="col-md-6 col-lg-4 d-flex justify-content-center">
-            <a href="#" class="news-item m-0">
+        <div class="item-content d-flex justify-content-center">
+            <a href="#" class="news-item">
                 <div class="news-date">14-10-2023</div>
                 <div class="news-image">
-                    <img src="~/images/new_1.jpg" alt="" />
+                    <img src="~/images/news.jpg" alt="" />
                 </div>
                 <div class="news-title">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
             </a>
         </div>
-        <div class="col-md-6 col-lg-4 d-flex justify-content-center">
-            <a href="#" class="news-item m-0">
+        <div class="item-content d-flex justify-content-center">
+            <a href="#" class="news-item">
                 <div class="news-date">14-10-2023</div>
                 <div class="news-image">
-                    <img src="~/images/new_1.jpg" alt="" />
+                    <img src="~/images/news.jpg" alt="" />
                 </div>
                 <div class="news-title">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
             </a>
         </div>
-        <div class="col-md-6 col-lg-4 d-flex justify-content-center">
-            <a href="#" class="news-item m-0">
+        <div class="item-content d-flex justify-content-center">
+            <a href="#" class="news-item">
                 <div class="news-date">14-10-2023</div>
                 <div class="news-image">
-                    <img src="~/images/new_1.jpg" alt="" />
+                    <img src="~/images/news.jpg" alt="" />
                 </div>
                 <div class="news-title">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
             </a>
         </div>
-        <div class="col-md-6 col-lg-4 d-flex justify-content-center">
-            <a href="#" class="news-item m-0">
+        <div class="item-content d-flex justify-content-center">
+            <a href="#" class="news-item">
                 <div class="news-date">14-10-2023</div>
                 <div class="news-image">
-                    <img src="~/images/new_1.jpg" alt="" />
+                    <img src="~/images/news.jpg" alt="" />
                 </div>
                 <div class="news-title">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
             </a>
         </div>
-        @foreach (var news in Model)
-        {
-            <a href="@Url.Action("NewsDetail", "Home", new { id = news.NewsId })" class="col-md-6 col-lg-4 news-item">
-                <div class="news-date">@news.CreatedDate.ToString("dd/MM/yyyy")</div>
-                <div class="news-image">
-                    <img src="@news.Flyer" alt="" />
-                </div>
-                <div class="news-title">@news.Title</div>
-            </a>
-        }
-        <div class="col-md-6 col-lg-12 mt-md-5 d-flex justify-content-center">
+        <div id="load-btn" class="item-content mt-md-5 d-flex justify-content-center">
             <a href="#" class="news-load">
                 <div><i class="fa-duotone fa-plus fa-2xl"></i></div>
                 <div>Xem thêm</div>
@@ -89,6 +74,7 @@
         </div>
     </div>
 </div>
+
 <script>
     // check window width to set position of load button
     window.addEventListener('resize', checkLoadButtonPosition)

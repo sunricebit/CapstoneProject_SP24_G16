@@ -16,5 +16,13 @@
         public DateTime RegistrationDeadline { get; set; }
         public bool Access { get; set; }
 
+        public class CreateTourStepFourDTO
+        {
+            public int TourID { get; set; }
+            public string Flyer { get; set; }
+            
+           
+
+        }
     }
 }
