@@ -21,6 +21,7 @@ namespace BusinessObject.Models
         public string Facebook { get; set; } = null!;
         public string? Avatar { get; set; }
         public int? AccountId { get; set; }
+        public byte? Status { get; set; }
 
         public virtual Account? Account { get; set; }
         public virtual ICollection<Account> Accounts { get; set; }

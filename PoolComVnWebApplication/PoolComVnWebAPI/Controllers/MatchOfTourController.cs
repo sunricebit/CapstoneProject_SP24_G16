@@ -1,6 +1,7 @@
 ﻿using DataAccess;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PoolComVnWebAPI.DTO;
 
 namespace PoolComVnWebAPI.Controllers
 {
@@ -23,7 +24,7 @@ namespace PoolComVnWebAPI.Controllers
             var lstMatch = _matchDAO.GetMatchOfTournaments(tourId);
             foreach (var match in lstMatch)
             {
-                
+                MatchOfTournamentOutputDTO matchOfTournament = new MatchOfTournamentOutputDTO();
             }
             return Ok();
         }

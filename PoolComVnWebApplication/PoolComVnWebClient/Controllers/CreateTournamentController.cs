@@ -41,7 +41,7 @@ namespace PoolComVnWebClient.Controllers
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
             List<int> rolesAccess = new List<int>();
-            
+
             // Thêm các role được access
             rolesAccess.Add(Constant.BusinessRole);
             var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Authorization/CheckAuthorization", rolesAccess);
@@ -102,7 +102,7 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpPost("ImportPlayers")]
-        public async Task<IActionResult>  ImportPlayers(IFormFile ImportPlayers, int tourId)
+        public async Task<IActionResult> ImportPlayers(IFormFile ImportPlayers, int tourId)
         {
             ViewBag.TourId = tourId;
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
@@ -139,7 +139,7 @@ namespace PoolComVnWebClient.Controllers
                                 continue;
                             }
                             bool fee;
-                            if (feeText == "Rồi")
+                            if (feeText == "Rồi") // chuyển thành "Đã nộp"
                             {
                                 fee = true;
 
@@ -181,7 +181,7 @@ namespace PoolComVnWebClient.Controllers
             }
             catch (IOException ex)
             {
-                return RedirectToAction("InternalServerError", "Error", new { message = ex.Message});
+                return RedirectToAction("InternalServerError", "Error", new { message = ex.Message });
             }
 
         }
@@ -282,7 +282,7 @@ namespace PoolComVnWebClient.Controllers
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
             var response = await client.GetFromJsonAsync<IEnumerable<TableDTO>>("https://localhost:5000/api/Table/GetAllTablesForClub");
-            var listtable= response.ToList();
+            var listtable = response.ToList();
             return View(listtable);
         }
 
@@ -364,7 +364,7 @@ namespace PoolComVnWebClient.Controllers
             }
             finally
             {
-                
+
                 bannerContent?.Dispose();
             }
 
