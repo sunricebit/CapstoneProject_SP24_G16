@@ -20,7 +20,7 @@ namespace PoolComVnWebAPI.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Club
+        
         [HttpGet]
         public ActionResult<IEnumerable<ClubDTO>> Get()
         {
@@ -47,7 +47,7 @@ namespace PoolComVnWebAPI.Controllers
             return Ok(matchesDTOs);
         }
 
-        // GET: api/Club/5
+        
         [HttpGet("{id}")]
         public ActionResult<ClubDTO> Get(int id)
         {
@@ -62,7 +62,7 @@ namespace PoolComVnWebAPI.Controllers
             return Ok(clubDto);
         }
 
-        // POST: api/Club
+       
         [HttpPost]
         public IActionResult Post([FromBody] ClubDTO clubDto)
         {
@@ -73,7 +73,6 @@ namespace PoolComVnWebAPI.Controllers
 
             var club = _mapper.Map<Club>(clubDto);
 
-            // Ensure ClubId is not set explicitly, allowing the database to generate it
             club.ClubId = 0;
 
             _clubDAO.AddClub(club);
