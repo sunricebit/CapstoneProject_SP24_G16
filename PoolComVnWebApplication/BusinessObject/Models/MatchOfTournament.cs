@@ -18,6 +18,8 @@ namespace BusinessObject.Models
         public DateTime? EndTime { get; set; }
         public byte Status { get; set; }
         public int TableId { get; set; }
+        public int? WinToMatch { get; set; }
+        public int? LoseToMatch { get; set; }
 
         public virtual Table Table { get; set; } = null!;
         public virtual Tournament Tour { get; set; } = null!;

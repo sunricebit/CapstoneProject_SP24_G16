@@ -17,8 +17,6 @@ namespace PoolComVnWebClient.Controllers
         {
             client = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-            client.DefaultRequestHeaders.Accept.Add(contentType);
-            ApiUrl = ApiUrl + "/News";
             _logger = logger;
             client.DefaultRequestHeaders.Accept.Add(contentType);
             ApiUrl = ApiUrl + "/News";
@@ -30,7 +28,7 @@ namespace PoolComVnWebClient.Controllers
             try
             {
                 var response = await client.GetAsync($"{ApiUrl}/GetLatestNews?count=6"); // Lấy 6 tin tức mới nhất
-                response.EnsureSuccessStatusCode(); // Đảm bảo phản hồi thành công
+              response.EnsureSuccessStatusCode(); // Đảm bảo phản hồi thành công
 
                 var jsonContent = await response.Content.ReadAsStringAsync();
                 var newsList = JsonConvert.DeserializeObject<List<NewsDTO>>(jsonContent);
