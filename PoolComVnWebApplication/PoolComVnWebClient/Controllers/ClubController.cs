@@ -4,6 +4,11 @@ using PoolComVnWebClient.Common;
 using Newtonsoft.Json;
 using PoolComVnWebClient.DTO;
 using System.Net;
+using Firebase.Auth;
+using Firebase.Storage;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using System.Net.Sockets;
+using System.Text.RegularExpressions;
 
 namespace PoolComVnWebClient.Controllers
 {
@@ -11,14 +16,19 @@ namespace PoolComVnWebClient.Controllers
     {
         private readonly HttpClient client = null;
         private string ApiUrl = Constant.ApiUrl;
+        private string ApiKey = FirebaseAPI.ApiKey;
+        private string Bucket = FirebaseAPI.Bucket;
+        private string AuthEmail = FirebaseAPI.AuthEmail;
+        private string AuthPassword = FirebaseAPI.AuthPassword;
         public ClubController()
         {
             client = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             client.DefaultRequestHeaders.Accept.Add(contentType);
         }
-        public IActionResult Index(string email)
+        public IActionResult Index()
         {
+            string email = HttpContext.Request.Cookies["Email"];
             var response = client.GetAsync($"{ApiUrl}/Account/GetAccountByEmail/{email}").Result;
             if (!response.IsSuccessStatusCode)
             {
@@ -43,8 +53,194 @@ namespace PoolComVnWebClient.Controllers
             }
             var ClubData = response2.Content.ReadAsStringAsync().Result;
             var club = JsonConvert.DeserializeObject<ClubDTO>(ClubData);
+            var response3 = client.GetAsync($"{ApiUrl}/ClubPost/GetByClubId/{club.ClubId}").Result;
+            if (response3.StatusCode == HttpStatusCode.NotFound)
+            {
+                ViewBag.ClubPost = null;
+            }
+            else if (response3.IsSuccessStatusCode)
+            {
+                var clubPostData = response3.Content.ReadAsStringAsync().Result;
+                var clubPosts = JsonConvert.DeserializeObject<List<ClubPostDTO>>(clubPostData);
+                ViewBag.ClubPost = clubPosts;
+            }
+
             ViewBag.AccountEmail = email;
             return View(club);
+        }
+        public IActionResult AddPost(int clubid)
+        {
+            ViewBag.ClubID = clubid;
+            return View();
+        }
+        [HttpPost]
+        public ActionResult UploadImage(List<IFormFile> files)
+        {
+            var filepath2 = "";
+            foreach (IFormFile file in Request.Form.Files)
+            {
+
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase", file.FileName);
+                using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyTo(memoryStream);
+
+                }
+                filepath2 = "/Firebase/" + file.FileName;
+            }
+            return Json(new { url = filepath2 });
+        }
+        public async Task<string> UploadFromFirebase(FileStream stream, string filename, string folderName, string newsTitle, int order)
+        {
+            var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
+            var a = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
+            var cancellation = new CancellationTokenSource();
+            if (order == 0)
+            {
+                var task = new FirebaseStorage(
+                    Bucket,
+                    new FirebaseStorageOptions
+                    {
+                        AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                        ThrowOnCancel = true
+                    }
+                ).Child(folderName)
+                .Child(newsTitle)
+                 .Child($"Banner")
+                 .PutAsync(stream, cancellation.Token);
+                try
+                {
+                    string link = await task;
+                    return link;
+
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception was thrown : {0}", ex);
+                    return null;
+                }
+            }
+            else
+            {
+                var orderedFileName = $"Image{order}{Path.GetExtension(stream.Name)}";
+                var task = new FirebaseStorage(
+                    Bucket,
+                    new FirebaseStorageOptions
+                    {
+                        AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                        ThrowOnCancel = true
+                    }
+                ).Child(folderName)
+                .Child(newsTitle)
+                 .Child(orderedFileName)
+                 .PutAsync(stream, cancellation.Token);
+                try
+                {
+                    string link = await task;
+                    return link;
+
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception was thrown : {0}", ex);
+                    return null;
+                }
+            }
+        }
+        public async Task DeleteFromFirebase(string title, string filename)
+        {
+            try
+            {
+                var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
+                var a = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
+
+                var cancellation = new CancellationTokenSource();
+                var storage = new FirebaseStorage(
+                    Bucket,
+                    new FirebaseStorageOptions
+                    {
+                        AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
+                        ThrowOnCancel = true
+                    }
+                );
+                var folderPath = $"News/{title}/{filename}";
+
+
+                await storage.Child(folderPath).DeleteAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception occurred during deletion: {0}", ex);
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddPost(ClubPostDTO ClubPostDTO, IFormFile BannerFile,int clubid)
+        {
+            ClubPostDTO.CreatedDate = DateTime.Now;
+            ClubPostDTO.UpdatedDate = DateTime.Now;
+          //  ClubPostDTO.Status = true;
+            ClubPostDTO.ClubId = clubid;
+            if (BannerFile != null && BannerFile.Length > 0)
+            {
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(BannerFile.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase", fileName);
+
+                using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
+                {
+                    BannerFile.CopyTo(memoryStream);
+
+
+                }
+                var fileStream2 = new FileStream(filePath, FileMode.Open);
+                var downloadLink = await UploadFromFirebase(fileStream2, BannerFile.FileName, "ClubPost", ClubPostDTO.Title, 0);
+                fileStream2.Close();
+                ClubPostDTO.Flyer = downloadLink;
+            }
+            int index = 1;
+            string pattern = @"<img.*?src=""(.*?)"".*?>";
+            MatchCollection matches = Regex.Matches(ClubPostDTO.Description, pattern);
+            foreach (Match match in matches)
+            {
+                string src = match.Groups[1].Value;
+                string filenameWithoutFirebase = src.Replace("/Firebase/", "");
+                string absolutePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase", filenameWithoutFirebase);
+                var fileStream2 = new FileStream(absolutePath, FileMode.Open);
+                var downloadLink = await UploadFromFirebase(fileStream2, filenameWithoutFirebase, "ClubPost", ClubPostDTO.Title, index);
+                index++;
+                fileStream2.Close();
+                ClubPostDTO.Description = ClubPostDTO.Description.Replace(src, downloadLink);
+            }
+            string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase");
+
+            try
+            {
+
+                string[] filePaths = Directory.GetFiles(directoryPath);
+                foreach (string filePath in filePaths)
+                {
+                    System.IO.File.Delete(filePath);
+                }
+
+                Console.WriteLine("All images in the directory have been deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while deleting images: {ex.Message}");
+            }
+            ClubPostDTO.PostId = 1;
+            var response = await client.PostAsJsonAsync($"{ApiUrl}/ClubPost/Add", ClubPostDTO);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Lỗi khi thêm tin tức.");
+                return View(ClubPostDTO);
+            }
         }
 
         public IActionResult ClubTournament()

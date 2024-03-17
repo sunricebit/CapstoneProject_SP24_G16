@@ -5,6 +5,7 @@ using BusinessObject.Models;
 using DataAccess;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PoolComVnWebAPI.DTO;
 
 namespace PoolComVnWebAPI.Controllers
@@ -44,32 +45,51 @@ namespace PoolComVnWebAPI.Controllers
             return Ok(clubPostDto);
         }
 
-        [Authorize] // Bắt buộc người dùng đăng nhập
-        [HttpPost]
-        public IActionResult Post([FromBody] ClubPostDTO clubPostDto)
+        [HttpPost("Add")]
+        public IActionResult Post([FromBody] ClubPostDTO clubPostDTO)
         {
-            if (clubPostDto == null)
+            try
             {
-                return BadRequest();
+              
+                var clubPost = new ClubPost
+                {
+                    ClubId = clubPostDTO.ClubID,
+                    Title = clubPostDTO.Title,
+                    Description = clubPostDTO.Description,
+                    CreatedDate = clubPostDTO.CreatedDate,
+                    UpdatedDate = clubPostDTO.UpdatedDate,
+                    Flyer = clubPostDTO.Flyer,
+                    Link = clubPostDTO.Link
+                };
+
+
+                _clubPostDAO.AddClubPost(clubPost);
+                return Ok(clubPost);
             }
-
-            // Lấy ClubID từ JWT Token
-            var clubIdFromToken = GetClubIdFromToken(); // Hàm giả định, bạn cần triển khai hàm này
-
-            // Kiểm tra xem ClubID từ Token có khớp với ClubID từ DTO không
-            if (clubPostDto.ClubID != clubIdFromToken)
+            catch (Exception ex)
             {
-                return BadRequest("Invalid ClubID in the request.");
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
-
-            var clubPost = _mapper.Map<ClubPost>(clubPostDto);
-            clubPost.PostId = 0; // Ensure PostID is not set explicitly
-
-            _clubPostDAO.AddClubPost(clubPost);
-
-            var createdClubPostDto = _mapper.Map<ClubPostDTO>(clubPost);
-            return CreatedAtAction(nameof(Get), new { id = createdClubPostDto.PostID }, createdClubPostDto);
         }
+        [HttpGet("GetByClubId/{clubId}")]
+        public IActionResult GetByClubId(int clubId)
+        {
+            try
+            {
+                var clubPosts = _clubPostDAO.GetClubPostByClubId(clubId);
+
+                if (clubPosts == null)
+                {
+                    return NotFound("Câu lạc bộ chưa có bài post nào");
+                }
+                return Ok(clubPosts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] ClubPostDTO updatedClubPostDto)
@@ -114,7 +134,7 @@ namespace PoolComVnWebAPI.Controllers
             // Lấy ClubID từ JWT Token
             var clubIdFromToken = GetClubIdFromToken(); // Hàm giả định, bạn cần triển khai hàm này
 
-            // Kiểm tra xem ClubID từ Token có khớp với ClubID của bản ghi không
+            
             if (clubPost.ClubId != clubIdFromToken)
             {
                 return BadRequest("Invalid ClubID in the request.");

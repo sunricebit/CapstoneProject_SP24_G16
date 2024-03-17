@@ -10,6 +10,7 @@ namespace PoolComVnWebAPI.DTO
         public string Description { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
-        public string? Image { get; set; }
+        public string? Flyer { get; set; }
+        public string? Link { get; set; }
     }
 }
