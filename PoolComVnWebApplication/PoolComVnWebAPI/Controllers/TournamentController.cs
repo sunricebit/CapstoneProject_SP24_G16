@@ -293,5 +293,21 @@ namespace PoolComVnWebAPI.Controllers
                 throw e;
             }
         }
+
+        [HttpGet("GetTourInfo")]
+        public IActionResult GetTourInfo(int tourId)
+        {
+            try
+            {
+                Tournament tour = _tournamentDAO.GetTournament(tourId);
+                return Ok(new { playerNumber = tour.PlayerNumber, 
+                    finalSinglePlayer = tour.KnockoutPlayerNumber});
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
     }
 }

@@ -492,15 +492,16 @@ namespace PoolComVnWebClient.Controllers
         //}
 
         [HttpGet]
-        public IActionResult StepSixReview()
+        public IActionResult StepSixReview(int tourId)
         {
+            ViewBag.TourID = tourId;
             return View();
         }
 
         [HttpGet]
-        public IActionResult StepFiveArrange()
+        public IActionResult StepFiveArrange(int tourId)
         {
-
+            ViewBag.TourID = tourId;
             return View();
         }
 
@@ -517,8 +518,9 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult SystemRandom()
+        public IActionResult SystemRandom(int tourId)
         {
+            ViewBag.TourID = tourId;
             return View();
         }
     }
