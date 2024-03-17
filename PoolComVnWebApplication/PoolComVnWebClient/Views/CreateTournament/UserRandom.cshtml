@@ -87,12 +87,12 @@
 
     //add html to Player view
     const playerView = document.querySelector('.players-view');
-    var playerViewHTML = '';
     var playerNumber;
+    var tourId;
 
     $(document).ready(function () {
         var urlParams = new URLSearchParams(window.location.search);
-        var tourId = urlParams.get('tourId');
+        tourId = urlParams.get('tourId');
         // Gọi AJAX khi trang được tải
         $.ajax({
             url: 'https://localhost:5000/api/Tournament/GetTourInfo',
@@ -130,14 +130,19 @@
             }
         });
 
+        loadPlayer();
+    });
+
+    function loadPlayer() {
+        console.log('1');
         $.ajax({
             url: 'https://localhost:5000/api/Player/GetPlayerByTourId',
             method: 'GET',
             data: { tourId: tourId },
             success: function (data) {
                 var players = data;
+                var playerViewHTML = '';
                 players.forEach(function (player) {
-                    console.log(player);
                     playerViewHTML += '<div class="player">'
                         + '<div class="d-flex">'
                         + '<div class="player-flag">'
@@ -168,12 +173,8 @@
                 console.log('Error:', errorThrown);
             }
         });
-    });
+    }
 
-</script>
-
-<!-- script random -->
-<script>
     //Random 1 player
     
     const saveBtn = document.querySelector('.save-btn');
@@ -365,11 +366,15 @@
         }
     }
 
+    const resetBtn = document.querySelector('.reset-btn');
+    resetBtn.addEventListener('click',reset);
     function reset() {
-        const btnList = document.querySelector('.randomMatch');
+        const btnList = document.querySelectorAll('.randomMatch');
         btnList.forEach(btn => {
-            btn.
-        })
+            btn.textContent = '';
+        });
+        playerView.innerHTML    
+        loadPlayer();
     }
 
 </script>
