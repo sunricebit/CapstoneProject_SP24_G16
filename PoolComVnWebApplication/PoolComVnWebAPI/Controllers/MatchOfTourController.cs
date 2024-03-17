@@ -94,10 +94,11 @@ namespace PoolComVnWebAPI.Controllers
             {
                 MatchOfTournament matchOfTournament = new MatchOfTournament()
                 {
-                    MatchCode = match.MatchCode,
+                    MatchCode = "W1-" + match.MatchNumber,
                     TourId = tourId,
                     MatchNumber = count,
                     Status = 0,
+                    StartTime = DateTime.Now,
                 };
                 count++;
                 _matchDAO.AddMatch(matchOfTournament);
@@ -123,6 +124,7 @@ namespace PoolComVnWebAPI.Controllers
                         MatchNumber = i,
                         WinToMatch = WinNextMatch(i, tour.MaxPlayerNumber, tour.KnockoutPlayerNumber.Value),
                         LoseToMatch = LoseNextMatch(i, tour.MaxPlayerNumber, tour.KnockoutPlayerNumber.Value),
+                        Status = 0,
                     };
                     _matchDAO.AddMatch(matchOfTournament);
                 }
