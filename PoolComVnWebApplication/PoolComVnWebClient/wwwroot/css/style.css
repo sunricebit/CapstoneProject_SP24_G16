@@ -1603,6 +1603,7 @@ footer {
     .bracket-tab .match-box .player-name {
         line-height: 30px;
         font-size: 14px;
+        letter-spacing: -1px;
     }
 
     .bracket-tab .match-box .match-score {
@@ -2559,7 +2560,7 @@ tr:not(:first-child).isFinish {
 
     .random-round .player-match img {
         width: 20px;
-        height: 15px;
+        height: 20px;
         background-position: center center;
         background-size: cover;
         border-radius: 20%;
