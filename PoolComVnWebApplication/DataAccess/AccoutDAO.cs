@@ -68,6 +68,24 @@ namespace DataAccess
             }
         }
 
+        public void ChangePasswordAccount(string email, string pass)
+        {
+            try
+            {
+                var existingAccount = _context.Accounts.FirstOrDefault(e => e.Email == email);
+                if (existingAccount != null)
+                {
+                    existingAccount.Password = BCrypt.Net.BCrypt.HashPassword(pass, Constant.SaltRound);
+                    _context.Accounts.Update(existingAccount);
+                    _context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
         /// <summary>
         /// Get all accounts from the database.
         /// </summary>
@@ -111,7 +129,7 @@ namespace DataAccess
                 if (existingAccount != null)
                 {
                     existingAccount.Email = updatedAccount.Email;
-                    existingAccount.Password = updatedAccount.Password; // Ensure to hash the updated password if needed
+                    existingAccount.Password = updatedAccount.Password;
                     existingAccount.RoleId = updatedAccount.RoleId;
                     existingAccount.PhoneNumber = updatedAccount.PhoneNumber;
                     existingAccount.VerifyCode = updatedAccount.VerifyCode;

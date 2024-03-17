@@ -38,7 +38,7 @@ namespace DataAccess
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate))
                 .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(src => src.UpdatedDate))
-                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Link));
+                .ForMember(dest => dest.Flyer, opt => opt.MapFrom(src => src.Link));
 
             CreateMap<ClubPostDTO, ClubPost>()
                 .ForMember(dest => dest.PostId, opt => opt.MapFrom(src => src.PostID))
@@ -47,7 +47,7 @@ namespace DataAccess
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => src.CreatedDate))
                 .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(src => src.UpdatedDate))
-                .ForMember(dest => dest.Link, opt => opt.MapFrom(src => src.Image));
+                .ForMember(dest => dest.Link, opt => opt.MapFrom(src => src.Flyer));
 
             CreateMap<Player, PlayerDTO>()
                 .ForMember(dest => dest.PlayerId, opt => opt.MapFrom(src => src.PlayerId))

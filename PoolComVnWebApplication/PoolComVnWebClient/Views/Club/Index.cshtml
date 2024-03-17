@@ -61,73 +61,34 @@ else
 <div class="dashboard-container container">
     <div class="row news-items p-0 m-0">
         <div class="item-content d-flex justify-content-center">
-            <a href="#" class="create-btn d-flex justify-content-center align-items-center">
+            <a asp-action="AddPost" asp-controller="Club" asp-route-clubid="@Model.ClubId" class="create-btn d-flex justify-content-center align-items-center">
                 <div class="text-center">
                     <i class="fa-solid fa-plus fa-beat"></i>
                     <div>Tạo bài viết mới</div>
                 </div>
             </a>
         </div>
-        <div class="item-content d-flex justify-content-center">
-            <a href="#" class="news-item">
-                <div class="news-date">14-10-2023</div>
-                <div class="news-image">
-                    <img src="~/images/news.jpg" alt="" />
-                </div>
-                <div class="news-title">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-            </a>
-        </div>
-        <div class="item-content d-flex justify-content-center">
-            <a href="#" class="news-item">
-                <div class="news-date">14-10-2023</div>
-                <div class="news-image">
-                    <img src="~/images/news.jpg" alt="" />
-                </div>
-                <div class="news-title">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-            </a>
-        </div>
-        <div class="item-content d-flex justify-content-center">
-            <a href="#" class="news-item">
-                <div class="news-date">14-10-2023</div>
-                <div class="news-image">
-                    <img src="~/images/news.jpg" alt="" />
-                </div>
-                <div class="news-title">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-            </a>
-        </div>
-        <div class="item-content d-flex justify-content-center">
-            <a href="#" class="news-item">
-                <div class="news-date">14-10-2023</div>
-                <div class="news-image">
-                    <img src="~/images/news.jpg" alt="" />
-                </div>
-                <div class="news-title">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-            </a>
-        </div>
-        <div class="item-content d-flex justify-content-center">
-            <a href="#" class="news-item">
-                <div class="news-date">14-10-2023</div>
-                <div class="news-image">
-                    <img src="~/images/news.jpg" alt="" />
-                </div>
-                <div class="news-title">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-            </a>
-        </div>
-        <div class="item-content d-flex justify-content-center">
-            <a href="#" class="news-item">
-                <div class="news-date">14-10-2023</div>
-                <div class="news-image">
-                    <img src="~/images/news.jpg" alt="" />
-                </div>
-                <div class="news-title">VŨ HOÀI NAM DELIGHTS AS HANOI OPEN QUARTER-FINALS CONFIRMED</div>
-            </a>
-        </div>
-        <div id="load-btn" class="item-content mt-md-5 d-flex justify-content-center">
-            <a href="#" class="news-load">
-                <div><i class="fa-duotone fa-plus fa-2xl"></i></div>
-                <div>Xem thêm</div>
-            </a>
-        </div>
+            @if (ViewBag.ClubPost != null)
+            {
+                foreach (var post in ViewBag.ClubPost)
+                {
+                    <div class="item-content d-flex justify-content-center">
+                        <a asp-action="PostDetails" asp-controller="Club" asp-route-id="@post.PostId" class="news-item">
+                            <div class="news-date">@post.UpdatedDate.ToString("yyyy-MM-dd")</div>
+                            <div class="news-image">
+                                <img src="@post.Flyer" alt="" />
+                            </div>
+                            <div class="news-title">@post.Title</div>
+                        </a>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Câu lạc bộ chưa có bài đăng nào.</p>
+            }
+     
+       
     </div>
 </div>
 }

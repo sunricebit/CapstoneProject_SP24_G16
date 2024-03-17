@@ -113,7 +113,7 @@ namespace PoolComVnWebAPI.Controllers
 
                 var clubDto = new ClubDTO
                 {
-
+                    ClubId = club.ClubId,
                     ClubName = club.ClubName,
                     Facebook = club.Facebook,
                     Phone = club.Phone,
