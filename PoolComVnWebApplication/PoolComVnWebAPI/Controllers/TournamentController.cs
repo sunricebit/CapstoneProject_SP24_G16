@@ -48,7 +48,7 @@ namespace PoolComVnWebAPI.Controllers
                     TournamentId = tour.TourId,
                     TournamentName = tour.TourName,
                     Description = tour.Description,
-                    StartTime = tour.StartDate,
+                    StartTime = tour.StartDate  ?? DateTime.Now,
                     EndTime = tour.EndDate,
                     Flyer = tour.Flyer,
                     GameType = tour.GameTypeId == Constant.Game8Ball ? Constant.String8Ball
@@ -273,7 +273,7 @@ namespace PoolComVnWebAPI.Controllers
                     {
                         TournamentId = item.TourId,
                         TournamentName = item.TourName,
-                        StartTime = item.StartDate,
+                        StartTime = item.StartDate ?? DateTime.Now,
                         EndTime = item.EndDate,
                         Address = item.Club.Address,
                         ClubName = item.Club.ClubName,
