@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    string email = HttpContextAccessor.HttpContext.Request.Cookies["Email"];
+}
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -25,58 +29,30 @@
                     <span class="">PoolCom.</span>
                 </a>
             </div>
-            <div class="user-menu-btn">
-                <i class="fa-solid fa-user user-icon"></i>
-                <ul class="user-menu text-center">
-                    <li><a href="">Hồ sơ</a></li>
-                    <li><a href="">Đăng xuất</a></li>
-                </ul>
-            </div>
+            @if (email != null)
+            {
+                <div class="user col-2 d-flex justify-content-end">
+                    <div class="user-name text-center">
+                        <span>@email.Split("@")[0]</span>
+                        <i class="fa-solid fa-caret-left"></i>
+                    </div>
+                    <ul class="user-menu text-center">
+                        <li><a href="">Profile</a></li>
+                        <li><a asp-action="Index" asp-controller="Club" asp-route-email="@email">Câu lạc bộ của tôi</a></li>
+                        <li><a asp-controller="Authentication" asp-action="Logout">Logout</a></li>
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <div class="login col-2 text-center ">
+                    <a asp-controller="Authentication" asp-action="Login">Đăng nhập</a>
+                </div>
+            }
         </nav>
     </header>
 
-    <div class="club-dashboard-nav">
-        <div class="club-avt-bg d-flex justify-content-center">
-            <div class="club-avt d-flex justify-content-center">
-                <img src="~/images/new_1.jpg" alt="">
-            </div>
-        </div>
-        <div class=" club-name text-center">
-            Moon Club 3, Hạ Long, Quảng Ninh
-        </div>
-        <div class="club-nav">
-            <a href="#" class="club-nav-btn">
-                <i class="fa-solid fa-list-check fa-fade"></i>
-                Quản lí
-            </a>
-            <a href="#" class="club-post club-nav-btn active">
-                <i class="fa-solid fa-newspaper fa-fade"></i>
-                Bài viết
-            </a>
-            <a href="#" class="club-nav-btn">
-                <i class="fa-solid fa-trophy fa-flip"></i>
-                Giải đấu
-            </a>
-            <a href="#" class="club-nav-btn">
-                <i class="fa-solid fa-khanda fa-flip"></i>
-                Trận đấu
-            </a>
-        </div>
-        <div class="club-info">
-            <div class="club-address">
-                <div class="address-title">Địa chỉ:</div>
-                <div class="address-content">Ngõ 5, Cao Thắng, Hạ Long , Quảng Ninh, Việt Nam</div>
-            </div>
-            <div class="club-address">
-                <div class="address-title">Liên hệ</div>
-                <div class="address-content">096 133 33 32</div>
-            </div>
-            <div class="club-address">
-                <div class="address-title">Email</div>
-                <div class="address-content">tungduc14@gmail.com</div>
-            </div>
-        </div>
-    </div>
+    
 
     @RenderBody()
 

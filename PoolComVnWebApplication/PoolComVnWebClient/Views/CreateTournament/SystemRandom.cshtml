@@ -1,5 +1,6 @@
 ﻿@{
     Layout = "~/Views/Shared/_BackBtnLayout.cshtml";
+    int tourId = ViewBag.TourID;
 }
 
 <div class="container-full">
@@ -37,7 +38,7 @@
             </div>
             <div class="random-btn-group row mx-0">
                 <div class="random-btn col-4">
-                    <i class="fa-solid fa-shuffle"></i>
+                    <button onclick="randomMatch(@tourId)"><i class="fa-solid fa-shuffle"></i></button>
                 </div>
                 <div class="players-note save col-8">
                     <i class="fa-solid fa-floppy-disk px-2"></i>
@@ -47,13 +48,8 @@
         </div>
     </div>
 </div>
-
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
-    const winMatchBody = document.getElementById('winer-match-body');
-    const playerNumber = 32;
-    let roundNumber = Math.log2(playerNumber / 2);
-    const finalSinglePlayer = 2;
-    let finalSingleRound = roundNumber - Math.log2(finalSinglePlayer) + 1;
     var width = 250;
     var height = 60;
     var matchDistance = 30;
@@ -61,71 +57,104 @@
     let numberMatchEachRound = 0;
     let count = 0;
     var winBody = '';
+    const winMatchBody = document.getElementById('winer-match-body');
+    var playerNumber;
+    var finalSinglePlayer;
 
-    for (i = 0; i <= finalSingleRound; i++) {
-        numberMatchEachRound = 2 ** (roundNumber - i);
-        for (j = 0; j < numberMatchEachRound; j++) {
-            if (i == 0) {
-                ++count;
-                winBody += '<div class="match-box" id="match' + count + '" style=" top:' + (j * 2 * height) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
-                    + '<div class="match-content row">'
-                    + '<div class="match-number col-2 p-0 text-center">'
-                    + count
-                    + '</div>'
-                    + '<div class="player-match col-8">'
-                    + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src="Image/VietNamFlag.png"/>'
-                    + '<!-- 15 char -->'
-                    + '<div class="player-name">Vũ Hoài Nam</div>'
-                    + '</div>'
-                    + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src="Image/VietNamFlag.png"/>'
-                    + '<!-- 15 char -->'
-                    + '<div class="player-name">Vũ Hữu Quảng</div>'
-                    + '</div>'
-                    + '</div>'
-                    + '<div class="col-2">'
-                    + '</div>'
-                    + '<div class="match-table">Table <span class="table-number">99</span></div>'
-                    + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
-                    + '<div class="next-match d-flex">'
-                    + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
-                    + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
-                    + '</div>'
-                    + '</div>'
-                    + '</div>'
-            } else {
-                ++count;
-                winBody +=
-                    '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; left:' + (width * i + matchDistance * (i - 1)) + 'px">'
-                    + '<div class="left-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height) + 'px;"></div>'
-                    + '<div class="right-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
-                    + '</div>'
-                    + '<div class="match-box" id="match' + count + '" style="top:' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; left: ' + ((matchDistance + width) * i) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
-                    + '<div class="match-content row">'
-                    + '<div class="match-number col-2 p-0 text-center">'
-                    + count
-                    + '</div>'
-                    + '<div class="player-match col-8">'
-                    + '<div class="d-flex justify-content-start align-items-center">'
-                    + '</div>'
-                    + '<div class="d-flex justify-content-start align-items-center">'
-                    + '</div>'
-                    + '</div>'
-                    + '<div class="col-2">'
-                    + '</div>'
-                    + '<div class="match-table">Table <span class="table-number">99</span></div>'
-                    + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
-                    + '<div class="next-match d-flex">'
-                    + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
-                    + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
-                    + '</div>'
-                    + '</div>'
-                    + '</div>'
+
+    $(document).ready(function () {
+        var urlParams = new URLSearchParams(window.location.search);
+        var tourId = urlParams.get('tourId');
+        // Gọi AJAX khi trang được tải
+        $.ajax({
+            url: 'https://localhost:5000/api/Tournament/GetTourInfo',
+            method: 'GET',
+            data: { tourId: tourId }, // Thay yourTourId bằng giá trị thực của tourId
+            success: function (data) {
+                // Gán giá trị cho playerNumber và finalSinglePlayer từ dữ liệu nhận được
+                playerNumber = data.playerNumber; // Giả sử dữ liệu trả về có thuộc tính playerNumber
+                finalSinglePlayer = data.finalSinglePlayer; // Giả sử dữ liệu trả về có thuộc tính finalSinglePlayer
+
+                // Thực hiện các thao tác khác sau khi gán giá trị thành công
+                // Ví dụ: Hiển thị thông tin trên trang web
+                console.log('playerNumber:', playerNumber);
+                console.log('finalSinglePlayer:', finalSinglePlayer);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.log('Error:', errorThrown);
             }
-        }
-    }
+        });
+    });
 
+    let roundNumber = Math.log2(playerNumber / 2);
+    let finalSingleRound = roundNumber - Math.log2(finalSinglePlayer) + 1;
+
+    function randomMatch(tourId) {
+        $.ajax({
+            url: 'https://localhost:5000/api/MatchOfTour/RandomMatch',
+            method: 'GET',
+            data: { tourId: tourId },
+            success: function (data) {
+                var matches = data;
+
+                for (i = 0; i <= finalSingleRound; i++) {
+                    numberMatchEachRound = 2 ** (roundNumber - i);
+                    for (j = 0; j < numberMatchEachRound; j++) {
+                        if (i == 0) {
+                            var match = matches[i];
+                            ++count;
+                            winBody += '<div class="match-box" id="match' + count + '" style=" top:' + (j * 2 * height) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                                + '<div class="match-content row">'
+                                + '<div class="match-number col-2 p-0 text-center">'
+                                + count
+                                + '</div>'
+                                + '<div class="player-match col-8">'
+                                + '<div class="d-flex justify-content-start align-items-center">'
+                                + '<img src="' + match.p1Country + '"/>'
+                                + '<!-- 15 char -->'
+                                + '<div class="player-name">' + match.p1Name + '</div>'
+                                + '</div>'
+                                + '<div class="d-flex justify-content-start align-items-center">'
+                                + '<img src=' + match.p2Country + '/>'
+                                + '<!-- 15 char -->'
+                                + '<div class="player-name">' + match.p2Name + '</div>'
+                                + '</div>'
+                                + '</div>'
+                                + '<div class="col-2">'
+                                + '</div>'
+                                + '</div>'
+                                + '</div>'
+                        } else {
+                            ++count;
+                            winBody +=
+                                '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; left:' + (width * i + matchDistance * (i - 1)) + 'px">'
+                                + '<div class="left-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height) + 'px;"></div>'
+                                + '<div class="right-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
+                                + '</div>'
+                                + '<div class="match-box" id="match' + count + '" style="top:' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; left: ' + ((matchDistance + width) * i) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                                + '<div class="match-content row">'
+                                + '<div class="match-number col-2 p-0 text-center">'
+                                + count
+                                + '</div>'
+                                + '<div class="player-match col-8">'
+                                + '<div class="d-flex justify-content-start align-items-center">'
+                                + '</div>'
+                                + '<div class="d-flex justify-content-start align-items-center">'
+                                + '</div>'
+                                + '</div>'
+                                + '<div class="col-2">'
+                                + '</div>'
+                                + '</div>'
+                                + '</div>'
+                        }
+                    }
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.log('Error:', errorThrown);
+            }
+        });
+    }
 
 
     const loseMatchBody = document.getElementById('loser-match-body');
@@ -152,12 +181,6 @@
                 + '</div>'
                 + '<div class="col-2">'
                 + '</div>'
-                + '<div class="match-table">Table <span class="table-number">99</span></div>'
-                + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
-                + '<div class="next-match d-flex">'
-                + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
-                + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
-                + '</div>'
                 + '</div>'
                 + '</div>'
         }
@@ -177,12 +200,6 @@
                 + '</div>'
                 + '</div>'
                 + '<div class="col-2">'
-                + '</div>'
-                + '<div class="match-table">Table <span class="table-number">99</span></div>'
-                + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
-                + '<div class="next-match d-flex">'
-                + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
-                + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
                 + '</div>'
                 + '</div>'
                 + '</div>'
@@ -212,12 +229,6 @@
                     + '</div>'
                     + '<div class="col-2">'
                     + '</div>'
-                    + '<div class="match-table">Table <span class="table-number">99</span></div>'
-                    + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
-                    + '<div class="next-match d-flex">'
-                    + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
-                    + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
-                    + '</div>'
                     + '</div>'
                     + '</div>'
             }
@@ -242,24 +253,15 @@
                     + '</div>'
                     + '<div class="col-2">'
                     + '</div>'
-                    + '<div class="match-table">Table <span class="table-number">99</span></div>'
-                    + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
-                    + '<div class="next-match d-flex">'
-                    + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
-                    + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
-                    + '</div>'
                     + '</div>'
                     + '</div>'
             }
         }
-
     }
 
     winMatchBody.innerHTML = winBody;
 
     const lastMatchHeight = document.getElementById('match' + playerNumber / 2);
-    const matchTableElement = lastMatchHeight.querySelector('.match-raceTo');
-    matchTableElement.style.paddingBottom = '200px';
 
     window.addEventListener('load', centerPosition);
 

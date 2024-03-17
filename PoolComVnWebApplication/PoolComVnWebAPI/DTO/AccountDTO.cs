@@ -8,7 +8,6 @@ namespace PoolComVnWebAPI.DTO
         public int AccountID { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public virtual Role Role { get; set; }
         public int RoleID { get; set; }
         public string? PhoneNumber { get; set; }
         public string? verifyCode { get; set; }

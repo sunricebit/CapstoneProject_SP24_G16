@@ -29,15 +29,17 @@
 
     public class MatchOfTournamentOutputDTO
     {
-        public int MatchId { get; set; }
+        public int MatchNumber { get; set; }
         public string MatchCode { get; set; }
+        public int P1Id { get; set; }
+        public int P2Id { get; set; }
         public string P1Country { get; set; }
         public string P2Country { get; set; }
         public string P1Name { get; set; }
         public string P2Name { get; set; }
-        public int P1Score { get; set; }
-        public int P2Score { get; set; }
-        public int LoseNextMatch { get; set; }
-        public int WinNextMatch { get; set; }
+        public string P1Score { get; set; }
+        public string P2Score { get; set; }
+        public int? LoseNextMatch { get; set; }
+        public int? WinNextMatch { get; set; }
     }
 }

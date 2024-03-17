@@ -7,7 +7,6 @@ namespace BusinessObject.Models
     {
         public Account()
         {
-            Clubs = new HashSet<Club>();
             News = new HashSet<News>();
             Users = new HashSet<User>();
         }
@@ -18,12 +17,10 @@ namespace BusinessObject.Models
         public int RoleId { get; set; }
         public string? PhoneNumber { get; set; }
         public string? VerifyCode { get; set; }
-        public int? ClubId { get; set; }
         public bool Status { get; set; }
 
-        public virtual Club? Club { get; set; }
         public virtual Role Role { get; set; } = null!;
-        public virtual ICollection<Club> Clubs { get; set; }
+        public virtual Club? Club { get; set; }
         public virtual ICollection<News> News { get; set; }
         public virtual ICollection<User> Users { get; set; }
     }

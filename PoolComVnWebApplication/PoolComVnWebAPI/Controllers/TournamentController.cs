@@ -150,8 +150,8 @@ namespace PoolComVnWebAPI.Controllers
             {
                 return BadRequest("Unauthorize");
             }
-
-            int clubId = _clubDAO.GetClubIdByAccountId(Int32.Parse(account.Value));
+            var club = _clubDAO.GetClubByAccountId(Int32.Parse(account.Value));
+            int clubId = club.ClubId;
 
             try
             {
@@ -182,6 +182,7 @@ namespace PoolComVnWebAPI.Controllers
                 throw e;
             }
         }
+
         [HttpPost("CreateTourStFour")]
        // [Authorize]
 
@@ -228,6 +229,7 @@ namespace PoolComVnWebAPI.Controllers
                 throw e;
             }
         }
+
         private async Task<string> UploadFromFirebase(FileStream stream, string filename)
         {
             var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
@@ -284,6 +286,22 @@ namespace PoolComVnWebAPI.Controllers
                     allTourDto.Add(tour);
                 }
                 return Ok(allTourDto);
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+
+        [HttpGet("GetTourInfo")]
+        public IActionResult GetTourInfo(int tourId)
+        {
+            try
+            {
+                Tournament tour = _tournamentDAO.GetTournament(tourId);
+                return Ok(new { playerNumber = tour.PlayerNumber, 
+                    finalSinglePlayer = tour.KnockoutPlayerNumber});
             }
             catch (Exception e)
             {

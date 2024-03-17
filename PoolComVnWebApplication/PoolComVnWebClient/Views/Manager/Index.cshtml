@@ -1,6 +1,8 @@
 ﻿@{
     Layout = "~/Views/Shared/_TournamentLayout.cshtml";
 }
+@using PoolComVnWebClient.DTO;
+@model ManagerDTO;
 
 <div class="container-full">
     <div class="news-manage">
@@ -42,57 +44,40 @@
                         </th>
                         <th class="w100 text-center">Hành động</th>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <div class="img-frame-account">
-                                <img src="~/images/new_1.jpg" />
-                            </div>
-                        </td>
-                        <td>namvhhe153701@fpt.edu.vn</td>
-                        <td class="text-center">0923459456</td>
-                        <td class="text-center">Quản lí</td>
-                        <td class="status">
-                            <div class="user-status isActive">Hoạt động</div>
-                        </td>
-                        <td class="text-center">
-                            <a href="#"><i class="ban-btn fa-solid fa-lock p-2"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <div class="img-frame-account">
-                                <img src="~/images/new_1.jpg" />
-                            </div>
-                        </td>
-                        <td>namvhhe153701@fpt.edu.vn</td>
-                        <td class="text-center">0923459456</td>
-                        <td class="text-center">Quản lí</td>
-                        <td class="status">
-                            <div class="user-status isUnActive">Khóa</div>
-                        </td>
-                        <td class="text-center">
-                            <a href="#"><i class="ban-btn fa-solid fa-lock-open p-2"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <div class="img-frame-account">
-                                <img src="~/images/new_1.jpg" />
-                            </div>
-                        </td>
-                        <td>namvhhe153701@fpt.edu.vn</td>
-                        <td class="text-center">0923459456</td>
-                        <td class="text-center">Quản lí</td>
-                        <td class="status">
-                            <div class="user-status isActive">Hoạt động</div>
-                        </td>
-                        <td class="text-center">
-                            <a href="#"><i class="ban-btn fa-solid fa-lock p-2"></i></a>
-                        </td>
-                    </tr>
+                    @foreach (var account in Model.Accounts)
+                    {
+                        <tr>
+                            <td>@account.AccountID</td>
+                            <td>
+                                <div class="img-frame-account">
+                                    <img src="@account.Email" />
+                                </div>
+                            </td>
+                            <td>@account.Email</td>
+                            <td class="text-center">@account.PhoneNumber</td>
+                            <td class="text-center">@account.RoleID</td>
+                            <td class="status">
+                                @if (account.Status)
+                                {
+                                    <div class="user-status isActive">Hoạt động</div>
+                                }
+                                else
+                                {
+                                    <div class="user-status isUnActive">Khóa</div>
+                                }
+                            </td>
+                            <td class="text-center">
+                                @if (account.Status)
+                                {
+                                    <a href="#"><i class="ban-btn fa-solid fa-lock p-2"></i></a>
+                                }
+                                else
+                                {
+                                    <a href="#"><i class="ban-btn fa-solid fa-lock-open p-2"></i></a>
+                                }
+                            </td>
+                        </tr>
+                    }
                 </table>
             </div>
         </div>
@@ -127,63 +112,42 @@
                         </th>
                         <th class="text-center w100">Hành động</th>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <div class="img-frame-account">
-                                <img src="~/images/new_1.jpg" />
-                            </div>
-                        </td>
-                        <td>Moon club 123</td>
-                        <td>namvhhe153701@fpt.edu.vn</td>
-                        <td class="text-center">0923459456</td>
-                        <td class="text-center">Quảng Ninh, Việt Nam</td>
-                        <td class="text-center">Câu lạc bộ</td>
-                        <td class="status">
-                            <div class="user-status isActive">Hoạt động</div>
-                        </td>
-                        <td class="text-center">
-                            <a href="#"><i class="ban-btn fa-solid fa-lock p-2"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <div class="img-frame-account">
-                                <img src="~/images/new_1.jpg" />
-                            </div>
-                        </td>
-                        <td>Moon club 123</td>
-                        <td>namvhhe153701@fpt.edu.vn</td>
-                        <td class="text-center">0923459456</td>
-                        <td class="text-center">Quảng Ninh</td>
-                        <td class="text-center">Câu lạc bộ</td>
-                        <td class="status">
-                            <div class="user-status isUnActive">Khóa</div>
-                        </td>
-                        <td class="text-center">
-                            <a href="#"><i class="ban-btn fa-solid fa-lock-open p-2"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <div class="img-frame-account">
-                                <img src="~/images/new_1.jpg" />
-                            </div>
-                        </td>
-                        <td>Moon club 123</td>
-                        <td>namvhhe153701@fpt.edu.vn</td>
-                        <td class="text-center">0923459456</td>
-                        <td class="text-center">Quảng Ninh</td>
-                        <td class="text-center">Câu lạc bộ</td>
-                        <td class="status">
-                            <div class="user-status isActive">Hoạt động</div>
-                        </td>
-                        <td class="text-center">
-                            <a href="#"><i class="ban-btn fa-solid fa-lock p-2"></i></a>
-                        </td>
-                    </tr>
+                    @foreach (var club in Model.Clubs)
+                    {
+                        <tr>
+                            <td>@club.ClubId</td>
+                            <td>
+                                <div class="img-frame-account">
+                                    <img src="@club.Avatar" />
+                                </div>
+                            </td>
+                            <td>@club.ClubName</td>
+                            <td>@club.Avatar</td>
+                            <td class="text-center">@club.Phone</td>
+                            <td class="text-center">@club.Address</td>
+                            <td class="text-center">Câu lạc bộ</td>
+                            <td class="status">
+                                @if (club.Status == 1)
+                                {
+                                    <div class="user-status isActive">Hoạt động</div>
+                                }
+                                else
+                                {
+                                    <div class="user-status isUnActive">Khóa</div>
+                                }
+                            </td>
+                            <td class="text-center">
+                                @if (club.Status ==0)
+                                {
+                                    <a href="#"><i class="ban-btn fa-solid fa-lock p-2"></i></a>
+                                }
+                                else
+                                {
+                                    <a href="#"><i class="ban-btn fa-solid fa-lock-open p-2"></i></a>
+                                }
+                            </td>
+                        </tr>
+                    }
                 </table>
             </div>
         </div>
@@ -217,60 +181,41 @@
                         </th>
                         <th class="text-center w100">Hành động</th>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <div class="img-frame-account">
-                                <img src="~/images/new_1.jpg" />
-                            </div>
-                        </td>
-                        <td>Vũ Hoài Nam</td>
-                        <td>namvhhe153701@fpt.edu.vn</td>
-                        <td class="text-center">0923459456</td>
-                        <td class="text-center">Người chơi</td>
-                        <td class="status">
-                            <div class="user-status isActive">Hoạt động</div>
-                        </td>
-                        <td class="text-center">
-                            <a href="#"><i class="ban-btn fa-solid fa-lock p-2"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <div class="img-frame-account">
-                                <img src="~/images/new_1.jpg" />
-                            </div>
-                        </td>
-                        <td>Vũ Hoài Nam</td>
-                        <td>namvhhe153701@fpt.edu.vn</td>
-                        <td class="text-center">0923459456</td>
-                        <td class="text-center">Người chơi</td>
-                        <td class="status">
-                            <div class="user-status isUnActive">Khóa</div>
-                        </td>
-                        <td class="text-center">
-                            <a href="#"><i class="ban-btn fa-solid fa-lock-open p-2"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <div class="img-frame-account">
-                                <img src="~/images/new_1.jpg" />
-                            </div>
-                        </td>
-                        <td>Vũ Hoài Nam</td>
-                        <td>namvhhe153701@fpt.edu.vn</td>
-                        <td class="text-center">0923459456</td>
-                        <td class="text-center">Người chơi</td>
-                        <td class="status">
-                            <div class="user-status isActive">Hoạt động</div>
-                        </td>
-                        <td class="text-center">
-                            <a href="#"><i class="ban-btn fa-solid fa-lock p-2"></i></a>
-                        </td>
-                    </tr>
+                    @foreach (var player in Model.Players)
+                    {
+                        <tr>
+                            <td>@player.PlayerId</td>
+                            <td>
+                                <div class="img-frame-account">
+                                    <img src="@player.Level" />
+                                </div>
+                            </td>
+                            <td>@player.PlayerName</td>
+                            <td>@player.Email</td>
+                            <td class="text-center">@player.PhoneNumber</td>
+                            <td class="text-center">Người chơi</td>
+                          @*  <td class="status">
+                                @if (player.IsPayed)
+                                {
+                                    <div class="user-status isActive">Hoạt động</div>
+                                }
+                                else
+                                {
+                                    <div class="user-status isUnActive">Khóa</div>
+                                }
+                            </td>
+                            <td class="text-center">
+                                @if (player.IsPayed)
+                                {
+                                    <a href="#"><i class="ban-btn fa-solid fa-lock p-2"></i></a>
+                                }
+                                else
+                                {
+                                    <a href="#"><i class="ban-btn fa-solid fa-lock-open p-2"></i></a>
+                                }
+                            </td>*@
+                        </tr>
+                    }
                 </table>
             </div>
         </div>
