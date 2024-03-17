@@ -30,5 +30,18 @@ namespace DataAccess
             }
         }
 
+        public void AddMatch(MatchOfTournament match)
+        {
+            try
+            {
+                var lstMatchOfTournament = _context.MatchOfTournaments.Add(match);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
     }
 }

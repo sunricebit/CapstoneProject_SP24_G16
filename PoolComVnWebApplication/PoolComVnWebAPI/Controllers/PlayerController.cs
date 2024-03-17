@@ -168,10 +168,11 @@ namespace PoolComVnWebAPI.Controllers
                 {
                     PlayerId = p.PlayerId,
                     PlayerName = p.PlayerName,
+                    CountryName = p.Country.CountryImage,
                 };
                 lstPlayer.Add(playerDTO);
             }
-            return Ok(players);
+            return Ok(lstPlayer);
         }   
     }
 }

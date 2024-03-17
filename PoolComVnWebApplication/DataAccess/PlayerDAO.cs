@@ -144,8 +144,43 @@ namespace DataAccess
         {
             try
             {
-                var players = _context.Players.Where(p => p.TourId == tourId);
+                var players = _context.Players.Include(p => p.Country).Where(p => p.TourId == tourId);
                 return players;
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+
+        public IEnumerable<PlayerInMatch> GetPlayersByMatchTour(int matchId)
+        {
+            try
+            {
+                var players = _context.PlayerInMatches.Include(p => p.Player)
+                    .ThenInclude(player => player.Country)
+                    .Where(p => p.MatchId == matchId);
+                return players;
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+
+        public void AddPlayerToMatch(int matchId, int playerId)
+        {
+            try
+            {
+                PlayerInMatch player = new PlayerInMatch()
+                {
+                    PlayerId = playerId,
+                    MatchId = matchId,
+                };
+                _context.PlayerInMatches.Add(player);
+                _context.SaveChanges();
             }
             catch (Exception e)
             {
