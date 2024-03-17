@@ -506,8 +506,9 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult UserRandom()
+        public IActionResult UserRandom(int tourId)
         {
+            ViewBag.TourID = tourId;
             return View();
         }
 
