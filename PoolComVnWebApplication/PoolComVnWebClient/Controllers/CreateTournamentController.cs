@@ -524,5 +524,11 @@ namespace PoolComVnWebClient.Controllers
             ViewBag.TourID = tourId;
             return View();
         }
+
+        [HttpPost]
+        public IActionResult CreateTournament()
+        {
+            return View();
+        }
     }
 }

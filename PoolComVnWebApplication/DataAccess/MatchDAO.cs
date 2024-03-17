@@ -43,5 +43,69 @@ namespace DataAccess
             }
         }
 
+        public bool CheckExistMatch(int tourId, int matchNumber)
+        {
+            try
+            {
+                var match = _context.MatchOfTournaments.FirstOrDefault(m => m.TourId == tourId 
+                                                            && m.MatchNumber == matchNumber);
+                if (match != null)
+                {
+                    return true;
+                }
+                else return false;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+
+        public int GetLastest(int tourId, int matchNumber)
+        {
+            try
+            {
+                var match = _context.MatchOfTournaments.FirstOrDefault(m => m.TourId == tourId
+                                                            && m.MatchNumber == matchNumber);
+                return match.MatchId;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public MatchOfTournament GetMatchOfTournamentsByNumber(int tourId, int matchNumber)
+        {
+            try
+            {
+                var match = _context.MatchOfTournaments.FirstOrDefault(m => m.TourId == tourId
+                                                            && m.MatchNumber == matchNumber);
+                return match;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public void UpdateMatch(MatchOfTournament matchOfTournament)
+        {
+            try
+            {
+                var match = _context.MatchOfTournaments.FirstOrDefault(m => m.MatchId == matchOfTournament.MatchId);
+                match.Status = matchOfTournament.Status;
+                match.WinToMatch = matchOfTournament.WinToMatch;
+                match.LoseToMatch = matchOfTournament.LoseToMatch;
+                match.TableId = matchOfTournament.TableId;
+                _context.Update(match);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

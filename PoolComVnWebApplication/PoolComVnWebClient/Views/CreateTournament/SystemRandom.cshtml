@@ -44,7 +44,9 @@
                 </div>
                 <div class="players-note save col-8">
                     <i class="fa-solid fa-floppy-disk px-2"></i>
-                    <span style="font-size: 20px;">Lưu và xem sơ đồ đấu</span>
+                    <button onclick="saveBracket(@tourId)">
+                        <span style="font-size: 20px;">Lưu và xem sơ đồ đấu</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -69,7 +71,7 @@
         $.ajax({
             url: 'https://localhost:5000/api/Tournament/GetTourInfo',
             method: 'GET',
-            data: { tourId: tourId }, 
+            data: { tourId: tourId },
             success: function (data) {
                 // Gán giá trị cho playerNumber và finalSinglePlayer từ dữ liệu nhận được
                 var playerNumber = data.playerNumber;
@@ -85,7 +87,7 @@
                     for (j = 0; j < numberMatchEachRound; j++) {
                         if (i == 0) {
                             ++count;
-                            winBody += '<div class="match-box" id="' + count + '" style=" top:' + (j * 2 * height) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                            winBody += '<div class="match-box have-data" id="' + count + '" style=" top:' + (j * 2 * height) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
                                 + '<div class="match-content row">'
                                 + '<div class="match-number col-2 p-0 text-center">'
                                 + count
@@ -255,7 +257,7 @@
 
                 zoomInBtn.removeEventListener
                 applyZoom();
-                
+
 
 
                 const header = document.querySelector('header');
@@ -358,8 +360,6 @@
     });
 
 
-
-
     function randomMatch(tourId) {
         $.ajax({
             url: 'https://localhost:5000/api/MatchOfTour/RandomMatch',
@@ -410,6 +410,35 @@
                         console.log('Không tìm thấy phần tử player-1 trong .matchbox');
                     }
                 });
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.log('Error:', errorThrown);
+            }
+        });
+    }
+
+    function saveBracket(tourId) {
+        var matchData = [];
+        $('.have-data').each(function () {
+            var matchNumber = $(this).attr('id');
+            var p1Id = $(this).find('.player-1 .player-id').text();
+            var p2Id = $(this).find('.player-2 .player-id').text();
+            var match = {
+                MatchNumber: matchNumber,
+                P1Id: parseInt(p1Id),
+                P2Id: parseInt(p2Id),
+            };
+            matchData.push(match);
+        });
+        var jsonData = JSON.stringify(matchData);
+        console.log(jsonData);
+        $.ajax({
+            url: 'https://localhost:5000/api/MatchOfTour/SaveMatchesRandom/' + tourId,
+            method: 'POST',
+            contentType: 'application/json',
+            data: jsonData,
+            success: function (response) {
+                // Xử lý kết quả từ action SaveMatchesRandom
             },
             error: function (xhr, textStatus, errorThrown) {
                 console.log('Error:', errorThrown);
