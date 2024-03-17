@@ -18,7 +18,7 @@ namespace BusinessObject.Models
         public int TournamentTypeId { get; set; }
         public int PlayerNumber { get; set; }
         public int EntryFee { get; set; }
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string RaceToString { get; set; } = null!;
         public DateTime RegistrationDeadline { get; set; }
