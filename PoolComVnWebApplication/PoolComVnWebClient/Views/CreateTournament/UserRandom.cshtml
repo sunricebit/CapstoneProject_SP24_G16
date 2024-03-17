@@ -112,9 +112,9 @@
                         + (i + 1)
                         + '</div>'
                         + '<div class="player-match col-8">'
-                        + '<div id="randomMatch' + (++matchCount) + '" class="d-flex justify-content-start align-items-center">'
+                        + '<div id="randomMatch' + (++matchCount) + '" class="d-flex justify-content-start align-items-center randomMatch">'
                         + '</div>'
-                        + '<div id="randomMatch' + (++matchCount) + '" class="d-flex justify-content-start align-items-center">'
+                        + '<div id="randomMatch' + (++matchCount) + '" class="d-flex justify-content-start align-items-center randomMatch">'
                         + '</div>'
                         + '</div>'
                         + '</div>'
@@ -363,6 +363,13 @@
             event.preventDefault();
             shufferEvent();
         }
+    }
+
+    function reset() {
+        const btnList = document.querySelector('.randomMatch');
+        btnList.forEach(btn => {
+            btn.
+        })
     }
 
 </script>
