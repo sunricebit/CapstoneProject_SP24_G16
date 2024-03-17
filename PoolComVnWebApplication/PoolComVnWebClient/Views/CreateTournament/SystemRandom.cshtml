@@ -69,7 +69,7 @@
         $.ajax({
             url: 'https://localhost:5000/api/Tournament/GetTourInfo',
             method: 'GET',
-            data: { tourId: tourId }, // Thay yourTourId bằng giá trị thực của tourId
+            data: { tourId: tourId }, 
             success: function (data) {
                 // Gán giá trị cho playerNumber và finalSinglePlayer từ dữ liệu nhận được
                 var playerNumber = data.playerNumber;
@@ -366,7 +366,6 @@
             method: 'GET',
             data: { tourId: tourId },
             success: function (data) {
-                count = 0;
                 var matches = data;
                 matches.forEach(function (match) {
                     var matchNumber = match.matchNumber;

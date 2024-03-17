@@ -172,7 +172,7 @@ namespace PoolComVnWebAPI.Controllers
                 };
                 lstPlayer.Add(playerDTO);
             }
-            return Ok(players);
+            return Ok(lstPlayer);
         }   
     }
 }

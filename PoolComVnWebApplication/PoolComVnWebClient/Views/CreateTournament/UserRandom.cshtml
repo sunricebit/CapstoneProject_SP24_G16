@@ -1,7 +1,8 @@
 ﻿@{
     Layout = "~/Views/Shared/_BackBtnLayout.cshtml";
+    int tourId = ViewBag.TourId;
 }
-
+<div class="tour-id d-none">@tourId</div>
 <div class="container-full">
     <div class="random-round d-flex justify-content-between row">
         <div class="matches col-lg-3 px-0">
@@ -69,34 +70,20 @@
 </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
-    var playerNumber = 2;
+    var playerNumber;
+
+    var playerPick;
+    var playerPickBg;
+    var randomBtnGroup;
 
     //add html to matches view
     const matchesView = document.querySelector('.matches-view');
     const matchList = document.querySelector('.match-list-view');
     var matchesListHTML = '';
     let matchCount = 0;
-    for (var i = 0; i < (playerNumber / 2); i++) {
-        matchesListHTML += '<div class="d-flex justify-content-center">'
-            + '<div class="match-box" id="match' + (i + 1) + '">'
-            + '<div class="d-flex">'
-            + '<div class="match-number col-2 text-center">'
-            + (i + 1)
-            + '</div>'
-            + '<div class="player-match col-8">'
-            + '<div id="randomMatch' + (++matchCount) + '" class="d-flex justify-content-start align-items-center">'
-            + '</div>'
-            + '<div id="randomMatch' + (++matchCount) + '" class="d-flex justify-content-start align-items-center">'
-            + '</div>'
-            + '</div>'
-            + '</div>'
-            + '</div>'
-            + '</div>'
-    }
-
-    matchList.innerHTML = matchesListHTML;
-
     
+
+
 
     //add html to Player view
     const playerView = document.querySelector('.players-view');
@@ -110,15 +97,33 @@
         $.ajax({
             url: 'https://localhost:5000/api/Tournament/GetTourInfo',
             method: 'GET',
-            data: { tourId: tourId }, // Thay yourTourId bằng giá trị thực của tourId
+            data: { tourId: tourId },
             success: function (data) {
                 // Gán giá trị cho playerNumber và finalSinglePlayer từ dữ liệu nhận được
-                playerNumber = data.playerNumber; // Giả sử dữ liệu trả về có thuộc tính playerNumber
+                playerNumber = data.playerNumber;
 
-                // Thực hiện các thao tác khác sau khi gán giá trị thành công
-                // Ví dụ: Hiển thị thông tin trên trang web
                 console.log('playerNumber:', playerNumber);
-                console.log('finalSinglePlayer:', finalSinglePlayer);
+
+                for (var i = 0; i < (playerNumber / 2); i++) {
+                    matchesListHTML += '<div class="d-flex justify-content-center">'
+                        + '<div class="match-box" id="match' + (i + 1) + '">'
+                        + '<div class="d-flex">'
+                        + '<div class="match-number col-2 text-center">'
+                        + (i + 1)
+                        + '</div>'
+                        + '<div class="player-match col-8">'
+                        + '<div id="randomMatch' + (++matchCount) + '" class="d-flex justify-content-start align-items-center randomMatch">'
+                        + '</div>'
+                        + '<div id="randomMatch' + (++matchCount) + '" class="d-flex justify-content-start align-items-center randomMatch">'
+                        + '</div>'
+                        + '</div>'
+                        + '</div>'
+                        + '</div>'
+                        + '</div>'
+                }
+
+                matchList.innerHTML = matchesListHTML;
+
             },
             error: function (xhr, textStatus, errorThrown) {
                 console.log('Error:', errorThrown);
@@ -128,19 +133,36 @@
         $.ajax({
             url: 'https://localhost:5000/api/Player/GetPlayerByTourId',
             method: 'GET',
-            data: { tourId: tourId }, 
+            data: { tourId: tourId },
             success: function (data) {
-
-                for (var i = 0; i < playerNumber; i++) {
+                var players = data;
+                players.forEach(function (player) {
+                    console.log(player);
                     playerViewHTML += '<div class="player">'
                         + '<div class="d-flex">'
                         + '<div class="player-flag">'
-                        + '<img src="' + data. + '" alt="">'
+                        + '<img src="' + player.countryName + '" alt="">'
                         + '</div>'
-                        + '<div class="player-name">Vũ Đoàn Nam Thư ' + (i + 1) + '</div>'
+                        + '<div class="player-name">' + player.playerName + '</div>'
+                        + '<div class="player-id d-none">' + player.playerId + '</div>'
                         + '</div>'
                         + '</div>'
-                }
+                });
+                playerViewHTML += '<div class="player-pick-bg d-none">'
+                    + '<div class="player-pick">'
+                    + '<div class="d-flex">'
+                    + '<div class="player-flag">'
+                    + '<img src="/Image/VietNamFlag.png" alt="">'
+                    + '</div>'
+                    + '<div class="player-name"></div>'
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
+                playerView.innerHTML = playerViewHTML;
+
+                playerPick = document.querySelector('.player-pick');
+                playerPickBg = document.querySelector('.player-pick-bg');
+                randomBtnGroup = document.querySelector('.random-btn-group');
             },
             error: function (xhr, textStatus, errorThrown) {
                 console.log('Error:', errorThrown);
@@ -148,25 +170,12 @@
         });
     });
 
-    playerViewHTML += '<div class="player-pick-bg d-none">'
-        + '<div class="player-pick">'
-        + '<div class="d-flex">'
-        + '<div class="player-flag">'
-        + '<img src="/Image/VietNamFlag.png" alt="">'
-        + '</div>'
-        + '<div class="player-name"></div>'
-        + '</div>'
-        + '</div>'
-        + '</div>'
-    playerView.innerHTML = playerViewHTML;
 </script>
 
 <!-- script random -->
 <script>
     //Random 1 player
-    const playerPick = document.querySelector('.player-pick');
-    const playerPickBg = document.querySelector('.player-pick-bg');
-    const randomBtnGroup = document.querySelector('.random-btn-group');
+    
     const saveBtn = document.querySelector('.save-btn');
 
     let random;
@@ -354,6 +363,13 @@
             event.preventDefault();
             shufferEvent();
         }
+    }
+
+    function reset() {
+        const btnList = document.querySelector('.randomMatch');
+        btnList.forEach(btn => {
+            btn.
+        })
     }
 
 </script>
