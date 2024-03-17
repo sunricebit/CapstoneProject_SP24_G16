@@ -29,7 +29,7 @@ namespace PoolComVnWebClient.Controllers
             try
             {
                 var response = await client.GetAsync($"{ApiUrl}/GetLatestNews?count=6"); // Lấy 6 tin tức mới nhất
-              response.EnsureSuccessStatusCode(); // Đảm bảo phản hồi thành công
+                response.EnsureSuccessStatusCode(); // Đảm bảo phản hồi thành công
 
                 var jsonContent = await response.Content.ReadAsStringAsync();
                 var newsList = JsonConvert.DeserializeObject<List<NewsDTO>>(jsonContent);
@@ -104,9 +104,30 @@ namespace PoolComVnWebClient.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult Club()
+        [HttpGet]
+        public async Task<IActionResult> Club()
         {
-            return View();
+            try
+            {
+                var response = client.GetAsync($"https://localhost:5000/api/Club").Result;
+                response.EnsureSuccessStatusCode(); // Đảm bảo phản hồi thành công
+
+                var jsonContent = await response.Content.ReadAsStringAsync();
+                var clubsList = JsonConvert.DeserializeObject<List<ClubDTO>>(jsonContent);
+                return View(clubsList);
+            }
+            catch (HttpRequestException ex)
+            {
+                // Xử lý lỗi nếu không thể kết nối đến API
+                ModelState.AddModelError(string.Empty, "Lỗi khi kết nối đến API: " + ex.Message);
+                return View();
+            }
+            catch (Exception ex)
+            {
+                // Xử lý các lỗi khác
+                ModelState.AddModelError(string.Empty, "Lỗi khi lấy danh sách Câu lạc bộ: " + ex.Message);
+                return View();
+            }
         }
     }
 }

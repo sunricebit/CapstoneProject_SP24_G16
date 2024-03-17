@@ -141,7 +141,6 @@ namespace PoolComVnWebAPI.Controllers
                     Link = newsDTO.Link,
                     Acc = account,
                     Status = newsDTO.Status
-
                 };
 
                 news.Flyer = newsDTO.Flyer;
