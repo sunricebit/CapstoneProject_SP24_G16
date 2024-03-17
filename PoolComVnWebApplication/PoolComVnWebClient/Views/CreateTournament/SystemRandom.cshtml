@@ -38,7 +38,7 @@
             </div>
             <div class="random-btn-group row mx-0">
                 <div class="random-btn col-4">
-                    <button onclick="randomMatch(@tourId)"><i class="fa-solid fa-shuffle"></i></button>
+                    <button onclick="Load(@tourId)"><i class="fa-solid fa-shuffle"></i></button>
                 </div>
                 <div class="players-note save col-8">
                     <i class="fa-solid fa-floppy-disk px-2"></i>
@@ -60,6 +60,8 @@
     const winMatchBody = document.getElementById('winer-match-body');
     var playerNumber;
     var finalSinglePlayer;
+    var finalSingleRound=0;
+    var roundNumber=0;
 
 
     $(document).ready(function () {
@@ -86,8 +88,7 @@
         });
     });
 
-    let roundNumber = Math.log2(playerNumber / 2);
-    let finalSingleRound = roundNumber - Math.log2(finalSinglePlayer) + 1;
+
 
     function randomMatch(tourId) {
         $.ajax({
@@ -102,6 +103,7 @@
                     for (j = 0; j < numberMatchEachRound; j++) {
                         if (i == 0) {
                             var match = matches[i];
+                            console.log(match);
                             ++count;
                             winBody += '<div class="match-box" id="match' + count + '" style=" top:' + (j * 2 * height) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
                                 + '<div class="match-content row">'
@@ -156,67 +158,23 @@
         });
     }
 
-
-    const loseMatchBody = document.getElementById('loser-match-body');
-    var loseBody = '';
-    for (i = 1; i <= finalSingleRound; i++) {
-        numberMatchEachRound = 2 ** (roundNumber - i);
-        for (j = 0; j < numberMatchEachRound; j++) {
-            ++count;
-            loseBody +=
-                '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; right:' + ((i - 1) * (1.5 * matchDistance + 2 * width)) + 'px">'
-                + '<div class="left-line-lose" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
-                + '<div class="right-line-lose" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height) + 'px;"></div>'
-                + '</div>'
-                + '<div class="match-box" id="match' + count + '" style="top:' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; right: ' + ((1.5 * i - 0.5) * matchDistance + 2 * (i - 1) * width) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
-                + '<div class="match-content row">'
-                + '<div class="match-number col-2 p-0 text-center">'
-                + count
-                + '</div>'
-                + '<div class="player-match col-8">'
-                + '<div class="d-flex justify-content-start align-items-center">'
-                + '</div>'
-                + '<div class="d-flex justify-content-start align-items-center">'
-                + '</div>'
-                + '</div>'
-                + '<div class="col-2">'
-                + '</div>'
-                + '</div>'
-                + '</div>'
-        }
-        for (j = 0; j < numberMatchEachRound; j++) {
-            ++count;
-            loseBody +=
-                '<div class="between-line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; right:' + ((1.5 * i - 0.5) * matchDistance + (2 * i - 1) * width) + 'px; width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
-                + '<div class="match-box" id="match' + count + '" style="top: ' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; right: ' + ((matchDistance * 1.5 * i + width * (2 * i - 1))) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
-                + '<div class="match-content row">'
-                + '<div class="match-number col-2 p-0 text-center">'
-                + count
-                + '</div>'
-                + '<div class="player-match col-8">'
-                + '<div class="d-flex justify-content-start align-items-center">'
-                + '</div>'
-                + '<div class="d-flex justify-content-start align-items-center">'
-                + '</div>'
-                + '</div>'
-                + '<div class="col-2">'
-                + '</div>'
-                + '</div>'
-                + '</div>'
-        }
-    }
-    loseMatchBody.innerHTML = loseBody;
-
-    for (i = finalSingleRound; i <= roundNumber; i++) {
-        numberMatchEachRound = 2 ** (roundNumber - i);
-        if (i === finalSingleRound) {
+    function Load(tourId) {
+        count=0;
+        roundNumber = Math.log2(playerNumber / 2);
+        finalSingleRound = roundNumber - Math.log2(finalSinglePlayer) + 1;
+        randomMatch(tourId);
+        const loseMatchBody = document.getElementById('loser-match-body');
+        var loseBody = '';
+        for (i = 1; i <= finalSingleRound; i++) {
+            numberMatchEachRound = 2 ** (roundNumber - i);
             for (j = 0; j < numberMatchEachRound; j++) {
                 ++count;
-                winBody +=
-                    '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; left:' + (width * (i + 1) + matchDistance * i) + 'px">'
-                    + '<div class="right-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
+                loseBody +=
+                    '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; right:' + ((i - 1) * (1.5 * matchDistance + 2 * width)) + 'px">'
+                    + '<div class="left-line-lose" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
+                    + '<div class="right-line-lose" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height) + 'px;"></div>'
                     + '</div>'
-                    + '<div class="match-box" id="match' + count + '" style="top:' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; left: ' + (matchDistance * (i + 0.5) + width * (i + 1)) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                    + '<div class="match-box" id="match' + count + '" style="top:' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; right: ' + ((1.5 * i - 0.5) * matchDistance + 2 * (i - 1) * width) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
                     + '<div class="match-content row">'
                     + '<div class="match-number col-2 p-0 text-center">'
                     + count
@@ -232,15 +190,11 @@
                     + '</div>'
                     + '</div>'
             }
-        } else {
             for (j = 0; j < numberMatchEachRound; j++) {
                 ++count;
-                winBody +=
-                    '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; left:' + (width * (i + 1) + matchDistance * (i - 0.5)) + 'px">'
-                    + '<div class="left-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height) + 'px;"></div>'
-                    + '<div class="right-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
-                    + '</div>'
-                    + '<div class="match-box" id="match' + count + '" style="top:' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; left: ' + (matchDistance * (i + 0.5) + width * (i + 1)) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                loseBody +=
+                    '<div class="between-line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; right:' + ((1.5 * i - 0.5) * matchDistance + (2 * i - 1) * width) + 'px; width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
+                    + '<div class="match-box" id="match' + count + '" style="top: ' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; right: ' + ((matchDistance * 1.5 * i + width * (2 * i - 1))) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
                     + '<div class="match-content row">'
                     + '<div class="match-number col-2 p-0 text-center">'
                     + count
@@ -257,88 +211,141 @@
                     + '</div>'
             }
         }
-    }
+        loseMatchBody.innerHTML = loseBody;
 
-    winMatchBody.innerHTML = winBody;
-
-    const lastMatchHeight = document.getElementById('match' + playerNumber / 2);
-
-    window.addEventListener('load', centerPosition);
-
-    function centerPosition() {
-        bracketTab.scrollLeft = loseMatchBody.offsetWidth - window.innerWidth / 2 + 200;
-    }
-
-    let currentZoom = 0.5;
-
-    let winerWidth;
-    let loserWidth;
-
-    const bracketContent = document.querySelector('.bracket-content');
-    const bracketTab = document.querySelector('.bracket-tab');
-    const zoomInBtn = document.querySelector('.zoom-in');
-    const zoomOutBtn = document.querySelector('.zoom-out');
-
-    zoomInBtn.removeEventListener
-    applyZoom();
-    function zoomIn() {
-        if (currentZoom <= 1.5) {
-            currentZoom += 0.1;
-            applyZoom();
-            zoomOutBtn.style.opacity = '1';
-            zoomOutBtn.classList.remove('no-hover');
-        } else {
-            zoomInBtn.style.opacity = '0.3';
-            zoomInBtn.classList.add('no-hover');
+        for (i = finalSingleRound; i <= roundNumber; i++) {
+            numberMatchEachRound = 2 ** (roundNumber - i);
+            if (i === finalSingleRound) {
+                for (j = 0; j < numberMatchEachRound; j++) {
+                    ++count;
+                    winBody +=
+                        '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; left:' + (width * (i + 1) + matchDistance * i) + 'px">'
+                        + '<div class="right-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
+                        + '</div>'
+                        + '<div class="match-box" id="match' + count + '" style="top:' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; left: ' + (matchDistance * (i + 0.5) + width * (i + 1)) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                        + '<div class="match-content row">'
+                        + '<div class="match-number col-2 p-0 text-center">'
+                        + count
+                        + '</div>'
+                        + '<div class="player-match col-8">'
+                        + '<div class="d-flex justify-content-start align-items-center">'
+                        + '</div>'
+                        + '<div class="d-flex justify-content-start align-items-center">'
+                        + '</div>'
+                        + '</div>'
+                        + '<div class="col-2">'
+                        + '</div>'
+                        + '</div>'
+                        + '</div>'
+                }
+            } else {
+                for (j = 0; j < numberMatchEachRound; j++) {
+                    ++count;
+                    winBody +=
+                        '<div class="line" style="top: ' + (height * (((2 ** i - 1) / 2) + (2 ** (i + 1) * j))) + 'px; left:' + (width * (i + 1) + matchDistance * (i - 0.5)) + 'px">'
+                        + '<div class="left-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height) + 'px;"></div>'
+                        + '<div class="right-line-win" style="width: ' + matchDistance / 2 + 'px; height: ' + ((2 ** i) * height / 2) + 'px;"></div>'
+                        + '</div>'
+                        + '<div class="match-box" id="match' + count + '" style="top:' + (height * ((2 ** i - 1) + 2 ** (i + 1) * j)) + 'px; left: ' + (matchDistance * (i + 0.5) + width * (i + 1)) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                        + '<div class="match-content row">'
+                        + '<div class="match-number col-2 p-0 text-center">'
+                        + count
+                        + '</div>'
+                        + '<div class="player-match col-8">'
+                        + '<div class="d-flex justify-content-start align-items-center">'
+                        + '</div>'
+                        + '<div class="d-flex justify-content-start align-items-center">'
+                        + '</div>'
+                        + '</div>'
+                        + '<div class="col-2">'
+                        + '</div>'
+                        + '</div>'
+                        + '</div>'
+                }
+            }
         }
-    }
 
-    function zoomOut() {
-        if (currentZoom >= 0.2) {
-            currentZoom -= 0.1;
-            applyZoom();
-            zoomInBtn.style.opacity = '1';
-            zoomInBtn.classList.remove('no-hover');
-        } else {
-            zoomOutBtn.style.opacity = '0.3';
-            zoomOutBtn.classList.add('no-hover');
+        winMatchBody.innerHTML = winBody;
+
+        const lastMatchHeight = document.getElementById('match' + playerNumber / 2);
+
+        window.addEventListener('load', centerPosition);
+
+        function centerPosition() {
+            bracketTab.scrollLeft = loseMatchBody.offsetWidth - window.innerWidth / 2 + 200;
         }
-    }
 
-    function applyZoom() {
-        winerWidth = ((roundNumber + 2) * width + (roundNumber + 0.5) * matchDistance) * currentZoom + leftRightSpace;
-        loserWidth = (finalSingleRound * (2 * width + 1.5 * matchDistance)) * currentZoom + leftRightSpace;
-        winMatchBody.style.width = winerWidth + 'px';
-        loseMatchBody.style.width = loserWidth + 'px';
-        bracketContent.style.transform = `scale(${currentZoom})`;
-        centerPosition();
-    }
+        let currentZoom = 0.5;
+
+        let winerWidth;
+        let loserWidth;
+
+        const bracketContent = document.querySelector('.bracket-content');
+        const bracketTab = document.querySelector('.bracket-tab');
+        const zoomInBtn = document.querySelector('.zoom-in');
+        const zoomOutBtn = document.querySelector('.zoom-out');
+
+        zoomInBtn.removeEventListener
+        applyZoom();
+        function zoomIn() {
+            if (currentZoom <= 1.5) {
+                currentZoom += 0.1;
+                applyZoom();
+                zoomOutBtn.style.opacity = '1';
+                zoomOutBtn.classList.remove('no-hover');
+            } else {
+                zoomInBtn.style.opacity = '0.3';
+                zoomInBtn.classList.add('no-hover');
+            }
+        }
+
+        function zoomOut() {
+            if (currentZoom >= 0.2) {
+                currentZoom -= 0.1;
+                applyZoom();
+                zoomInBtn.style.opacity = '1';
+                zoomInBtn.classList.remove('no-hover');
+            } else {
+                zoomOutBtn.style.opacity = '0.3';
+                zoomOutBtn.classList.add('no-hover');
+            }
+        }
+
+        function applyZoom() {
+            winerWidth = ((roundNumber + 2) * width + (roundNumber + 0.5) * matchDistance) * currentZoom + leftRightSpace;
+            loserWidth = (finalSingleRound * (2 * width + 1.5 * matchDistance)) * currentZoom + leftRightSpace;
+            winMatchBody.style.width = winerWidth + 'px';
+            loseMatchBody.style.width = loserWidth + 'px';
+            bracketContent.style.transform = `scale(${currentZoom})`;
+            centerPosition();
+        }
 
 
-    const header = document.querySelector('.back-btn-nav');
-    const screenSize = document.querySelector('.screen-size');
-    const playersHeader = document.querySelector('.players-header');
-    const systemRandom = document.querySelector('.system-random');
-    const randomBtnGroup = document.querySelector('.random-btn-group');
+        const header = document.querySelector('.back-btn-nav');
+        const screenSize = document.querySelector('.screen-size');
+        const playersHeader = document.querySelector('.players-header');
+        const systemRandom = document.querySelector('.system-random');
+        const randomBtnGroup = document.querySelector('.random-btn-group');
 
-    function fullScreen() {
-        systemRandom.classList.add('full-screen');
-        screenSize.innerHTML = '<button class="zoom-in" onclick="minimized()">'
-            + '<i class="fa-solid fa-compress"></i>'
-            + '</button>';
-        header.classList.add('d-none');
-        playersHeader.classList.add('d-none');
-        randomBtnGroup.classList.add('d-none');
-    }
+        function fullScreen() {
+            systemRandom.classList.add('full-screen');
+            screenSize.innerHTML = '<button class="zoom-in" onclick="minimized()">'
+                + '<i class="fa-solid fa-compress"></i>'
+                + '</button>';
+            header.classList.add('d-none');
+            playersHeader.classList.add('d-none');
+            randomBtnGroup.classList.add('d-none');
+        }
 
-    function minimized() {
-        systemRandom.classList.remove('full-screen');
-        screenSize.innerHTML = '<button class="zoom-in" onclick="fullScreen()">'
-            + '<i class="fa-solid fa-expand"></i>'
-            + '</button>';
-        header.classList.remove('d-none');
-        playersHeader.classList.remove('d-none');
-        randomBtnGroup.classList.remove('d-none');
+        function minimized() {
+            systemRandom.classList.remove('full-screen');
+            screenSize.innerHTML = '<button class="zoom-in" onclick="fullScreen()">'
+                + '<i class="fa-solid fa-expand"></i>'
+                + '</button>';
+            header.classList.remove('d-none');
+            playersHeader.classList.remove('d-none');
+            randomBtnGroup.classList.remove('d-none');
+        }
     }
 
 </script>
