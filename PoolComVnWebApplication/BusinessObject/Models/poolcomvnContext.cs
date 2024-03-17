@@ -129,7 +129,6 @@ namespace BusinessObject.Models
                 entity.HasOne(d => d.Table)
                     .WithMany(p => p.MatchOfTournaments)
                     .HasForeignKey(d => d.TableId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MatchOfTournaments_Tables");
 
                 entity.HasOne(d => d.Tour)
