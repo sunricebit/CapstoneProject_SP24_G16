@@ -28,6 +28,11 @@ namespace DataAccess
         {
             return _context.ClubPosts.Find(postId);
         }
+        public List<ClubPost> GetClubPostByClubId(int clubId)
+        {
+            return _context.ClubPosts.Where(cp => cp.ClubId == clubId).ToList();
+            ;
+        }
 
         public List<ClubPost> GetAllClubPosts()
         {
