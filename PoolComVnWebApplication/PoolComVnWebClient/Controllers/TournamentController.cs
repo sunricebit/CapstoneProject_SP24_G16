@@ -37,9 +37,10 @@ namespace PoolComVnWebClient.Controllers
             return RedirectToAction("InternalServerError", "Error");
         }
 
-        public IActionResult TournamentBracket()
+        [HttpGet]
+        public IActionResult TournamentBracket(int tourId)
         {
-
+            ViewBag.TourId = tourId;
             return View();
         }
 

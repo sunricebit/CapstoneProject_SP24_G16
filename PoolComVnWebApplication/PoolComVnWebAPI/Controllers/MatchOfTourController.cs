@@ -3,6 +3,7 @@ using DataAccess;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PoolComVnWebAPI.DTO;
+using System.Text.RegularExpressions;
 
 namespace PoolComVnWebAPI.Controllers
 {
@@ -31,21 +32,21 @@ namespace PoolComVnWebAPI.Controllers
             foreach (var match in lstMatch)
             {
                 var players = _playerDAO.GetPlayersByMatchTour(match.MatchId);
-                var p1 = players.OrderBy(p => p.PlayerMatchId).First();
-                var p2 = players.OrderBy(p => p.PlayerMatchId).Last();
+                var p1 = players.OrderBy(p => p.PlayerMatchId).FirstOrDefault();
+                var p2 = players.OrderBy(p => p.PlayerMatchId).LastOrDefault();
 
                 MatchOfTournamentOutputDTO matchOfTournament = new MatchOfTournamentOutputDTO()
                 {
                     MatchNumber = match.MatchNumber,
                     MatchCode = match.MatchCode,
                     LoseNextMatch = match.LoseToMatch,
-                    WinNextMatch = match.LoseToMatch,
-                    P1Country = p1.Player.Country.CountryImage,
-                    P1Name = p1.Player.PlayerName,
-                    P1Score = p1.Score == null ? "_" : p2.Score.ToString(),
-                    P2Country = p2.Player.Country.CountryImage,
-                    P2Name = p2.Player.PlayerName,
-                    P2Score = p2.Score == null ? "_" : p2.Score.ToString(),
+                    WinNextMatch = match.WinToMatch,
+                    P1Country = p1 != null ? p1.Player.Country.CountryImage : null,
+                    P1Name = p1 != null ? p1.Player.PlayerName : null,
+                    P1Score = p1 == null ? "_" : p1.Score.ToString(),
+                    P2Country = p2 != null ? p2.Player.Country.CountryImage : null,
+                    P2Name =  p2 != null ? p2.Player.PlayerName : null,
+                    P2Score = p2 == null ? "_" : p2.Score.ToString(),
                 };
 
                 lstOutputMatch.Add(matchOfTournament);
@@ -102,9 +103,8 @@ namespace PoolComVnWebAPI.Controllers
                 };
                 count++;
                 _matchDAO.AddMatch(matchOfTournament);
-                int matchId = _matchDAO.GetLastest(tourId, matchOfTournament.MatchId);
-                _playerDAO.AddPlayerToMatch(match.P1Id, matchId);
-                _playerDAO.AddPlayerToMatch(match.P2Id, matchId);
+                _playerDAO.AddPlayerToMatch(matchOfTournament.MatchId, match.P1Id);
+                _playerDAO.AddPlayerToMatch(matchOfTournament.MatchId, match.P2Id);
             }
             GenerateAllMatchOfTour(tourId);
             return Ok();
@@ -114,13 +114,14 @@ namespace PoolComVnWebAPI.Controllers
         {
             Tournament tour = _tournamentDAO.GetTournament(tourId);
             int numberOfMatch = CalculateNumberOfMatch(tour.MaxPlayerNumber, tour.KnockoutPlayerNumber);
-            for (int i = 0; i < numberOfMatch; i++)
+            for (int i = 1; i <= numberOfMatch; i++)
             {
                 if (!_matchDAO.CheckExistMatch(tourId, i))
                 {
                     MatchOfTournament matchOfTournament = new MatchOfTournament()
                     {
                         TourId = tourId,
+                        MatchCode = i.ToString(),
                         MatchNumber = i,
                         WinToMatch = WinNextMatch(i, tour.MaxPlayerNumber, tour.KnockoutPlayerNumber.Value),
                         LoseToMatch = LoseNextMatch(i, tour.MaxPlayerNumber, tour.KnockoutPlayerNumber.Value),
