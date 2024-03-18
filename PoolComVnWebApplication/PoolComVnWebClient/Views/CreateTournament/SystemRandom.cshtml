@@ -434,7 +434,7 @@
             contentType: 'application/json',
             data: jsonData,
             success: function (response) {
-                // Xử lý kết quả từ action SaveMatchesRandom
+                window.location.href = '/CreateTournament/StepSixReview?tourId=' + tourId;
             },
             error: function (xhr, textStatus, errorThrown) {
                 console.log('Error:', errorThrown);

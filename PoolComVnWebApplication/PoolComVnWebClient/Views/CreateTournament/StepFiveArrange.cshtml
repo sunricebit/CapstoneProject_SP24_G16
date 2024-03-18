@@ -1,5 +1,6 @@
 ﻿@{
     Layout = "~/Views/Shared/_CreateTournamentLayout.cshtml";
+    int tourId = ViewBag.TourId;
 }
 
 <div class="container-full">
@@ -12,8 +13,8 @@
                         <div class="step-two-nav arrange-btn">
                             Sắp xếp
                             <div class="arrange-menu">
-                                <a href="@Url.Action("SystemRandom", "CreateTournament")">Hệ thống ngẫu nhiên</a>
-                                <a href="@Url.Action("UserRandom", "CreateTournament")">Người dùng ngẫu nhiên</a>
+                                <a href="@Url.Action("SystemRandom", "CreateTournament", new {tourId = tourId})">Hệ thống ngẫu nhiên</a>
+                                <a href="@Url.Action("UserRandom", "CreateTournament", new {tourId = tourId})">Người dùng ngẫu nhiên</a>
                                 @*<a href="@Url.Action("UserCustom", "CreateTournament")">Người dùng tùy chỉnh</a>*@
                             </div>
                         </div>
@@ -52,6 +53,7 @@
 </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
+
     const winMatchBody = document.getElementById('winer-match-body');
     var width = 250;
     var height = 60;
@@ -60,6 +62,7 @@
     let numberMatchEachRound = 0;
     let count = 0;
     var winBody = '';
+    var imgList;
 
     $(document).ready(function () {
         var urlParams = new URLSearchParams(window.location.search);
@@ -84,12 +87,12 @@
                     for (j = 0; j < numberMatchEachRound; j++) {
                         if (i == 0) {
                             ++count;
-                            winBody += '<div class="match-box have-data" id="' + count + '" style=" top:' + (j * 2 * height) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                            winBody += '<div class="match-box have-data" id="match' + count + '" style=" top:' + (j * 2 * height) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
                                 + '<div class="match-content row">'
                                 + '<div class="match-number col-2 p-0 text-center">'
                                 + count
                                 + '</div>'
-                                + '<div class="player-match col-8">'
+                                + '<div class="player-match col-10">'
                                 + '<div class="d-flex justify-content-start align-items-center player-1">'
                                 + '<img src=""/>'
                                 + '<!-- 15 char -->'
@@ -102,8 +105,6 @@
                                 + '<div class="player-name"></div>'
                                 + '<div class="player-id d-none"></div>'
                                 + '</div>'
-                                + '</div>'
-                                + '<div class="col-2">'
                                 + '</div>'
                                 + '</div>'
                                 + '</div>'
@@ -119,13 +120,11 @@
                                 + '<div class="match-number col-2 p-0 text-center">'
                                 + count
                                 + '</div>'
-                                + '<div class="player-match col-8">'
+                                + '<div class="player-match col-10">'
                                 + '<div class="d-flex justify-content-start align-items-center">'
                                 + '</div>'
                                 + '<div class="d-flex justify-content-start align-items-center">'
                                 + '</div>'
-                                + '</div>'
-                                + '<div class="col-2">'
                                 + '</div>'
                                 + '</div>'
                                 + '</div>'
@@ -149,13 +148,11 @@
                             + '<div class="match-number col-2 p-0 text-center">'
                             + count
                             + '</div>'
-                            + '<div class="player-match col-8">'
+                            + '<div class="player-match col-10">'
                             + '<div class="d-flex justify-content-start align-items-center">'
                             + '</div>'
                             + '<div class="d-flex justify-content-start align-items-center">'
                             + '</div>'
-                            + '</div>'
-                            + '<div class="col-2">'
                             + '</div>'
                             + '</div>'
                             + '</div>'
@@ -169,13 +166,11 @@
                             + '<div class="match-number col-2 p-0 text-center">'
                             + count
                             + '</div>'
-                            + '<div class="player-match col-8">'
+                            + '<div class="player-match col-10">'
                             + '<div class="d-flex justify-content-start align-items-center">'
                             + '</div>'
                             + '<div class="d-flex justify-content-start align-items-center">'
                             + '</div>'
-                            + '</div>'
-                            + '<div class="col-2">'
                             + '</div>'
                             + '</div>'
                             + '</div>'
@@ -197,13 +192,11 @@
                                 + '<div class="match-number col-2 p-0 text-center">'
                                 + count
                                 + '</div>'
-                                + '<div class="player-match col-8">'
+                                + '<div class="player-match col-10">'
                                 + '<div class="d-flex justify-content-start align-items-center">'
                                 + '</div>'
                                 + '<div class="d-flex justify-content-start align-items-center">'
                                 + '</div>'
-                                + '</div>'
-                                + '<div class="col-2">'
                                 + '</div>'
                                 + '</div>'
                                 + '</div>'
@@ -221,13 +214,11 @@
                                 + '<div class="match-number col-2 p-0 text-center">'
                                 + count
                                 + '</div>'
-                                + '<div class="player-match col-8">'
+                                + '<div class="player-match col-10">'
                                 + '<div class="d-flex justify-content-start align-items-center">'
                                 + '</div>'
                                 + '<div class="d-flex justify-content-start align-items-center">'
                                 + '</div>'
-                                + '</div>'
-                                + '<div class="col-2">'
                                 + '</div>'
                                 + '</div>'
                                 + '</div>'
@@ -235,9 +226,11 @@
                     }
                 }
 
-                getMatch
-
                 winMatchBody.innerHTML = winBody;
+                imgList = document.querySelector('.bracket-tab').querySelectorAll('img');
+                imgList.forEach(img => {
+                    img.classList.add('d-none');
+                });
                 const lastMatchHeight = document.getElementById('match' + playerNumber / 2);
                 window.addEventListener('load', centerPosition);
 
@@ -358,4 +351,60 @@
         });
     });
 
+    function getData(tourId) {
+        $.ajax({
+            url: 'https://localhost:5000/api/MatchOfTour/GetMatchForBracket',
+            method: 'GET',
+            data: { tourId: tourId },
+            success: function (data) {
+                var matches = data;
+                matches.forEach(function (match) {
+                    var matchNumber = match.matchNumber;
+                    var matchBox = $('#match' + matchNumber); // Tìm thẻ match-box có ID tương ứng với matchNumber
+
+
+                    var player1Element = matchBox.find('.player-1').first();
+
+                    // Kiểm tra nếu phần tử tồn tại
+                    if (player1Element.length > 0) {
+                        var playerNameElement = player1Element.find('.player-name');
+                        var playerName = match.p1Name;
+                        playerNameElement.text(playerName);
+
+                        var countryImageElement = player1Element.find('img');
+                        var countryImage = match.p1Country;
+                        countryImageElement.attr('src', countryImage);
+
+                        var playerIdElement = player1Element.find('.player-id');
+                        var playerId = match.p1Id;
+                        playerIdElement.text(playerId);
+                    } else {
+                        console.log('Không tìm thấy phần tử player-1 trong .matchbox');
+                    }
+
+                    var player2Element = matchBox.find('.player-2').first();
+
+                    // Kiểm tra nếu phần tử tồn tại
+                    if (player2Element.length > 0) {
+                        var playerNameElement = player2Element.find('.player-name');
+                        var playerName = match.p2Name;
+                        playerNameElement.text(playerName);
+
+                        var countryImageElement = player2Element.find('img');
+                        var countryImage = match.p2Country;
+                        countryImageElement.attr('src', countryImage);
+
+                        var playerIdElement = player2Element.find('.player-id');
+                        var playerId = match.p2Id;
+                        playerIdElement.text(playerId);
+                    } else {
+                        console.log('Không tìm thấy phần tử player-2 trong .matchbox');
+                    }
+                });
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.log('Error:', errorThrown);
+            }
+        });
+    }
 </script>
