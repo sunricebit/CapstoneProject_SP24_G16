@@ -1711,6 +1711,7 @@ footer {
         border-radius: 10px;
         border: 2px #aaa solid;
         overflow: hidden;
+        min-width: 600px;
     }
 
     .start-display .start-title {
@@ -1742,12 +1743,28 @@ footer {
         color: #fff;
     }
 
-        .match-display .match-detail .match-close:hover,
-        .start-display .start-close:hover {
-            color: #000;
-            background: #aa0642;
+    .match-display .cancle-table {
+        line-height: 30px;
+        height: 32px;
+        margin-left: 10px;
+        background: #b91b1b;
+        padding: 0px 10px;
+        border-radius: 5px;
+        color: #fff;
+        border: 2px #fff solid;
+    }
+
+        .match-display .cancle-table:hover {
             cursor: pointer;
+            background-color: #a70d10;
         }
+
+    .match-display .match-detail .match-close:hover,
+    .start-display .start-close:hover {
+        color: #000;
+        background: #aa0642;
+        cursor: pointer;
+    }
 
     .match-display .match-detail .details-body,
     .solo-detail .match-detail .details-body {
@@ -2836,6 +2853,22 @@ tr:not(:first-child).isFinish {
         min-height: 100px;
     }
 
+    .create-tour .tour-input .select-address {
+        min-width: 150px;
+        background: #00000000;
+        padding: 5px 10px;
+        color: #fff;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        border-bottom: 3px solid #fff;
+        outline: none;
+        margin-right: 10px;
+    }
+
+        .create-tour .tour-input .select-address option {
+            color: #000;
+        }
+
     .create-tour .tour-input .input-date {
         width: 300px;
         padding: 5px 10px;
@@ -3319,6 +3352,28 @@ tr:not(:first-child).isFinish {
         background-repeat: no-repeat;
         background-position: center center;
     }
+
+    .upload-img.avt {
+        width: 300px;
+        height: 300px;
+    }
+
+        .upload-img.avt .preview-image-bg {
+            width: 280px;
+            height: 280px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .upload-img.avt .preview-image {
+            height: 280px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
 
 .create-tour .bracket-tab {
     height: 70vh;
@@ -3832,7 +3887,8 @@ tr:not(:first-child).isFinish {
         cursor: pointer;
     }
 
-.match-display .save-btn {
+.match-display .save-btn,
+.match-display .start-match-btn {
     width: 100%;
     line-height: 40px;
     height: 40px;
@@ -3846,10 +3902,19 @@ tr:not(:first-child).isFinish {
     font-size: 18px;
 }
 
-    .match-display .save-btn:hover {
-        background-color: #648fc0;
+.match-display .start-match-btn {
+    background: #31b08c;
+}
+
+    .match-display .start-match-btn:hover {
+        background: #097f3c;
         cursor: pointer;
     }
+
+.match-display .save-btn:hover {
+    background-color: #648fc0;
+    cursor: pointer;
+}
 
 .match-display .edit-table .table-name {
     position: relative;
