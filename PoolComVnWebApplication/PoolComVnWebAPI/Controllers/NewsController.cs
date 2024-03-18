@@ -155,11 +155,10 @@ namespace PoolComVnWebAPI.Controllers
 
 
         [HttpPost("Update")]
-        public ActionResult Put( [FromBody] NewsDTO updatedNewsDTO)
+        public ActionResult Put([FromBody] NewsDTO updatedNewsDTO)
         {
             try
             {
-               
                 var account = _newsDAO.GetAccount(updatedNewsDTO.AccId);
 
                 if (account == null)
@@ -167,8 +166,6 @@ namespace PoolComVnWebAPI.Controllers
 
                     return BadRequest("Invalid AccID. No matching Account found.");
                 }
-
-
 
                 var existingNews = _newsDAO.GetNewsById(updatedNewsDTO.NewsId);
 
@@ -209,15 +206,6 @@ namespace PoolComVnWebAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-      
-        
-       
-
-
-
-
-
 
     }
 }

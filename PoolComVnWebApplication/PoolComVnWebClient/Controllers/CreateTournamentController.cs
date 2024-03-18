@@ -64,6 +64,41 @@ namespace PoolComVnWebClient.Controllers
         {
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            List<string> errors = new List<string>();
+
+            // Kiểm tra ModelState
+            if (!ModelState.IsValid)
+            {
+                foreach (var error in ModelState.Values)
+                {
+                    foreach (var modelError in error.Errors)
+                    {
+                        errors.Add(modelError.ErrorMessage);
+                    }
+                }
+
+            }
+
+            if (inputDTO.StartTime <= DateTime.Now)
+            {
+                errors.Add("Thời gian bắt đầu phải lớn hơn thời gian hiện tại.");
+            }
+
+            if (inputDTO.EndTime <= inputDTO.StartTime)
+            {
+                errors.Add("Thời gian kết thúc phải lớn hơn thời gian bắt đầu.");
+            }
+
+            if (inputDTO.RegistrationDeadline <= inputDTO.StartTime || inputDTO.RegistrationDeadline >= inputDTO.EndTime)
+            {
+                errors.Add("Thời hạn đăng ký phải nằm giữa thời gian bắt đầu và kết thúc.");
+            }
+
+            if (errors.Count > 0)
+            {
+                ViewBag.Error = errors;
+                return View();
+            }
             var response = await client.PostAsJsonAsync(ApiUrl + "/CreateTourStOne", inputDTO);
             if (response.IsSuccessStatusCode)
             {
