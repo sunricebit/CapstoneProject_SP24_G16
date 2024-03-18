@@ -48,7 +48,7 @@ namespace PoolComVnWebAPI.Controllers
                     TournamentId = tour.TourId,
                     TournamentName = tour.TourName,
                     Description = tour.Description,
-                    StartTime = tour.StartDate  ?? DateTime.Now,
+                    StartTime = tour.StartDate ?? DateTime.Now,
                     EndTime = tour.EndDate,
                     Flyer = tour.Flyer,
                     GameType = tour.GameTypeId == Constant.Game8Ball ? Constant.String8Ball
@@ -207,18 +207,9 @@ namespace PoolComVnWebAPI.Controllers
 
             try
             {
-                
-                    
-                       
-                            Tournament tour = _tournamentDAO.GetTournament(BannerDTO.TourID);
-                            tour.Flyer = BannerDTO.Flyer;
-                            _tournamentDAO.UpdateTournament(tour);
-                        
-
-
-                    
-                
-
+                Tournament tour = _tournamentDAO.GetTournament(BannerDTO.TourID);
+                tour.Flyer = BannerDTO.Flyer;
+                _tournamentDAO.UpdateTournament(tour);
                 //  _tournamentDAO.CreateTournament(tour);
                 //return Ok(_tournamentDAO.GetLastestTournament().TourId);
                 return Ok(BannerDTO.TourID);
