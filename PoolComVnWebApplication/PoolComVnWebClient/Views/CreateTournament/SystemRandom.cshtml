@@ -37,14 +37,16 @@
                 </div>
             </div>
             <div class="random-btn-group row mx-0">
-                <div class="random-btn col-4">
-                    <button onclick="randomMatch(@tourId)">
+                <div class="random-btn col-4" onclick="randomMatch(@tourId)">
+                    <button>
                         <i class="fa-solid fa-shuffle"></i>
                     </button>
                 </div>
                 <div class="players-note save col-8">
                     <i class="fa-solid fa-floppy-disk px-2"></i>
-                    <span style="font-size: 20px;">Lưu và xem sơ đồ đấu</span>
+                    <button onclick="saveBracket(@tourId)">
+                        <span style="font-size: 20px;">Lưu và xem sơ đồ đấu</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -61,6 +63,7 @@
     let numberMatchEachRound = 0;
     let count = 0;
     var winBody = '';
+    var imgList;
 
     $(document).ready(function () {
         var urlParams = new URLSearchParams(window.location.search);
@@ -69,7 +72,7 @@
         $.ajax({
             url: 'https://localhost:5000/api/Tournament/GetTourInfo',
             method: 'GET',
-            data: { tourId: tourId }, 
+            data: { tourId: tourId },
             success: function (data) {
                 // Gán giá trị cho playerNumber và finalSinglePlayer từ dữ liệu nhận được
                 var playerNumber = data.playerNumber;
@@ -85,12 +88,12 @@
                     for (j = 0; j < numberMatchEachRound; j++) {
                         if (i == 0) {
                             ++count;
-                            winBody += '<div class="match-box" id="' + count + '" style=" top:' + (j * 2 * height) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
+                            winBody += '<div class="match-box have-data" id="' + count + '" style=" top:' + (j * 2 * height) + 'px;width: ' + width + 'px; height: ' + height + 'px;">'
                                 + '<div class="match-content row">'
                                 + '<div class="match-number col-2 p-0 text-center">'
                                 + count
                                 + '</div>'
-                                + '<div class="player-match col-8">'
+                                + '<div class="player-match col-10">'
                                 + '<div class="d-flex justify-content-start align-items-center player-1">'
                                 + '<img src=""/>'
                                 + '<!-- 15 char -->'
@@ -103,8 +106,6 @@
                                 + '<div class="player-name"></div>'
                                 + '<div class="player-id d-none"></div>'
                                 + '</div>'
-                                + '</div>'
-                                + '<div class="col-2">'
                                 + '</div>'
                                 + '</div>'
                                 + '</div>'
@@ -120,13 +121,11 @@
                                 + '<div class="match-number col-2 p-0 text-center">'
                                 + count
                                 + '</div>'
-                                + '<div class="player-match col-8">'
+                                + '<div class="player-match col-10">'
                                 + '<div class="d-flex justify-content-start align-items-center">'
                                 + '</div>'
                                 + '<div class="d-flex justify-content-start align-items-center">'
                                 + '</div>'
-                                + '</div>'
-                                + '<div class="col-2">'
                                 + '</div>'
                                 + '</div>'
                                 + '</div>'
@@ -150,13 +149,11 @@
                             + '<div class="match-number col-2 p-0 text-center">'
                             + count
                             + '</div>'
-                            + '<div class="player-match col-8">'
+                            + '<div class="player-match col-10">'
                             + '<div class="d-flex justify-content-start align-items-center">'
                             + '</div>'
                             + '<div class="d-flex justify-content-start align-items-center">'
                             + '</div>'
-                            + '</div>'
-                            + '<div class="col-2">'
                             + '</div>'
                             + '</div>'
                             + '</div>'
@@ -170,13 +167,11 @@
                             + '<div class="match-number col-2 p-0 text-center">'
                             + count
                             + '</div>'
-                            + '<div class="player-match col-8">'
+                            + '<div class="player-match col-10">'
                             + '<div class="d-flex justify-content-start align-items-center">'
                             + '</div>'
                             + '<div class="d-flex justify-content-start align-items-center">'
                             + '</div>'
-                            + '</div>'
-                            + '<div class="col-2">'
                             + '</div>'
                             + '</div>'
                             + '</div>'
@@ -198,13 +193,11 @@
                                 + '<div class="match-number col-2 p-0 text-center">'
                                 + count
                                 + '</div>'
-                                + '<div class="player-match col-8">'
+                                + '<div class="player-match col-10">'
                                 + '<div class="d-flex justify-content-start align-items-center">'
                                 + '</div>'
                                 + '<div class="d-flex justify-content-start align-items-center">'
                                 + '</div>'
-                                + '</div>'
-                                + '<div class="col-2">'
                                 + '</div>'
                                 + '</div>'
                                 + '</div>'
@@ -222,13 +215,11 @@
                                 + '<div class="match-number col-2 p-0 text-center">'
                                 + count
                                 + '</div>'
-                                + '<div class="player-match col-8">'
+                                + '<div class="player-match col-10">'
                                 + '<div class="d-flex justify-content-start align-items-center">'
                                 + '</div>'
                                 + '<div class="d-flex justify-content-start align-items-center">'
                                 + '</div>'
-                                + '</div>'
-                                + '<div class="col-2">'
                                 + '</div>'
                                 + '</div>'
                                 + '</div>'
@@ -237,6 +228,10 @@
                 }
 
                 winMatchBody.innerHTML = winBody;
+                imgList = document.querySelector('.bracket-tab').querySelectorAll('img');
+                imgList.forEach(img => {
+                    img.classList.add('d-none');
+                });
                 const lastMatchHeight = document.getElementById('match' + playerNumber / 2);
                 window.addEventListener('load', centerPosition);
 
@@ -255,7 +250,7 @@
 
                 zoomInBtn.removeEventListener
                 applyZoom();
-                
+
 
 
                 const header = document.querySelector('header');
@@ -358,14 +353,15 @@
     });
 
 
-
-
     function randomMatch(tourId) {
         $.ajax({
             url: 'https://localhost:5000/api/MatchOfTour/RandomMatch',
             method: 'GET',
             data: { tourId: tourId },
             success: function (data) {
+                imgList.forEach(img => {
+                    img.classList.remove('d-none');
+                });
                 var matches = data;
                 matches.forEach(function (match) {
                     var matchNumber = match.matchNumber;
@@ -407,9 +403,38 @@
                         var playerId = match.p2Id;
                         playerIdElement.text(playerId);
                     } else {
-                        console.log('Không tìm thấy phần tử player-1 trong .matchbox');
+                        console.log('Không tìm thấy phần tử player-2 trong .matchbox');
                     }
                 });
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.log('Error:', errorThrown);
+            }
+        });
+    }
+
+    function saveBracket(tourId) {
+        var matchData = [];
+        $('.have-data').each(function () {
+            var matchNumber = $(this).attr('id');
+            var p1Id = $(this).find('.player-1 .player-id').text();
+            var p2Id = $(this).find('.player-2 .player-id').text();
+            var match = {
+                MatchNumber: matchNumber,
+                P1Id: parseInt(p1Id),
+                P2Id: parseInt(p2Id),
+            };
+            matchData.push(match);
+        });
+        var jsonData = JSON.stringify(matchData);
+        console.log(jsonData);
+        $.ajax({
+            url: 'https://localhost:5000/api/MatchOfTour/SaveMatchesRandom/' + tourId,
+            method: 'POST',
+            contentType: 'application/json',
+            data: jsonData,
+            success: function (response) {
+                window.location.href = '/CreateTournament/StepSixReview?tourId=' + tourId;
             },
             error: function (xhr, textStatus, errorThrown) {
                 console.log('Error:', errorThrown);

@@ -1,4 +1,5 @@
 ﻿@using PoolComVnWebClient.DTO
+@using System.Web
 @model NewsDTO
 <div class="container-full">
     <div class="row news-details m-0">
@@ -7,7 +8,7 @@
                 <img src="@Model.Flyer" />
             </div>
             <div class="news-title px-lg-5 px-0">@Model.Title</div>
-            <div class="news-description px-lg-5 px-0">@Model.Description</div>
+            <div class="news-description px-lg-5 px-0">@Html.Raw(HttpUtility.HtmlDecode(@Model.Description))</div>
         </div>
         <div class="news-other col-lg-3 col-12 pt-lg-0 pt-5">
             @if (ViewBag.OtherNewsList != null && ViewBag.OtherNewsList.Count > 0)

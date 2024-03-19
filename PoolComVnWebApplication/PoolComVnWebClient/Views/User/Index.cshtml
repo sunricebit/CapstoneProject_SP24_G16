@@ -1,0 +1,352 @@
+﻿@{
+    Layout = "~/Views/Shared/_BackBtnLayout.cshtml";
+}
+
+<div class="container-full">
+    <div class="user-profile">
+        <div class="profile">
+            <div class="profile-content d-flex row mx-0">
+                <div class="profile-image col-6" style="background-image: url('/images/new_1.jpg');"></div>
+                <div class="profile-info col-5 d-flex align-items-start">
+                    <div>
+                        <div class="info-line">
+                            <div class="title">Tên</div>
+                            <div class="content">Vũ Hoài Nam</div>
+                        </div>
+                        <div class="info-line">
+                            <div class="title">Ngày sinh</div>
+                            <div class="content">22/09/2001</div>
+                        </div>
+                        <div class="info-line">
+                            <div class="title">Số điện thoại</div>
+                            <div class="content">0923459456</div>
+                        </div>
+                    </div>
+                </div>
+                <a class="edit-btn text-center col-6">
+                    Sửa thông tin
+                </a>
+            </div>
+            <div class="profile-content d-flex row mx-0 mt-3">
+                <div class="profile-statistic row mx-0 mt-3 col-12">
+                    <div class="info-line col-6">
+                        <div class="title text-center">Trận thắnFimageg</div>
+                        <div class="content text-center">
+                            <span id="game-win">100</span>
+                            <span id="win-percent"></span>
+                        </div>
+                    </div>
+                    <div class="info-line col-6">
+                        <div class="title text-center">Trận thua</div>
+                        <div class="content text-center">
+                            <span id="game-lose">10</span>
+                            <span id="lose-percent"></span>
+                        </div>
+                    </div>
+                    <div class="info-line">
+                        <div class="chart-container">
+                            <div class="chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="user-history">
+            <div class="history-content">
+                <div class="awards">
+                    <div class="awards-title">
+                        Danh hiệu
+                    </div>
+                    <div class="awards-content d-flex">
+                        <div class="awards-box">
+                            <div class="no-awards">Chưa có danh hiệu</div>
+                        </div>
+                        <a href="#" class="awards-box">
+                            <div class="awards-img-bg">
+                                <div class="awards-img" style="background-image: url('/images/gold_medal.png');"></div>
+                            </div>
+                            <div class="awards-name">Moon Club hạng E,F,G,H</div>
+                        </a>
+                        <a href="#" class="awards-box">
+                            <div class="awards-img-bg">
+                                <div class="awards-img" style="background-image: url(/images/silver_medal.png);"></div>
+                            </div>
+                            <div class="awards-name">Giải 9 ball hạng E.F.G.H Moon Club 3</div>
+                        </a>
+                        <a href="#" class="awards-box">
+                            <div class="awards-img-bg">
+                                <div class="awards-img" style="background-image: url(/images/bronze_medal.png);"></div>
+                            </div>
+                            <div class="awards-name">Moon Club hạng E,F,G,H</div>
+                        </a>
+                        <a href="#" class="awards-box">
+                            <div class="awards-img-bg">
+                                <div class="awards-img" style="background-image: url('/images/gold_medal.png');"></div>
+                            </div>
+                            <div class="awards-name">Moon Club hạng E,F,G,H</div>
+                        </a>
+                        <a href="#" class="awards-box">
+                            <div class="awards-img-bg">
+                                <div class="awards-img" style="background-image: url('/images/gold_medal.png');"></div>
+                            </div>
+                            <div class="awards-name">Moon Club hạng E,F,G,H</div>
+                        </a>
+                        <a href="#" class="awards-box">
+                            <div class="awards-img-bg">
+                                <div class="awards-img" style="background-image: url('/images/gold_medal.png');"></div>
+                            </div>
+                            <div class="awards-name">Moon Club hạng E,F,G,H</div>
+                        </a>
+                        <a href="#" class="awards-box">
+                            <div class="awards-img-bg">
+                                <div class="awards-img" style="background-image: url('/images/gold_medal.png');"></div>
+                            </div>
+                            <div class="awards-name">Moon Club hạng E,F,G,H</div>
+                        </a>
+                        <a href="#" class="awards-box">
+                            <div class="awards-img-bg">
+                                <div class="awards-img" style="background-image: url('/images/gold_medal.png');"></div>
+                            </div>
+                            <div class="awards-name">Moon Club hạng E,F,G,H</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="history-content mt-3">
+                <div class="tour-history">
+                    <div class="history-title">
+                        Giải đấu đã tham gia
+                    </div>
+                    <div class="awards-box">
+                        <div class="no-awards text-start">Chưa tham gia giải đấu</div>
+                    </div>
+                    <div>
+                        <div class="mt-5 d-flex row">
+                            <div class="tour-item">
+                                <a href="#" class="item-body">
+                                    <div class="tour-status schedule-status"></div>
+                                    <img class="tour-image" src="~/images/new_1.jpg" alt="">
+                                    <div>
+                                        <div class="tour-type d-flex justify-content-center align-items-center">
+                                            8 ball
+                                        </div>
+                                    </div>
+                                    <div class="tour-title">
+                                        Giải 9 ball hạng E.F.G.H Moon Club 3
+                                    </div>
+                                    <div class="tour-club d-flex align-items-center">
+                                        <img class="tour-club-image" src="~/images/VietNamFlag.png" alt="">
+                                        <span class="px-2">Moon Club</span>
+                                    </div>
+                                    <div class="tour-description">
+                                        Phát triển phong chào Billiards, đặc biệt nội dung Pool 9 Ball tại Thành Phố Hạ Long và
+                                        tỉnh
+                                        Quảng Ninh. CLB Moon Club 2 Billiards Hạ Long
+                                    </div>
+                                    <div class="tour-time">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        <span>10/10/2024</span>
+                                        -
+                                        <span>11/10/2024</span>
+                                    </div>
+
+                                    <div class="tour-position">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        <span>Hạ Long, Quảng Ninh</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="tour-item">
+                                <a href="#" class="item-body">
+                                    <div class="tour-status start-status"></div>
+                                    <img class="tour-image" src="~/images/new_1.jpg" alt="">
+                                    <div>
+                                        <div class="tour-type d-flex justify-content-center align-items-center">
+                                            9 ball
+                                        </div>
+                                    </div>
+                                    <div class="tour-title">
+                                        Giải 9 ball hạng E.F.G.H Moon Club 3
+                                    </div>
+                                    <div class="tour-club d-flex align-items-center">
+                                        <img class="tour-club-image" src="~/images/VietNamFlag.png" alt="">
+                                        <span class="px-2">Moon Club</span>
+                                    </div>
+                                    <div class="tour-description">
+                                        Phát triển phong chào Billiards, đặc biệt nội dung Pool 9 Ball tại Thành Phố Hạ Long và
+                                        tỉnh
+                                        Quảng Ninh. CLB Moon Club 2 Billiards Hạ Long
+                                    </div>
+                                    <div class="tour-time">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        <span>10/10/2024</span>
+                                        -
+                                        <span>11/10/2024</span>
+                                    </div>
+
+                                    <div class="tour-position">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        <span>Hạ Long, Quảng Ninh</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="tour-item">
+                                <a href="#" class="item-body">
+                                    <div class="tour-status finish-status"></div>
+                                    <img class="tour-image" src="~/images/new_1.jpg" alt="">
+                                    <div>
+                                        <div class="tour-type d-flex justify-content-center align-items-center">
+                                            10 ball
+                                        </div>
+                                    </div>
+                                    <div class="tour-title">
+                                        Giải 9 ball hạng E.F.G.H Moon Club 3
+                                    </div>
+                                    <div class="tour-club d-flex align-items-center">
+                                        <img class="tour-club-image" src="~/images/VietNamFlag.png" alt="">
+                                        <span class="px-2">Moon Club</span>
+                                    </div>
+                                    <div class="tour-description">
+                                        Phát triển phong chào Billiards, đặc biệt nội dung Pool 9 Ball tại Thành Phố Hạ Long và
+                                        tỉnh
+                                        Quảng Ninh. CLB Moon Club 2 Billiards Hạ Long
+                                    </div>
+                                    <div class="tour-time">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        <span>10/10/2024</span>
+                                        -
+                                        <span>11/10/2024</span>
+                                    </div>
+
+                                    <div class="tour-position">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        <span>Hạ Long, Quảng Ninh</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="tour-item">
+                                <a href="#" class="item-body">
+                                    <div class="tour-status schedule-status"></div>
+                                    <img class="tour-image" src="~/images/new_1.jpg" alt="">
+                                    <div>
+                                        <div class="tour-type d-flex justify-content-center align-items-center">
+                                            8 ball
+                                        </div>
+                                    </div>
+                                    <div class="tour-title">
+                                        Giải 9 ball hạng E.F.G.H Moon Club 3
+                                    </div>
+                                    <div class="tour-club d-flex align-items-center">
+                                        <img class="tour-club-image" src="~/images/VietNamFlag.png" alt="">
+                                        <span class="px-2">Moon Club</span>
+                                    </div>
+                                    <div class="tour-description">
+                                        Phát triển phong chào Billiards, đặc biệt nội dung Pool 9 Ball tại Thành Phố Hạ Long và
+                                        tỉnh
+                                        Quảng Ninh. CLB Moon Club 2 Billiards Hạ Long
+                                    </div>
+                                    <div class="tour-time">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        <span>10/10/2024</span>
+                                        -
+                                        <span>11/10/2024</span>
+                                    </div>
+
+                                    <div class="tour-position">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        <span>Hạ Long, Quảng Ninh</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="tour-item">
+                                <a href="#" class="item-body">
+                                    <div class="tour-status schedule-status"></div>
+                                    <img class="tour-image" src="~/images/new_1.jpg" alt="">
+                                    <div>
+                                        <div class="tour-type d-flex justify-content-center align-items-center">
+                                            8 ball
+                                        </div>
+                                    </div>
+                                    <div class="tour-title">
+                                        Giải 9 ball hạng E.F.G.H Moon Club 3
+                                    </div>
+                                    <div class="tour-club d-flex align-items-center">
+                                        <img class="tour-club-image" src="~/images/VietNamFlag.png" alt="">
+                                        <span class="px-2">Moon Club</span>
+                                    </div>
+                                    <div class="tour-description">
+                                        Phát triển phong chào Billiards, đặc biệt nội dung Pool 9 Ball tại Thành Phố Hạ Long và
+                                        tỉnh
+                                        Quảng Ninh. CLB Moon Club 2 Billiards Hạ Long
+                                    </div>
+                                    <div class="tour-time">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        <span>10/10/2024</span>
+                                        -
+                                        <span>11/10/2024</span>
+                                    </div>
+
+                                    <div class="tour-position">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        <span>Hạ Long, Quảng Ninh</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="tour-item">
+                                <a href="#" class="item-body">
+                                    <div class="tour-status schedule-status"></div>
+                                    <img class="tour-image" src="~/images/new_1.jpg" alt="">
+                                    <div>
+                                        <div class="tour-type d-flex justify-content-center align-items-center">
+                                            8 ball
+                                        </div>
+                                    </div>
+                                    <div class="tour-title">
+                                        Giải 9 ball hạng E.F.G.H Moon Club 3
+                                    </div>
+                                    <div class="tour-club d-flex align-items-center">
+                                        <img class="tour-club-image" src="~/images/VietNamFlag.png" alt="">
+                                        <span class="px-2">Moon Club</span>
+                                    </div>
+                                    <div class="tour-description">
+                                        Phát triển phong chào Billiards, đặc biệt nội dung Pool 9 Ball tại Thành Phố Hạ Long và
+                                        tỉnh
+                                        Quảng Ninh. CLB Moon Club 2 Billiards Hạ Long
+                                    </div>
+                                    <div class="tour-time">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        <span>10/10/2024</span>
+                                        -
+                                        <span>11/10/2024</span>
+                                    </div>
+
+                                    <div class="tour-position">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        <span> Hạ Long, Quảng Ninh</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const gameWin = document.getElementById('game-win');
+    const gameLose = document.getElementById('game-lose');
+    const chart = document.querySelector('.chart');
+
+    var gameWinNumber = parseInt(gameWin.textContent);
+    var gameLoseNumber = parseInt(gameLose.textContent);
+    var gameTotal = gameLoseNumber + gameWinNumber;
+
+    var gameLosePercent = gameLoseNumber * 100 / gameTotal;
+    chart.style.background = 'conic-gradient(#ff6384 0%,#ff6384 '
+        + gameLosePercent + '%,#4bc0c0 ' + gameLosePercent + '%,#4bc0c0 100%)';
+    document.getElementById('win-percent').textContent = '(' + (100 - gameLosePercent).toFixed(2) + '%)'
+    document.getElementById('lose-percent').textContent = '(' + gameLosePercent.toFixed(2) + '%)'
+
+</script>

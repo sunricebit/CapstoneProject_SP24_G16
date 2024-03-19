@@ -1,13 +1,11 @@
 ﻿using Firebase.Auth;
 using Firebase.Storage;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PoolComVnWebClient.Common;
 using PoolComVnWebClient.DTO;
 using System.Net;
 using System.Net.Http.Headers;
-using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace PoolComVnWebClient.Controllers
@@ -30,7 +28,7 @@ namespace PoolComVnWebClient.Controllers
         }
 
 
-        public  IActionResult Index()
+        public IActionResult Index(int? page, string searchQuery)
         {
             try
             {
@@ -48,17 +46,60 @@ namespace PoolComVnWebClient.Controllers
                 Console.WriteLine($"An error occurred while deleting images: {ex.Message}");
             }
 
-            var response = client.GetAsync($"{ApiUrl}").Result;
-            if (response.IsSuccessStatusCode)
+            int pageNumber = page ?? 1; // Số trang mặc định là trang 1
+            int pageSize = 6; // Số lượng tin tức trên mỗi trang
+
+            // Thực hiện tìm kiếm nếu có từ khóa tìm kiếm
+            var filteredNewsList = GetFilteredNewsList(searchQuery);
+            ViewBag.SearchQuery = searchQuery;
+            // Tạo đối tượng PaginatedList từ danh sách tin tức đã lọc và thông tin phân trang
+            var paginatedNewsList = PaginatedList<NewsDTO>.CreateAsync(filteredNewsList, pageNumber, pageSize);
+
+            return View(paginatedNewsList);
+        }
+
+        private List<NewsDTO> GetFilteredNewsList(string searchQuery)
+        {
+            try
             {
-                var jsonContent = response.Content.ReadAsStringAsync().Result;
-                var newsList = JsonConvert.DeserializeObject<List<NewsDTO>>(jsonContent);
-                return View(newsList);
+                if (string.IsNullOrWhiteSpace(searchQuery))
+                {
+                    // Nếu searchQuery rỗng, trả về toàn bộ danh sách tin tức
+                    var response = client.GetAsync($"{ApiUrl}").Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var jsonContent = response.Content.ReadAsStringAsync().Result;
+                        var newsList = JsonConvert.DeserializeObject<List<NewsDTO>>(jsonContent);
+                        return newsList;
+                    }
+                    else
+                    {
+                        // Trả về danh sách rỗng nếu không thể lấy dữ liệu từ API
+                        return new List<NewsDTO>();
+                    }
+                }
+                else
+                {
+                    // Nếu searchQuery không rỗng, thực hiện tìm kiếm
+                    var response = client.GetAsync($"{ApiUrl}/Search?searchQuery={searchQuery}").Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var jsonContent = response.Content.ReadAsStringAsync().Result;
+                        var newsList = JsonConvert.DeserializeObject<List<NewsDTO>>(jsonContent);
+                        return newsList;
+                    }
+                    else
+                    {
+                        // Trả về danh sách rỗng nếu không thể lấy dữ liệu từ API
+                        return new List<NewsDTO>();
+                    }
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "Lỗi khi lấy danh sách tin tức.");
-                return View();
+                // Xử lý lỗi và logging
+                Console.WriteLine($"An error occurred while getting filtered news list: {ex.Message}");
+                return new List<NewsDTO>();
             }
         }
 
@@ -70,18 +111,18 @@ namespace PoolComVnWebClient.Controllers
         public ActionResult UploadImage(List<IFormFile> files)
         {
             var filepath2 = "";
-            foreach(IFormFile file  in Request.Form.Files)
-                {
+            foreach (IFormFile file in Request.Form.Files)
+            {
 
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot", "Firebase", file.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase", file.FileName);
                 using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
                 {
                     file.CopyTo(memoryStream);
 
                 }
-                filepath2 = "/Firebase/"  + file.FileName;
+                filepath2 = "/Firebase/" + file.FileName;
             }
-            return Json( new { url = filepath2 });
+            return Json(new { url = filepath2 });
         }
         public async Task<string> UploadFromFirebase(FileStream stream, string filename, string folderName, string newsTitle, int order)
         {
@@ -192,11 +233,11 @@ namespace PoolComVnWebClient.Controllers
                 fileStream2.Close();
                 newsDTO.Flyer = downloadLink;
             }
-                int index = 1;
-                string pattern = @"<img.*?src=""(.*?)"".*?>";
-                MatchCollection matches = Regex.Matches(newsDTO.Description, pattern);
-                foreach (Match match in matches)
-                {
+            int index = 1;
+            string pattern = @"<img.*?src=""(.*?)"".*?>";
+            MatchCollection matches = Regex.Matches(newsDTO.Description, pattern);
+            foreach (Match match in matches)
+            {
                 string src = match.Groups[1].Value;
                 string filenameWithoutFirebase = src.Replace("/Firebase/", "");
                 string absolutePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase", filenameWithoutFirebase);
@@ -210,7 +251,7 @@ namespace PoolComVnWebClient.Controllers
 
             try
             {
-               
+
                 string[] filePaths = Directory.GetFiles(directoryPath);
                 foreach (string filePath in filePaths)
                 {
@@ -224,33 +265,34 @@ namespace PoolComVnWebClient.Controllers
                 Console.WriteLine($"An error occurred while deleting images: {ex.Message}");
             }
             newsDTO.NewsId = 1;
-                var response =  await client.PostAsJsonAsync($"{ApiUrl}/Add", newsDTO);
+            var response = await client.PostAsJsonAsync($"{ApiUrl}/Add", newsDTO);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Lỗi khi thêm tin tức.");
-                    return View(newsDTO);
-                }
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
             }
-        [HttpGet]        
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Lỗi khi thêm tin tức.");
+                return View(newsDTO);
+            }
+        }
+
+        [HttpGet]
         public IActionResult NewsDetails(int id)
         {
-         
+
             var response = client.GetAsync($"{ApiUrl}/{id}").Result;
 
             if (response.IsSuccessStatusCode)
             {
                 var jsonContent = response.Content.ReadAsStringAsync().Result;
-                var newsDetails = JsonConvert.DeserializeObject<NewsDTO>(jsonContent); 
+                var newsDetails = JsonConvert.DeserializeObject<NewsDTO>(jsonContent);
                 return View(newsDetails);
             }
             else if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                
+
                 return NotFound();
             }
             else
@@ -300,44 +342,44 @@ namespace PoolComVnWebClient.Controllers
                 fileStream2.Close();
                 updatedNewsDTO.Description = updatedNewsDTO.Description.Replace(src, downloadLink);
             }
-                try
+            try
+            {
+                string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase");
+                string[] filePaths = Directory.GetFiles(directoryPath);
+                foreach (string filePath in filePaths)
                 {
-                    string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase");
-                    string[] filePaths = Directory.GetFiles(directoryPath);
-                    foreach (string filePath in filePaths)
-                    {
-                        System.IO.File.Delete(filePath);
-                    }
-
-                    Console.WriteLine("All images in the directory have been deleted successfully.");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"An error occurred while deleting images: {ex.Message}");
+                    System.IO.File.Delete(filePath);
                 }
 
-                var response = client.PostAsJsonAsync($"{ApiUrl}/Update", updatedNewsDTO).Result;
-
-                if (response.IsSuccessStatusCode)
-                {
-
-                    return RedirectToAction("Index");
-                }
-                else if (response.StatusCode == HttpStatusCode.NotFound)
-                {
-
-                    return NotFound();
-                }
-                else
-                {
-
-                    ModelState.AddModelError(string.Empty, "Lỗi khi cập nhật tin tức.");
-                    return View(updatedNewsDTO);
-                }
+                Console.WriteLine("All images in the directory have been deleted successfully.");
             }
-        
-        [HttpGet] 
-        public async Task<IActionResult> DeleteBanner(int id) 
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while deleting images: {ex.Message}");
+            }
+
+            var response = client.PostAsJsonAsync($"{ApiUrl}/Update", updatedNewsDTO).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+
+                return RedirectToAction("Index");
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+
+                return NotFound();
+            }
+            else
+            {
+
+                ModelState.AddModelError(string.Empty, "Lỗi khi cập nhật tin tức.");
+                return View(updatedNewsDTO);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteBanner(int id)
         {
             var response = client.GetAsync($"{ApiUrl}/{id}").Result;
 
@@ -367,36 +409,35 @@ namespace PoolComVnWebClient.Controllers
             }
 
             return null;
-            
 
-            
+
+
         }
 
         [HttpGet]
         public IActionResult ChangeStatusNews(int id)
         {
 
-            var apiUrl = $"{ApiUrl}/ChangeStatus?id={id}"; 
+            var apiUrl = $"{ApiUrl}/ChangeStatus?id={id}";
 
             var response = client.PostAsync(apiUrl, null).Result;
 
             if (response.IsSuccessStatusCode)
             {
-                
+
                 return RedirectToAction("Index");
             }
             else if (response.StatusCode == HttpStatusCode.NotFound)
             {
-                
+
                 return NotFound();
             }
             else
             {
-               
+
                 ModelState.AddModelError(string.Empty, "Lỗi khi xóa tin tức.");
                 return View();
             }
         }
     }
-
 }

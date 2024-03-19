@@ -1,4 +1,6 @@
-﻿<div class="container">
+﻿@using PoolComVnWebClient.DTO
+@model List<ClubDTO>
+<div class="container">
     <div class="tournament">
         <div class="normal-body">
             <div class="d-flex justify-content-end mt-4 row">
@@ -44,86 +46,25 @@
             </div>
             <div class="mt-5 d-flex row">
                 <div class="club-list d-flex row justify-content-around">
-                    <div class="club-box">
-                        <div class="club-box-border">
-                            <div class="club-box-bg" style="background-image: url('/images/new_1.jpg');">
-                            </div>
-                            <div class="club-image">
-                                <img src="~/images/new_1.jpg" alt="">
-                            </div>
-                            <div class="club-info">
-                                <div class="club-name">Moon Club, Hạ Long, Quảng Ninh</div>
-                                <div class="club-address">
-                                    <i class="fa-solid fa-location-dot"></i>
-                                    <span>Ngõ 5, Cao Thắng, Hạ Long , Quảng Ninh, Việt Nam</span>
+                    @foreach (var club in Model)
+                    {
+                        <div class="club-box">
+                            <div class="club-box-border">
+                                <div class="club-box-bg" style="background-image: url('@club.Avatar');">
+                                </div>
+                                <div class="club-image">
+                                    <img src="@club.Avatar" alt="">
+                                </div>
+                                <div class="club-info">
+                                    <div class="club-name">@club.ClubName</div>
+                                    <div class="club-address">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        <span>@club.Address</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="club-box">
-                        <div class="club-box-border">
-                            <div class="club-box-bg" style="background-image: url('/images/moonClub.jpg');">
-                            </div>
-                            <div class="club-image">
-                                <img src="~/images/moonClub.jpg" alt="">
-                            </div>
-                            <div class="club-info">
-                                <div class="club-name">Moon Club, Hạ Long, Quảng Ninh</div>
-                                <div class="club-address">
-                                    <i class="fa-solid fa-location-dot"></i>
-                                    <span>Ngõ 5, Cao Thắng, Hạ Long , Quảng Ninh, Việt Nam</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="club-box">
-                        <div class="club-box-border">
-                            <div class="club-box-bg" style="background-image: url('/images/moonClub.jpg');">
-                            </div>
-                            <div class="club-image">
-                                <img src="~/images/moonClub.jpg" alt="">
-                            </div>
-                            <div class="club-info">
-                                <div class="club-name">Moon Club, Hạ Long, Quảng Ninh</div>
-                                <div class="club-address">
-                                    <i class="fa-solid fa-location-dot"></i>
-                                    <span>Ngõ 5, Cao Thắng, Hạ Long , Quảng Ninh, Việt Nam</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="club-box">
-                        <div class="club-box-border">
-                            <div class="club-box-bg" style="background-image: url('/images/moonClub.jpg');">
-                            </div>
-                            <div class="club-image">
-                                <img src="~/images/moonClub.jpg" alt="">
-                            </div>
-                            <div class="club-info">
-                                <div class="club-name">Moon Club, Hạ Long, Quảng Ninh</div>
-                                <div class="club-address">
-                                    <i class="fa-solid fa-location-dot"></i>
-                                    <span>Ngõ 5, Cao Thắng, Hạ Long , Quảng Ninh, Việt Nam</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="club-box">
-                        <div class="club-box-border">
-                            <div class="club-box-bg" style="background-image: url('/images/moonClub.jpg');">
-                            </div>
-                            <div class="club-image">
-                                <img src="~/images/moonClub.jpg" alt="">
-                            </div>
-                            <div class="club-info">
-                                <div class="club-name">Moon Club, Hạ Long, Quảng Ninh</div>
-                                <div class="club-address">
-                                    <i class="fa-solid fa-location-dot"></i>
-                                    <span>Ngõ 5, Cao Thắng, Hạ Long , Quảng Ninh, Việt Nam</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>

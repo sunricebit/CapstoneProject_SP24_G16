@@ -314,7 +314,6 @@ namespace PoolComVnWebClient.Controllers
         [HttpPost]
         public async Task<IActionResult> StepFourAddBanner(IFormFile banner, int tourID)
         {
-            tourID = 26;
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
             StepFourAddBannerDTO BannerDTO = new StepFourAddBannerDTO();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
@@ -467,34 +466,34 @@ namespace PoolComVnWebClient.Controllers
         //    }
         //}
 
-        //[HttpGet]
-        //public async Task<IActionResult> StepSixReview()
-        //{
-        //    var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
-        //    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
-        //    List<int> rolesAccess = new List<int>();
-
-        //    // Thêm các role được access
-        //    rolesAccess.Add(Constant.BusinessRole);
-        //    var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Authorization/CheckAuthorization", rolesAccess);
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        return View();
-        //    }
-        //    else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-        //    {
-        //        return RedirectToAction("Unauthorized", "Error");
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("NotAccess", "Error");
-        //    }
-        //}
-
         [HttpGet]
-        public IActionResult StepSixReview(int tourId)
+        public async Task<IActionResult> StepSixReview(int tourId)
         {
-            ViewBag.TourID = tourId;
+            TournamentDetailDTO tourDetail = new TournamentDetailDTO();
+            var responseGetTourdetail = await client.GetAsync(ApiUrl + "/GetTournament?tourId=" + tourId);
+            if (responseGetTourdetail.IsSuccessStatusCode)
+            {
+                tourDetail = await responseGetTourdetail.Content.ReadFromJsonAsync<TournamentDetailDTO>();
+                ViewBag.TournamentDetail = tourDetail;
+            }
+            else
+            {
+                var status = responseGetTourdetail.StatusCode;
+                return RedirectToAction("InternalServerError", "Error");
+            }
+
+            List<PlayerDTO> lstPlayer;
+            var responseGetLstPlayer = await client.GetAsync(Constant.ApiUrl + "/Player" + "/GetPlayerByTourId?tourId=" + tourId);
+            if (responseGetLstPlayer.IsSuccessStatusCode)
+            {
+                lstPlayer = await responseGetLstPlayer.Content.ReadFromJsonAsync<List<PlayerDTO>>();
+                ViewBag.NumberOfPlayer = lstPlayer.Count;
+            }
+            else
+            {
+                var status = responseGetTourdetail.StatusCode;
+                return RedirectToAction("InternalServerError", "Error");
+            }
             return View();
         }
 
@@ -522,6 +521,12 @@ namespace PoolComVnWebClient.Controllers
         public IActionResult SystemRandom(int tourId)
         {
             ViewBag.TourID = tourId;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateTournament()
+        {
             return View();
         }
     }
