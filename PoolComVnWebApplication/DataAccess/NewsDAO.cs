@@ -73,6 +73,22 @@ namespace DataAccess
             }
         }
 
+        public List<News> GetNewsByTitle(string searchQuery)
+        {
+            try
+            {
+                return _context.News
+                    .Include(n => n.Acc)
+                    .Where(n => n.Title.Contains(searchQuery))
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error while retrieving news with title containing '{searchQuery}'.", ex);
+            }
+        }
+
+
         public List<News> GetLatestNews(int count)
         {
             try
