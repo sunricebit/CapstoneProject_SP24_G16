@@ -38,7 +38,7 @@ namespace PoolComVnWebClient.Controllers
             var AccountData = response.Content.ReadAsStringAsync().Result;
             var account = JsonConvert.DeserializeObject<AccountDTO>(AccountData);
             var response2 = client.GetAsync($"{ApiUrl}/Club/GetClubByAccountId/?accountID={account.AccountID}").Result;
-            if (!response.IsSuccessStatusCode)
+            if (!response2.IsSuccessStatusCode)
             {
                 if (response2.StatusCode == HttpStatusCode.NotFound)
                 {
@@ -254,6 +254,11 @@ namespace PoolComVnWebClient.Controllers
         }
 
         public IActionResult ClubSoloMatchDetail()
+        {
+            return View();
+        }
+
+        public IActionResult CreateClub()
         {
             return View();
         }

@@ -84,6 +84,43 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
+        [HttpGet("Search")]
+        public ActionResult<IEnumerable<NewsDTO>> Search(string searchQuery)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(searchQuery))
+                {
+                    return BadRequest("Search query is empty.");
+                }
+
+                // Thực hiện tìm kiếm tin tức dựa trên tiêu đề chứa từ khóa tìm kiếm
+                var filteredNews = _newsDAO.GetNewsByTitle(searchQuery);
+
+                // Chuyển đổi kết quả thành đối tượng NewsDTO và trả về
+                var result = filteredNews.Select(news => new NewsDTO
+                {
+                    NewsId = news.NewsId,
+                    Title = news.Title,
+                    Description = news.Description,
+                    AccId = news.AccId,
+                    CreatedDate = news.CreatedDate,
+                    UpdatedDate = news.UpdatedDate,
+                    Flyer = news.Flyer,
+                    Link = news.Link,
+                    AccountName = news.Acc?.Email,
+                    Status = news.Status
+                }).ToList();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error while searching news: " + ex.Message);
+            }
+        }
+
+
         [HttpGet("{id}")]
         public ActionResult<NewsDTO> Get(int id)
         {
@@ -206,6 +243,15 @@ namespace PoolComVnWebAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+      
+        
+       
+
+
+
+
+
 
     }
 }

@@ -701,191 +701,212 @@ footer {
         padding: 10px;
     }
 
-        .tournament .tour-item .item-body {
-            display: block;
-            background: #eaeaea;
-            width: 100%;
-            border-radius: 5px;
-            /* overflow: hidden; */
-            position: relative;
-            min-height: 460px;
-            transition: transform 0.5s ease;
-        }
+.history-content .tour-item {
+    padding: 10px;
+    width: 100%;
+}
 
-            .tournament .tour-item .item-body:hover {
-                transform: scale(1.05);
-                box-shadow: 5px 5px 5px #00000099;
-            }
-
-        .tournament .tour-item .tour-status {
-            width: 0;
-            height: 0;
-            border-bottom: 10px solid transparent;
-            position: absolute;
-            top: 0;
-            left: 10px;
-        }
-
-            .tournament .tour-item .tour-status.schedule-status {
-                border-left: 15px solid rgb(255, 255, 0);
-                border-right: 15px solid rgb(255, 255, 0);
-                border-top: 30px solid rgb(255, 255, 0);
-            }
-
-            .tournament .tour-item .tour-status.start-status {
-                border-left: 15px solid rgb(0, 255, 0);
-                border-right: 15px solid rgb(0, 255, 0);
-                border-top: 30px solid rgb(0, 255, 0);
-            }
-
-            .tournament .tour-item .tour-status.finish-status {
-                border-left: 15px solid rgb(255, 11, 11);
-                border-right: 15px solid rgb(255, 11, 11);
-                border-top: 30px solid rgb(255, 11, 11);
-            }
-
-    .tournament .tour-circle .schedule-circle,
-    .tournament .tour-circle .start-circle,
-    .tournament .tour-circle .finish-circle {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        margin-right: 5px;
-    }
-
-    .tournament .tour-circle .schedule-circle {
-        background: rgb(255, 255, 0);
-    }
-
-    .tournament .tour-circle .start-circle {
-        margin-left: 20px;
-        background: rgb(0, 255, 0);
-    }
-
-    .tournament .tour-circle .finish-circle {
-        margin-left: 20px;
-        background: rgb(255, 0, 0);
-    }
-
-    .tournament .tour-circle span {
-        color: #fff;
-        font-weight: 500;
-        line-height: 20px;
-    }
-
-    .tournament .tour-item .tour-image {
+    .tournament .tour-item .item-body,
+    .history-content .tour-item .item-body {
+        display: block;
+        background: #eaeaea;
         width: 100%;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
+        border-radius: 5px;
+        /* overflow: hidden; */
+        position: relative;
+        min-height: 460px;
+        transition: transform 0.5s ease;
     }
 
-    .tournament .tour-item .tour-title {
-        text-align: left;
-        padding: 10px 15px 0px 15px;
-        color: #1c324ddf;
-        font-weight: 800;
-        font-size: 18px;
-        min-height: 80px;
-        font-style: italic;
-        text-shadow: 1px 1px 1px #00000081;
-    }
-
-    .tournament .tour-item .tour-time,
-    .tournament .tour-item .tour-position {
-        padding: 0 10px 20px 10px;
-        color: #1c324ddf;
-        font-weight: 600;
-        font-size: 14px;
-    }
-
-        .tournament .tour-item .tour-time i,
-        .tournament .tour-item .tour-position i {
-            padding-right: 10px;
+        .tournament .tour-item .item-body:hover,
+        .history-content .tour-item .item-body:hover {
+            transform: scale(1.05);
+            box-shadow: 5px 5px 5px #00000099;
         }
 
-    .tournament .tour-item .tour-description {
-        height: 40px;
-        overflow: hidden;
-        padding: 0 15px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        color: #1c324ddf;
-        font-weight: 400;
-        font-size: 14px;
+    .tournament .tour-item .tour-status,
+    .history-content .tour-item .tour-status {
+        width: 0;
+        height: 0;
+        border-bottom: 10px solid transparent;
+        position: absolute;
+        top: 0;
+        left: 10px;
     }
 
-    .tournament .tour-item .tour-club {
-        padding: 0 10px 10px;
-        font-size: 14px;
-        font-weight: 500;
-        color: #0091ff;
+        .tournament .tour-item .tour-status.schedule-status,
+        .history-content .tour-item .tour-status.schedule-status {
+            border-left: 15px solid rgb(255, 255, 0);
+            border-right: 15px solid rgb(255, 255, 0);
+            border-top: 30px solid rgb(255, 255, 0);
+        }
+
+        .tournament .tour-item .tour-status.start-status,
+        .history-content .tour-item .tour-status.start-status {
+            border-left: 15px solid rgb(0, 255, 0);
+            border-right: 15px solid rgb(0, 255, 0);
+            border-top: 30px solid rgb(0, 255, 0);
+        }
+
+        .tournament .tour-item .tour-status.finish-status,
+        .history-content .tour-item .tour-status.finish-status {
+            border-left: 15px solid rgb(255, 11, 11);
+            border-right: 15px solid rgb(255, 11, 11);
+            border-top: 30px solid rgb(255, 11, 11);
+        }
+
+.tournament .tour-circle .schedule-circle,
+.tournament .tour-circle .start-circle,
+.tournament .tour-circle .finish-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.tournament .tour-circle .schedule-circle {
+    background: rgb(255, 255, 0);
+}
+
+.tournament .tour-circle .start-circle {
+    margin-left: 20px;
+    background: rgb(0, 255, 0);
+}
+
+.tournament .tour-circle .finish-circle {
+    margin-left: 20px;
+    background: rgb(255, 0, 0);
+}
+
+.tournament .tour-circle span {
+    color: #fff;
+    font-weight: 500;
+    line-height: 20px;
+}
+
+.tournament .tour-item .tour-image,
+.history-content .tour-item .tour-image {
+    width: 100%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.tournament .tour-item .tour-title,
+.history-content .tour-item .tour-title {
+    text-align: left;
+    padding: 10px 15px 0px 15px;
+    color: #1c324ddf;
+    font-weight: 800;
+    font-size: 18px;
+    min-height: 80px;
+    font-style: italic;
+    text-shadow: 1px 1px 1px #00000081;
+}
+
+.tournament .tour-item .tour-time,
+.tournament .tour-item .tour-position,
+.history-content .tour-item .tour-time,
+.history-content .tour-item .tour-position {
+    padding: 0 10px 20px 10px;
+    color: #1c324ddf;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+    .tournament .tour-item .tour-time i,
+    .tournament .tour-item .tour-position i,
+    .history-content .tour-item .tour-time i,
+    .history-content .tour-item .tour-position i {
+        padding-right: 10px;
     }
 
-    .tournament .tour-item .tour-club-image {
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
+.tournament .tour-item .tour-description,
+.history-content .tour-item .tour-description {
+    height: 40px;
+    overflow: hidden;
+    padding: 0 15px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #1c324ddf;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.tournament .tour-item .tour-club,
+.history-content .tour-item .tour-club {
+    padding: 0 10px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #0091ff;
+}
+
+.tournament .tour-item .tour-club-image,
+.history-content .tour-item .tour-club-image {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+}
+
+.tournament .tour-item .tour-type,
+.history-content .tour-item .tour-type {
+    padding: 5px 0;
+    background-color: #4d5c60;
+    font-size: 14px;
+    font-weight: 900;
+    color: #fff;
+}
+
+/* gameRule.html */
+.gameRule .gameRule-body {
+    padding: 20px 20px 100px 20px;
+    background: #00000088;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.gameRule .source-title {
+    margin-top: 20px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    font-style: italic;
+    line-height: 32px;
+}
+
+.gameRule .source-link {
+    color: #00d9ff;
+    line-height: 30px;
+    transition: font-size 0.5s ease;
+}
+
+    .gameRule .source-link:hover {
+        font-size: 22px;
+        color: #02b7ff;
     }
 
-    .tournament .tour-item .tour-type {
-        padding: 5px 0;
-        background-color: #4d5c60;
-        font-size: 14px;
-        font-weight: 900;
-        color: #fff;
-    }
+.gameRule .rule-body {
+    width: 80%;
+    color: #fff;
+}
 
-    /* gameRule.html */
-    .gameRule .gameRule-body {
-        padding: 20px 20px 100px 20px;
-        background: #00000088;
-        border-bottom-left-radius: 20px;
-        border-bottom-right-radius: 20px;
-    }
-
-    .gameRule .source-title {
-        margin-top: 20px;
-        color: #fff;
+    .gameRule .rule-body .rule-title {
         font-size: 20px;
-        font-weight: 600;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .gameRule .rule-body .rule-description {
+        text-align: justify;
+    }
+
+    .gameRule .rule-body .rule-image {
+        width: 50%;
+        border-radius: 5px;
+    }
+
+    .gameRule .rule-body p {
         font-style: italic;
-        line-height: 32px;
     }
-
-    .gameRule .source-link {
-        color: #00d9ff;
-        line-height: 30px;
-        transition: font-size 0.5s ease;
-    }
-
-        .gameRule .source-link:hover {
-            font-size: 22px;
-            color: #02b7ff;
-        }
-
-    .gameRule .rule-body {
-        width: 80%;
-        color: #fff;
-    }
-
-        .gameRule .rule-body .rule-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .gameRule .rule-body .rule-description {
-            text-align: justify;
-        }
-
-        .gameRule .rule-body .rule-image {
-            width: 50%;
-            border-radius: 5px;
-        }
-
-        .gameRule .rule-body p {
-            font-style: italic;
-        }
 
 /* contact.html */
 .contact-body {
@@ -1711,6 +1732,7 @@ footer {
         border-radius: 10px;
         border: 2px #aaa solid;
         overflow: hidden;
+        min-width: 600px;
     }
 
     .start-display .start-title {
@@ -1742,12 +1764,28 @@ footer {
         color: #fff;
     }
 
-        .match-display .match-detail .match-close:hover,
-        .start-display .start-close:hover {
-            color: #000;
-            background: #aa0642;
+    .match-display .cancle-table {
+        line-height: 30px;
+        height: 32px;
+        margin-left: 10px;
+        background: #b91b1b;
+        padding: 0px 10px;
+        border-radius: 5px;
+        color: #fff;
+        border: 2px #fff solid;
+    }
+
+        .match-display .cancle-table:hover {
             cursor: pointer;
+            background-color: #a70d10;
         }
+
+    .match-display .match-detail .match-close:hover,
+    .start-display .start-close:hover {
+        color: #000;
+        background: #aa0642;
+        cursor: pointer;
+    }
 
     .match-display .match-detail .details-body,
     .solo-detail .match-detail .details-body {
@@ -2836,6 +2874,22 @@ tr:not(:first-child).isFinish {
         min-height: 100px;
     }
 
+    .create-tour .tour-input .select-address {
+        min-width: 150px;
+        background: #00000000;
+        padding: 5px 10px;
+        color: #fff;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        border-bottom: 3px solid #fff;
+        outline: none;
+        margin-right: 10px;
+    }
+
+        .create-tour .tour-input .select-address option {
+            color: #000;
+        }
+
     .create-tour .tour-input .input-date {
         width: 300px;
         padding: 5px 10px;
@@ -3320,6 +3374,28 @@ tr:not(:first-child).isFinish {
         background-position: center center;
     }
 
+    .upload-img.avt {
+        width: 300px;
+        height: 300px;
+    }
+
+        .upload-img.avt .preview-image-bg {
+            width: 280px;
+            height: 280px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .upload-img.avt .preview-image {
+            height: 280px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+
 .create-tour .bracket-tab {
     height: 70vh;
 }
@@ -3366,7 +3442,7 @@ tr:not(:first-child).isFinish {
 
 .back-btn-nav {
     position: fixed;
-    z-index: 2;
+    z-index: 99;
     top: 0;
     left: 0;
     line-height: 50px;
@@ -3832,7 +3908,8 @@ tr:not(:first-child).isFinish {
         cursor: pointer;
     }
 
-.match-display .save-btn {
+.match-display .save-btn,
+.match-display .start-match-btn {
     width: 100%;
     line-height: 40px;
     height: 40px;
@@ -3846,10 +3923,19 @@ tr:not(:first-child).isFinish {
     font-size: 18px;
 }
 
-    .match-display .save-btn:hover {
-        background-color: #648fc0;
+.match-display .start-match-btn {
+    background: #31b08c;
+}
+
+    .match-display .start-match-btn:hover {
+        background: #097f3c;
         cursor: pointer;
     }
+
+.match-display .save-btn:hover {
+    background-color: #648fc0;
+    cursor: pointer;
+}
 
 .match-display .edit-table .table-name {
     position: relative;
@@ -4555,6 +4641,161 @@ tr:not(:first-child).isFinish {
             text-shadow: 1px 0 3px #000;
         }
 
+/* userProfile.html */
+.user-profile {
+    margin-bottom: 100px;
+    display: block;
+}
+
+    .user-profile .profile {
+        width: 100%;
+    }
+
+    .user-profile .profile,
+    .user-profile .user-history {
+        padding: 0 20px;
+    }
+
+    .user-profile .user-history {
+        width: 100%;
+        margin-top: 50px;
+    }
+
+        .user-profile .profile .profile-content,
+        .user-profile .user-history .history-content {
+            background: #ffffff79;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 320px;
+        }
+
+    .user-profile .profile .profile-image {
+        width: 200px;
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 10px;
+        border: 5px #fff solid;
+    }
+
+    .user-profile .profile-info {
+        margin-left: 30px;
+    }
+
+    .user-profile .info-line {
+        margin: 0;
+    }
+
+        .user-profile .info-line .title {
+            font-size: 14px;
+            font-weight: 700;
+            font-style: italic;
+        }
+
+    .user-profile .profile .profile-content .edit-btn {
+        height: 40px;
+        width: 200px;
+        background-color: #41f3c0;
+        border-radius: 20px;
+        line-height: 40px;
+        font-weight: 600;
+        color: #000;
+        border: #fff 1px solid;
+    }
+
+        .user-profile .profile .profile-content .edit-btn:hover {
+            background: #31b08c;
+            cursor: pointer;
+            color: #fff;
+        }
+
+    .user-profile .chart-container {
+        width: 200px;
+        height: 200px;
+        position: relative;
+        margin: 20px auto;
+    }
+
+    .user-profile .chart {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 2px #fff solid;
+    }
+
+    .user-profile .user-history .awards-title,
+    .user-profile .tour-history .history-title {
+        font-size: 20px;
+        font-weight: 700;
+        border-bottom: 2px #000 solid;
+    }
+
+    .user-profile .user-history .awards-content {
+        overflow-x: auto;
+        margin-top: 20px;
+    }
+
+        .user-profile .user-history .awards-content::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .user-profile .user-history .awards-content::-webkit-scrollbar-thumb {
+            background-color: #aa0642;
+            border-radius: 10px;
+        }
+
+            .user-profile .user-history .awards-content::-webkit-scrollbar-thumb:hover {
+                background: #9c1515;
+            }
+
+        .user-profile .user-history .awards-content::-webkit-scrollbar-track {
+            background-color: #f2f2f2;
+            border-radius: 10px;
+        }
+
+    .user-profile .user-history .awards-box {
+        min-width: 200px;
+        padding: 20px;
+        display: block;
+    }
+
+        .user-profile .user-history .awards-box:hover {
+            cursor: pointer;
+        }
+
+            .user-profile .user-history .awards-box:hover .awards-img {
+                transform: scale(1.1);
+                transition: transform 0.3s ease;
+            }
+
+            .user-profile .user-history .awards-box:hover .awards-name {
+                font-weight: 700;
+                transition: font-weight 0.3s ease;
+                color: #1c324d;
+            }
+
+    .user-profile .user-history .awards-img-bg {
+        height: 120px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .user-profile .user-history .awards-img {
+        width: 100px;
+        height: 100px;
+        background-size: contain;
+        background-position: center;
+    }
+
+    .user-profile .user-history .awards-name,
+    .user-profile .user-history .no-awards {
+        text-align: center;
+        color: #346585;
+        font-weight: 600;
+    }
+
+
 /* Mobile: width <740px */
 @media only screen and (max-width: 739px) {
 
@@ -4708,11 +4949,28 @@ tr:not(:first-child).isFinish {
     .dashboard-container .item-content {
         width: 50%;
     }
+
+    .user-profile {
+        display: flex;
+    }
+
+        .user-profile .profile {
+            width: 500px;
+        }
+
+        .user-profile .user-history {
+            width: calc(100% - 500px);
+            margin-top: 0;
+        }
 }
 
 /*width>=1280px */
 @media only screen and (min-width: 1280px) {
     .dashboard-container .item-content {
+        width: 33.33%;
+    }
+
+    .history-content .tour-item {
         width: 33.33%;
     }
 }
