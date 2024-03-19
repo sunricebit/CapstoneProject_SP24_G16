@@ -1,13 +1,11 @@
 ﻿using Firebase.Auth;
 using Firebase.Storage;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PoolComVnWebClient.Common;
 using PoolComVnWebClient.DTO;
 using System.Net;
 using System.Net.Http.Headers;
-using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace PoolComVnWebClient.Controllers
@@ -30,7 +28,7 @@ namespace PoolComVnWebClient.Controllers
         }
 
 
-        public IActionResult Index()
+        public IActionResult Index(int? page, string searchQuery)
         {
             try
             {
@@ -48,17 +46,60 @@ namespace PoolComVnWebClient.Controllers
                 Console.WriteLine($"An error occurred while deleting images: {ex.Message}");
             }
 
-            var response = client.GetAsync($"{ApiUrl}").Result;
-            if (response.IsSuccessStatusCode)
+            int pageNumber = page ?? 1; // Số trang mặc định là trang 1
+            int pageSize = 6; // Số lượng tin tức trên mỗi trang
+
+            // Thực hiện tìm kiếm nếu có từ khóa tìm kiếm
+            var filteredNewsList = GetFilteredNewsList(searchQuery);
+            ViewBag.SearchQuery = searchQuery;
+            // Tạo đối tượng PaginatedList từ danh sách tin tức đã lọc và thông tin phân trang
+            var paginatedNewsList = PaginatedList<NewsDTO>.CreateAsync(filteredNewsList, pageNumber, pageSize);
+
+            return View(paginatedNewsList);
+        }
+
+        private List<NewsDTO> GetFilteredNewsList(string searchQuery)
+        {
+            try
             {
-                var jsonContent = response.Content.ReadAsStringAsync().Result;
-                var newsList = JsonConvert.DeserializeObject<List<NewsDTO>>(jsonContent);
-                return View(newsList);
+                if (string.IsNullOrWhiteSpace(searchQuery))
+                {
+                    // Nếu searchQuery rỗng, trả về toàn bộ danh sách tin tức
+                    var response = client.GetAsync($"{ApiUrl}").Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var jsonContent = response.Content.ReadAsStringAsync().Result;
+                        var newsList = JsonConvert.DeserializeObject<List<NewsDTO>>(jsonContent);
+                        return newsList;
+                    }
+                    else
+                    {
+                        // Trả về danh sách rỗng nếu không thể lấy dữ liệu từ API
+                        return new List<NewsDTO>();
+                    }
+                }
+                else
+                {
+                    // Nếu searchQuery không rỗng, thực hiện tìm kiếm
+                    var response = client.GetAsync($"{ApiUrl}/Search?searchQuery={searchQuery}").Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var jsonContent = response.Content.ReadAsStringAsync().Result;
+                        var newsList = JsonConvert.DeserializeObject<List<NewsDTO>>(jsonContent);
+                        return newsList;
+                    }
+                    else
+                    {
+                        // Trả về danh sách rỗng nếu không thể lấy dữ liệu từ API
+                        return new List<NewsDTO>();
+                    }
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "Lỗi khi lấy danh sách tin tức.");
-                return View();
+                // Xử lý lỗi và logging
+                Console.WriteLine($"An error occurred while getting filtered news list: {ex.Message}");
+                return new List<NewsDTO>();
             }
         }
 
@@ -399,5 +440,4 @@ namespace PoolComVnWebClient.Controllers
             }
         }
     }
-
 }
