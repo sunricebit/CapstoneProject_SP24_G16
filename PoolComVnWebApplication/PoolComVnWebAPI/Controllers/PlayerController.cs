@@ -173,6 +173,13 @@ namespace PoolComVnWebAPI.Controllers
                 lstPlayer.Add(playerDTO);
             }
             return Ok(lstPlayer);
-        }   
+        }
+
+        [HttpGet("GetNumberPlayerByTourId")]
+        public IActionResult GetNumberPlayerByTourId(int tourId)
+        {
+            int numberPlayers = _playerDAO.GetNumberPlayerByTourId(tourId);
+            return Ok(numberPlayers);
+        }
     }
 }

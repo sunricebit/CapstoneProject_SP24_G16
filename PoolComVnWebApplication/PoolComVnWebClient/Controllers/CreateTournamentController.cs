@@ -20,7 +20,7 @@ namespace PoolComVnWebClient.Controllers
         private string ApiKey = FirebaseAPI.ApiKey;
         private string Bucket = FirebaseAPI.Bucket;
         private string AuthEmail = FirebaseAPI.AuthEmail;
-        private  string AuthPassword = FirebaseAPI.AuthPassword;
+        private string AuthPassword = FirebaseAPI.AuthPassword;
 
         public CreateTournamentController()
         {
@@ -103,7 +103,7 @@ namespace PoolComVnWebClient.Controllers
             if (response.IsSuccessStatusCode)
             {
                 ViewBag.TourId = await response.Content.ReadFromJsonAsync<int>();
-                return View("StepTwoPlayerList");
+                return View("StepTwoAddBanner");
             }
             else
             {
@@ -113,7 +113,119 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> StepTwoPlayerList()
+        public async Task<IActionResult> StepTwoAddBanner(int tourID)
+        {
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            List<int> rolesAccess = new List<int>();
+
+            // Thêm các role được access
+            rolesAccess.Add(Constant.BusinessRole);
+            var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Authorization/CheckAuthorization", rolesAccess);
+            if (response.IsSuccessStatusCode)
+            {
+                ViewBag.TourId = tourID;
+                return View();
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return RedirectToAction("Unauthorized", "Error");
+            }
+            else
+            {
+                return RedirectToAction("NotAccess", "Error");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> StepTwoAddBanner(IFormFile banner, int tourID)
+        {
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            StepFourAddBannerDTO BannerDTO = new StepFourAddBannerDTO();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            var bannerContent = new MultipartFormDataContent();
+            try
+            {
+
+                if (banner != null && banner.Length > 0)
+                {
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(banner.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase", fileName);
+
+                    using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        banner.CopyTo(memoryStream);
+
+
+                    }
+                    var fileStream2 = new FileStream(filePath, FileMode.Open);
+                    var downloadLink = await UploadFromFirebase(fileStream2, banner.FileName);
+                    fileStream2.Close();
+                    string Flyer = downloadLink;
+                    System.IO.File.Delete(filePath);
+                    BannerDTO.Flyer = Flyer;
+                }
+                BannerDTO.TourId = tourID;
+
+                var response = await client.PostAsJsonAsync(ApiUrl + "/CreateTourStTwo", BannerDTO);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    ViewBag.TourId = await response.Content.ReadFromJsonAsync<int>();
+                    return RedirectToAction("StepThreeReview", "CreateTournament", new { tourId = tourID });
+                }
+                else
+                {
+                    var status = response.StatusCode;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+            finally
+            {
+
+                bannerContent?.Dispose();
+            }
+
+            return RedirectToAction("InternalServerError", "Error");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> StepThreeReview(int tourId)
+        {
+            TournamentDetailDTO tourDetail;
+            var responseGetTourdetail = await client.GetAsync(ApiUrl + "/GetTournament?tourId=" + tourId);
+            if (responseGetTourdetail.IsSuccessStatusCode)
+            {
+                tourDetail = await responseGetTourdetail.Content.ReadFromJsonAsync<TournamentDetailDTO>();
+                ViewBag.TournamentDetail = tourDetail;
+            }
+            else
+            {
+                var status = responseGetTourdetail.StatusCode;
+                return RedirectToAction("InternalServerError", "Error");
+            }
+
+            var responseGetLstPlayer = await client.GetAsync(Constant.ApiUrl + "/Player" + "/GetNumberPlayerByTourId?tourId=" + tourId);
+            if (responseGetLstPlayer.IsSuccessStatusCode)
+            {
+                int number = await responseGetLstPlayer.Content.ReadFromJsonAsync<int>();
+                ViewBag.NumberOfPlayer = number;
+                ViewBag.TourId = tourId;
+            }
+            else
+            {
+                var status = responseGetTourdetail.StatusCode;
+                return RedirectToAction("InternalServerError", "Error");
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> StepFivePlayerList()
         {
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
@@ -206,7 +318,7 @@ namespace PoolComVnWebClient.Controllers
                         ViewBag.ImportedPlayers = importedPlayers;
 
                     }
-                    return View("StepTwoPlayerList");
+                    return View("StepFivePlayerList");
                 }
                 else
                 {
@@ -252,7 +364,7 @@ namespace PoolComVnWebClient.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> StepTwoJoinList()
+        public async Task<IActionResult> StepFiveJoinList()
         {
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
@@ -277,7 +389,7 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> StepTwoMember()
+        public async Task<IActionResult> StepFiveMember()
         {
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
@@ -301,7 +413,7 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> StepTwoPlayerSystem()
+        public async Task<IActionResult> StepFivePlayerSystem()
         {
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
@@ -311,7 +423,7 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> StepThreeAddTable(int tourId)
+        public async Task<IActionResult> StepFourAddTable(int tourId)
         {
             ViewBag.TourId = tourId;
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
@@ -321,89 +433,6 @@ namespace PoolComVnWebClient.Controllers
             return View(listtable);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> StepFourAddBanner(int tourID)
-        {
-            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
-            List<int> rolesAccess = new List<int>();
-
-            // Thêm các role được access
-            rolesAccess.Add(Constant.BusinessRole);
-            var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Authorization/CheckAuthorization", rolesAccess);
-            if (response.IsSuccessStatusCode)
-            {
-                ViewBag.TourId = tourID;
-                return View();
-            }
-            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-            {
-                return RedirectToAction("Unauthorized", "Error");
-            }
-            else
-            {
-                return RedirectToAction("NotAccess", "Error");
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> StepFourAddBanner(IFormFile banner, int tourID)
-        {
-            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
-            StepFourAddBannerDTO BannerDTO = new StepFourAddBannerDTO();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
-            var bannerContent = new MultipartFormDataContent();
-            try
-            {
-
-                if (banner != null && banner.Length > 0)
-                {
-                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(banner.FileName);
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase", fileName);
-
-                    using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        banner.CopyTo(memoryStream);
-
-
-                    }
-                    var fileStream2 = new FileStream(filePath, FileMode.Open);
-                    var downloadLink = await UploadFromFirebase(fileStream2, banner.FileName);
-                    fileStream2.Close();
-                    string Flyer = downloadLink;
-                    System.IO.File.Delete(filePath);
-                    BannerDTO.Flyer = Flyer;
-                }
-                BannerDTO.TourId = tourID;
-               
-
-               
-
-                var response = await client.PostAsJsonAsync(ApiUrl + "/CreateTourStFour", BannerDTO);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    ViewBag.TourId = await response.Content.ReadFromJsonAsync<int>();
-                    return View("StepFiveArrange");
-                }
-                else
-                {
-                    var status = response.StatusCode;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return RedirectToAction("InternalServerError", "Error");
-            }
-            finally
-            {
-
-                bannerContent?.Dispose();
-            }
-
-            return RedirectToAction("InternalServerError", "Error");
-        }
 
         //[HttpGet]
         //public async Task<IActionResult> StepFiveArrange()
@@ -502,38 +531,7 @@ namespace PoolComVnWebClient.Controllers
         //}
 
         [HttpGet]
-        public async Task<IActionResult> StepSixReview(int tourId)
-        {
-            TournamentDetailDTO tourDetail = new TournamentDetailDTO();
-            var responseGetTourdetail = await client.GetAsync(ApiUrl + "/GetTournament?tourId=" + tourId);
-            if (responseGetTourdetail.IsSuccessStatusCode)
-            {
-                tourDetail = await responseGetTourdetail.Content.ReadFromJsonAsync<TournamentDetailDTO>();
-                ViewBag.TournamentDetail = tourDetail;
-            }
-            else
-            {
-                var status = responseGetTourdetail.StatusCode;
-                return RedirectToAction("InternalServerError", "Error");
-            }
-
-            List<PlayerDTO> lstPlayer;
-            var responseGetLstPlayer = await client.GetAsync(Constant.ApiUrl + "/Player" + "/GetPlayerByTourId?tourId=" + tourId);
-            if (responseGetLstPlayer.IsSuccessStatusCode)
-            {
-                lstPlayer = await responseGetLstPlayer.Content.ReadFromJsonAsync<List<PlayerDTO>>();
-                ViewBag.NumberOfPlayer = lstPlayer.Count;
-            }
-            else
-            {
-                var status = responseGetTourdetail.StatusCode;
-                return RedirectToAction("InternalServerError", "Error");
-            }
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult StepFiveArrange(int tourId)
+        public IActionResult StepSixArrange(int tourId)
         {
             ViewBag.TourID = tourId;
             return View();
@@ -547,8 +545,9 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult UserCustom()
+        public IActionResult UserCustom(int tourId)
         {
+            ViewBag.TourID = tourId;
             return View();
         }
 
