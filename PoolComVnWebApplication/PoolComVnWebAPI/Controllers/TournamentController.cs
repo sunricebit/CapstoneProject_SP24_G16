@@ -186,7 +186,7 @@ namespace PoolComVnWebAPI.Controllers
         [HttpPost("CreateTourStFour")]
        // [Authorize]
 
-        public async Task<ActionResult> CreateTourStFour([FromBody] CreateTourStepFourDTO BannerDTO)
+        public IActionResult CreateTourStTwo([FromBody] CreateTourStepFourDTO BannerDTO)
         {
            
             //var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
@@ -210,8 +210,6 @@ namespace PoolComVnWebAPI.Controllers
                 Tournament tour = _tournamentDAO.GetTournament(BannerDTO.TourID);
                 tour.Flyer = BannerDTO.Flyer;
                 _tournamentDAO.UpdateTournament(tour);
-                //  _tournamentDAO.CreateTournament(tour);
-                //return Ok(_tournamentDAO.GetLastestTournament().TourId);
                 return Ok(BannerDTO.TourID);
             }
             catch (Exception e)
