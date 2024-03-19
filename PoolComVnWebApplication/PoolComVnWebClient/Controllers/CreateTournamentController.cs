@@ -524,6 +524,11 @@ namespace PoolComVnWebClient.Controllers
             return View();
         }
 
+        public IActionResult SystemSingleRandom()
+        {
+            return View();
+        }
+
         [HttpPost]
         public IActionResult CreateTournament()
         {

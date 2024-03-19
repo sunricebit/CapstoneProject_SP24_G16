@@ -1567,7 +1567,6 @@ footer {
         position: absolute;
         top: 100px;
         transition: transform 0.3s ease;
-        background: linear-gradient(90deg, #ccc, #000);
     }
 
     .bracket-tab #loser-match-body {
