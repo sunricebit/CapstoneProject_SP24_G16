@@ -286,7 +286,7 @@ namespace PoolComVnWebClient.Controllers
                                 continue;
                             }
                             bool fee;
-                            if (feeText == "Rồi") // chuyển thành "Đã nộp"
+                            if (feeText == "Rồi") 
                             {
                                 fee = true;
 
