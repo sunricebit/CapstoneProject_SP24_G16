@@ -101,10 +101,10 @@ namespace PoolComVnWebClient.Controllers
             }
         }
 
-        [HttpPost("ImportPlayers")]
-        public async Task<IActionResult> ImportPlayers(IFormFile ImportPlayers, int tourId)
+        [HttpPost("ImportPlayers/{id}")]
+        public async Task<IActionResult> ImportPlayers(IFormFile ImportPlayers, int id)
         {
-            ViewBag.TourId = tourId;
+            ViewBag.TourId = id;
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
             try
             {
@@ -139,7 +139,7 @@ namespace PoolComVnWebClient.Controllers
                                 continue;
                             }
                             bool fee;
-                            if (feeText == "Rồi") // chuyển thành "Đã nộp"
+                            if (feeText == "Rồi") 
                             {
                                 fee = true;
 
