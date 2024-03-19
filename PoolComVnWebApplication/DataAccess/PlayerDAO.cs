@@ -170,6 +170,20 @@ namespace DataAccess
             }
         }
 
+        public int GetNumberPlayerByTourId(int tourId)
+        {
+            try
+            {
+                int numberPlayers = _context.Players.Where(p => p.TourId == tourId).Count();
+                return numberPlayers;
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+
         public void AddPlayerToMatch(int matchId, int playerId)
         {
             try

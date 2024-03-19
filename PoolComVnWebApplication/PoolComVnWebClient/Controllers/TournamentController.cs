@@ -44,6 +44,11 @@ namespace PoolComVnWebClient.Controllers
             return View();
         }
 
+        public IActionResult TournamentSingleBracket(int tourId)
+        {
+            return View();
+        }
+
         public IActionResult TournamentMatchList()
         {
             return View();
@@ -71,6 +76,11 @@ namespace PoolComVnWebClient.Controllers
         }
 
         public IActionResult TournamentBracketForManager() {
+            return View();
+        }
+
+        public IActionResult TournamentSingleBracketForManager()
+        {
             return View();
         }
 

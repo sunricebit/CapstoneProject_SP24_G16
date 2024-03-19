@@ -2,7 +2,29 @@
     Layout = "~/Views/Shared/_CreateTournamentLayout.cshtml";
 }
 @model PoolComVnWebClient.DTO.CreateTournamentInputDTO
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
 
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewBag.Error)
+            {
+                <li>@error</li>
+            }
+        </ul>
+    </div>
+}
 <div class="container-full">
     <div class="create-tour d-flex justify-content-end">
         <form class="create-tour-display col-lg-10" method="post" asp-controller="CreateTournament"
