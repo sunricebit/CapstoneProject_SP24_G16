@@ -12,12 +12,14 @@
                 <div class="display-title d-flex justify-content-between">
                     <div>Người chơi</div>
                     <div class="d-flex align-items-center">
-                        <a class="step-two-nav active" id="all-list" asp-controller="CreateTournament" asp-action="StepTwoPlayerList">Danh sách (16)</a>
-                        <a class="step-two-nav" id="request-list" asp-controller="CreateTournament" asp-action="StepTwoJoinList">Yêu cầu tham gia (3)</a>
-                        <a class="step-two-nav" id="system-list" asp-controller="CreateTournament" asp-action="StepTwoPlayerSystem">Toàn hệ thống (500)</a>
+                        <a class="step-two-nav active" id="all-list" asp-controller="CreateTournament" asp-action="StepTwoPlayerList">Danh sách</a>
+                        <a class="step-two-nav" id="request-list" asp-controller="CreateTournament" asp-action="StepTwoJoinList">Yêu cầu tham gia</a>
+                        <a class="step-two-nav" id="system-list" asp-controller="CreateTournament" asp-action="StepTwoPlayerSystem">Toàn hệ thống</a>
                     </div>
                 </div>
-
+                <div class="d-none" id="TourId">
+                    @tourId
+                </div>
                 <div class="display-content">
                     <div class="d-flex justify-content-between">
                         <div>
@@ -29,10 +31,11 @@
                             <button class="club-player" disabled>Thêm vào thành viên</button>
                             <button class="import-excel" onclick="downloadTemplate()">Tải mẫu</button>
 
-                            <form method="post" enctype="multipart/form-data" class="import-form d-flex"
-                            asp-controller="CreateTournament" asp-action="ImportPlayers">
+                            <form id="importForm" method="post" enctype="multipart/form-data" class="import-form d-flex"
+                                  action="@Url.Action("ImportPlayers", "CreateTournament", new { id = tourId })">
                                 <div class="import-input">
                                     <span>Chọn tệp để tải lên</span>
+                                   @*chưa hiển thị file đã chọn*@
                                     <input type="file" name="ImportPlayers" accept=".xls, .xlsx" />
                                 </div>
                                 <button type="submit">Nhập danh sách</button>
@@ -66,7 +69,7 @@
                                     foreach (var player in ViewBag.ImportedPlayers)
                                     {
                                         <tr>
-                                            <input hidden id="selectedPlayersInput" name="selectedPlayers" />
+                                           
                                             <td>
                                                 <input type="checkbox" class="individual-checkbox one-checkbox" value="@player.PlayerId"
                                                        data-player-name="@player.PlayerName"
@@ -74,6 +77,7 @@
                                                        data-phonenumber="@player.PhoneNumber"
                                                        data-email="@player.Email"
                                                        data-level="@player.Level"
+                                                       data-is-payed="@player.IsPayed"
                                                        data-is-payed="@player.IsPayed">
                                             </td>
                                             <td>@stt</td>
@@ -134,8 +138,8 @@
     }
     function submitForm() {
         var selectedPlayers = [];
-        var tourIdValue = document.getElementById('TourId').value;
-        var checkboxes = document.querySelectorAll('.individual-checkbox');
+        var tourIdValue = document.getElementById('TourId').textContent.trim();
+        var checkboxes = document.querySelectorAll('.individual-checkbox.one-checkbox');
 
         checkboxes.forEach(function (checkbox) {
             var playerName = checkbox.getAttribute('data-player-name');

@@ -1,9 +1,6 @@
-﻿@{
-    Layout = "~/Views/Shared/_TournamentLayout.cshtml";
-}
+﻿@using PoolComVnWebClient.DTO
+@model PaginatedList<NewsDTO>
 
-@using PoolComVnWebClient.DTO;
-@model List<NewsDTO> ;
 <div class="container-full">
     <div class="news-manage">
         <div class="manage-header">Quản lí bài viết</div>
@@ -13,7 +10,7 @@
                 <i class="fa-solid fa-circle-plus px-3"></i>
             </a>
             <div class="manageSearch d-flex">
-                <input class="news-input" placeholder="Title,..." />
+                <input class="news-input" placeholder="Title,..." value="@ViewBag.SearchQuery" />
                 <div class="searchBtn px-3 align-items-center" onclick="Search()">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </div>
@@ -47,9 +44,9 @@
                     </th>
                     <th class="w150 text-center">Hành động</th>
                 </tr>
-                @for (int i = 0; i < Model.Count; i++)
+                @for (int i = 0; i < Model.Items.Count; i++)
                 {
-                    var news = Model[i];
+                    var news = Model.Items[i];
                     <tr>
                         <td>@(i + 1)</td>
                         <td>
@@ -92,14 +89,13 @@
     @*Phân trang start*@
     <div class="pagination d-flex justify-content-center align-items-center m-0">
         <div class="pagination-content d-flex justify-content-center align-items-center m-0">
-            <div class="pagination-btn-big ">Trước</div>
-            <div class="pagination-btn active">1</div>
-            <div class="pagination-btn">2</div>
-            <div class="pagination-btn">3</div>
-            <div class="pagination-more">...</div>
-            <div class="pagination-btn">8</div>
-            <div class="pagination-btn">9</div>
-            <div class="pagination-btn-big ">Sau</div>
+            <div class="pagination-btn-big" onclick="prevPage()">Trước</div>
+            @foreach (var pageNum in Enumerable.Range(1, Model.TotalPages))
+            {
+                <div class="pagination-btn @(pageNum == Model.PageIndex ? "active" : "")" onclick="goToPage(@pageNum)">@pageNum</div>
+            }
+            <div class="pagination-btn-big" onclick="nextPage()">Sau</div>
+
         </div>
     </div>
     @*Phân trang end*@
@@ -108,6 +104,37 @@
 <script>
     //Handle view btn
     const viewBtnList = document.querySelectorAll('.view-btn');
+
+    function prevPage() {
+        var currentPage = @Model.PageIndex;
+        if (currentPage > 1) {
+            goToPage(currentPage - 1);
+        }
+    }
+
+    function nextPage() {
+        var currentPage = @Model.PageIndex;
+        var totalPages = @Model.TotalPages;
+        if (currentPage < totalPages) {
+            goToPage(currentPage + 1);
+        }
+    }
+
+    function goToPage(pageNum) {
+        window.location.href = "@Url.Action("Index", "NewsManage")?page=" + pageNum;
+    }
+
+    function Search() {
+        const inputElement = document.querySelector('.news-input');
+        if (inputElement) {
+            const searchQuery = inputElement.value.trim();
+            window.location.href = "@Url.Action("Index", "NewsManage")?searchQuery=" + searchQuery;
+        } else {
+            console.error('Input element not found.');
+        }
+    }
+
+
     viewBtnList.forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -130,4 +157,6 @@
             }
         })
     })
+
+
 </script>
