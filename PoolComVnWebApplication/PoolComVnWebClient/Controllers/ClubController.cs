@@ -343,5 +343,10 @@ namespace PoolComVnWebClient.Controllers
         {
             return View();
         }
+
+        public IActionResult EditClubProfile()
+        {
+            return View();
+        }
     }
 }
