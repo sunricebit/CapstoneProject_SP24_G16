@@ -36,6 +36,9 @@ else
                 <div class="item-content d-flex justify-content-center">
                     <a asp-action="PostDetails" asp-controller="Club" asp-route-id="@post.PostId" class="news-item">
                         <div class="news-date">@post.UpdatedDate.ToString("yyyy-MM-dd")</div>
+                        <div class="hidden-btn">
+                            <i class="fa-solid fa-eye-slash"></i>
+                        </div>
                         <div class="news-image">
                             <img src="@post.Flyer" alt="" />
                         </div>
@@ -51,5 +54,31 @@ else
 
 
     </div>
+</div>
+
+<script>
+    //Handle hidden-btn
+    const hiddenBtns = document.querySelectorAll('.hidden-btn');
+    hiddenBtns.forEach(hiddenBtn => {
+        hiddenBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (hiddenBtn.querySelector('i').classList.contains('fa-eye-slash')) {
+                hiddenBtn.innerHTML = '<i class="fa-solid fa-eye"></i>';
+                var parent = hiddenBtn.parentNode;
+                var newsImage = parent.querySelector('.news-image');
+                newsImage.classList.add('hidden');
+            } else {
+                hiddenBtn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+                var parent = hiddenBtn.parentNode;
+                var newsImage = parent.querySelector('.news-image');
+                newsImage.classList.remove('hidden');
+            }
+        })
+    })
+
+    //Handel active nav
+    const clubNavBtn = document.querySelector('.club-post');
+    clubNavBtn.classList.add('active');
+</script>
 </div>
 }
