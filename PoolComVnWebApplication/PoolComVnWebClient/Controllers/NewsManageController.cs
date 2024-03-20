@@ -64,7 +64,6 @@ namespace PoolComVnWebClient.Controllers
             {
                 if (string.IsNullOrWhiteSpace(searchQuery))
                 {
-                    // Nếu searchQuery rỗng, trả về toàn bộ danh sách tin tức
                     var response = client.GetAsync($"{ApiUrl}").Result;
                     if (response.IsSuccessStatusCode)
                     {
@@ -73,14 +72,12 @@ namespace PoolComVnWebClient.Controllers
                         return newsList;
                     }
                     else
-                    {
-                        // Trả về danh sách rỗng nếu không thể lấy dữ liệu từ API
+                    {              
                         return new List<NewsDTO>();
                     }
                 }
                 else
                 {
-                    // Nếu searchQuery không rỗng, thực hiện tìm kiếm
                     var response = client.GetAsync($"{ApiUrl}/Search?searchQuery={searchQuery}").Result;
                     if (response.IsSuccessStatusCode)
                     {
@@ -90,7 +87,6 @@ namespace PoolComVnWebClient.Controllers
                     }
                     else
                     {
-                        // Trả về danh sách rỗng nếu không thể lấy dữ liệu từ API
                         return new List<NewsDTO>();
                     }
                 }

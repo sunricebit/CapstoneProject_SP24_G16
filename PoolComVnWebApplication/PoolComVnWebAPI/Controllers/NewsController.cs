@@ -57,11 +57,13 @@ namespace PoolComVnWebAPI.Controllers
         }
 
         [HttpGet("GetLatestNews")]
-        public ActionResult<IEnumerable<NewsDTO>> GetLatestNews(int count)
+        public ActionResult<IEnumerable<NewsDTO>> GetLatestNews()
         {
             try
             {
-                var latestNews = _newsDAO.GetLatestNews(count);
+                var latestNews = _newsDAO.GetLatestNews()
+                                         .OrderByDescending(news => news.CreatedDate) // Hoặc news.UpdatedDate nếu muốn sắp xếp theo ngày cập nhật
+                                         .ToList();
 
                 var result = latestNews.Select(news => new NewsDTO
                 {
@@ -83,6 +85,7 @@ namespace PoolComVnWebAPI.Controllers
                 return BadRequest("Error while retrieving latest news: " + ex.Message);
             }
         }
+
 
         [HttpGet("Search")]
         public ActionResult<IEnumerable<NewsDTO>> Search(string searchQuery)

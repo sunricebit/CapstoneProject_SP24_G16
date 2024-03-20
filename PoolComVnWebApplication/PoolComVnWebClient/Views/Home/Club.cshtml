@@ -1,13 +1,13 @@
 ﻿@using PoolComVnWebClient.DTO
-@model List<ClubDTO>
+@model PaginatedList<ClubDTO>
 <div class="container">
     <div class="tournament">
         <div class="normal-body">
             <div class="d-flex justify-content-end mt-4 row">
                 <div class="d-flex justify-content-end col-lg-6 col-12 order-1 order-lg-2">
                     <div class="tour-search d-flex justify-content-end align-items-center">
-                        <i class="search-btn fa-solid fa-magnifying-glass"></i>
-                        <input class="search-input px-2" type="text" placeholder="Câu lạc bộ, địa chỉ,..." />
+                        <i class="search-btn fa-solid fa-magnifying-glass" onclick="search()"></i>
+                        <input id="searchInput" class="search-input px-2" type="text" placeholder="Câu lạc bộ, địa chỉ,..." value="@ViewBag.SearchQuery" />
                     </div>
 
                     <div class="tour-filter d-flex align-items-center">
@@ -15,10 +15,10 @@
                             <span>Bộ lọc</span>
                             <i class="fa-solid fa-filter px-2"></i>
                         </div>
-                        <form class="filter-body d-none">
+                        <form class="filter-body d-none" onsubmit="submitFilter(event)">
                             <div class="row d-flex justify-content-center">
                                 <div class="d-flex justify-content-center col-4">
-                                    <select class="tour-province col-4">
+                                    <select class="tour-province col-4" onchange="displayCities()">
                                         <option selected hidden value="0">Tỉnh</option>
                                         <option>Hà Nội</option>
                                         <option>Quảng Ninh</option>
@@ -29,9 +29,7 @@
                                 <div class="d-flex justify-content-center col-4">
                                     <select class="tour-city col-4" disabled>
                                         <option selected hidden>Khu vực</option>
-                                        <option>Cầu Giấy</option>
-                                        <option>Hà Đông</option>
-                                        <option>Long Biên</option>
+                                        <!-- Các thành phố sẽ được thêm vào đây bằng JavaScript -->
                                     </select>
                                 </div>
                             </div>
@@ -46,7 +44,7 @@
             </div>
             <div class="mt-5 d-flex row">
                 <div class="club-list d-flex row justify-content-around">
-                    @foreach (var club in Model)
+                    @foreach (var club in Model.Items)
                     {
                         <div class="club-box">
                             <div class="club-box-border">
@@ -65,11 +63,28 @@
                             </div>
                         </div>
                     }
+                    @if (Model.Items.Count == 0)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            Không tìm thấy kết quả phù hợp.
+                        </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
+    <div class="pagination d-flex justify-content-center align-items-center m-0">
+        <div class="pagination-content d-flex justify-content-center align-items-center m-0">
+            <div class="pagination-btn-big" onclick="prevPage()">Trước</div>
+            @for (int pageNum = 1; pageNum <= Model.TotalPages; pageNum++)
+            {
+                <div class="pagination-btn @(pageNum == Model.PageIndex ? "active" : "")" onclick="goToPage(@pageNum)">@pageNum</div>
+            }
+            <div class="pagination-btn-big" onclick="nextPage()">Sau</div>
+        </div>
+    </div>
 </div>
+
 
 <script>
     //tour-filter button
@@ -94,4 +109,140 @@
             tourCity.disabled = false;
         }
     })
+    const provinces = {
+        "Hà Nội": ["Ba Đình",
+            "Hoàn Kiếm",
+            "Hai Bà Trưng",
+            "Đống Đa",
+            "Tây Hồ",
+            "Cầu Giấy",
+            "Thanh Xuân",
+            "Hà Đông",
+            "Long Biên",
+            "Nam Từ Liêm",
+            "Bắc Từ Liêm",
+            "Hoàng Mai",
+            "Thanh Trì",
+            "Sóc Sơn",
+            "Đông Anh",
+            "Gia Lâm",
+            "Thanh Oai",
+            "Mê Linh",
+            "Ba Vì",
+            "Chương Mỹ",
+            "Phú Xuyên",
+            "Đan Phượng",
+            "Hoài Đức",
+            "Quốc Oai",
+            "Thạch Thất",
+            "Chương Mỹ",
+            "Thường Tín",
+            "Phúc Thọ",
+            "Ứng Hòa",
+            "Mỹ Đức"],
+        "Quảng Ninh": ["Hạ Long",
+            "Cẩm Phả",
+            "Móng Cái",
+            "Uông Bí",
+            "Đông Triều",
+            "Quảng Yên",
+            "Tiên Yên",
+            "Ba Chẽ",
+            "Bình Liêu",
+            "Cô Tô",
+            "Đầm Hà",
+            "Hải Hà",
+            "Hoành Bồ",
+            "Vân Đồn"],
+        "Hồ Chí Minh": ["Quận 1",
+            "Quận 2",
+            "Quận 3",
+            "Quận 4",
+            "Quận 5",
+            "Quận 6",
+            "Quận 7",
+            "Quận 8",
+            "Quận 9",
+            "Quận 10",
+            "Quận 11",
+            "Quận 12",
+            "Bình Tân",
+            "Bình Thạnh",
+            "Gò Vấp",
+            "Phú Nhuận",
+            "Tân Bình",
+            "Tân Phú",
+            "Thủ Đức",
+            "Bình Chánh",
+            "Cần Giờ",
+            "Củ Chi",
+            "Hóc Môn",
+            "Nhà Bè"]
+    };
+
+    function displayCities() {
+        const tourProvince = document.querySelector('.tour-province');
+        const tourCity = document.querySelector('.tour-city');
+        const selectedProvince = tourProvince.value;
+        const cities = provinces[selectedProvince];
+        tourCity.innerHTML = ''; // Xóa các option cũ trước khi thêm mới
+
+        // Thêm option cho thành phố vào dropdown
+        cities.forEach(city => {
+            const option = document.createElement('option');
+            option.text = city;
+            tourCity.add(option);
+        });
+    }
+
+    function submitFilter(event) {
+        event.preventDefault(); // Ngăn chặn sự kiện mặc định của form
+        // Lấy giá trị từ trường nhập liệu và các dropdown
+        var selectedProvince = document.querySelector('.tour-province').value;
+        var selectedCity = document.querySelector('.tour-city').value;
+
+        // Tạo URL với các tham số selectedProvince và selectedCity
+        var url = "@Url.Action("Club", "Home")";
+        if (selectedProvince) {
+            url += "?searchQuery=" + encodeURIComponent(selectedCity);
+        }
+
+
+        // Chuyển hướng đến URL mới
+        window.location.href = url;
+    }
+
+
+    function search() {
+        var searchQuery = document.getElementById('searchInput').value.trim();
+        window.location.href = "@Url.Action("Club", "Home")?searchQuery=" + searchQuery;
+    }
+
+    // Code xử lý sự kiện khi nhấn phím Enter
+    document.getElementById("searchInput").addEventListener("keyup", function (event) {
+        // Kiểm tra nếu phím Enter được nhấn
+        if (event.key === "Enter") {
+            // Gọi hàm search()
+            search();
+        }
+    });
+
+    function prevPage() {
+        var currentPage = @Model.PageIndex;
+        if (currentPage > 1) {
+            goToPage(currentPage - 1);
+        }
+    }
+
+    function nextPage() {
+        var currentPage = @Model.PageIndex;
+        var totalPages = @Model.TotalPages;
+        if (currentPage < totalPages) {
+            goToPage(currentPage + 1);
+        }
+    }
+
+    function goToPage(pageNum) {
+        window.location.href = "@Url.Action("Club", "Home")?page=" + pageNum;
+    }
 </script>
