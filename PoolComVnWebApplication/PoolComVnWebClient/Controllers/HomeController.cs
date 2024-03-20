@@ -34,7 +34,10 @@ namespace PoolComVnWebClient.Controllers
                 response.EnsureSuccessStatusCode();
                 var jsonContent = response.Content.ReadAsStringAsync().Result;
                 var newsList = JsonConvert.DeserializeObject<List<NewsDTO>>(jsonContent);
+
+                var latestNews = newsList.FirstOrDefault();
                 var paginatedNewsList = PaginatedList<NewsDTO>.CreateAsync(newsList, pageNumber, pageSize);
+                ViewBag.LatestNews = latestNews;
                 return View(paginatedNewsList);
             }
             catch (HttpRequestException ex)

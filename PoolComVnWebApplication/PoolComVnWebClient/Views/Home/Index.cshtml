@@ -3,50 +3,50 @@
     ViewData["Title"] = "Home Page";
 }
 @model PaginatedList<NewsDTO>
+@if (ViewBag.LatestNews!= null)
+{
+    var latestNews = ViewBag.LatestNews;
+    <div class="row">
+        <div class="col-md-12">
+            <a href="@Url.Action("NewsDetail", "Home", new { id = latestNews.NewsId })">
+                <div class="news-header" style="background-image: url('@latestNews.Flyer');">
+                    <div class="news-description">
+                        @latestNews.Title
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
 
-<div class="container">
-    @if (Model.Items.Any())
-    {
-        // Lấy tin mới nhất ngoài vòng lặp
-        var latestNews = Model.Items.First();
-        <div class="row">
-            <div class="col-md-12">
-                <a href="@Url.Action("NewsDetail", "Home", new { id = latestNews.NewsId })">
-                    <div class="news-header" style="background-image: url('@latestNews.Flyer');">
-                        <div class="news-description">
-                            @latestNews.Title
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    }
-    <div class="row news-items">
-        <div class="latest-new">TIN MỚI</div>
-        @foreach (var news in Model.Items)
-        {
-            <div class="col-md-6 col-lg-4 d-flex justify-content-center">
-                <a href="@Url.Action("NewsDetail", "Home", new { id = news.NewsId })" class="news-item">
-                    <div class="news-date">@news.CreatedDate.ToString("dd/MM/yyyy")</div>
-                    <div class="news-image">
-                        <img src="@news.Flyer" alt="" />
-                    </div>
-                    <div class="news-title">@news.Title</div>
-                </a>
-            </div>
-        }
-    </div>
-    <div class="pagination d-flex justify-content-center align-items-center m-0">
-        <div class="pagination-content d-flex justify-content-center align-items-center m-0">
-            <div class="pagination-btn-big" onclick="prevPage()">Trước</div>
-            @foreach (var pageNum in Enumerable.Range(1, Model.TotalPages))
+    <div class="container">
+        <div class="row news-items">
+            <div class="latest-new">TIN MỚI</div>
+            @foreach (var news in Model.Items)
             {
-                <div class="pagination-btn @(pageNum == Model.PageIndex ? "active" : "")" onclick="goToPage(@pageNum)">@pageNum</div>
+                <div class="col-md-6 col-lg-4 d-flex justify-content-center">
+                    <a href="@Url.Action("NewsDetail", "Home", new { id = news.NewsId })" class="news-item">
+                        <div class="news-date">@news.CreatedDate.ToString("dd/MM/yyyy")</div>
+                        <div class="news-image">
+                            <img src="@news.Flyer" alt="" />
+                        </div>
+                        <div class="news-title">@news.Title</div>
+                    </a>
+                </div>
             }
-            <div class="pagination-btn-big" onclick="nextPage()">Sau</div>
+        </div>
+        <div class="pagination d-flex justify-content-center align-items-center m-0">
+            <div class="pagination-content d-flex justify-content-center align-items-center m-0">
+                <div class="pagination-btn-big" onclick="prevPage()">Trước</div>
+                @foreach (var pageNum in Enumerable.Range(1, Model.TotalPages))
+                {
+                    <div class="pagination-btn @(pageNum == Model.PageIndex ? "active" : "")" onclick="goToPage(@pageNum)">@pageNum</div>
+                }
+                <div class="pagination-btn-big" onclick="nextPage()">Sau</div>
+            </div>
         </div>
     </div>
-</div>
+}
+   
 
 
 <script>
