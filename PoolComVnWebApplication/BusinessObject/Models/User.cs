@@ -17,8 +17,11 @@ namespace BusinessObject.Models
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
         public int AccountId { get; set; }
+        public string? Address { get; set; }
+        public string? WardCode { get; set; }
 
         public virtual Account Account { get; set; } = null!;
+        public virtual Ward? WardCodeNavigation { get; set; }
         public virtual ICollection<Player> Players { get; set; }
     }
 }

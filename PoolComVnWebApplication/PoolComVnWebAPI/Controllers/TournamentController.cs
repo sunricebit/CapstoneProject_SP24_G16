@@ -17,10 +17,6 @@ namespace PoolComVnWebAPI.Controllers
     {
         private readonly TournamentDAO _tournamentDAO;
         private readonly ClubDAO _clubDAO;
-        private static string ApiKey = "AIzaSyDbVNJE6bbQdXlcr3TZqxkZh3xqi5CqKIc";
-        private static string Bucket = "poolcomvn-82664.appspot.com";
-        private static string AuthEmail = "vuducduy@gmail.com";
-        private static string AuthPassword = "123456";
 
         public TournamentController(TournamentDAO tournamentDAO, ClubDAO clubDAO)
         {
@@ -219,34 +215,7 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
-        private async Task<string> UploadFromFirebase(FileStream stream, string filename)
-        {
-            var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
-            var a = await auth.SignInWithEmailAndPasswordAsync(AuthEmail, AuthPassword);
-            var cancellation = new CancellationTokenSource();
-            var task = new FirebaseStorage(
-                Bucket,
-                new FirebaseStorageOptions
-                {
-                    AuthTokenAsyncFactory = () => Task.FromResult(a.FirebaseToken),
-                    ThrowOnCancel = true
-                }
-                ).Child("Tournaments")
-                 .Child(filename)
-                 .PutAsync(stream, cancellation.Token);
-            try
-            {
-                string link = await task;
-                return link;
-
-            }
-            catch (Exception ex)
-            {
-
-                Console.WriteLine("Exception was thrown : {0}", ex);
-                return null;
-            }
-        }
+      
 
 
         [HttpGet("GetAllTour")]

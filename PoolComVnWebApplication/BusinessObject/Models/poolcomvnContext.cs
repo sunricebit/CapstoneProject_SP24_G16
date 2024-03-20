@@ -18,9 +18,12 @@ namespace BusinessObject.Models
         }
 
         public virtual DbSet<Account> Accounts { get; set; } = null!;
+        public virtual DbSet<AdministrativeRegion> AdministrativeRegions { get; set; } = null!;
+        public virtual DbSet<AdministrativeUnit> AdministrativeUnits { get; set; } = null!;
         public virtual DbSet<Club> Clubs { get; set; } = null!;
         public virtual DbSet<ClubPost> ClubPosts { get; set; } = null!;
         public virtual DbSet<Country> Countries { get; set; } = null!;
+        public virtual DbSet<District> Districts { get; set; } = null!;
         public virtual DbSet<GameType> GameTypes { get; set; } = null!;
         public virtual DbSet<MatchOfTournament> MatchOfTournaments { get; set; } = null!;
         public virtual DbSet<News> News { get; set; } = null!;
@@ -28,18 +31,20 @@ namespace BusinessObject.Models
         public virtual DbSet<PlayerInMatch> PlayerInMatches { get; set; } = null!;
         public virtual DbSet<PlayerInSoloMatch> PlayerInSoloMatches { get; set; } = null!;
         public virtual DbSet<PlayerType> PlayerTypes { get; set; } = null!;
+        public virtual DbSet<Province> Provinces { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<SoloMatch> SoloMatches { get; set; } = null!;
         public virtual DbSet<Table> Tables { get; set; } = null!;
         public virtual DbSet<Tournament> Tournaments { get; set; } = null!;
         public virtual DbSet<TournamentType> TournamentTypes { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<Ward> Wards { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var builder = new ConfigurationBuilder()
-                                            .SetBasePath(Directory.GetCurrentDirectory())
-                                            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                                             .SetBasePath(Directory.GetCurrentDirectory())
+                                             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             IConfigurationRoot configuration = builder.Build();
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("PoolCom"));
         }
@@ -59,6 +64,64 @@ namespace BusinessObject.Models
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Accounts)
                     .HasForeignKey(d => d.RoleId);
+            });
+
+            modelBuilder.Entity<AdministrativeRegion>(entity =>
+            {
+                entity.ToTable("administrative_regions");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("id");
+
+                entity.Property(e => e.CodeName)
+                    .HasMaxLength(255)
+                    .HasColumnName("code_name");
+
+                entity.Property(e => e.CodeNameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("code_name_en");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(255)
+                    .HasColumnName("name");
+
+                entity.Property(e => e.NameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("name_en");
+            });
+
+            modelBuilder.Entity<AdministrativeUnit>(entity =>
+            {
+                entity.ToTable("administrative_units");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("id");
+
+                entity.Property(e => e.CodeName)
+                    .HasMaxLength(255)
+                    .HasColumnName("code_name");
+
+                entity.Property(e => e.CodeNameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("code_name_en");
+
+                entity.Property(e => e.FullName)
+                    .HasMaxLength(255)
+                    .HasColumnName("full_name");
+
+                entity.Property(e => e.FullNameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("full_name_en");
+
+                entity.Property(e => e.ShortName)
+                    .HasMaxLength(255)
+                    .HasColumnName("short_name");
+
+                entity.Property(e => e.ShortNameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("short_name_en");
             });
 
             modelBuilder.Entity<Club>(entity =>
@@ -102,6 +165,58 @@ namespace BusinessObject.Models
                 entity.Property(e => e.CountryImage).HasMaxLength(255);
 
                 entity.Property(e => e.CountryName).HasMaxLength(255);
+            });
+
+            modelBuilder.Entity<District>(entity =>
+            {
+                entity.HasKey(e => e.Code)
+                    .HasName("districts_pkey");
+
+                entity.ToTable("districts");
+
+                entity.HasIndex(e => e.ProvinceCode, "idx_districts_province");
+
+                entity.HasIndex(e => e.AdministrativeUnitId, "idx_districts_unit");
+
+                entity.Property(e => e.Code)
+                    .HasMaxLength(20)
+                    .HasColumnName("code");
+
+                entity.Property(e => e.AdministrativeUnitId).HasColumnName("administrative_unit_id");
+
+                entity.Property(e => e.CodeName)
+                    .HasMaxLength(255)
+                    .HasColumnName("code_name");
+
+                entity.Property(e => e.FullName)
+                    .HasMaxLength(255)
+                    .HasColumnName("full_name");
+
+                entity.Property(e => e.FullNameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("full_name_en");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(255)
+                    .HasColumnName("name");
+
+                entity.Property(e => e.NameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("name_en");
+
+                entity.Property(e => e.ProvinceCode)
+                    .HasMaxLength(20)
+                    .HasColumnName("province_code");
+
+                entity.HasOne(d => d.AdministrativeUnit)
+                    .WithMany(p => p.Districts)
+                    .HasForeignKey(d => d.AdministrativeUnitId)
+                    .HasConstraintName("districts_administrative_unit_id_fkey");
+
+                entity.HasOne(d => d.ProvinceCodeNavigation)
+                    .WithMany(p => p.Districts)
+                    .HasForeignKey(d => d.ProvinceCode)
+                    .HasConstraintName("districts_province_code_fkey");
             });
 
             modelBuilder.Entity<GameType>(entity =>
@@ -251,6 +366,56 @@ namespace BusinessObject.Models
                 entity.Property(e => e.Title).HasMaxLength(50);
             });
 
+            modelBuilder.Entity<Province>(entity =>
+            {
+                entity.HasKey(e => e.Code)
+                    .HasName("provinces_pkey");
+
+                entity.ToTable("provinces");
+
+                entity.HasIndex(e => e.AdministrativeRegionId, "idx_provinces_region");
+
+                entity.HasIndex(e => e.AdministrativeUnitId, "idx_provinces_unit");
+
+                entity.Property(e => e.Code)
+                    .HasMaxLength(20)
+                    .HasColumnName("code");
+
+                entity.Property(e => e.AdministrativeRegionId).HasColumnName("administrative_region_id");
+
+                entity.Property(e => e.AdministrativeUnitId).HasColumnName("administrative_unit_id");
+
+                entity.Property(e => e.CodeName)
+                    .HasMaxLength(255)
+                    .HasColumnName("code_name");
+
+                entity.Property(e => e.FullName)
+                    .HasMaxLength(255)
+                    .HasColumnName("full_name");
+
+                entity.Property(e => e.FullNameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("full_name_en");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(255)
+                    .HasColumnName("name");
+
+                entity.Property(e => e.NameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("name_en");
+
+                entity.HasOne(d => d.AdministrativeRegion)
+                    .WithMany(p => p.Provinces)
+                    .HasForeignKey(d => d.AdministrativeRegionId)
+                    .HasConstraintName("provinces_administrative_region_id_fkey");
+
+                entity.HasOne(d => d.AdministrativeUnit)
+                    .WithMany(p => p.Provinces)
+                    .HasForeignKey(d => d.AdministrativeUnitId)
+                    .HasConstraintName("provinces_administrative_unit_id_fkey");
+            });
+
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.Property(e => e.RoleId).HasColumnName("RoleID");
@@ -362,11 +527,74 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.AccountId).HasColumnName("AccountID");
 
+                entity.Property(e => e.Address).HasMaxLength(255);
+
                 entity.Property(e => e.Dob).HasColumnName("DOB");
+
+                entity.Property(e => e.WardCode)
+                    .HasMaxLength(20)
+                    .HasColumnName("Ward_code");
 
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.AccountId);
+
+                entity.HasOne(d => d.WardCodeNavigation)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.WardCode)
+                    .HasConstraintName("FK_Users_wards");
+            });
+
+            modelBuilder.Entity<Ward>(entity =>
+            {
+                entity.HasKey(e => e.Code)
+                    .HasName("wards_pkey");
+
+                entity.ToTable("wards");
+
+                entity.HasIndex(e => e.DistrictCode, "idx_wards_district");
+
+                entity.HasIndex(e => e.AdministrativeUnitId, "idx_wards_unit");
+
+                entity.Property(e => e.Code)
+                    .HasMaxLength(20)
+                    .HasColumnName("code");
+
+                entity.Property(e => e.AdministrativeUnitId).HasColumnName("administrative_unit_id");
+
+                entity.Property(e => e.CodeName)
+                    .HasMaxLength(255)
+                    .HasColumnName("code_name");
+
+                entity.Property(e => e.DistrictCode)
+                    .HasMaxLength(20)
+                    .HasColumnName("district_code");
+
+                entity.Property(e => e.FullName)
+                    .HasMaxLength(255)
+                    .HasColumnName("full_name");
+
+                entity.Property(e => e.FullNameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("full_name_en");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(255)
+                    .HasColumnName("name");
+
+                entity.Property(e => e.NameEn)
+                    .HasMaxLength(255)
+                    .HasColumnName("name_en");
+
+                entity.HasOne(d => d.AdministrativeUnit)
+                    .WithMany(p => p.Wards)
+                    .HasForeignKey(d => d.AdministrativeUnitId)
+                    .HasConstraintName("wards_administrative_unit_id_fkey");
+
+                entity.HasOne(d => d.DistrictCodeNavigation)
+                    .WithMany(p => p.Wards)
+                    .HasForeignKey(d => d.DistrictCode)
+                    .HasConstraintName("wards_district_code_fkey");
             });
 
             OnModelCreatingPartial(modelBuilder);
