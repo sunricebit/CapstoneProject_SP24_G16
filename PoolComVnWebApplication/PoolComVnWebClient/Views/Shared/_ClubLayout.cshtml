@@ -31,71 +31,9 @@
             </div>
         </nav>
     </header>
-    @if (@ViewBag.Club == null)
-    {
-        <div class="dashboard-container container">
-            <div class="row news-items p-0 m-0">
-                <div class="item-content d-flex justify-content-center">
-                    <h3>Bạn chưa có câu lạc bộ</h3>
-                </div>
-            </div>
-        </div>
-    }
-    else
-    {
-        <div class="club-dashboard-nav">
-            <div class="club-avt-bg d-flex justify-content-center">
-                <div class="club-avt d-flex justify-content-center"
-                     style="background-image: url(@ViewBag.Club.Avatar);">
-                </div>
-            </div>
-            <div class=" club-name text-center">
-                @ViewBag.Club.ClubName
-            </div>
-            <div class="club-nav">
-                <a asp-controller="Club" asp-action="EditClubProfile" class="club-nav-btn club-change-info">
-                    <i class="fa-solid fa-list-check fa-fade"></i>
-                    Thay đổi thông tin
-                </a>
-                <a asp-action="Index" asp-controller="Club" class="club-post club-nav-btn">
-                    <i class="fa-solid fa-newspaper fa-fade"></i>
-                    Bài viết
-                </a>
-                <a href="#" class="club-nav-btn club-table">
-                    <i class="fa-solid fa-object-ungroup fa-fade"></i>
-                    Bàn
-                </a>
-                <a asp-action="ClubTournament" asp-controller="Club" class="club-nav-btn club-tour">
-                    <i class="fa-solid fa-trophy fa-flip"></i>
-                    Giải đấu
-                </a>
-                <a asp-controller="club" asp-action="ClubSoloMatch" class="club-nav-btn club-solo">
-                    <i class="fa-solid fa-khanda fa-flip"></i>
-                    Trận đấu
-                </a>
-            </div>
-            <div class="club-info">
-                <div class="club-address">
-                    <div class="address-title">Địa chỉ:</div>
-                    <div class="address-content">@ViewBag.Club.Address</div>
-                </div>
-                <div class="club-address">
-                    <div class="address-title">Liên hệ</div>
-                    <div class="address-content">@ViewBag.Club.Phone</div>
-                </div>
-                <div class="club-address">
-                    <div class="address-title">Email</div>
-                    <div class="address-content">@ViewBag.AccountEmail</div>
-                </div>
-                <div class="club-address">
-                    <div class="address-title">Facebook</div>
-                    <a href="@ViewBag.Club.Facebook" class="address-content" style="font-size: 32px;">
-                        <i class="fa-brands fa-square-facebook"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    }
+    
+       
+ 
     <div class="club-dashboard-nav">
         <div class="club-avt-bg d-flex justify-content-center">
             <div class="club-avt d-flex justify-content-center"
@@ -106,19 +44,30 @@
             @(ViewBag.Club != null ? ViewBag.Club.ClubName : "Câu lạc bộ chưa được tạo")
         </div>
         <div class="club-nav">
-            <a asp-action="ClubDetails" asp-controller="Club" class="club-nav-btn">
-                <i class="fa-solid fa-list-check fa-fade"></i>
-                Quản lí
-            </a>
-            <a asp-action="Index" asp-controller="Club" class="club-post club-nav-btn active">
+            @if (ViewBag.Club != null && ViewBag.Club.ClubId != null)
+            {
+                <a asp-controller="Club" asp-action="ClubDetails" asp-route-id="@ViewBag.Club.ClubId" class="club-nav-btn club-change-info">
+                    <i class="fa-solid fa-list-check fa-fade"></i>
+                    Thay đổi thông tin
+                </a>
+            }
+            else
+            {
+               
+            }
+            <a asp-action="Index" asp-controller="Club" class="club-post club-nav-btn">
                 <i class="fa-solid fa-newspaper fa-fade"></i>
                 Bài viết
             </a>
-            <a asp-action="ClubTournament" asp-controller="Club" class="club-nav-btn">
+            <a href="#" class="club-nav-btn club-table">
+                <i class="fa-solid fa-object-ungroup fa-fade"></i>
+                Bàn
+            </a>
+            <a asp-action="ClubTournament" asp-controller="Club" class="club-nav-btn club-tour">
                 <i class="fa-solid fa-trophy fa-flip"></i>
                 Giải đấu
             </a>
-            <a href="#" class="club-nav-btn">
+            <a asp-controller="club" asp-action="ClubSoloMatch" class="club-nav-btn club-solo">
                 <i class="fa-solid fa-khanda fa-flip"></i>
                 Trận đấu
             </a>
