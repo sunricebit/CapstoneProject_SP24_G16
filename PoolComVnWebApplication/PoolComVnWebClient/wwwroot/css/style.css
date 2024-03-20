@@ -3325,7 +3325,8 @@ tr:not(:first-child).isFinish {
     border-radius: 20px;
 }
 
-    .upload-img .imageInput {
+    .upload-img .imageInput,
+    .change-info .upload-img .imageInput {
         position: absolute;
         top: 0;
         left: 0;
@@ -3357,20 +3358,12 @@ tr:not(:first-child).isFinish {
             font-size: 60px;
         }
 
-    .upload-img .preview-image-bg {
-        width: 450px;
-        height: 300px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-    }
-
     .upload-img .preview-image {
-        width: 450px;
+        width: 300px;
+        height: 300px;
+        background-position: center;
         background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center center;
+        overflow: hidden;
     }
 
     .upload-img.avt {
@@ -4157,17 +4150,11 @@ tr:not(:first-child).isFinish {
         width: 200px;
         height: 200px;
         background-size: cover;
+        background-position: center;
         overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         border: 5px solid #fff;
         border-radius: 10px;
     }
-
-        .club-dashboard-nav .club-avt img {
-            height: 200px;
-        }
 
     .club-dashboard-nav .club-name {
         font-size: 20px;
@@ -4792,6 +4779,85 @@ tr:not(:first-child).isFinish {
         text-align: center;
         color: #346585;
         font-weight: 600;
+    }
+
+/* EditUserProfile.html */
+/*--ChangeInfo---------------------------------*/
+.change-info {
+    margin: 100px 10%;
+    border-radius: 20px;
+    background-color: white;
+}
+
+    .change-info .menu-info {
+        padding: 20px 50px;
+    }
+
+        .change-info .menu-info input[type='text'],
+        .change-info .menu-info input[type='date'] {
+            width: 500px;
+            min-width: 300px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            height: 32px;
+            text-indent: 10px;
+        }
+
+        .change-info .menu-info select {
+            width: 100px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            height: 32px;
+            text-indent: 10px;
+        }
+
+        .change-info .menu-info button {
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            height: 40px;
+            color: #000;
+            background: #41f3c0;
+            font-weight: 600;
+            width: 200px;
+            line-height: 40px;
+        }
+
+            .change-info .menu-info button:hover {
+                background: #31b08c;
+                color: #fff;
+            }
+
+    .change-info .containUser .title {
+        font-size: 28px;
+        font-weight: 700;
+        padding: 10px 0;
+        border-bottom: 2px #000 solid;
+    }
+
+    .change-info .menu-info .upload-img {
+        border: solid 2px #000;
+        width: 200px;
+        height: 200px;
+    }
+
+    .change-info .menu-info .preview-image {
+        height: 200px;
+        width: 200px;
+    }
+
+    .change-info .menu-info .hidden-checkbox {
+        margin-top: 20px;
+        border-radius: 6px;
+        height: 16px;
+        width: 16px;
+    }
+
+    .change-info .menu-info .hidden-title {
+        padding: 0 10px;
+        font-weight: 600;
+        font-size: 14px;
+        font-style: italic;
+        color: #346585;
     }
 
 
