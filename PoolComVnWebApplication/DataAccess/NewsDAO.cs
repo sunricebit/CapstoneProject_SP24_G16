@@ -89,14 +89,13 @@ namespace DataAccess
         }
 
 
-        public List<News> GetLatestNews(int count)
+        public List<News> GetLatestNews()
         {
             try
             {
                 return _context.News
                     .Include(n => n.Acc)
                     .OrderByDescending(n => n.CreatedDate)
-                    .Take(count)
                     .ToList();
             }
             catch (Exception ex)
