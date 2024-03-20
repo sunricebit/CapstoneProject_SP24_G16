@@ -1,8 +1,8 @@
 ﻿@{
-    Layout = "~/Views/Shared/_BackBtnLayout.cshtml";
+    Layout = "~/Views/Shared/_ClubLayout.cshtml";
 }
 
-<div class="container-full">
+<div class="dashboard-container container">
     <div class="change-info row">
         <div class="col-10 d-block p-0">
             <div class="containUser pt-5 px-5">
@@ -93,4 +93,8 @@
             selectedFileName.value = imageInput.files[0].name;
         }
     });
+
+    //Handel active nav
+    const clubNavBtn = document.querySelector('.club-change-info');
+    clubNavBtn.classList.add('active');
 </script>

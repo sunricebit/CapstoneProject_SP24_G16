@@ -205,32 +205,76 @@ button {
         text-align: center;
     }
 
-    .container .news-image,
-    .container-full .news-image {
-        overflow: hidden;
-        border-radius: 20px;
-        width: 300px;
-        height: 200px;
+.hidden-btn {
+    position: absolute;
+    right: 0;
+    top: 20px;
+    background: #aa0642;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    z-index: 2;
+    transition: width 0.3s ease;
+    transition: height 0.3s ease;
+}
+
+    .hidden-btn.hidden-tour {
+        top: 0;
+        border-top-right-radius: 5px;
+        border-bottom-left-radius: 5px;
     }
 
-    .container .news-item img,
-    .container-full .news-item img {
-        display: block;
-        width: 100%;
-        transition: transform 0.3s;
+    .hidden-btn.hidden-solo {
+        top: 0;
     }
 
-        .container .news-item img:hover,
-        .container-full .news-item img:hover {
-            transform: scale(1.1);
-        }
-
-    .container .news-items .news-title,
-    .container .news-items .news-title {
-        color: white;
-        padding: 10px;
-        width: 300px;
+    .hidden-btn:hover {
+        width: 50px;
+        height: 50px;
+        background: #c20a4d;
+        cursor: pointer;
     }
+
+    .hidden-btn i {
+        color: #fff;
+    }
+
+.container .news-image,
+.container-full .news-image {
+    overflow: hidden;
+    border-radius: 20px;
+    width: 300px;
+    height: 200px;
+}
+
+    .container .news-image.hidden,
+    .container .tour-box.hidden,
+    .container .item-box.hidden {
+        opacity: 0.3;
+    }
+
+.container .news-item img,
+.container-full .news-item img {
+    display: block;
+    width: 100%;
+    transition: transform 0.3s;
+}
+
+    .container .news-item img:hover,
+    .container-full .news-item img:hover {
+        transform: scale(1.1);
+    }
+
+.container .news-items .news-title,
+.container .news-items .news-title {
+    color: white;
+    padding: 10px;
+    width: 300px;
+}
 
 .latest-new {
     color: white;
@@ -491,6 +535,12 @@ footer {
     padding-right: 40px;
 }
 
+    .container-full .news-detail .news-detail-bg {
+        background-color: #ffffff79;
+        padding: 40px;
+        border-radius: 20px;
+    }
+
     .container-full .news-detail img {
         max-width: 500px;
         background-position: center center;
@@ -699,6 +749,7 @@ footer {
 
     .tournament .tour-item {
         padding: 10px;
+        position: relative;
     }
 
 .history-content .tour-item {
@@ -4194,6 +4245,7 @@ tr:not(:first-child).isFinish {
         .club-dashboard-nav .club-nav-btn:hover {
             font-style: italic;
             color: #346585;
+            cursor: pointer;
         }
 
         .club-dashboard-nav .club-nav-btn.active {
@@ -4300,13 +4352,16 @@ tr:not(:first-child).isFinish {
 .schedule-item {
     width: auto;
     height: 150px;
-    background: linear-gradient(rgba(255, 255, 255, 0.888) 80%, rgba(0, 0, 0, 0.222));
     margin: 0 10% 30px;
     border-radius: 20px;
     transition: height 0.3s;
     overflow: hidden;
     position: relative;
 }
+
+    .schedule-item .item-box {
+        background: linear-gradient(rgba(255, 255, 255, 0.888) 80%, rgba(0, 0, 0, 0.222));
+    }
 
     .schedule-item .item-date {
         background-color: #aa0642;
@@ -4782,7 +4837,6 @@ tr:not(:first-child).isFinish {
     }
 
 /* EditUserProfile.html */
-/*--ChangeInfo---------------------------------*/
 .change-info {
     margin: 100px 10%;
     border-radius: 20px;
@@ -5002,10 +5056,14 @@ tr:not(:first-child).isFinish {
         padding: 0 10px;
     }
 
-        .main-nav .user .user-menu li:hover a {
-            font-size: 16px;
-            font-weight: 700;
+        .main-nav .user .user-menu li:hover {
+            cursor: pointer;
         }
+
+            .main-nav .user .user-menu li:hover a {
+                font-size: 16px;
+                font-weight: 700;
+            }
 
     .main-nav .user .user-menu a {
         color: white;
