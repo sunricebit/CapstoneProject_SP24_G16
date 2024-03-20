@@ -48,7 +48,7 @@
                 <div class="club-list d-flex row justify-content-around">
                     @foreach (var club in Model)
                     {
-                        <div class="club-box">
+                        <a asp-controller="club" asp-action="Index" class="club-box">
                             <div class="club-box-border">
                                 <div class="club-box-bg" style="background-image: url('@club.Avatar');">
                                 </div>
@@ -63,7 +63,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     }
                 </div>
             </div>
