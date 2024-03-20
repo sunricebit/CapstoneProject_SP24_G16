@@ -60,7 +60,23 @@ namespace DataAccess
                 return null;
             }
         }
+        public List<Club> GetClubsBySearch(string searchQuery)
+        {
+            try
+            {
+                searchQuery = searchQuery.ToLower();
 
+                var clubs = _context.Clubs
+                                    .Where(c => c.ClubName.ToLower().Contains(searchQuery) || c.Address.ToLower().Contains(searchQuery))
+                                    .ToList();
+                return clubs;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi tìm kiếm câu lạc bộ: {ex.Message}");
+                return null;
+            }
+        }
         public List<Club> GetAllClubs()
         {
             return _context.Clubs.ToList();

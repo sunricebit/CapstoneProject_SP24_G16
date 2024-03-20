@@ -4,7 +4,6 @@
 @using PoolComVnWebClient.DTO
 @model ClubDTO
 
-
 <div class="dashboard-container container">
     <div class="row news-items p-0 m-0">
         <div class="item-content d-flex justify-content-center">
@@ -15,43 +14,26 @@
                 </div>
             </a>
         </div>
-            @if (ViewBag.ClubPost != null)
+        @if (ViewBag.ClubPost != null)
+        {
+            foreach (var post in ViewBag.ClubPost)
             {
-                foreach (var post in ViewBag.ClubPost)
-                {
-                    <div class="item-content d-flex justify-content-center">
-                        <a asp-action="PostDetails" asp-controller="Club" asp-route-id="@post.PostId" class="news-item">
-                            <div class="news-date">@post.UpdatedDate.ToString("yyyy-MM-dd")</div>
-                            <div class="news-image">
-                                <img src="@post.Flyer" alt="" />
-                            </div>
-                            <div class="news-title">@post.Title</div>
-                        </a>
-                    </div>
-                }
+                <div class="item-content d-flex justify-content-center">
+                    <a asp-action="PostDetails" asp-controller="Club" asp-route-id="@post.PostId" class="news-item">
+                        <div class="news-date">@post.UpdatedDate.ToString("yyyy-MM-dd")</div>
+                        <div class="news-image">
+                            <img src="@post.Flyer" alt="" />
+                        </div>
+                        <div class="news-title">@post.Title</div>
+                    </a>
+                </div>
             }
-            else
-            {
-                <p>Câu lạc bộ chưa có bài đăng nào.</p>
-            }
-     
-       
+        }
+        else
+        {
+            <p>Câu lạc bộ chưa có bài đăng nào.</p>
+        }
+
+
     </div>
 </div>
-}
-<script>
-    // check window width to set position of load button
-    window.addEventListener('resize', checkLoadButtonPosition)
-    function checkLoadButtonPosition() {
-        var pageWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-        var loadBtn = document.getElementById("load-btn");
-        var threshold = 0.2 * pageWidth;
-        loadBtn.classList.add('col-md-6', 'col-lg-4');
-        loadBtn.classList.remove('col-12');
-        if (loadBtn.offsetLeft < threshold) {
-            loadBtn.classList.remove('col-md-6', 'col-lg-4');
-            loadBtn.classList.add('col-12');
-        }
-    }
-    checkLoadButtonPosition();
-</script>

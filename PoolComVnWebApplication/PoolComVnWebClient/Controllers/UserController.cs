@@ -8,5 +8,10 @@ namespace PoolComVnWebClient.Controllers
         {
             return View();
         }
+
+        public IActionResult EditUserProfile()
+        {
+            return View();
+        }
     }
 }

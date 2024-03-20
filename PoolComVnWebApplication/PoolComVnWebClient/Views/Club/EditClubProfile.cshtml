@@ -1,0 +1,96 @@
+﻿@{
+    Layout = "~/Views/Shared/_BackBtnLayout.cshtml";
+}
+
+<div class="container-full">
+    <div class="change-info row">
+        <div class="col-10 d-block p-0">
+            <div class="containUser pt-5 px-5">
+                <div class="title">
+                    Thay đổi thông tin
+                </div>
+            </div>
+
+            <div class="menu-info">
+                <form action="">
+                    <div class="contentBody">
+                        <div class="py-2">
+                            <p class="fw-bold">Ảnh đại diện</p>
+                            <div class="display-content">
+                                <div class="upload-img">
+                                    <div class="m-0 preview-image" style="background-image: url(Image/news.jpg);"></div>
+                                    <input type="file" class="imageInput mt-1" accept="image/*" />
+                                    <!-- lấy tên ảnh -->
+                                    <input id="file-name" class="d-none" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="py-2">
+                            <p class="fw-bold">Tên câu lạc bộ</p>
+                            <input type="text" class="firstName" value="Moon Club 3" required minlength="3" maxlength="30">
+                        </div>
+
+                        <div class="py-2">
+                            <p class="fw-bold">Email</p>
+                            <div>your_email@example.com</div>
+                        </div>
+
+                        <div class="py-2">
+                            <p class="fw-bold">Liên hệ</p>
+                            <input type="text" value="0923459456" required minlength="9" maxlength="13">
+                        </div>
+
+                        <div class="py-2">
+                            <p class="fw-bold">Địa chỉ</p>
+                            <select class="address">
+                                <option value="0" selected hidden>Tỉnh</option>
+                                <option value="">Hà Nội</option>
+                                <option value="">Hà Nội</option>
+                            </select>
+                            <select class="address">
+                                <option value="0" selected hidden>Huyện</option>
+                            </select>
+                            <select class="address">
+                                <option value="0" selected hidden>Xã</option>
+                            </select>
+                        </div>
+
+                        <div class="py-2">
+                            <p class="fw-bold">Facebook</p>
+                            <input type="text" value="https://www.facebook.com/vhn.2221" required minlength="9" maxlength="13">
+                        </div>
+
+                        <div class="">
+                            <button type="submit" class="mt-4">Lưu thay đổi</button>
+                            <button class="mx-lg-3 mt-4">Đặt lại</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //Image validation
+    const imgInput = document.querySelector('#file-name');
+    document.querySelector('.imageInput').addEventListener('change', function (event) {
+        const imageInput = event.target;
+        const previewImage = document.querySelector('.preview-image');
+        const selectedFileName = document.querySelector('#file-name');
+        const uploadTile = document.querySelector('.upload-title');
+
+        if (imageInput.files && imageInput.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                previewImage.style.backgroundImage = 'url(' + e.target.result + ')';
+                previewImage.style.display = 'block';
+                uploadTile.classList.add('d-none');
+            };
+
+            reader.readAsDataURL(imageInput.files[0]);
+            selectedFileName.value = imageInput.files[0].name;
+        }
+    });
+</script>
