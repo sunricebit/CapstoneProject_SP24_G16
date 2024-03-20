@@ -65,19 +65,24 @@
                             <td>@news.Title</td>
                             <td>@news.CreatedDate.ToString("yyyy-MM-dd")</td>
                             <td>@news.UpdatedDate.ToString("yyyy-MM-dd")</td>
-                            <td>
-                                @if (news.Status.HasValue && news.Status.Value)
-                                {
-                                    <div class="user-status isActive">Hiển thị</div>
-                                }
-                                else if (news.Status.HasValue && !news.Status.Value)
-                                {
-                                    <div class="user-status isActive">Ẩn</div>
-                                }
-                                else
-                                {
-                                    <div class="user-status">Không biết</div>
-                                }
+                            <td class="text-center">
+                                <form method="post" action="@Url.Action("ChangeStatus", "NewsManage")">
+                                    <input type="hidden" name="id" value="@news.NewsId" />
+                                    <button type="submit" class="change-status-btn">
+                                        @if (news.Status.HasValue && news.Status.Value)
+                                        {
+                                            <div class="user-status isActive">Hiển thị</div>
+                                        }
+                                        else if (news.Status.HasValue && !news.Status.Value)
+                                        {
+                                            <div class="user-status isActive">Ẩn</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="user-status">Không biết</div>
+                                        }
+                                    </button>
+                                </form>
                             </td>
                             <td class="text-center">
                                 <a asp-action="NewsDetails" asp-controller="NewsManage" asp-route-id="@news.NewsId"><i class="fa-solid fa-pencil p-2"></i></a>
