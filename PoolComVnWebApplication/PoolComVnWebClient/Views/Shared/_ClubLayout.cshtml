@@ -31,29 +31,17 @@
             </div>
         </nav>
     </header>
-    @if (@ViewBag.Club == null)
-    {
-    <div class="dashboard-container container">
-        <div class="row news-items p-0 m-0">
-            <div class="item-content d-flex justify-content-center">
-                <h3>Bạn chưa có câu lạc bộ</h3>
-            </div>
-        </div>
-    </div>
-}
-else
-{
     <div class="club-dashboard-nav">
         <div class="club-avt-bg d-flex justify-content-center">
             <div class="club-avt d-flex justify-content-center"
-                     style="background-image: url(@ViewBag.Club.Avatar);">
+                 style="background-image: url('@(ViewBag.Club != null ? ViewBag.Club.Avatar : string.Empty)');">
             </div>
         </div>
-        <div class=" club-name text-center">
-                @ViewBag.Club.ClubName
+        <div class="club-name text-center">
+            @(ViewBag.Club != null ? ViewBag.Club.ClubName : "Câu lạc bộ chưa được tạo")
         </div>
         <div class="club-nav">
-            <a asp-action="CLubDetails" asp-controller="Club" class="club-nav-btn">
+            <a asp-action="ClubDetails" asp-controller="Club" class="club-nav-btn">
                 <i class="fa-solid fa-list-check fa-fade"></i>
                 Quản lí
             </a>
@@ -73,24 +61,30 @@ else
         <div class="club-info">
             <div class="club-address">
                 <div class="address-title">Địa chỉ:</div>
-                    <div class="address-content">@ViewBag.Club.Address</div>
+                <div class="address-content">
+                    @(ViewBag.Club != null ? ViewBag.Club.Address : "Địa chỉ chưa có")
+                </div>
             </div>
             <div class="club-address">
-                <div class="address-title">Liên hệ</div>
-                    <div class="address-content">@ViewBag.Club.Phone</div>
+                <div class="address-title">Liên hệ:</div>
+                <div class="address-content">
+                    @(ViewBag.Club != null ? ViewBag.Club.Phone : "Số điện thoại chưa có")
+                </div>
             </div>
             <div class="club-address">
-                <div class="address-title">Email</div>
-                <div class="address-content">@ViewBag.AccountEmail</div>
+                <div class="address-title">Email:</div>
+                <div class="address-content">
+                    @(ViewBag.AccountEmail ?? "Email không được cung cấp")
+                </div>
             </div>
         </div>
     </div>
-    }
+    
 
     
 
     @RenderBody()
-
+   
 </body>
 
 <script>
