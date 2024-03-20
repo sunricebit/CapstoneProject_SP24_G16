@@ -1,7 +1,7 @@
 ﻿@{
     Layout = "~/Views/Shared/_BackBtnLayout.cshtml";
 }
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <div class="container-full">
     <div class="create-tour d-flex justify-content-center">
         <form class="create-tour-display col-lg-10">
@@ -38,7 +38,6 @@
                                     <div class="preview-image-bg m-0">
                                         <img class="preview-image" />
                                     </div>
-                                    <!-- lấy tên ảnh -->
                                     <input id="file-name" class="d-none" />
                                 </div>
                             </div>
@@ -50,20 +49,14 @@
                             <span>Địa chỉ</span>
                         </div>
                         <div>
-                            <select class="select-address">
+                            <select class="select-address" id="provinceSelect">
                                 <option value="0" selected hidden>Tỉnh</option>
-                                <option value="">Hà Nội</option>
-                                <option value="">Hà Nội</option>
                             </select>
-                            <select class="select-address">
-                                <option value="0" selected hidden>Huyện</option>
-                                <option value="">Hà Nội</option>
-                                <option value="">Hà Nội</option>
+                            <select class="select-address" id="districtSelect" disabled>
+                                <option value="0" selected hidden>Quận/Huyện</option>
                             </select>
-                            <select class="select-address">
-                                <option value="0" selected hidden>Xã</option>
-                                <option value="">Hà Nội</option>
-                                <option value="">Hà Nội</option>
+                            <select class="select-address" id="wardSelect" disabled>
+                                <option value="0" selected hidden>Phường/Xã</option>
                             </select>
                         </div>
                     </div>
@@ -72,7 +65,7 @@
                             <span class="input-requir">*</span>
                             <span>Địa chỉ cụ thể</span>
                         </div>
-                        <input class="input-content" type="text" name="" id="">
+                        <input class="input-content" type="text" name="" id="" placeholder="Số nhà, tên đường, tên ngõ...">
                     </div>
                     <div class="tour-input">
                         <div class="input-title">
@@ -98,7 +91,7 @@
 </div>
 
 <script>
-    //Image validation
+  
     const imgInput = document.querySelector('#file-name');
 
     document.querySelector('.imageInput').addEventListener('change', function (event) {
@@ -119,5 +112,65 @@
             reader.readAsDataURL(imageInput.files[0]);
             selectedFileName.value = imageInput.files[0].name;
         }
+    });
+    $(document).ready(function () {
+        function loadProvinces() {
+            $.ajax({
+                url: 'https://localhost:5000/api/Address/provinces',
+                type: 'GET',
+                success: function (data) {
+                    var provinceSelect = $('#provinceSelect');
+                    provinceSelect.empty().append('<option value="0" selected hidden>Tỉnh</option>');
+                    $.each(data, function (index, province) {
+                        provinceSelect.append('<option value="' + province.code + '">' + province.name + '</option>');
+                    });
+                },
+                error: function () {
+                    alert('Đã xảy ra lỗi khi gọi API.');
+                }
+            });
+        }
+        loadProvinces();
+        $('#provinceSelect').change(function () {
+            var provinceCode = $(this).val();
+            if (provinceCode !== "0") {
+                $.ajax({
+                    url: 'https://localhost:5000/api/Address/districts/' + provinceCode,
+                    type: 'GET',
+                    success: function (data) {
+                        var districtSelect = $('#districtSelect');
+                        districtSelect.empty().append('<option value="0" selected hidden>Quận/Huyện</option>');
+                        $.each(data, function (index, district) {
+                            districtSelect.append('<option value="' + district.code + '">' + district.name + '</option>');
+                        });
+                        districtSelect.prop('disabled', false); 
+                    },
+                    error: function () {
+                        alert('Đã xảy ra lỗi khi gọi API.');
+                    }
+                });
+            }
+        });
+
+        $('#districtSelect').change(function () {
+            var districtCode = $(this).val();
+            if (districtCode !== "0") {
+                $.ajax({
+                    url: 'https://localhost:5000/api/Address/wards/' + districtCode,
+                    type: 'GET',
+                    success: function (data) {
+                        var wardSelect = $('#wardSelect');
+                        wardSelect.empty().append('<option value="0" selected hidden>Phường/Xã</option>');
+                        $.each(data, function (index, ward) {
+                            wardSelect.append('<option value="' + ward.code + '">' + ward.name + '</option>');
+                        });
+                        wardSelect.prop('disabled', false); 
+                    },
+                    error: function () {
+                        alert('Đã xảy ra lỗi khi gọi API.');
+                    }
+                });
+            }
+        });
     });
 </script>
