@@ -75,7 +75,8 @@ namespace PoolComVnWebAPI.Controllers
                     UpdatedDate = news.UpdatedDate,
                     Flyer = news.Flyer,
                     Link = news.Link,
-                    AccountName = news.Acc?.Email
+                    AccountName = news.Acc?.Email,
+                    Status = news.Status
                 }).ToList();
 
                 return Ok(result);

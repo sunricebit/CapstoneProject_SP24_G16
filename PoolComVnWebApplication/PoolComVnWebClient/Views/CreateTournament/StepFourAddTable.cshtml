@@ -47,6 +47,7 @@
                                             <td>
                                             <input hidden id="selectedTablesInput" name="selectedTables" />
                                             <input type="checkbox" class="individual-checkbox one-checkbox" value="@table.TableId"
+                                                       data-tableid="@table.TableId"
                                                        data-tagname="@table.TagName"
                                                        data-image="@table.Image"
                                                        data-size="@table.Size"
@@ -110,7 +111,7 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
 
     function submitForm() {

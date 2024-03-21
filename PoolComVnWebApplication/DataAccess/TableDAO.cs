@@ -65,6 +65,7 @@ namespace DataAccess
                 _context.SaveChanges();
             }
         }
+
         public void UpdateIsUseInTourStatus(List<int> tableIds, bool isUseInTour)
         {
             // Retrieve the tables to be updated
@@ -79,6 +80,7 @@ namespace DataAccess
             // Save changes to the database
             _context.SaveChanges();
         }
+
         // Delete
         public void DeleteTable(int tableId)
         {
@@ -89,6 +91,28 @@ namespace DataAccess
                 _context.Tables.Remove(tableToDelete);
                 _context.SaveChanges();
             }
+        }
+
+        public void AddTableToTournament(List<int> lstTableId)
+        {
+            foreach(int i in lstTableId)
+            {
+                var table = _context.Tables.FirstOrDefault(t => t.TableId == i);
+                table.IsUseInTour = true; 
+                _context.Update(table);
+            }
+            _context.SaveChanges();
+        }
+
+        public void RemoveTableFromTournament(List<int> lstTableId)
+        {
+            foreach (int i in lstTableId)
+            {
+                var table = _context.Tables.FirstOrDefault(t => t.TableId == i);
+                table.IsUseInTour = false;
+                _context.Update(table);
+            }
+            _context.SaveChanges();
         }
     }
 }

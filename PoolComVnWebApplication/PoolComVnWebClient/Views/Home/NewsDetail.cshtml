@@ -9,7 +9,7 @@
                     <img src="@Model.Flyer" />
                 </div>
                 <div class="news-title px-lg-5 px-0">@Model.Title</div>
-                <div class="news-description px-lg-5 px-0">@Html.Raw(HttpUtility.HtmlDecode(@Model.Description))</div>
+                <div class="news-description px-lg-5 px-0"> @Html.Raw(HttpUtility.HtmlDecode(@Model.Description.Replace("<img ", "<img style='max-width:100%; height:auto;' ")))</div>
             </div>
         </div>
         <div class="news-other col-lg-3 col-12 pt-lg-0 pt-5">
@@ -17,7 +17,7 @@
             {
                 foreach (var news in ViewBag.OtherNewsList)
                 {
-                    if (news.NewsId != Model.NewsId)
+                    if (news.Status == true && news.NewsId != Model.NewsId)
                     {
                         <a href="@Url.Action("NewsDetail", "Home", new { id = news.NewsId })" class="news-item row">
                             <div class="news-image col-4 p-0">

@@ -35,7 +35,15 @@ namespace PoolComVnWebClient.Controllers
                 var jsonContent = response.Content.ReadAsStringAsync().Result;
                 var newsList = JsonConvert.DeserializeObject<List<NewsDTO>>(jsonContent);
 
-                var latestNews = newsList.FirstOrDefault();
+                NewsDTO latestNews = null;
+                foreach (var news in newsList)
+                {
+                    if (news.Status == true)
+                    {
+                        latestNews = news;
+                        break;
+                    }
+                }
                 var paginatedNewsList = PaginatedList<NewsDTO>.CreateAsync(newsList, pageNumber, pageSize);
                 ViewBag.LatestNews = latestNews;
                 return View(paginatedNewsList);

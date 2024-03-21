@@ -3,7 +3,7 @@
     ViewData["Title"] = "Home Page";
 }
 @model PaginatedList<NewsDTO>
-@if (ViewBag.LatestNews!= null)
+@if (ViewBag.LatestNews != null && ViewBag.LatestNews.Status == true)
 {
     var latestNews = ViewBag.LatestNews;
     <div class="row">
@@ -17,11 +17,14 @@
             </a>
         </div>
     </div>
+}
 
-    <div class="container">
-        <div class="row news-items">
-            <div class="latest-new">TIN MỚI</div>
-            @foreach (var news in Model.Items)
+<div class="container">
+    <div class="row news-items">
+        <div class="latest-new">TIN MỚI</div>
+        @foreach (var news in Model.Items)
+        {
+            if (news.Status != false)
             {
                 <div class="col-md-6 col-lg-4 d-flex justify-content-center">
                     <a href="@Url.Action("NewsDetail", "Home", new { id = news.NewsId })" class="news-item">
@@ -33,21 +36,19 @@
                     </a>
                 </div>
             }
-        </div>
-        <div class="pagination d-flex justify-content-center align-items-center m-0">
-            <div class="pagination-content d-flex justify-content-center align-items-center m-0">
-                <div class="pagination-btn-big" onclick="prevPage()">Trước</div>
-                @foreach (var pageNum in Enumerable.Range(1, Model.TotalPages))
-                {
-                    <div class="pagination-btn @(pageNum == Model.PageIndex ? "active" : "")" onclick="goToPage(@pageNum)">@pageNum</div>
-                }
-                <div class="pagination-btn-big" onclick="nextPage()">Sau</div>
-            </div>
+        }
+    </div>
+    <div class="pagination d-flex justify-content-center align-items-center m-0">
+        <div class="pagination-content d-flex justify-content-center align-items-center m-0">
+            <div class="pagination-btn-big" onclick="prevPage()">Trước</div>
+            @foreach (var pageNum in Enumerable.Range(1, Model.TotalPages))
+            {
+                <div class="pagination-btn @(pageNum == Model.PageIndex ? "active" : "")" onclick="goToPage(@pageNum)">@pageNum</div>
+            }
+            <div class="pagination-btn-big" onclick="nextPage()">Sau</div>
         </div>
     </div>
-}
-   
-
+</div>
 
 <script>
     function prevPage() {

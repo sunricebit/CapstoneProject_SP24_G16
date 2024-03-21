@@ -137,11 +137,11 @@ namespace PoolComVnWebClient.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("StepTwoAddBanner/{tourID}")]
         public async Task<IActionResult> StepTwoAddBanner(IFormFile banner, int tourID)
         {
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
-            StepFourAddBannerDTO BannerDTO = new StepFourAddBannerDTO();
+            StepTwoAddBannerDTO BannerDTO = new StepTwoAddBannerDTO();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
             var bannerContent = new MultipartFormDataContent();
             try
@@ -212,20 +212,49 @@ namespace PoolComVnWebClient.Controllers
             var responseGetLstPlayer = await client.GetAsync(Constant.ApiUrl + "/Player" + "/GetNumberPlayerByTourId?tourId=" + tourId);
             if (responseGetLstPlayer.IsSuccessStatusCode)
             {
-                int number = await responseGetLstPlayer.Content.ReadFromJsonAsync<int>();
-                ViewBag.NumberOfPlayer = number;
+                int numberOfPlayer = await responseGetLstPlayer.Content.ReadFromJsonAsync<int>();
+                ViewBag.NumberOfPlayer = numberOfPlayer;
                 ViewBag.TourId = tourId;
+                return View();
             }
             else
             {
                 var status = responseGetTourdetail.StatusCode;
                 return RedirectToAction("InternalServerError", "Error");
             }
-            return View();
         }
 
         [HttpGet]
-        public async Task<IActionResult> StepFivePlayerList()
+        public async Task<IActionResult> StepFourAddTable(int tourId)
+        {
+            ViewBag.TourId = tourId;
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            var response = await client.GetFromJsonAsync<IEnumerable<TableDTO>>(Constant.ApiUrl + "/Table" + "/GetAllTablesForClub");
+            return View(response);
+        }
+
+        [HttpPost("StepFourAddTable/{tourId}")]
+        public async Task<IActionResult> StepFourAddTable(int tourId, List<int> lstTableId)
+        {
+            ViewBag.TourId = tourId;
+            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
+            var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Table" + "/AddTableToTournament", lstTableId);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("StepFivePlayerList", "CreateTournament", new { tourId = tourId });
+            }
+            else
+            {
+                var status = response.StatusCode;
+                return RedirectToAction("InternalServerError", "Error");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> StepFivePlayerList(int tourId)
         {
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
@@ -421,18 +450,6 @@ namespace PoolComVnWebClient.Controllers
             var listplayer = response.ToList();
             return View(listplayer);
         }
-
-        [HttpGet]
-        public async Task<IActionResult> StepFourAddTable(int tourId)
-        {
-            ViewBag.TourId = tourId;
-            var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
-            var response = await client.GetFromJsonAsync<IEnumerable<TableDTO>>("https://localhost:5000/api/Table/GetAllTablesForClub");
-            var listtable = response.ToList();
-            return View(listtable);
-        }
-
 
         //[HttpGet]
         //public async Task<IActionResult> StepFiveArrange()

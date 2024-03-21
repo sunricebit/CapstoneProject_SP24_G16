@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_CreateTournamentLayout.cshtml";
     TournamentDetailDTO tourDetail = ViewBag.TournamentDetail;
     int numberOfPlayer = ViewBag.NumberOfPlayer;
+    int tourId = ViewBag.TourId;
 }
 
 <div class="container-full">
@@ -201,7 +202,7 @@
                             <div class="info-description" style="font-size: 16px; font-style: italic;">
                                 Sau khi tạo giải đấu bạn vẫn có thể sửa đổi thông tin trước khi bắt đầu giải.
                             </div>
-                            <button class="create-tour-btn" >Tạo giải đấu</button>
+                            <button class="create-tour-btn" onclick="location.href='@Url.Action("ImportPlayers", "CreateTournament", new { id = tourId })'">Tạo giải đấu</button>
                         </div>
                     </div>
                 </div>
