@@ -35,12 +35,12 @@
                                 </button>
                             </div>
                             <div>
-                                <button class="zoom-in" onclick="zoomIn()">
+                                <button id="zoom-in" class="zoom-in" onclick="zoomIn()">
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
                             </div>
                             <div>
-                                <button class="zoom-out" onclick="zoomOut()">
+                                <button id="zoom-out" class="zoom-out" onclick="zoomOut()">
                                     <i class="fa-solid fa-minus"></i>
                                 </button>
                             </div>
@@ -93,13 +93,13 @@
                                 + count
                                 + '</div>'
                                 + '<div class="player-match col-10">'
-                                + '<div class="d-flex justify-content-start align-items-center player-1">'
+                                + '<div class="d-flex justify-content-start align-items-center">'
                                 + '<img src=""/>'
                                 + '<!-- 15 char -->'
                                 + '<div class="player-name"></div>'
                                 + '<div class="player-id d-none"></div>'
                                 + '</div>'
-                                + '<div class="d-flex justify-content-start align-items-center player-2">'
+                                + '<div class="d-flex justify-content-start align-items-center">'
                                 + '<img src=""/>'
                                 + '<!-- 15 char -->'
                                 + '<div class="player-name"></div>'
@@ -350,61 +350,4 @@
             }
         });
     });
-
-    function getData(tourId) {
-        $.ajax({
-            url: 'https://localhost:5000/api/MatchOfTour/GetMatchForBracket',
-            method: 'GET',
-            data: { tourId: tourId },
-            success: function (data) {
-                var matches = data;
-                matches.forEach(function (match) {
-                    var matchNumber = match.matchNumber;
-                    var matchBox = $('#match' + matchNumber); // Tìm thẻ match-box có ID tương ứng với matchNumber
-
-
-                    var player1Element = matchBox.find('.player-1').first();
-
-                    // Kiểm tra nếu phần tử tồn tại
-                    if (player1Element.length > 0) {
-                        var playerNameElement = player1Element.find('.player-name');
-                        var playerName = match.p1Name;
-                        playerNameElement.text(playerName);
-
-                        var countryImageElement = player1Element.find('img');
-                        var countryImage = match.p1Country;
-                        countryImageElement.attr('src', countryImage);
-
-                        var playerIdElement = player1Element.find('.player-id');
-                        var playerId = match.p1Id;
-                        playerIdElement.text(playerId);
-                    } else {
-                        console.log('Không tìm thấy phần tử player-1 trong .matchbox');
-                    }
-
-                    var player2Element = matchBox.find('.player-2').first();
-
-                    // Kiểm tra nếu phần tử tồn tại
-                    if (player2Element.length > 0) {
-                        var playerNameElement = player2Element.find('.player-name');
-                        var playerName = match.p2Name;
-                        playerNameElement.text(playerName);
-
-                        var countryImageElement = player2Element.find('img');
-                        var countryImage = match.p2Country;
-                        countryImageElement.attr('src', countryImage);
-
-                        var playerIdElement = player2Element.find('.player-id');
-                        var playerId = match.p2Id;
-                        playerIdElement.text(playerId);
-                    } else {
-                        console.log('Không tìm thấy phần tử player-2 trong .matchbox');
-                    }
-                });
-            },
-            error: function (xhr, textStatus, errorThrown) {
-                console.log('Error:', errorThrown);
-            }
-        });
-    }
 </script>
