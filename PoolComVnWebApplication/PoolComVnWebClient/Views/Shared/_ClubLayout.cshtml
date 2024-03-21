@@ -44,7 +44,7 @@
             @(ViewBag.Club != null ? ViewBag.Club.ClubName : "Câu lạc bộ chưa được tạo")
         </div>
         <div class="club-nav">
-            @if (ViewBag.Club != null && ViewBag.Club.ClubId != null)
+            @if (ViewBag.Club != null && ViewBag.Club.ClubId != null && ViewBag.AccountEmail == email)
             {
                 <a asp-controller="Club" asp-action="ClubDetails" asp-route-id="@ViewBag.Club.ClubId" class="club-nav-btn club-change-info">
                     <i class="fa-solid fa-list-check fa-fade"></i>

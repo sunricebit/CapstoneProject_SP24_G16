@@ -66,6 +66,36 @@ public class AccountController : ControllerBase
             return StatusCode(500, $"Lỗi khi lấy thông tin tài khoản: {ex.Message}");
         }
     }
+    [HttpGet("GetAccountById/{accountId}")]
+    public ActionResult<AccountDTO> GetAccountById(int accountId)
+    {
+        try
+        {
+            var account = _accountDAO.GetAccountById(accountId);
+
+            if (account == null)
+            {
+                return NotFound($"Không tìm thấy tài khoản với ID: {accountId}");
+            }
+
+            var accountDto = new AccountDTO
+            {
+                AccountID = account.AccountId,
+                Email = account.Email,
+                PhoneNumber = account.PhoneNumber,
+                RoleID = account.RoleId,
+                verifyCode = account.VerifyCode,
+                Status = account.Status,
+                Password = account.Password
+            };
+
+            return Ok(accountDto);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Lỗi khi lấy thông tin tài khoản: {ex.Message}");
+        }
+    }
 
 
     [HttpGet("ByUsername/{username}")]
