@@ -234,18 +234,27 @@ namespace PoolComVnWebClient.Controllers
             return View(response);
         }
 
-        [HttpPost]
+        [HttpPost("StepFourAddTable/{tourId}")]
         public async Task<IActionResult> StepFourAddTable(int tourId, List<int> lstTableId)
         {
             ViewBag.TourId = tourId;
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
-            var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Table" + "/GetAllTablesForClub", lstTableId);
-            return RedirectToAction("StepThreeReview", "CreateTournament", new { tourId = tourId });
+            var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Table" + "/AddTableToTournament", lstTableId);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("StepFivePlayerList", "CreateTournament", new { tourId = tourId });
+            }
+            else
+            {
+                var status = response.StatusCode;
+                return RedirectToAction("InternalServerError", "Error");
+            }
         }
 
         [HttpGet]
-        public async Task<IActionResult> StepFivePlayerList()
+        public async Task<IActionResult> StepFivePlayerList(int tourId)
         {
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
