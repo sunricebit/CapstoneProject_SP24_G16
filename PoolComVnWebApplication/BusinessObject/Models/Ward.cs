@@ -7,6 +7,7 @@ namespace BusinessObject.Models
     {
         public Ward()
         {
+            Clubs = new HashSet<Club>();
             Users = new HashSet<User>();
         }
 
@@ -21,6 +22,7 @@ namespace BusinessObject.Models
 
         public virtual AdministrativeUnit? AdministrativeUnit { get; set; }
         public virtual District? DistrictCodeNavigation { get; set; }
+        public virtual ICollection<Club> Clubs { get; set; }
         public virtual ICollection<User> Users { get; set; }
     }
 }

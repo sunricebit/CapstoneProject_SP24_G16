@@ -131,10 +131,19 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.AccountId).HasColumnName("AccountID");
 
+                entity.Property(e => e.WardCode)
+                    .HasMaxLength(20)
+                    .HasColumnName("Ward_code");
+
                 entity.HasOne(d => d.Account)
                     .WithOne(p => p.Club)
                     .HasForeignKey<Club>(d => d.AccountId)
                     .HasConstraintName("FK_Clubs_Accounts");
+
+                entity.HasOne(d => d.WardCodeNavigation)
+                    .WithMany(p => p.Clubs)
+                    .HasForeignKey(d => d.WardCode)
+                    .HasConstraintName("FK_Clubs_Wards");
             });
 
             modelBuilder.Entity<ClubPost>(entity =>

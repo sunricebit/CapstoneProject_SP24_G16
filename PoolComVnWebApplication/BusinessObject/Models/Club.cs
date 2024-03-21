@@ -21,8 +21,10 @@ namespace BusinessObject.Models
         public string? Avatar { get; set; }
         public int? AccountId { get; set; }
         public byte? Status { get; set; }
+        public string? WardCode { get; set; }
 
         public virtual Account? Account { get; set; }
+        public virtual Ward? WardCodeNavigation { get; set; }
         public virtual ICollection<ClubPost> ClubPosts { get; set; }
         public virtual ICollection<SoloMatch> SoloMatches { get; set; }
         public virtual ICollection<Table> Tables { get; set; }

@@ -1,7 +1,7 @@
 ﻿@{
     Layout = "~/Views/Shared/_ClubLayout.cshtml";
 }
-
+@model PoolComVnWebClient.DTO.ClubDTO;
 <div class="dashboard-container container">
     <div class="change-info row">
         <div class="col-10 d-block p-0">
@@ -12,57 +12,58 @@
             </div>
 
             <div class="menu-info">
-                <form action="">
+                <form method="post" asp-action="ClubDetails" asp-controller="Club" enctype="multipart/form-data">
                     <div class="contentBody">
                         <div class="py-2">
                             <p class="fw-bold">Ảnh đại diện</p>
                             <div class="display-content">
                                 <div class="upload-img">
-                                    <div class="m-0 preview-image" style="background-image: url(Image/news.jpg);"></div>
+                                    <div class="m-0 preview-image" style="background-image: url(@Model.Avatar);"></div>
                                     <input type="file" class="imageInput mt-1" accept="image/*" />
-                                    <!-- lấy tên ảnh -->
                                     <input id="file-name" class="d-none" />
                                 </div>
                             </div>
                         </div>
                         <div class="py-2">
                             <p class="fw-bold">Tên câu lạc bộ</p>
-                            <input type="text" class="firstName" value="Moon Club 3" required minlength="3" maxlength="30">
+                            <input type="text" class="firstName" asp-for="ClubName" required minlength="3" maxlength="30">
                         </div>
 
                         <div class="py-2">
                             <p class="fw-bold">Email</p>
-                            <div>your_email@example.com</div>
+                            <div>@ViewBag.AccountEmail</div>
                         </div>
 
                         <div class="py-2">
                             <p class="fw-bold">Liên hệ</p>
-                            <input type="text" value="0923459456" required minlength="9" maxlength="13">
+                            <input type="text" asp-for="Phone" required minlength="9" maxlength="13">
                         </div>
 
                         <div class="py-2">
                             <p class="fw-bold">Địa chỉ</p>
-                            <select class="address">
+                            <select class="select-address" id="provinceSelect">
                                 <option value="0" selected hidden>Tỉnh</option>
-                                <option value="">Hà Nội</option>
-                                <option value="">Hà Nội</option>
                             </select>
-                            <select class="address">
-                                <option value="0" selected hidden>Huyện</option>
+                            <select class="select-address" id="districtSelect" disabled>
+                                <option value="0" selected hidden>Quận/Huyện</option>
                             </select>
-                            <select class="address">
-                                <option value="0" selected hidden>Xã</option>
+                            <select class="select-address" id="wardSelect" disabled>
+                                <option value="0" selected hidden>Phường/Xã</option>
                             </select>
+                        </div>
+                        <div class="py-2">
+                            <p class="fw-bold">Địa chỉ cụ thể</p>
+                            <input type="text" asp-for="Address">
                         </div>
 
                         <div class="py-2">
                             <p class="fw-bold">Facebook</p>
-                            <input type="text" value="https://www.facebook.com/vhn.2221" required minlength="9" maxlength="13">
+                            <input type="text" asp-for="Facebook" required minlength="9" maxlength="13">
                         </div>
 
                         <div class="">
                             <button type="submit" class="mt-4">Lưu thay đổi</button>
-                            <button class="mx-lg-3 mt-4">Đặt lại</button>
+                            <a asp-action="Index" asp-controller="Club" class="mx-lg-3 mt-4">Quay trở lại</a>
                         </div>
                     </div>
                 </form>
