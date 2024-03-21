@@ -349,5 +349,15 @@ namespace PoolComVnWebClient.Controllers
         {
             return View();
         }
+
+        public IActionResult ClubTable()
+        {
+            return View();
+        }
+
+        public IActionResult ClubTableManage()
+        {
+            return View();
+        }
     }
 }
