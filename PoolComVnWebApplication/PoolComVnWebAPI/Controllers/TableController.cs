@@ -84,7 +84,7 @@ namespace PoolComVnWebAPI.Controllers
         // GET: api/Table/AddTableToTournament
         [HttpGet("AddTableToTournament")]
         [Authorize]
-        public IActionResult AddTableToTournament()
+        public IActionResult AddTableToTournament(List<int> lstTableId)
         {
             // Lấy giá trị token từ header
             var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
@@ -105,15 +105,10 @@ namespace PoolComVnWebAPI.Controllers
             {
                 return BadRequest("Invalid AccountId claim");
             }
-            var club = _clubDAO.GetClubByAccountId(accountId);
+            
+            _tableDAO.AddTableToTournament(lstTableId);
 
-            int clubId = club.ClubId;
-
-            var tables = _tableDAO.GetAllTablesForClub(clubId);
-
-            // Map to TableDTO and return
-            var tableDTOs = _mapper.Map<List<TableDTO>>(tables);
-            return Ok(tableDTOs);
+            return Ok();
         }
 
         [HttpGet("AddNewTable")]
