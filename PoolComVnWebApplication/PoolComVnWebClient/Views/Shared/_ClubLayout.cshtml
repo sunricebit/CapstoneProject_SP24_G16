@@ -20,8 +20,10 @@
     <header>
         <nav class="manage-nav">
             <div class="back-btn">
+                <a asp-action="Index" asp-controller="Home">
                 <i class="fa-solid fa-chevron-left"></i>
                 <span>Trở lại</span>
+                </a>
             </div>
             <div class="logo-image d-flex justify-content-center align-items-center">
                 <a href="">
@@ -59,7 +61,7 @@
                 <i class="fa-solid fa-newspaper fa-fade"></i>
                 Bài viết
             </a>
-            <a href="#" class="club-nav-btn club-table">
+            <a asp-action="ClubTable" asp-controller="Club" class="club-nav-btn club-table">
                 <i class="fa-solid fa-object-ungroup fa-fade"></i>
                 Bàn
             </a>

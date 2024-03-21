@@ -59,6 +59,24 @@ namespace PoolComVnWebClient.Controllers
                 return View();
             }
         }
+        [HttpGet]
+        public IActionResult Manage()
+        {
+            string email = HttpContext.Request.Cookies["Email"];
+            var response = client.GetAsync($"https://localhost:5000/api/Account/GetAccountByEmail/{email}").Result;
+            var AccountData = response.Content.ReadAsStringAsync().Result;
+            var account = JsonConvert.DeserializeObject<AccountDTO>(AccountData);
+            if(account.RoleID == 2 || account.RoleID == 3)
+            {
+                return RedirectToAction("Index");
+            }
+            else if (account.RoleID == 1)
+            {
+                return RedirectToAction("Index", "Manager");
+            }  
+            else
+            return RedirectToAction("Index", "NewsManage");
+        }
 
         [HttpGet]
         public IActionResult NewsDetail(int id)
