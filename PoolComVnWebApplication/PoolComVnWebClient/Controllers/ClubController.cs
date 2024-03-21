@@ -481,5 +481,15 @@ namespace PoolComVnWebClient.Controllers
             ViewBag.AccountEmail = email;
             return View();
         }
+
+        public IActionResult ClubTable()
+        {
+            return View();
+        }
+
+        public IActionResult ClubTableManage()
+        {
+            return View();
+        }
     }
 }
