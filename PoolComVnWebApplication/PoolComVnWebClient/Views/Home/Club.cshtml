@@ -1,13 +1,13 @@
 ﻿@using PoolComVnWebClient.DTO
-@model List<ClubDTO>
+@model PaginatedList<ClubDTO>
 <div class="container">
     <div class="tournament">
         <div class="normal-body">
             <div class="d-flex justify-content-end mt-4 row">
                 <div class="d-flex justify-content-end col-lg-6 col-12 order-1 order-lg-2">
                     <div class="tour-search d-flex justify-content-end align-items-center">
-                        <i class="search-btn fa-solid fa-magnifying-glass"></i>
-                        <input class="search-input px-2" type="text" placeholder="Câu lạc bộ, địa chỉ,..." />
+                        <i class="search-btn fa-solid fa-magnifying-glass" onclick="search()"></i>
+                        <input id="searchInput" class="search-input px-2" type="text" placeholder="Câu lạc bộ, địa chỉ,..." value="@ViewBag.SearchQuery" />
                     </div>
 
                     <div class="tour-filter d-flex align-items-center">
@@ -15,23 +15,19 @@
                             <span>Bộ lọc</span>
                             <i class="fa-solid fa-filter px-2"></i>
                         </div>
-                        <form class="filter-body d-none">
+                        <form class="filter-body d-none" onsubmit="submitFilter(event)">
                             <div class="row d-flex justify-content-center">
                                 <div class="d-flex justify-content-center col-4">
-                                    <select class="tour-province col-4">
+                                    <select class="tour-province col-4" onchange="displayCities()">
                                         <option selected hidden value="0">Tỉnh</option>
-                                        <option>Hà Nội</option>
-                                        <option>Quảng Ninh</option>
-                                        <option>Hồ Chí Minh</option>
+                                        <!-- Các tỉnh sẽ được thêm vào đây bằng JavaScript -->
                                     </select>
                                 </div>
 
                                 <div class="d-flex justify-content-center col-4">
                                     <select class="tour-city col-4" disabled>
                                         <option selected hidden>Khu vực</option>
-                                        <option>Cầu Giấy</option>
-                                        <option>Hà Đông</option>
-                                        <option>Long Biên</option>
+                                        <!-- Các quận/huyện sẽ được thêm vào đây bằng JavaScript -->
                                     </select>
                                 </div>
                             </div>
@@ -46,9 +42,9 @@
             </div>
             <div class="mt-5 d-flex row">
                 <div class="club-list d-flex row justify-content-around">
-                    @foreach (var club in Model)
+                    @foreach (var club in Model.Items)
                     {
-                        <div class="club-box">
+                        <a asp-controller="club" asp-action="Index" class="club-box">
                             <div class="club-box-border">
                                 <div class="club-box-bg" style="background-image: url('@club.Avatar');">
                                 </div>
@@ -63,10 +59,26 @@
                                     </div>
                                 </div>
                             </div>
+                        </a>
+                    }
+                    @if (Model.Items.Count == 0)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            Không tìm thấy kết quả phù hợp.
                         </div>
                     }
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="pagination d-flex justify-content-center align-items-center m-0">
+        <div class="pagination-content d-flex justify-content-center align-items-center m-0">
+            <div class="pagination-btn-big" onclick="prevPage()">Trước</div>
+            @for (int pageNum = 1; pageNum <= Model.TotalPages; pageNum++)
+            {
+                <div class="pagination-btn @(pageNum == Model.PageIndex ? "active" : "")" onclick="goToPage(@pageNum)">@pageNum</div>
+            }
+            <div class="pagination-btn-big" onclick="nextPage()">Sau</div>
         </div>
     </div>
 </div>
@@ -85,13 +97,108 @@
         }
     })
 
+    // Hàm gọi API để lấy danh sách tỉnh/thành phố
+    async function fetchProvinces() {
+        try {
+            const response = await fetch('https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1');
+            const provincesData = await response.json();
+            const provincesDropdown = document.querySelector('.tour-province');
+            provincesData.forEach(province => {
+                const option = document.createElement('option');
+                option.text = province.name;
+                provincesDropdown.add(option);
+            });
+        } catch (error) {
+            console.error('Error fetching provinces:', error);
+        }
+    }
+
+    // Hàm gọi API để lấy danh sách quận/huyện dựa trên tỉnh/thành phố được chọn
+    async function fetchDistricts(selectedProvince) {
+        try {
+            const response = await fetch(`https://vn-public-apis.fpo.vn/districts/getAll?provinceCode=${selectedProvince}&limit=-1`);
+            const districtsData = await response.json();
+            const citiesDropdown = document.querySelector('.tour-city');
+            citiesDropdown.disabled = false;
+            citiesDropdown.innerHTML = '';
+            districtsData.forEach(district => {
+                const option = document.createElement('option');
+                option.text = district.name;
+                citiesDropdown.add(option);
+            });
+        } catch (error) {
+            console.error('Error fetching districts:', error);
+        }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchProvinces();
+    });
+
     const tourProvince = document.querySelector('.tour-province');
     const tourCity = document.querySelector('.tour-city');
 
     tourProvince.addEventListener('change', () => {
-        var selectedValue = tourProvince.value;
-        if (selectedValue !== "0") {
-            tourCity.disabled = false;
+        const selectedProvince = tourProvince.value;
+        if (selectedProvince !== "0") {
+            fetchDistricts(selectedProvince);
+        } else {
+            tourCity.innerHTML = '';
+            tourCity.disabled = true;
         }
-    })
+    });
+
+    function displayCities() {
+        const tourProvince = document.querySelector('.tour-province');
+        const tourCity = document.querySelector('.tour-city');
+        const selectedProvince = tourProvince.value;
+        const cities = provinces[selectedProvince];
+        tourCity.innerHTML = '';
+        cities.forEach(city => {
+            const option = document.createElement('option');
+            option.text = city;
+            tourCity.add(option);
+        });
+    }
+
+    function submitFilter(event) {
+        event.preventDefault();
+        var selectedProvince = document.querySelector('.tour-province').value;
+        var selectedCity = document.querySelector('.tour-city').value;
+        var url = "@Url.Action("Club", "Home")";
+        if (selectedProvince) {
+            url += "?searchQuery=" + encodeURIComponent(selectedCity);
+        }
+        window.location.href = url;
+    }
+
+
+    function search() {
+        var searchQuery = document.getElementById('searchInput').value.trim();
+        window.location.href = "@Url.Action("Club", "Home")?searchQuery=" + searchQuery;
+    }
+
+    document.getElementById("searchInput").addEventListener("keyup", function (event) {
+        if (event.key === "Enter") {
+            search();
+        }
+    });
+
+    function prevPage() {
+        var currentPage = @Model.PageIndex;
+        if (currentPage > 1) {
+            goToPage(currentPage - 1);
+        }
+    }
+
+    function nextPage() {
+        var currentPage = @Model.PageIndex;
+        var totalPages = @Model.TotalPages;
+        if (currentPage < totalPages) {
+            goToPage(currentPage + 1);
+        }
+    }
+
+    function goToPage(pageNum) {
+        window.location.href = "@Url.Action("Club", "Home")?page=" + pageNum;
+    }
 </script>

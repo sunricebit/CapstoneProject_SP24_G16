@@ -24,31 +24,41 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index(int? page)
         {
             try
             {
-                var response = await client.GetAsync($"{ApiUrl}/GetLatestNews?count=6"); // Lấy 6 tin tức mới nhất
-                response.EnsureSuccessStatusCode(); // Đảm bảo phản hồi thành công
-
-                var jsonContent = await response.Content.ReadAsStringAsync();
+                int pageNumber = page ?? 1;
+                int pageSize = 6;
+                var response = client.GetAsync($"{ApiUrl}/GetLatestNews").Result;
+                response.EnsureSuccessStatusCode();
+                var jsonContent = response.Content.ReadAsStringAsync().Result;
                 var newsList = JsonConvert.DeserializeObject<List<NewsDTO>>(jsonContent);
-                return View(newsList);
+
+                NewsDTO latestNews = null;
+                foreach (var news in newsList)
+                {
+                    if (news.Status == true)
+                    {
+                        latestNews = news;
+                        break;
+                    }
+                }
+                var paginatedNewsList = PaginatedList<NewsDTO>.CreateAsync(newsList, pageNumber, pageSize);
+                ViewBag.LatestNews = latestNews;
+                return View(paginatedNewsList);
             }
             catch (HttpRequestException ex)
             {
-                // Xử lý lỗi nếu không thể kết nối đến API
                 ModelState.AddModelError(string.Empty, "Lỗi khi kết nối đến API: " + ex.Message);
                 return View();
             }
             catch (Exception ex)
             {
-                // Xử lý các lỗi khác
                 ModelState.AddModelError(string.Empty, "Lỗi khi lấy danh sách tin tức: " + ex.Message);
                 return View();
             }
         }
-
 
         [HttpGet]
         public IActionResult NewsDetail(int id)
@@ -105,29 +115,70 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Club()
+        public IActionResult Club(int? page, string searchQuery)
         {
             try
             {
-                var response = client.GetAsync($"https://localhost:5000/api/Club").Result;
-                response.EnsureSuccessStatusCode(); // Đảm bảo phản hồi thành công
+                int pageNumber = page ?? 1;
+                int pageSize = 6;
 
-                var jsonContent = await response.Content.ReadAsStringAsync();
-                var clubsList = JsonConvert.DeserializeObject<List<ClubDTO>>(jsonContent);
-                return View(clubsList);
+                var searchClubsList = GetSearchClubsList(searchQuery);
+                ViewBag.SearchQuery = searchQuery;
+
+                var paginatedClubsList = PaginatedList<ClubDTO>.CreateAsync(searchClubsList, pageNumber, pageSize);
+                return View(paginatedClubsList);
             }
             catch (HttpRequestException ex)
             {
-                // Xử lý lỗi nếu không thể kết nối đến API
                 ModelState.AddModelError(string.Empty, "Lỗi khi kết nối đến API: " + ex.Message);
                 return View();
             }
             catch (Exception ex)
             {
-                // Xử lý các lỗi khác
                 ModelState.AddModelError(string.Empty, "Lỗi khi lấy danh sách Câu lạc bộ: " + ex.Message);
                 return View();
             }
         }
+
+        private List<ClubDTO> GetSearchClubsList(string searchQuery)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(searchQuery))
+                {
+                    var response = client.GetAsync($"https://localhost:5000/api/Club").Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var jsonContent = response.Content.ReadAsStringAsync().Result;
+                        var clubsList = JsonConvert.DeserializeObject<List<ClubDTO>>(jsonContent);
+                        return clubsList;
+                    }
+                    else
+                    {
+                        return new List<ClubDTO>();
+                    }
+                }
+                else
+                {
+                    var response = client.GetAsync($"https://localhost:5000/api/Club/Search?searchQuery={searchQuery}").Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var jsonContent = response.Content.ReadAsStringAsync().Result;
+                        var clubsList = JsonConvert.DeserializeObject<List<ClubDTO>>(jsonContent);
+                        return clubsList;
+                    }
+                    else
+                    {
+                        return new List<ClubDTO>();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while getting search clubs list: {ex.Message}");
+                return new List<ClubDTO>();
+            }
+        }
+
     }
 }

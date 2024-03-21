@@ -177,7 +177,7 @@ namespace PoolComVnWebAPI.Controllers
 
         [HttpGet("GetNumberPlayerByTourId")]
         public IActionResult GetNumberPlayerByTourId(int tourId)
-        {
+    {
             int numberPlayers = _playerDAO.GetNumberPlayerByTourId(tourId);
             return Ok(numberPlayers);
         }
