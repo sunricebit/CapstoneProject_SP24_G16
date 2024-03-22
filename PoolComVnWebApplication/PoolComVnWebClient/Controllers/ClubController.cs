@@ -629,7 +629,6 @@ namespace PoolComVnWebClient.Controllers
         }
         public IActionResult CreateClub()
         {
-            
             return View();
         }
         [HttpPost]
@@ -879,6 +878,11 @@ namespace PoolComVnWebClient.Controllers
                 return View();
                
             }
+        }
+
+        public IActionResult CreateSoloMatch()
+        {
+            return View();
         }
     }
 }

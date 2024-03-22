@@ -68,23 +68,37 @@ namespace DataAccess
             }
         }
 
-        public void ChangePasswordAccount(string email, string pass)
+        public bool ChangePasswordAccount(string email, string oldPassword, string newPassword)
         {
             try
             {
-                var existingAccount = _context.Accounts.FirstOrDefault(e => e.Email == email);
+                var existingAccount = _context.Accounts.FirstOrDefault(a => a.Email == email);
+
                 if (existingAccount != null)
                 {
-                    existingAccount.Password = BCrypt.Net.BCrypt.HashPassword(pass, Constant.SaltRound);
+                    bool isPasswordCorrect = BCrypt.Net.BCrypt.Verify(oldPassword, existingAccount.Password);
+                    if (!isPasswordCorrect)
+                    {
+                        return false;
+                    }
+
+                    existingAccount.Password = BCrypt.Net.BCrypt.HashPassword(newPassword, Constant.SaltRound);
                     _context.Accounts.Update(existingAccount);
                     _context.SaveChanges();
+
+                    return true;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Account not found in the database.");
                 }
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                throw new Exception($"Failed to change password: {e.Message}", e);
             }
         }
+
 
         /// <summary>
         /// Get all accounts from the database.

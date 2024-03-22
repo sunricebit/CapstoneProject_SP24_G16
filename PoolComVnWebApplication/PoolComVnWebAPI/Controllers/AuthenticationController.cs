@@ -1,20 +1,14 @@
 ﻿using BusinessObject.Models;
 using DataAccess;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PoolComVnWebAPI.Authentication;
-using PoolComVnWebAPI.Authorization;
 using PoolComVnWebAPI.Common;
 using PoolComVnWebAPI.DTO;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
-using System.Net.Mail;
-using System.Reflection;
 using System.Security.Claims;
 using System.Text;
-using System.Xml.Linq;
 
 namespace PoolComVnWebAPI.Controllers
 {
@@ -161,6 +155,46 @@ namespace PoolComVnWebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error: {ex.Message}");
             }
         }
+
+        [HttpPost("ChangePassword")]
+        public IActionResult ChangePassword([FromBody] ChangePasswordDTO changePasswordDTO)
+        {
+            try
+            {
+                var existingAccount = _accountDAO.GetAccountByEmail(changePasswordDTO.Email);
+
+                if (existingAccount == null)
+                {
+                    return BadRequest("Account not found");
+                }
+
+                // Kiểm tra tính hợp lệ của mật khẩu cũ
+                bool isOldPasswordCorrect = BCrypt.Net.BCrypt.Verify(changePasswordDTO.OldPassword, existingAccount.Password);
+
+                if (!isOldPasswordCorrect)
+                {
+                    return BadRequest("Incorrect old password");
+                }
+
+                // Thực hiện thay đổi mật khẩu
+                bool isPasswordChanged = _accountDAO.ChangePasswordAccount(existingAccount.Email, changePasswordDTO.OldPassword, changePasswordDTO.NewPassword);
+
+                if (isPasswordChanged)
+                {
+                    return Ok("Password changed successfully");
+                }
+                else
+                {
+                    return BadRequest("Failed to change password");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error: {ex.Message}");
+            }
+        }
+
+
 
 
     }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PoolComVnWebClient.DTO
+namespace PoolComVnWebAPI.DTO
 {
     public class ChangePasswordDTO
     {
