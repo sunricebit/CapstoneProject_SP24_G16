@@ -39,6 +39,36 @@ namespace PoolComVnWebAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("GetUserByAccount")]
+        public ActionResult<UserDTO> GetUserByAccountId(int accountId)
+        {
+            try
+            {
+                var user = _accountDAO.GetUserByAccountById(accountId);
+                if (user == null)
+                {
+                    return NotFound(); 
+                }
+                var user2 = new UserDTO
+                {
+                    FullName = user.FullName,
+                    Address = user.Address,
+                    Avatar = user.Avatar,
+                    Dob = user.Dob,
+                    CreatedDate = user.CreatedDate,
+                    UpdatedDate = user.UpdatedDate,
+                    AccountId = user.AccountId,
+                    WardCode = user.WardCode
+
+                };
+
+                return Ok(user2); 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message); 
+            }
+        }
         [HttpGet("GetAccountByEmail/{email}")]
         public ActionResult<AccountDTO> GetAccountByEmail(string email)
         {

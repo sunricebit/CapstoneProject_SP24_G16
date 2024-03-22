@@ -307,5 +307,10 @@ namespace DataAccess
                 throw e;
             }
         }
+
+        public User GetUserByAccountById(int accountId)
+        {
+            return _context.Users.FirstOrDefault(u=> u.AccountId == accountId);
+        }
     }
 }
