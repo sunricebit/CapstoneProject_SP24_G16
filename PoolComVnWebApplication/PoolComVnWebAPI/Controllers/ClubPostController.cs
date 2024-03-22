@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using AutoMapper;
 using BusinessObject.Models;
 using DataAccess;
@@ -41,8 +42,37 @@ namespace PoolComVnWebAPI.Controllers
                 return NotFound();
             }
 
-            var clubPostDto = _mapper.Map<ClubPostDTO>(clubPost);
-            return Ok(clubPostDto);
+            var clubPost2 = new ClubPost
+            {
+                PostId = clubPost.PostId,
+                ClubId = clubPost.ClubId,
+                Title = clubPost.Title,
+                Description = clubPost.Description,
+                CreatedDate = clubPost.CreatedDate,
+                UpdatedDate = clubPost.UpdatedDate,
+                Flyer = clubPost.Flyer,
+                Link = clubPost.Link,
+                Status = clubPost.Status,
+            }; ;
+            return Ok(clubPost2);
+        }
+        [HttpGet("ChangeStatus")]
+        public ActionResult<ClubPostDTO> ChangeStatus(int id)
+        {
+            var clubPost = _clubPostDAO.GetClubPostById(id);
+
+            if (clubPost == null)
+            {
+                return NotFound();
+            }
+
+            if (clubPost.Status == true) { clubPost.Status = false; }
+            else
+            {
+                clubPost.Status = true;
+            }
+            _clubPostDAO.UpdateClubPost(clubPost);    
+            return Ok();
         }
 
         [HttpPost("Add")]
@@ -59,7 +89,8 @@ namespace PoolComVnWebAPI.Controllers
                     CreatedDate = clubPostDTO.CreatedDate,
                     UpdatedDate = clubPostDTO.UpdatedDate,
                     Flyer = clubPostDTO.Flyer,
-                    Link = clubPostDTO.Link
+                    Link = clubPostDTO.Link,
+                    Status = true
                 };
 
 
@@ -91,71 +122,6 @@ namespace PoolComVnWebAPI.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] ClubPostDTO updatedClubPostDto)
-        {
-            if (updatedClubPostDto == null || id != updatedClubPostDto.PostID)
-            {
-                return BadRequest();
-            }
-
-            var existingClubPost = _clubPostDAO.GetClubPostById(id);
-
-            if (existingClubPost == null)
-            {
-                return NotFound();
-            }
-
-            // Lấy ClubID từ JWT Token
-            var clubIdFromToken = GetClubIdFromToken(); // Hàm giả định, bạn cần triển khai hàm này
-
-            // Kiểm tra xem ClubID từ Token có khớp với ClubID từ DTO không
-            if (updatedClubPostDto.ClubID != clubIdFromToken)
-            {
-                return BadRequest("Invalid ClubID in the request.");
-            }
-
-            _mapper.Map(updatedClubPostDto, existingClubPost);
-            _clubPostDAO.UpdateClubPost(existingClubPost);
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            var clubPost = _clubPostDAO.GetClubPostById(id);
-
-            if (clubPost == null)
-            {
-                return NotFound();
-            }
-
-            // Lấy ClubID từ JWT Token
-            var clubIdFromToken = GetClubIdFromToken(); // Hàm giả định, bạn cần triển khai hàm này
-
-            
-            if (clubPost.ClubId != clubIdFromToken)
-            {
-                return BadRequest("Invalid ClubID in the request.");
-            }
-
-            _clubPostDAO.DeleteClubPost(id);
-
-            return NoContent();
-        }
-
-        // Hàm giả định để lấy ClubID từ JWT Token
-        private int GetClubIdFromToken()
-        {
-            var userIdClaim = HttpContext.User.FindFirst("ClubId");
-
-            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out var clubId))
-            {
-                return clubId;
-            }
-
-            throw new InvalidOperationException("ClubId claim not found or invalid in the JWT token.");
-        }
+      
     }
 }
