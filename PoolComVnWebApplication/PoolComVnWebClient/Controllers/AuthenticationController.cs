@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using PoolComVnWebClient.DTO;
 using PoolComVnWebClient.Common;
+using Newtonsoft.Json;
 
 namespace PoolComVnWebClient.Controllers
 {
@@ -37,6 +38,58 @@ namespace PoolComVnWebClient.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult ChangePassword(ChangePasswordDTO changePasswordDTO)
+        {
+            try
+            {
+                // Kiểm tra ConfirmNewPassword có khớp với NewPassword hay không
+                if (changePasswordDTO.NewPassword != changePasswordDTO.ConfirmNewPassword)
+                {
+                    TempData["ConfirmPasswordErrorMessage"] = "Mật khẩu mới và xác nhận mật khẩu mới không khớp.";
+                    return RedirectToAction("ChangePassword");
+                }
+                string email = HttpContext.Request.Cookies["Email"];
+                var response = client.GetAsync($"https://localhost:5000/api/Account/GetAccountByEmail/{email}").Result;
+                if (!response.IsSuccessStatusCode)
+                {
+                    ModelState.AddModelError(string.Empty, "Không thể lấy thông tin tài khoản.");
+                    return View();
+                }
+                var AccountData = response.Content.ReadAsStringAsync().Result;
+                var account = JsonConvert.DeserializeObject<AccountDTO>(AccountData);
+
+                // So sánh mật khẩu cũ đã được mã hóa với mật khẩu từ cơ sở dữ liệu
+                bool isOldPasswordCorrect = BCrypt.Net.BCrypt.Verify(changePasswordDTO.OldPassword, account.Password);
+                if (!isOldPasswordCorrect)
+                {
+                    TempData["ErrorMessage"] = "Mật khẩu hiện tại không đúng.";
+                    return View();
+                }
+                else
+                {
+                    // Nếu mật khẩu cũ đúng, gửi yêu cầu thay đổi mật khẩu
+                    var response2 = client.PostAsJsonAsync(ApiUrl + "/ChangePassword", changePasswordDTO).Result;
+                    if (response2.IsSuccessStatusCode)
+                    {
+                        TempData["SuccessMessage"] = "Password changed successfully!";
+                        return RedirectToAction("ChangePassword");
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Failed to change password.";
+                        return View();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Error: {ex.Message}";
+                return View();
+            }
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Login(string email, string password)
@@ -191,8 +244,7 @@ namespace PoolComVnWebClient.Controllers
             }
         }
 
-
-
+       
         [HttpGet]
         public IActionResult Logout()
         {
