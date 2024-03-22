@@ -22,6 +22,8 @@ namespace PoolComVnWebAPI.Common
             return client.SendMailAsync(message);
         }
 
+
+
         private string CreateVerifyEmail(string username, string verifyCode)
         {
             // Lấy đường dẫn thư mục chứa controller (Template folder)
@@ -45,6 +47,41 @@ namespace PoolComVnWebAPI.Common
             catch (Exception e)
             {
                 throw e;
+            }
+        }
+
+        public async Task SendMailContact(string recipientEmail, string subject, string body)
+        {
+            var fromAddress = new MailAddress("poolcomvn@gmail.com", "poolcomvn");
+            var toAddress = new MailAddress(recipientEmail, "Recipient Name");
+            const string fromPassword = "vyfi yuwu qwrx znhm";
+
+            try
+            {
+                using (var smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                })
+                {
+                    using (var message = new MailMessage(fromAddress, toAddress)
+                    {
+                        Subject = subject,
+                        Body = body
+                    })
+                    {
+                        await smtp.SendMailAsync(message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending email: {ex.Message}");
+                throw; 
             }
         }
     }
