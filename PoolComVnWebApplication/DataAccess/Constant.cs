@@ -45,5 +45,7 @@ namespace DataAccess
         public const int AccountStatusReady = 0;
         public const int AccountStatusVerify = 1;
         public const int AccountStatusBanned = 2;
+
+        public const int NationVietNamId = 1;
     }
 }
