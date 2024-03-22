@@ -34,9 +34,8 @@
                             <form id="importForm" method="post" enctype="multipart/form-data" class="import-form d-flex"
                                   action="@Url.Action("ImportPlayers", "CreateTournament", new { id = tourId })">
                                 <div class="import-input">
-                                    <span>Chọn tệp để tải lên</span>
-                                   @*chưa hiển thị file đã chọn*@
-                                    <input type="file" name="ImportPlayers" accept=".xls, .xlsx" />
+                                    <span id="file-name">Chọn tệp để tải lên</span>
+                                    <input class="file-import" type="file" name="ImportPlayers" accept=".xls, .xlsx" />
                                 </div>
                                 <button type="submit">Nhập danh sách</button>
                             </form>
@@ -306,6 +305,15 @@
     }
 
 
+    //Handle show file name
+    document.querySelector('.file-import').addEventListener('change', function (event) {
+        const imageInput = event.target;
+        const selectedFileName = document.querySelector('#file-name');
+        console.log(imageInput.files && imageInput.files[0]);
 
+        if (imageInput.files && imageInput.files[0]) {
+            selectedFileName.textContent = imageInput.files[0].name;
+        }
+    });
 
 </script>
