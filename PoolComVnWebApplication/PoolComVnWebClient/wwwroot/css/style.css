@@ -3492,6 +3492,17 @@ tr:not(:first-child).isFinish {
             background-position: center center;
         }
 
+    .upload-img.auto {
+        width: 300px;
+        min-height: 300px;
+    }
+
+        .upload-img.auto .show-image {
+            width: 280px;
+            padding: 10px;
+            border-radius: 20px;
+        }
+
 .create-tour .bracket-tab {
     height: 70vh;
 }
@@ -4430,9 +4441,9 @@ tr:not(:first-child).isFinish {
     height: 150px;
     margin: 0 10% 30px;
     border-radius: 20px;
-    transition: height 0.3s;
-    overflow: hidden;
+    transition: height 0.3s ease;
     position: relative;
+    overflow: hidden;
 }
 
     .schedule-item .item-box {
@@ -4476,32 +4487,28 @@ tr:not(:first-child).isFinish {
         font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     }
 
-    .schedule-item .btn-cancel {
-        width: 100px;
-        height: 50px;
-        background: #a70d10;
-        color: white;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 20px;
-        border-bottom-left-radius: 40px;
-        border-bottom-right-radius: 2px;
-        border: 2px #910d0f solid;
-        text-decoration: none;
-        text-align: center;
-        line-height: 40px;
-    }
-
-        .schedule-item .btn-cancel:hover {
-            background: #e21e22;
-            font-size: 18px;
-        }
-
-    .schedule-item .info-btn {
+    .schedule-item .info-btn,
+    .schedule-item .game-type {
         position: absolute;
         top: 0;
         right: 0;
         width: 200px;
-        height: 100%;
+        height: 150px;
+    }
+
+    .schedule-item .game-type {
+        left: 40px;
+        top: 10px;
+        width: 68px;
+        border-radius: 10px;
+        height: 32px;
+        line-height: 28px;
+        text-align: center;
+        background: #1c324d;
+        color: white;
+        font-weight: 800px;
+        box-shadow: 0 0 0 2px #000;
+        border: #fff 2px solid;
     }
 
     .schedule-item .btn-join {
@@ -4556,6 +4563,30 @@ tr:not(:first-child).isFinish {
         text-transform: uppercase;
         font-weight: 700;
     }
+
+    .schedule-item .fa-chevron-down,
+    .schedule-item .fa-chevron-up {
+        color: rgb(255, 0, 0);
+        opacity: 0.5;
+        font-size: 24px;
+        transition: transform 0.3s;
+    }
+
+        .schedule-item .fa-chevron-down:hover,
+        .schedule-item .fa-chevron-up:hover {
+            opacity: 1;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+    .schedule-item .item-more {
+        margin-top: 30px;
+    }
+
+        .schedule-item .item-more .item-more-image {
+            width: 40%;
+            border-radius: 20px;
+        }
 
 /* clubSoloMatchDetail.html */
 .solo-detail {
