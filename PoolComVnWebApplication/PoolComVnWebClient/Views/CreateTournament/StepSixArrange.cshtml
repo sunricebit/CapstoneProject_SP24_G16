@@ -51,6 +51,101 @@
         </div>
     </div>
 </div>
+
+<div id="first-popup" class="confirm-popup">
+    <div class="confirm-content">
+        <div class="confirm-title">
+            Số người chơi chưa đủ với sơ đồ 32!
+        </div>
+        <div class="d-flex justify-content-around">
+            <div class="exit-btn" style="width: 200px;">
+                Thêm người chơi
+            </div>
+            <div id="new-bracket-btn" class="save-random" style="width: 200px;">
+                Sử dụng sơ đồ 16
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="second-popup" class="confirm-popup d-none">
+    <div class="confirm-content" style="min-height: 500px; width: 900px;">
+        <form class="confirm-form">
+            <div class="confirm-title m-0">
+                Cài đặt lại vòng đấu
+            </div>
+            <div class="px-3">
+                <div class="d-flex">
+                    <div class="tour-input-line" hidden>
+                        <select class="input-content tour-type">
+                            <option value="1" isManyStage="false">Đấu loại đơn</option>
+                            <option value="2" isManyStage="true" selected>Đấu loại kép</option>
+                        </select>
+
+                    </div>
+                    <div class="tour-input">
+                        <div class="tour-input-line">
+                            <div class="input-title">
+                                <span class="input-requir">*</span>
+                                <span>Kích thước sơ đồ</span>
+                            </div>
+                            <!-- disabled -->
+                            <input class="input-content size-bracket" value="16" readonly>
+                        </div>
+                    </div>
+                    <div class="knockout-number tour-input mx-3">
+                        <div class="tour-input-line">
+                            <div class="input-title">
+                                <span class="input-requir">*</span>
+                                <span>Số người vào loại trực tiếp</span>
+                            </div>
+                            <select class="input-content knockout-options">
+                                <option value="2" checked>2</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="race-round row py-3 d-flex justify-content-between d-none">
+                    <div class="race-note col-12">(*) Giữ phím Ctrl để chọn/bỏ chọn nhiều ô cùng lúc.</div>
+                    <div class="col-12 px-0">
+                        <button class="add-group">Chọn toàn bộ</button>
+                        <button class="remove-group">Loại bỏ nhóm</button>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="race-branch">Nhánh thắng:</div>
+                        <div class="race-win">
+                            <div class="tour-input-line row">
+                                <div class="round-name col-lg-6">Vòng 1</div>
+                                <div class="col-lg-6">
+                                    <input class="race-number" type="text" name="round1">
+                                </div>
+                            </div>
+                            <div class="tour-input-line row">
+                                <div class="round-name col-lg-6">Vòng 1</div>
+                                <div class="col-lg-6">
+                                    <input class="race-number" type="text" name="round1">
+                                </div>
+                            </div>
+                            <div class="tour-input-line row">
+                                <div class="round-name col-lg-6">Vòng 1</div>
+                                <div class="col-lg-6">
+                                    <input class="race-number" type="text" name="round1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="race-lose-display col-lg-5">
+                        <div class="race-branch">Nhánh thua:</div>
+                        <div class="race-lose"></div>
+                    </div>
+                </div>
+                <div class="tour-input">
+                    <button class="submit-btn" type="submit">Lưu và chuyển đến xếp trận</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
 
@@ -350,4 +445,136 @@
             }
         });
     });
+
+    //Handle display filed
+    const tourType = document.querySelector('.tour-type');
+    const sizeBracket = document.querySelector('.size-bracket');
+    const knockoutNumber = document.querySelector('.knockout-number');
+    const knockoutOptions = document.querySelector('.knockout-options');
+    const raceRound = document.querySelector('.race-round');
+    const raceWin = document.querySelector('.race-win');
+    const raceLose = document.querySelector('.race-lose');
+    const removeGroupBtn = document.querySelector('.remove-group');
+    const addGroupBtn = document.querySelector('.add-group');
+    const raceLoseDisplay = document.querySelector('.race-lose-display');
+
+    var isKnockoutOn = false;
+    var isTourTypeSelected = true;
+    var isSizeBracketSelected = true;
+    var selectedOption = tourType.options[tourType.selectedIndex];
+    var isManyStageValue = selectedOption.getAttribute('isManyStage');
+    knockoutOptions.disabled = true;
+    knockoutOptions.disabled = !(isManyStageValue === 'true');
+    isKnockoutOn = (isManyStageValue === 'true');
+    isTourTypeSelected = true;
+    if (isManyStageValue === 'false') {
+        knockoutOptions.selectedValue = '2';
+    }
+    var sizeBracketNum = sizeBracket.value;
+    var knockoutHTML = '';
+
+    if (Math.log2(sizeBracketNum) <= 2) {
+        knockoutHTML += '<option value="2">2</option>'
+    } else {
+        for (var i = 1; i < Math.log2(sizeBracketNum); i++) {
+            knockoutHTML += '<option value="' + (Math.pow(2, i)) + '">' + (Math.pow(2, i)) + '</option>'
+        }
+    }
+    knockoutOptions.innerHTML = knockoutHTML;
+
+    knockoutOptions.addEventListener('change', raceRoundHandle);
+
+    raceRoundHandle();
+
+    function raceRoundHandle() {
+        if (isTourTypeSelected === true && isSizeBracketSelected === true) {
+            raceRound.classList.remove('d-none');
+
+            var raceWinHTML = '';
+            var winRoundNumber = Math.log2(sizeBracket.value);
+            if (isManyStageValue === 'true') {
+                winRoundNumber += 1;
+            }
+            for (var i = 0; i < winRoundNumber; i++) {
+                raceWinHTML += '<div class="tour-input-line row">';
+
+                if (i === (winRoundNumber - 1)) {
+                    raceWinHTML += '<div class="round-name col-lg-6">CK</div>';
+                } else {
+                    raceWinHTML += '<div class="round-name col-lg-6">Vòng ' + (i + 1) + '</div>';
+                }
+                raceWinHTML += '<div class="col-lg-6">'
+                    + '<input class="race-number" type="number" value="5" name="round' + (i + 1) + '">'
+                    + '</div>'
+                    + '</div>';
+            }
+            raceWin.innerHTML = raceWinHTML;
+
+            if (isManyStageValue === 'true') {
+                raceLoseDisplay.classList.remove('d-none');
+                var raceLoseHTML = '';
+                var loseRoundNumber = 2 * (Math.log2(sizeBracket.value) - Math.log2(knockoutOptions.value));
+                console.log(loseRoundNumber, Math.log2(sizeBracket.value), Math.log2(knockoutOptions.value))
+                for (var i = 0; i < loseRoundNumber; i++) {
+                    raceLoseHTML += '<div class="tour-input-line row">'
+                        + '<div class="round-name col-lg-6">Vòng ' + (i + 1) + '</div>'
+                        + '<div class="col-lg-6">'
+                        + '<input class="race-number" type="number" value="5" name="loseRound' + (i + 1) + '">'
+                        + '</div>'
+                        + '</div>';
+                }
+                raceLose.innerHTML = raceLoseHTML;
+            } else {
+                raceLose.innerHTML = '';
+                raceLoseDisplay.classList.add('d-none');
+            }
+            console.log(isManyStageValue)
+            addEventToRaceInput();
+        }
+    }
+
+    function addEventToRaceInput() {
+        const raceInputList = document.querySelectorAll('.race-number');
+        raceInputList.forEach((element) => {
+            element.addEventListener('click', function (event) {
+                if (event.ctrlKey) {
+                    this.classList.toggle('multi');
+                }
+            });
+            element.addEventListener('keyup', () => {
+                if (element.classList.contains('multi')) {
+                    const multiInputList = document.querySelectorAll('.multi');
+                    multiInputList.forEach((multiInput) => {
+                        multiInput.value = element.value;
+                    })
+                }
+            })
+        });
+    }
+
+    removeGroupBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const raceInputList = document.querySelectorAll('.race-number');
+        raceInputList.forEach((element) => {
+            element.classList.remove('multi');
+        });
+    })
+
+    addGroupBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const raceInputList = document.querySelectorAll('.race-number');
+        raceInputList.forEach((element) => {
+            element.classList.add('multi');
+        });
+    })
+
+    //open second-popup
+    const newBracketBtn = document.getElementById('new-bracket-btn');
+    const firstPopup = document.getElementById('first-popup');
+    const secondPopup = document.getElementById('second-popup');
+
+    newBracketBtn.addEventListener('click', () => {
+        secondPopup.classList.remove('d-none');
+        firstPopup.classList.add('d-none');
+    })
 </script>
