@@ -9,7 +9,7 @@
         public string Facebook { get; set; }
         public string? Avatar { get; set; }
         public byte? Status { get; set; }
-        public string? Flyer { get; set; }
         public int? AccountId { get; set; }
+        public string? WardCode { get; set; }
     }
 }

@@ -141,5 +141,27 @@ namespace PoolComVnWebAPI.Controllers
             var id = _accountDAO.GetAccountByEmail(email).AccountId;
             return Ok(id);
         }
+        
+        [HttpPost("SendEmailContact")]
+        public async Task<IActionResult> SendEmailContact([FromBody] ContactDTO contactDTO)
+        {
+            try
+            {
+                // Xây dựng nội dung email
+                var subject = $"[PoolCom]Yêu Cầu Hỗ Trợ từ {contactDTO.Name}";
+                var body = $"Name: {contactDTO.Name}\nEmail: {contactDTO.Email}\n\n{contactDTO.Message}";
+
+                // Gửi email
+                await _emailSender.SendMailContact("nguyenphilong28072002@gmail.com", subject, body);
+
+                return Ok("Email sent successfully!");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error: {ex.Message}");
+            }
+        }
+
+
     }
 }

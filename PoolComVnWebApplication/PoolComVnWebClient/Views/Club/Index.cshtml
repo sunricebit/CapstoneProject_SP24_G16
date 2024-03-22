@@ -1,12 +1,33 @@
-﻿@{
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
     Layout = "~/Views/Shared/_ClubLayout.cshtml";
+}
+@{
+    string email = HttpContextAccessor.HttpContext.Request.Cookies["Email"];
 }
 @using PoolComVnWebClient.DTO
 @model ClubDTO
 
+@if (@ViewBag.Club == null)
+{
+    <div class="dashboard-container container">
+        <div class="row news-items p-0 m-0">
+            <div class="item-content d-flex justify-content-center">
+                <h3>Bạn chưa có câu lạc bộ</h3>
+                <a class="btn btn-primary ml-2" asp-action="CreateClub" asp-controller="Club">Thêm câu lạc bộ</a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+   
+    
 <div class="dashboard-container container">
     <div class="row news-items p-0 m-0">
-        <div class="item-content d-flex justify-content-center">
+            @if (ViewBag.AccountEmail == email)
+            {
+                <div class="item-content d-flex justify-content-center">
             <a asp-action="AddPost" asp-controller="Club" asp-route-clubid="@ViewBag.CLub.ClubId" class="create-btn d-flex justify-content-center align-items-center">
                 <div class="text-center">
                     <i class="fa-solid fa-plus fa-beat"></i>
@@ -14,7 +35,8 @@
                 </div>
             </a>
         </div>
-        @if (ViewBag.ClubPost != null)
+            }
+            @if (((List<ClubPostDTO>)ViewBag.ClubPost)?.Count != 0)
         {
             foreach (var post in ViewBag.ClubPost)
             {
@@ -65,3 +87,4 @@
     const clubNavBtn = document.querySelector('.club-post');
     clubNavBtn.classList.add('active');
 </script>
+}

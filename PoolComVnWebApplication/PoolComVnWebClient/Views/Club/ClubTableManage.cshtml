@@ -1,0 +1,212 @@
+﻿@{
+    Layout = "~/Views/Shared/_ClubLayout.cshtml";
+}
+
+<div class="dashboard-container container table">
+    <div class="news-manage m-2">
+        <div class="manager-content">
+            <div class="d-flex px-0">
+                <button class="import-excel m-0" onclick="downloadTemplate()">Tải mẫu</button>
+
+                <form id="importForm" method="post" enctype="multipart/form-data" class="import-form d-flex my-0">
+                    <div class="import-input mx-3 table my-0">
+                        <span id="file-name">Chọn tệp để tải lên</span>
+                        <input class="file-import" type="file" name="ImportPlayers" accept=".xls, .xlsx" />
+                    </div>
+                    <button type="submit">Nhập danh sách</button>
+                </form>
+            </div>
+            <div class="d-flex px-0">
+                <div id="add-table" class="addBtn-account d-flex justify-content-center align-items-center m-0">
+                    Thêm bàn
+                </div>
+                <div class="manageSearch d-flex mx-3">
+                    <input class="news-input" placeholder="Nhãn, tên,..." />
+                    <div class="searchBtn px-3 align-items-center">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="manage-body mt-3 p-0">
+                <table class="">
+                    <tr>
+                        <th class="news-id">#</th>
+                        <th class="text-center">Ảnh</th>
+                        <th class="">Nhãn bàn</th>
+                        <th class="text-center w150">Tên bàn</th>
+                        <th class="text-center">Kích thước</th>
+                        <th class="text-center w150">Giá giờ chơi</th>
+                        <th class="w100 text-center">Hành động</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <div class="img-frame" style="background-image: url('/images/new_1.jpg');"></div>
+                        </td>
+                        <td>Bàn 1</td>
+                        <td class="text-center">Rasson OX 9ft</td>
+                        <td class="text-center">9ft</td>
+                        <td class="text-center">70.000 VNĐ / giờ</td>
+                        <td class="text-center">
+                            <a class="edit-btn"><i class="fa-solid fa-pencil p-2"></i></a>
+                            <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <div class="img-frame" style="background-image: url('/images/new_1.jpg');"></div>
+                        </td>
+                        <td>Bàn 1</td>
+                        <td class="text-center">Rasson OX 9ft</td>
+                        <td class="text-center">9ft</td>
+                        <td class="text-center">70.000 VNĐ / giờ</td>
+                        <td class="text-center">
+                            <a class="edit-btn"><i class="fa-solid fa-pencil p-2"></i></a>
+                            <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <div class="img-frame" style="background-image: url('/images/new_1.jpg');"></div>
+                        </td>
+                        <td>Bàn 1</td>
+                        <td class="text-center">Rasson OX 9ft</td>
+                        <td class="text-center">9ft</td>
+                        <td class="text-center">70.000 VNĐ / giờ</td>
+                        <td class="text-center">
+                            <a class="edit-btn"><i class="fa-solid fa-pencil p-2"></i></a>
+                            <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="create-display" class="match-display d-flex justify-content-center align-items-center d-none">
+    <div class="match-detail" style="background: #fff;">
+        <div class="match-header d-flex justify-content-between">
+            <div class="match-title">
+                <span>Thêm bàn</span>
+            </div>
+            <div class="match-close">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+        </div>
+        <form class="table-input">
+            <div class="input-line">
+                <div class="input-title">Bàn đang có</div>
+                <select class="input-content">
+                    <option value="0">Chọn bàn</option>
+                    <option value="1">Rasson OX 9ft / 9ft</option>
+                    <option value="2">Diamond</option>
+                </select>
+            </div>
+            <div class="input-line">
+                <div class="input-title">Nhãn bàn</div>
+                <input class="input-content">
+            </div>
+            <div class="input-line">
+                <div class="input-title">Tên bàn</div>
+                <input class="input-content">
+            </div>
+            <div class="input-line">
+                <div class="input-title">Kích thước (ft)</div>
+                <input class="input-content">
+            </div>
+            <div class="input-line">
+                <div class="input-title">Giá giờ chơi (VNĐ / giờ)</div>
+                <input class="input-content">
+            </div>
+            <div class="input-line">
+                <input type="submit" class="create-table" value="Thêm vào danh sách">
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="edit-display" class="match-display d-flex justify-content-center align-items-center d-none">
+    <div class="match-detail" style="background: #fff;">
+        <div class="match-header d-flex justify-content-between">
+            <div class="match-title">
+                <span>Chi tiết bàn</span>
+            </div>
+            <div class="match-close">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+        </div>
+        <form class="table-input">
+            <div class="input-line">
+                <div class="input-title">Bàn đang có</div>
+                <select class="input-content">
+                    <option value="0">Chọn bàn</option>
+                    <option value="1">Rasson OX 9ft / 9ft</option>
+                    <option value="2">Diamond</option>
+                </select>
+            </div>
+            <div class="input-line">
+                <div class="input-title">Nhãn bàn</div>
+                <input class="input-content">
+            </div>
+            <div class="input-line">
+                <div class="input-title">Tên bàn</div>
+                <input class="input-content">
+            </div>
+            <div class="input-line">
+                <div class="input-title">Kích thước (ft)</div>
+                <input class="input-content">
+            </div>
+            <div class="input-line">
+                <div class="input-title">Giá giờ chơi (VNĐ / giờ)</div>
+                <input class="input-content">
+            </div>
+            <div class="input-line">
+                <input type="submit" class="create-table" value="Lưu chỉnh sửa">
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const createDisplay = document.getElementById('create-display');
+    //close popup create table
+    const createPopup = document.querySelector('#create-display .match-close');
+    createPopup.addEventListener('click', () => {
+        createDisplay.classList.add('d-none');
+    })
+
+    //open popup create table
+    const addTable = document.getElementById('add-table');
+    addTable.addEventListener('click', () => {
+        createDisplay.classList.remove('d-none');
+    })
+
+    const editDisplay = document.getElementById('edit-display');
+    //close popup edit table
+    const editPopup = document.querySelector('#edit-display .match-close');
+    editPopup.addEventListener('click', () => {
+        editDisplay.classList.add('d-none');
+    })
+
+    //close popup edit table
+    const editBtns = document.querySelectorAll('.edit-btn');
+    editBtns.forEach(editBtn => {
+        editBtn.addEventListener('click', () => {
+            editDisplay.classList.remove('d-none');
+        })
+    })
+
+    //Handle show file name
+    document.querySelector('.file-import').addEventListener('change', function (event) {
+        const imageInput = event.target;
+        const selectedFileName = document.querySelector('#file-name');
+        console.log(imageInput.files && imageInput.files[0]);
+
+        if (imageInput.files && imageInput.files[0]) {
+            selectedFileName.textContent = imageInput.files[0].name;
+        }
+    });
+</script>

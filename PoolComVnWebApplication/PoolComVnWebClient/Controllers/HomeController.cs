@@ -35,16 +35,21 @@ namespace PoolComVnWebClient.Controllers
                 var jsonContent = response.Content.ReadAsStringAsync().Result;
                 var newsList = JsonConvert.DeserializeObject<List<NewsDTO>>(jsonContent);
 
-                NewsDTO latestNews = null;
-                foreach (var news in newsList)
+                // Lọc ra các tin tức có trạng thái là true
+                var visibleNewsList = newsList.Where(news => news.Status == true).ToList();
+
+                // Đảm bảo có đủ tin tức để hiển thị trên mỗi trang
+                while (visibleNewsList.Count < pageSize * pageNumber)
                 {
-                    if (news.Status == true)
-                    {
-                        latestNews = news;
-                        break;
-                    }
+                    visibleNewsList.AddRange(newsList.Where(news => news.Status == false).Take(pageSize * pageNumber - visibleNewsList.Count));
                 }
-                var paginatedNewsList = PaginatedList<NewsDTO>.CreateAsync(newsList, pageNumber, pageSize);
+
+                // Tạo danh sách phân trang
+                var paginatedNewsList = PaginatedList<NewsDTO>.CreateAsync(visibleNewsList, pageNumber, pageSize);
+
+                // Lấy tin tức mới nhất
+                NewsDTO latestNews = visibleNewsList.FirstOrDefault();
+
                 ViewBag.LatestNews = latestNews;
                 return View(paginatedNewsList);
             }
@@ -58,6 +63,25 @@ namespace PoolComVnWebClient.Controllers
                 ModelState.AddModelError(string.Empty, "Lỗi khi lấy danh sách tin tức: " + ex.Message);
                 return View();
             }
+        }
+
+        [HttpGet]
+        public IActionResult Manage()
+        {
+            string email = HttpContext.Request.Cookies["Email"];
+            var response = client.GetAsync($"https://localhost:5000/api/Account/GetAccountByEmail/{email}").Result;
+            var AccountData = response.Content.ReadAsStringAsync().Result;
+            var account = JsonConvert.DeserializeObject<AccountDTO>(AccountData);
+            if(account.RoleID == 2 || account.RoleID == 3)
+            {
+                return RedirectToAction("Index");
+            }
+            else if (account.RoleID == 1)
+            {
+                return RedirectToAction("Index", "Manager");
+            }  
+            else
+            return RedirectToAction("Index", "NewsManage");
         }
 
         [HttpGet]
@@ -98,7 +122,9 @@ namespace PoolComVnWebClient.Controllers
 
         [HttpGet]
         public IActionResult Contact()
-        {
+        {      
+            ViewBag.SuccessMessage = TempData["SuccessMessage"];
+            ViewBag.ErrorMessage = TempData["ErrorMessage"];
             return View();
         }
 

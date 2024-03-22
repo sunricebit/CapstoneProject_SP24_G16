@@ -1,6 +1,7 @@
 ﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
     string email = HttpContextAccessor.HttpContext.Request.Cookies["Email"];
+   
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +31,7 @@
                     <li><a href="">Xếp hạng</a></li>
                     <li><a asp-controller="home" asp-action="GameRules">Luật chơi</a></li>
                     <li><a asp-controller="home" asp-action="Contact">Liên hệ</a></li>
-                    <li><a href="">Mở rộng</a></li>
+                    <li><a asp-action="Manage" asp-controller="home">Mở rộng</a></li>
                 </ul>
 
                 @*<div class="login col-2 text-center d-none">

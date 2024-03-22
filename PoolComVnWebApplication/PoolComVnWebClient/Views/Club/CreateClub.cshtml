@@ -1,10 +1,12 @@
 ﻿@{
     Layout = "~/Views/Shared/_BackBtnLayout.cshtml";
 }
+@using PoolComVnWebClient.DTO;
+@model ClubDTO;
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <div class="container-full">
     <div class="create-tour d-flex justify-content-center">
-        <form class="create-tour-display col-lg-10">
+        <form asp-action="CreateClub" asp-controller="Club" method="post" class="create-tour-display col-lg-10" enctype="multipart/form-data">
             <div class="create-step-one">
                 <div class="display-title">Tạo câu lạc bộ</div>
                 <div class="display-content">
@@ -18,7 +20,7 @@
                             <span class="input-requir">*</span>
                             <span>Tên câu lạc bộ</span>
                         </div>
-                        <input class="input-content" type="text" name="" id="">
+                        <input class="input-content" type="text" asp-for="ClubName" id="">
                     </div>
                     <div class="tour-input">
                         <div class="input-title">
@@ -28,7 +30,7 @@
                         <div class="input-img">
                             <div class="display-content">
                                 <div class="upload-img avt">
-                                    <input type="file" class="imageInput mt-1" accept="image/*" />
+                                    <input name="BannerFile" type="file" class="imageInput mt-1" accept="image/*" />
                                     <div class="upload-title d-flex align-items-center justify-content-center">
                                         <div>
                                             <i class="fa-regular fa-image"></i>
@@ -59,27 +61,28 @@
                                 <option value="0" selected hidden>Phường/Xã</option>
                             </select>
                         </div>
+                        <input type="hidden" id="wardInput" name="ward" />
                     </div>
                     <div class="tour-input">
                         <div class="input-title">
                             <span class="input-requir">*</span>
                             <span>Địa chỉ cụ thể</span>
                         </div>
-                        <input class="input-content" type="text" name="" id="" placeholder="Số nhà, tên đường, tên ngõ...">
+                        <input class="input-content" type="text" asp-for="Address" id="" placeholder="Số nhà, tên đường, tên ngõ...">
                     </div>
                     <div class="tour-input">
                         <div class="input-title">
                             <span class="input-requir">*</span>
                             <span>Số điện thoại</span>
                         </div>
-                        <input class="input-content" type="text" name="" id="">
+                        <input class="input-content" type="text" asp-for="Phone" id="">
                     </div>
                     <div class="tour-input">
                         <div class="input-title">
                             <span class="input-requir">*</span>
                             <span>Liên kết facebook</span>
                         </div>
-                        <input class="input-content" type="text" name="" id="">
+                        <input class="input-content" type="text" asp-for="Facebook" id="">
                     </div>
                     <div class="tour-input">
                         <button class="submit-btn" type="submit">Tạo và đi đến câu lạc bộ</button>
@@ -172,5 +175,9 @@
                 });
             }
         });
+    });
+    $('#wardSelect').change(function () {
+        var selectedWard = $(this).val();
+        $('#wardInput').val(selectedWard);
     });
 </script>

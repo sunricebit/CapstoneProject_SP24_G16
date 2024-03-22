@@ -2098,8 +2098,7 @@ tr:not(:first-child).isFinish {
         font-style: italic;
     }
 
-    .news-manage .addBtn,
-    .news-manage .addBtn-account {
+    .news-manage .addBtn {
         text-decoration: none;
         background-color: white;
         min-width: 100px;
@@ -2113,8 +2112,7 @@ tr:not(:first-child).isFinish {
     }
 
 
-        .news-manage .addBtn:hover,
-        .news-manage .addBtn-account:hover {
+        .news-manage .addBtn:hover {
             background: linear-gradient(#acc4e0 50%, #648fc0);
         }
 
@@ -2127,6 +2125,7 @@ tr:not(:first-child).isFinish {
             border: none;
             padding: 0px 20px;
             line-height: 40px;
+            width: 300px;
         }
 
             .news-manage .manageSearch input:focus {
@@ -2174,10 +2173,8 @@ tr:not(:first-child).isFinish {
             width: 120px;
             height: 80px;
             background-size: cover;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background-position: center;
+            border-radius: 5px;
         }
 
         .news-manage .manage-body .img-frame-account {
@@ -2187,14 +2184,6 @@ tr:not(:first-child).isFinish {
 
         .news-manage .manage-body .news-id {
             width: 50px;
-        }
-
-        .news-manage .manage-body .img-frame-account img {
-            width: 120px;
-        }
-
-        .news-manage .manage-body .img-frame img {
-            width: 120px;
         }
 
         .news-manage .manage-body .w100 {
@@ -2225,6 +2214,7 @@ tr:not(:first-child).isFinish {
             opacity: 0.6;
             transform: scale(1.2);
             transition: transform 0.3s ease;
+            cursor: pointer;
         }
 
     .news-manage .manage-body .account-status {
@@ -2885,30 +2875,35 @@ tr:not(:first-child).isFinish {
             right: 50px;
         }
 
-.create-tour .tour-input {
+.create-tour .tour-input,
+.confirm-popup .tour-input {
     margin-bottom: 20px;
 }
 
-    .create-tour .tour-input .input-title {
+    .create-tour .tour-input .input-title,
+    .confirm-popup .tour-input .input-title {
         height: 32px;
         color: #fff;
         font-size: 14px;
         font-style: italic;
     }
 
-        .create-tour .tour-input .input-title.checkbox {
+        .create-tour .tour-input .input-title.checkbox,
+        .confirm-popup .tour-input .input-title.checkbox {
             font-size: 16px;
             font-style: normal;
             padding: 10px;
         }
 
-    .create-tour .tour-input .input-requir {
+    .create-tour .tour-input .input-requir,
+    .confirm-popup .tour-input .input-requir {
         color: #ff3838;
         font-size: 20px;
         font-weight: 900;
     }
 
-    .create-tour .tour-input .input-content {
+    .create-tour .tour-input .input-content,
+    .confirm-popup .tour-input .input-content {
         background-color: #00000000;
         outline: none;
         border-radius: 5px;
@@ -2918,6 +2913,19 @@ tr:not(:first-child).isFinish {
         width: 80%;
         caret-color: #fff;
         color: #fff;
+    }
+
+    .confirm-popup .tour-input .input-title {
+        color: #000;
+        font-weight: 500;
+    }
+
+    .confirm-popup .tour-input .input-content {
+        background-color: #fff;
+        border: 1px solid #aaa;
+        border-bottom: 3px solid #aaa;
+        color: #000;
+        min-width: 300px;
     }
 
     .create-tour .tour-input textarea.input-content {
@@ -2960,7 +2968,8 @@ tr:not(:first-child).isFinish {
         width: 16px;
     }
 
-.create-tour .race-round {
+.create-tour .race-round,
+.confirm-popup .race-round {
     width: 80%;
 }
 
@@ -2968,7 +2977,8 @@ tr:not(:first-child).isFinish {
     width: 40%;
 }
 
-.create-tour .race-round .race-branch {
+.create-tour .race-round .race-branch,
+.confirm-popup .race-round .race-branch {
     color: #fff;
     width: 120px;
     font-size: 14px;
@@ -2976,7 +2986,8 @@ tr:not(:first-child).isFinish {
     margin: 10px 0;
 }
 
-.create-tour .round-name {
+.create-tour .round-name,
+.confirm-popup .round-name {
     font-size: 14px;
     color: #fff;
     display: flex;
@@ -2985,7 +2996,8 @@ tr:not(:first-child).isFinish {
     margin: 0;
 }
 
-.create-tour .race-round input {
+.create-tour .race-round input,
+.confirm-popup .race-round input {
     background-color: #00000000;
     outline: none;
     border-radius: 5px;
@@ -2997,17 +3009,40 @@ tr:not(:first-child).isFinish {
     margin: 10px 0;
 }
 
-    .create-tour .race-round input.multi {
+    .create-tour .race-round input.multi,
+    .confirm-popup .race-round input.multi {
         box-shadow: 0px 0px 2px 2px #c20a4d;
     }
 
+.confirm-popup .race-round .race-branch {
+    color: #000;
+    font-weight: 500;
+}
+
+.confirm-popup .round-name {
+    font-size: 14px;
+    color: #000;
+}
+
+.confirm-popup .race-round input {
+    background-color: #fff;
+    border: 1px solid #aaa;
+    border-bottom: 3px solid #aaa;
+    caret-color: #000;
+    color: #000;
+}
+
 .create-tour .race-round .remove-group,
+.confirm-popup .race-round .remove-group,
 .create-tour .race-round .add-group,
+.confirm-popup .race-round .add-group,
 .create-tour .create-tour-fee,
 .create-tour .club-player,
 .create-tour .import-excel,
+.manager-content .import-excel,
 .create-tour .list-player,
-.import-form button {
+.import-form button,
+.news-manage .addBtn-account {
     width: 160px;
     height: 40px;
     background: #ccc;
@@ -3019,7 +3054,9 @@ tr:not(:first-child).isFinish {
 }
 
     .create-tour .race-round .remove-group:hover,
+    .confirm-popup .race-round .remove-group:hover,
     .create-tour .race-round .add-group:hover,
+    .confirm-popup .race-round .add-group:hover,
     .create-tour .create-tour-fee:hover,
     .create-tour .club-player:hover,
     .create-tour .list-player:hover {
@@ -3253,8 +3290,12 @@ tr:not(:first-child).isFinish {
     margin: 0;
 }
 
-    .create-tour .import-excel:hover {
+    .create-tour .import-excel:hover,
+    .manager-content .import-excel:hover,
+    .news-manage .addBtn-account:hover {
         background: #648fc0;
+        color: #fff;
+        cursor: pointer;
     }
 
 .import-form {
@@ -3278,6 +3319,10 @@ tr:not(:first-child).isFinish {
         border-radius: 20px;
     }
 
+        .import-form .import-input.table {
+            max-width: 348px;
+        }
+
         .import-form .import-input span {
             position: absolute;
             width: 415px;
@@ -3289,19 +3334,27 @@ tr:not(:first-child).isFinish {
             z-index: 1;
         }
 
+        .import-form .import-input.table span {
+            max-width: 348px;
+        }
+
         .import-form .import-input:hover {
             background: #fff;
         }
 
-    .import-form input {
-        width: 415px;
-        opacity: 0;
-        height: 40px;
-        z-index: 2;
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
+        .import-form .import-input input {
+            width: 415px;
+            opacity: 0;
+            height: 40px;
+            z-index: 2;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .import-form .import-input.table input {
+            max-width: 348px;
+        }
 
 .import-form {
     margin-top: 20px;
@@ -3660,12 +3713,31 @@ tr:not(:first-child).isFinish {
     align-items: center;
 }
 
+    .confirm-popup .tour-input .submit-btn {
+        background: #346585;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-weight: 600;
+        color: #fff;
+    }
+
+        .confirm-popup .tour-input .submit-btn:hover {
+            background: #1c324d;
+        }
+
     .confirm-popup .confirm-content {
-        width: 500px;
+        min-width: 500px;
         height: 300px;
         background-color: #41f3c0;
         border-radius: 20px;
         box-shadow: 0 0 10px 5px #dc2222;
+        overflow: hidden;
+    }
+
+    .confirm-popup .confirm-form {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
     }
 
     .confirm-popup .confirm-title {
@@ -4277,6 +4349,10 @@ tr:not(:first-child).isFinish {
     height: calc(100vh - 50px);
 }
 
+    .dashboard-container.table {
+        padding: 20px 2%;
+    }
+
     .dashboard-container .dashboard-content {
         padding: 50px;
     }
@@ -4612,75 +4688,73 @@ tr:not(:first-child).isFinish {
     }
 
 /* club.html */
-.club-list {
+
+.club-list .club-box {
+    width: 340px;
+    padding: 20px;
+    height: 480px;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
 }
 
-    .club-list .club-box {
-        width: 340px;
-        padding: 20px;
-        height: 480px;
-        border-radius: 20px;
-        overflow: hidden;
-        position: relative;
+.club-list .club-box-border {
+    border: 5px #ddd solid;
+    border-radius: 20px;
+}
+
+.club-list .club-box .club-box-bg {
+    background-size: cover;
+    width: 100%;
+    height: 440px;
+    background-position: center;
+    border-radius: 20px;
+    filter: blur(5px);
+    opacity: 0.6;
+}
+
+.club-list .club-box .club-image {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    width: 280px;
+    height: 280px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: #fff solid 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.club-list .club-box img {
+    height: 270px;
+}
+
+.club-list .club-box .club-info {
+    height: 100px;
+    width: 300px;
+    position: absolute;
+    top: 320px;
+    color: #fff;
+}
+
+    .club-list .club-box .club-info .club-name {
+        font-size: 20px;
+        font-weight: 600;
+        text-shadow: 0 0 3px #0091ff;
+        text-align: center;
+        padding: 5px 20px;
     }
 
-    .club-list .club-box-border {
-        border: 5px #ddd solid;
-        border-radius: 20px;
+    .club-list .club-box .club-info .club-address {
+        font-size: 14px;
+        text-align: center;
+        padding: 5px 20px;
+        font-weight: 500;
+        font-style: italic;
+        text-shadow: 1px 0 3px #000;
     }
-
-    .club-list .club-box .club-box-bg {
-        background-size: cover;
-        width: 100%;
-        height: 440px;
-        background-position: center;
-        border-radius: 20px;
-        filter: blur(5px);
-        opacity: 0.6;
-    }
-
-    .club-list .club-box .club-image {
-        position: absolute;
-        top: 30px;
-        left: 30px;
-        width: 280px;
-        height: 280px;
-        border-radius: 10px;
-        overflow: hidden;
-        border: #fff solid 5px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .club-list .club-box img {
-        height: 270px;
-    }
-
-    .club-list .club-box .club-info {
-        height: 100px;
-        width: 300px;
-        position: absolute;
-        top: 320px;
-        color: #fff;
-    }
-
-        .club-list .club-box .club-info .club-name {
-            font-size: 20px;
-            font-weight: 600;
-            text-shadow: 0 0 3px #0091ff;
-            text-align: center;
-            padding: 5px 20px;
-        }
-
-        .club-list .club-box .club-info .club-address {
-            font-size: 14px;
-            text-align: center;
-            padding: 5px 20px;
-            font-weight: 500;
-            font-style: italic;
-            text-shadow: 1px 0 3px #000;
-        }
 
 /* userProfile.html */
 .user-profile {
@@ -4914,6 +4988,100 @@ tr:not(:first-child).isFinish {
         color: #346585;
     }
 
+/* clubTable.html */
+
+.overview-table .table-box {
+    width: 300px;
+    height: 500px;
+    padding: 20px;
+}
+
+    .overview-table .table-box .table-content {
+        background: #ffffff79;
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+        border: 2px solid #fff;
+    }
+
+    .overview-table .table-box .table-image {
+        height: 150px;
+        width: 240px;
+        border-radius: 10px;
+        background-position: center;
+        background-size: cover;
+        background-color: #fff;
+    }
+
+    .overview-table .table-box .table-info {
+        height: 150px;
+        margin-top: 20px;
+    }
+
+    .overview-table .table-box .info-line {
+        padding: 10px;
+        text-align: center;
+    }
+
+    .overview-table .table-box .info-title {
+        font-size: 14px;
+        font-weight: 700;
+        font-style: italic;
+    }
+
+.manage-table {
+    padding: 20px 10px;
+}
+
+    .manage-table .manage-btn {
+        color: #000;
+        background-color: #fff;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-weight: 600;
+        border: 2px solid #ccc;
+        box-shadow: 0 0 3px 1px #fff;
+    }
+
+        .manage-table .manage-btn:hover {
+            cursor: pointer;
+            background: #41f3c0;
+        }
+
+.match-display .table-input {
+    padding: 20px
+}
+
+    .match-display .table-input .input-title {
+        font-weight: 600;
+        font-size: 14px;
+        font-style: italic;
+    }
+
+    .match-display .table-input .input-content {
+        width: 100%;
+        padding: 5px 10px;
+        outline: none;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        margin: 10px 0 20px 0;
+    }
+
+    .match-display .table-input .create-table {
+        width: 100%;
+        padding: 5px 10px;
+        margin: 10px 0;
+        background: #41f3c0;
+        border: #ccc 2px solid;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+
+        .match-display .table-input .create-table:hover {
+            background: #31b08c;
+            cursor: pointer;
+            color: #fff;
+        }
 
 /* Mobile: width <740px */
 @media only screen and (max-width: 739px) {
