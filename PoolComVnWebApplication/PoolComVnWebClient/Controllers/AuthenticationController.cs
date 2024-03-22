@@ -168,6 +168,30 @@ namespace PoolComVnWebClient.Controllers
                 return await VerifyAccount(verifyAccountDTO.AccountId, message);
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> SendEmailContact(ContactDTO contactDTO)
+        {
+            try
+            {
+                var response = await client.PostAsJsonAsync(ApiUrl + "/SendEmailContact", contactDTO);
+                if (response.IsSuccessStatusCode)
+                {
+                    TempData["SuccessMessage"] = "Email sent successfully!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to send email.";
+                }
+                return RedirectToAction("Contact", "Home");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Error: {ex.Message}";
+                return RedirectToAction("Contact", "Home");
+            }
+        }
+
+
 
         [HttpGet]
         public IActionResult Logout()

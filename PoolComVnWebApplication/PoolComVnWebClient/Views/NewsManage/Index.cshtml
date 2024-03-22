@@ -58,9 +58,7 @@
                         <tr>
                             <td>@(i + 1)</td>
                             <td>
-                                <div class="img-frame">
-                                    <img src="@news.Flyer" />
-                                </div>
+                                <div class="img-frame" style="background-image:url('@news.Flyer')"></div>
                             </td>
                             <td>@news.Title</td>
                             <td>@news.CreatedDate.ToString("yyyy-MM-dd")</td>
