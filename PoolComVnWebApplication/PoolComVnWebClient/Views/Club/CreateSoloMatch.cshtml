@@ -1,0 +1,107 @@
+﻿@{
+    Layout = "~/Views/Shared/_ClubLayout.cshtml";
+}
+
+<div class="dashboard-container container">
+    <div class="create-tour mt-0">
+        <form class="create-tour-display">
+            <div class="create-step-one">
+                <div class="display-title">Tạo trận đấu đối kháng</div>
+                <div class="display-content">
+                    <div class="tour-input">
+                        <div class="input-title">
+                            <span class="input-requir">*</span>
+                            <span>Người chơi 1</span>
+                        </div>
+                        <input class="input-content" type="text" name="" id="">
+                    </div>
+                    <div class="tour-input">
+                        <div class="input-title">
+                            <span class="input-requir">*</span>
+                            <span>Người chơi 2</span>
+                        </div>
+                        <input class="input-content" type="text" name="" id="">
+                    </div>
+                    <div class="tour-input d-flex">
+                        <div class="tour-input-line">
+                            <div class="input-title">
+                                <span class="input-requir">*</span>
+                                <span>Kiểu trò chơi</span>
+                            </div>
+                            <select class="input-content">
+                                <option value="0" checked hidden>Chọn kiểu trò chơi</option>
+                                <option value="1">8 bi</option>
+                                <option value="2">9 bi</option>
+                                <option value="3">10 bi</option>
+                                <option value="4">Khác</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="tour-input">
+                        <div class="input-title">
+                            <span>Mô tả (Sơ lược ngắn gọn về trận đấu. VD: chạm 21, break box, phá luân phiên)</span>
+                        </div>
+                        <input class="input-content" type="text" name="" id=""></input>
+                    </div>
+                    <div class="tour-input">
+                        <div class="input-title">
+                            <span class="input-requir">*</span>
+                            <span>Thời gian bắt đầu</span>
+                        </div>
+                        <input class="input-date" type="datetime-local" name="" id="">
+                    </div>
+                    <div class="tour-input">
+                        <div class="input-title">
+                            <span class="input-requir">*</span>
+                            <span>Ảnh bìa</span>
+                        </div>
+                        <div class="input-img">
+                            <div class="display-content">
+                                <div class="upload-img auto">
+                                    <input type="file" class="imageInput mt-1" accept="image/*" />
+                                    <div class="upload-title d-flex align-items-center justify-content-center">
+                                        <div>
+                                            <i class="fa-regular fa-image"></i>
+                                            <p>Bấm vào đây để tải ảnh.</p>
+                                        </div>
+                                    </div>
+                                    <img class="show-image" />
+                                    <!-- lấy tên ảnh -->
+                                    <input id="file-name" class="d-none" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tour-input py-5">
+                        <button class="submit-btn" type="submit">Tạo trận đấu đối kháng</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    //Image validation
+    const imgInput = document.querySelector('#file-name');
+
+    document.querySelector('.imageInput').addEventListener('change', function (event) {
+        const imageInput = event.target;
+        const previewImage = document.querySelector('.show-image');
+        const selectedFileName = document.querySelector('#file-name');
+        const uploadTile = document.querySelector('.upload-title');
+
+        if (imageInput.files && imageInput.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                previewImage.src = e.target.result;
+                previewImage.style.display = 'block';
+                uploadTile.classList.add('d-none');
+            };
+
+            reader.readAsDataURL(imageInput.files[0]);
+            selectedFileName.value = imageInput.files[0].name;
+        }
+    });
+</script>

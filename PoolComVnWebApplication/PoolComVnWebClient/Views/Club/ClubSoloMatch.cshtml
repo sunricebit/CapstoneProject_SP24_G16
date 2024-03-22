@@ -60,7 +60,7 @@
             </div>
         </div>
     </div>
-    <div class="schedule-item row mt-5">
+    <div id="schedule-item-1" class="schedule-item row mt-5">
         <div class="item-box">
             <div class="item-status status-schedule"></div>
             <div class="col-12">
@@ -73,7 +73,17 @@
                 <div class="d-flex justify-content-center">
                     <span class="item-address">9 bi, chạm 21, phá luân phiên</span>
                 </div>
-                <div class="item-down d-flex justify-content-center pt-2"></div>
+                <div class="item-down d-flex justify-content-center pt-2">
+                    <i class="fa-solid fa-chevron-down" onclick="buttonDownClick(1)"></i>
+                </div>
+                <div class="item-more d-none">
+                    <div class="d-flex justify-content-center">
+                        <img src="~/images/new_1.jpg" class="item-more-image"></img>
+                    </div>
+                    <div class="item-down d-flex justify-content-center pt-2">
+                        <i class="fa-solid fa-chevron-up" onclick="buttonUpClick(1)"></i>
+                    </div>
+                </div>
             </div>
             <div class="d-flex justify-content-center align-items-center info-btn">
                 <a href="" class="btn-join">
@@ -81,12 +91,13 @@
                     <i class="fa-solid fa-caret-right"></i>
                 </a>
             </div>
+            <div class="game-type">9 bi</div>
         </div>
         <div class="hidden-btn hidden-solo">
             <i class="fa-solid fa-eye-slash"></i>
         </div>
     </div>
-    <div class="schedule-item row mt-5">
+    <div id="schedule-item-2" class="schedule-item row mt-5">
         <div class="item-box">
             <div class="item-status status-playing"></div>
             <div class="col-12">
@@ -99,7 +110,17 @@
                 <div class="d-flex justify-content-center">
                     <span class="item-address">9 bi, chạm 21, phá luân phiên</span>
                 </div>
-                <div class="item-down d-flex justify-content-center pt-2"></div>
+                <div class="item-down d-flex justify-content-center pt-2">
+                    <i class="fa-solid fa-chevron-down" onclick="buttonDownClick(2)"></i>
+                </div>
+                <div class="item-more d-none">
+                    <div class="d-flex justify-content-center">
+                        <img src="~/images/thienluong.jpg" class="item-more-image"></img>
+                    </div>
+                    <div class="item-down d-flex justify-content-center pt-2">
+                        <i class="fa-solid fa-chevron-up" onclick="buttonUpClick(2)"></i>
+                    </div>
+                </div>
             </div>
             <div class="d-flex justify-content-center align-items-center info-btn">
                 <a href="" class="btn-join">
@@ -107,12 +128,13 @@
                     <i class="fa-solid fa-caret-right"></i>
                 </a>
             </div>
+                <div class="game-type">9 bi</div>
         </div>
         <div class="hidden-btn hidden-solo">
             <i class="fa-solid fa-eye-slash"></i>
         </div>
     </div>
-    <div class="schedule-item row mt-5">
+    <div id="schedule-item-3" class="schedule-item row mt-5">
         <div class="item-box">
             <div class="item-status status-finished"></div>
             <div class="col-12">
@@ -125,7 +147,17 @@
                 <div class="d-flex justify-content-center">
                     <span class="item-address">9 bi, chạm 21, phá luân phiên</span>
                 </div>
-                <div class="item-down d-flex justify-content-center pt-2"></div>
+                <div class="item-down d-flex justify-content-center pt-2">
+                    <i class="fa-solid fa-chevron-down" onclick="buttonDownClick(3)"></i>
+                </div>
+                <div class="item-more d-none">
+                    <div class="d-flex justify-content-center">
+                        <img src="~/images/thienluong.jpg" class="item-more-image"></img>
+                    </div>
+                    <div class="item-down d-flex justify-content-center pt-2">
+                        <i class="fa-solid fa-chevron-up" onclick="buttonUpClick(3)"></i>
+                    </div>
+                </div>
             </div>
             <div class="d-flex justify-content-center align-items-center info-btn">
                 <a href="" class="btn-join">
@@ -133,12 +165,13 @@
                     <i class="fa-solid fa-caret-right"></i>
                 </a>
             </div>
+            <div class="game-type">9 bi</div>
         </div>
         <div class="hidden-btn hidden-solo">
             <i class="fa-solid fa-eye-slash"></i>
         </div>
     </div>
-    <div class="schedule-item row mt-5">
+    <div id="schedule-item-4" class="schedule-item row mt-5">
         <div class="item-box">
             <div class="item-status status-finished"></div>
             <div class="col-12">
@@ -151,7 +184,17 @@
                 <div class="d-flex justify-content-center">
                     <span class="item-address">9 bi, chạm 21, phá luân phiên</span>
                 </div>
-                <div class="item-down d-flex justify-content-center pt-2"></div>
+                <div class="item-down d-flex justify-content-center pt-2">
+                    <i class="fa-solid fa-chevron-down" onclick="buttonDownClick(4)"></i>
+                </div>
+                <div class="item-more d-none">
+                    <div class="d-flex justify-content-center">
+                        <img src="~/images/thienluong.jpg" class="item-more-image"></img>
+                    </div>
+                    <div class="item-down d-flex justify-content-center pt-2">
+                        <i class="fa-solid fa-chevron-up" onclick="buttonUpClick(4)"></i>
+                    </div>
+                </div>
             </div>
             <div class="d-flex justify-content-center align-items-center info-btn">
                 <a href="" class="btn-join">
@@ -159,6 +202,7 @@
                     <i class="fa-solid fa-caret-right"></i>
                 </a>
             </div>
+            <div class="game-type">9 bi</div>
         </div>
         <div class="hidden-btn hidden-solo">
             <i class="fa-solid fa-eye-slash"></i>
@@ -216,4 +260,35 @@
     //Handel active nav
     const clubNavBtn = document.querySelector('.club-solo');
     clubNavBtn.classList.add('active');
+
+    //Handle click more btn
+    function buttonDownClick(id) {
+        const btnDown = document.querySelector(`#schedule-item-${id} .item-down`);
+        const itemMore = document.querySelector(`#schedule-item-${id} .item-more`);
+
+        const item = document.querySelector(`#schedule-item-${id}`);
+        const itemImage = item.querySelector('.item-more-image');
+
+        btnDown.classList.add('d-none');
+        itemMore.classList.remove('d-none');
+        var widthImg = itemImage.offsetWidth;
+        var height = itemImage.offsetHeight;
+        item.style.height = 180 + height + "px";
+        item.style.background = "linear-gradient(rgba(255, 255, 255, 0.888), rgba(255, 255, 255, 0.888))";
+        console.log(itemImage.offsetHeight)
+    }
+
+    function buttonUpClick(id) {
+        const btnDown = document.querySelector(`#schedule-item-${id} .item-down`);
+        const itemMore = document.querySelector(`#schedule-item-${id} .item-more`);
+
+        const item = document.querySelector(`#schedule-item-${id}`);
+        item.style.background = "linear-gradient(rgba(255, 255, 255, 0.888) 80%, rgba(0, 0, 0, 0.222))";
+
+        item.style.height = "150px";
+        setTimeout(() => {
+            btnDown.classList.remove('d-none');
+            itemMore.classList.add('d-none');
+        }, 200)
+    }
 </script>
