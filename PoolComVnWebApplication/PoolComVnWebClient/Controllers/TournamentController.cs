@@ -4,6 +4,7 @@ using PoolComVnWebClient.DTO;
 using PoolComVnWebClient.Common;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
+using Newtonsoft.Json;
 
 namespace PoolComVnWebClient.Controllers
 {
@@ -21,21 +22,124 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> TournamentList()
+        public async Task<IActionResult> TournamentList(int? page, string searchQuery, string? gameType, DateTime? startDate, DateTime? endDate)
         {
-            var response = await client.GetAsync(ApiUrl + "/GetAllTour");
-            if (response.IsSuccessStatusCode)
+            try
             {
-                List<TournamentOutputDTO> lstTour = await response.Content.ReadFromJsonAsync<List<TournamentOutputDTO>>();
-                return View(lstTour);
-            }
-            else
-            {
-                var status = response.StatusCode;
-            }
+                int pageNumber = page ?? 1;
+                int pageSize = 8;
 
-            return RedirectToAction("InternalServerError", "Error");
+                List<TournamentOutputDTO> tournamentsList = null;
+
+                // Kiểm tra nếu có thông số lọc được cung cấp
+                if (!string.IsNullOrEmpty(gameType) || startDate.HasValue || endDate.HasValue)
+                {
+                    tournamentsList = await GetFilteredTournamentsListAsync(gameType, startDate, endDate);
+                }
+                else
+                {
+                    tournamentsList = await GetSearchTournamentsListAsync(searchQuery);
+                }
+
+                ViewBag.SearchQuery = searchQuery;
+
+                if (tournamentsList != null)
+                {
+                    var paginatedTournamentsList = PaginatedList<TournamentOutputDTO>.CreateAsync(tournamentsList, pageNumber, pageSize);
+                    return View(paginatedTournamentsList);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Lỗi khi lấy danh sách giải đấu từ API");
+                    return RedirectToAction("InternalServerError", "Error");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                ModelState.AddModelError(string.Empty, "Lỗi khi kết nối đến API: " + ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Lỗi khi lấy danh sách giải đấu: " + ex.Message);
+                return RedirectToAction("InternalServerError", "Error");
+            }
         }
+
+        private async Task<List<TournamentOutputDTO>> GetFilteredTournamentsListAsync(string gameType, DateTime? startDate, DateTime? endDate)
+        {
+            try
+            {
+                string apiUrl = ApiUrl + "/FilterTournaments?";
+                if (!string.IsNullOrEmpty(gameType) && gameType != "Thể loại")
+                    apiUrl += $"gameTypeName={gameType}&";
+                if (startDate.HasValue)
+                    apiUrl += $"startDate={startDate.Value.ToString("MM-dd-yyyy")}&";
+                if (endDate.HasValue)
+                    apiUrl += $"endDate={endDate.Value.ToString("MM-dd-yyyy")}&";
+
+                // Gửi yêu cầu tới API filter
+                var response = await client.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    List<TournamentOutputDTO> lstTour = await response.Content.ReadFromJsonAsync<List<TournamentOutputDTO>>();
+                    return lstTour;
+                }
+                else
+                {
+                    var status = response.StatusCode;
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while getting filtered tournaments list: {ex.Message}");
+                return null;
+            }
+        }
+
+
+        private async Task<List<TournamentOutputDTO>> GetSearchTournamentsListAsync(string searchQuery)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(searchQuery))
+                {
+                    var response = await client.GetAsync(ApiUrl + "/GetAllTour");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        List<TournamentOutputDTO> lstTour = await response.Content.ReadFromJsonAsync<List<TournamentOutputDTO>>();
+                        return lstTour;
+                    }
+                    else
+                    {
+                        var status = response.StatusCode;
+                        return null;
+                    }
+                }
+                else
+                {
+                    var response = await client.GetAsync(ApiUrl + $"/SearchTournament?searchQuery={searchQuery}");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        List<TournamentOutputDTO> lstTour = await response.Content.ReadFromJsonAsync<List<TournamentOutputDTO>>();
+                        return lstTour;
+                    }
+                    else
+                    {
+                        var status = response.StatusCode;
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while getting search tournaments list: {ex.Message}");
+                return null;
+            }
+        }
+
 
         [HttpGet]
         public IActionResult TournamentBracket(int tourId)

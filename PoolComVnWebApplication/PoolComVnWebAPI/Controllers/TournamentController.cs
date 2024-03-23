@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PoolComVnWebAPI.DTO;
 using System.IdentityModel.Tokens.Jwt;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 using static PoolComVnWebAPI.DTO.CreateTourStepOneDTO;
 
 namespace PoolComVnWebAPI.Controllers
@@ -215,7 +218,83 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
-      
+
+        [HttpGet("SearchTournament")]
+        public ActionResult<IEnumerable<TournamentOutputDTO>> SearchTournament(string searchQuery)
+        {
+            try
+            {
+                var tournaments = _tournamentDAO.GetTournamentBySearch(searchQuery);
+
+                if (tournaments == null || tournaments.Count == 0)
+                {
+                    return NotFound("Không tìm thấy giải đấu nào phù hợp.");
+                }
+
+                var tournamentDTOs = new List<TournamentOutputDTO>();
+                foreach (var tour in tournaments)
+                {
+                    var tourDTO = new TournamentOutputDTO
+                    {
+                        TournamentId = tour.TourId,
+                        TournamentName = tour.TourName,
+                        StartTime = tour.StartDate ?? DateTime.Now,
+                        EndTime = tour.EndDate,
+                        Address = tour.Club.Address,
+                        ClubName = tour.Club.ClubName,
+                        Description = tour.Description,
+                        GameType = tour.GameTypeId == Constant.Game8Ball ? Constant.String8Ball :
+                                   (tour.GameTypeId == Constant.Game9Ball ? Constant.String9Ball : Constant.String10Ball),
+                        Status = tour.Status,
+                        Flyer = tour.Flyer
+                    };
+                    tournamentDTOs.Add(tourDTO);
+                }
+                    return Ok(tournamentDTOs);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý ngoại lệ nếu có lỗi xảy ra
+                return StatusCode(500, $"Lỗi khi tìm kiếm giải đấu: {ex.Message}");
+            }
+        }
+
+        [HttpGet("FilterTournaments")]
+        public IActionResult FilterTournaments(string? gameTypeName, DateTime? startDate, DateTime? endDate)
+        {
+            try
+            {
+                var tournaments = _tournamentDAO.GetTournamentsByFilters(gameTypeName, startDate, endDate);
+
+                // Chuyển đổi danh sách giải đấu thành danh sách DTO
+                List<TournamentOutputDTO> tournamentDTOs = new List<TournamentOutputDTO>();
+                foreach (var tournament in tournaments)
+                {
+                    var tournamentDTO = new TournamentOutputDTO
+                    {
+                        TournamentId = tournament.TourId,
+                        TournamentName = tournament.TourName,
+                        StartTime = tournament.StartDate ?? DateTime.Now,
+                        EndTime = tournament.EndDate,
+                        Address = tournament.Club.Address,
+                        ClubName = tournament.Club.ClubName,
+                        Description = tournament.Description,
+                        GameType = tournament.GameTypeId == Constant.Game8Ball ? Constant.String8Ball
+                                    : (tournament.GameTypeId == Constant.Game9Ball ? Constant.String9Ball : Constant.String10Ball),
+                        Status = tournament.Status,
+                        Flyer = tournament.Flyer
+                    };
+                    tournamentDTOs.Add(tournamentDTO);
+                }
+
+                // Trả về danh sách giải đấu
+                return Ok(tournamentDTOs);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
 
 
         [HttpGet("GetAllTour")]
