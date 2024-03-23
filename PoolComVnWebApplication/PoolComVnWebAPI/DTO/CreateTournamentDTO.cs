@@ -15,14 +15,11 @@
         public int? PrizeMoney { get; set; }
         public DateTime RegistrationDeadline { get; set; }
         public bool Access { get; set; }
+    }
 
-        public class CreateTourStepFourDTO
-        {
-            public int TourID { get; set; }
-            public string Flyer { get; set; }
-            
-           
-
-        }
+    public class CreateTourStepTwoDTO
+    {
+        public int TourID { get; set; }
+        public string Flyer { get; set; }
     }
 }
