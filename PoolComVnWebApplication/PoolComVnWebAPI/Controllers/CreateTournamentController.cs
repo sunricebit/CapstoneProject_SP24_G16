@@ -71,7 +71,7 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
-        [HttpPost("CreateTourStFour")]
+        [HttpPost("CreateTourStTwo")]
         // [Authorize]
 
         public IActionResult CreateTourStTwo([FromBody] CreateTourStepTwoDTO BannerDTO)

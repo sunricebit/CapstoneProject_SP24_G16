@@ -174,5 +174,33 @@ namespace PoolComVnWebAPI.Controllers
                 throw e;
             }
         }
+
+        [HttpGet("GetTourMaxNumberOfPlayer")]
+        public IActionResult GetTourMaxNumberOfPlayer(int tourId)
+        {
+            try
+            {
+                int maxNumberPlayer = _tournamentDAO.GetTourMaxNumberOfPlayer(tourId);
+                return Ok(maxNumberPlayer);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        [HttpGet("GetTourMaxNumberOfPlayer")]
+        public IActionResult GetTourKnockoutNumber(int tourId)
+        {
+            try
+            {
+                int? knockOutNumber = _tournamentDAO.GetTourKnockoutNumber(tourId);
+                return Ok(knockOutNumber);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }
