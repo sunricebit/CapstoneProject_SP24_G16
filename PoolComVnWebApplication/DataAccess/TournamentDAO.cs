@@ -68,6 +68,7 @@ namespace DataAccess
                 var updateTournament = _context.Tournaments.FirstOrDefault(t => t.TourId == tournament.TourId);
                 updateTournament = tournament;
                 _context.Tournaments.Update(updateTournament);
+                _context.SaveChanges();
             }
             catch (Exception e)
             {
@@ -172,13 +173,26 @@ namespace DataAccess
         //    }
         //}
 
-        public void DeleteTournament(int tourId)
+        public int GetTourMaxNumberOfPlayer(int tourId)
         {
             try
             {
-                var removeTournament = _context.Tournaments.FirstOrDefault(t => t.TourId == tourId);
+                int maxNumberOfPlayerInTour = _context.Tournaments.FirstOrDefault(t => t.TourId == tourId).MaxPlayerNumber;
+                return maxNumberOfPlayerInTour;
+            }
+            catch (Exception e)
+            {
 
-                _context.Tournaments.Remove(removeTournament);
+                throw e;
+            }
+        }
+
+        public int? GetTourKnockoutNumber(int tourId)
+        {
+            try
+            {
+                int? maxNumberOfPlayerInTour = _context.Tournaments.FirstOrDefault(t => t.TourId == tourId).KnockoutPlayerNumber;
+                return maxNumberOfPlayerInTour;
             }
             catch (Exception e)
             {

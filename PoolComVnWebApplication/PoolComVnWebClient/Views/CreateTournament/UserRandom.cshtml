@@ -63,7 +63,9 @@
             </div>
             <div class="players-note save save-btn d-none">
                 <i class="fa-solid fa-floppy-disk px-2"></i>
-                <span style="font-size: 20px;">Lưu và xem sơ đồ đấu</span>
+                <button onclick="saveBracket(@tourId)">
+                    <span style="font-size: 20px;">Lưu và xem sơ đồ đấu</span>
+                </button>
             </div>
         </div>
     </div>
@@ -377,4 +379,32 @@
         loadPlayer();
     }
 
+    function saveBracket(tourId) {
+        var matchData = [];
+        $('.have-data').each(function () {
+            var matchNumber = $(this).attr('id');
+            var p1Id = $(this).find('.player-1 .player-id').text();
+            var p2Id = $(this).find('.player-2 .player-id').text();
+            var match = {
+                MatchNumber: matchNumber,
+                P1Id: parseInt(p1Id),
+                P2Id: parseInt(p2Id),
+            };
+            matchData.push(match);
+        });
+        var jsonData = JSON.stringify(matchData);
+        console.log(jsonData);
+        $.ajax({
+            url: 'https://localhost:5000/api/MatchOfTour/SaveMatchesRandom/' + tourId,
+            method: 'POST',
+            contentType: 'application/json',
+            data: jsonData,
+            success: function (response) {
+                window.location.href = '/CreateTournament/StepSixReview?tourId=' + tourId;
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.log('Error:', errorThrown);
+            }
+        });
+    }
 </script>
