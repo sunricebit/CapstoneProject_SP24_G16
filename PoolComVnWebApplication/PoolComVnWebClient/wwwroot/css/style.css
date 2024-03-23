@@ -179,7 +179,7 @@ button {
 
 .container {
     padding: 50px 2%;
-    z-index: 2;
+    z-index: 3;
     position: relative;
 }
 
@@ -541,27 +541,38 @@ footer {
         border-radius: 20px;
     }
 
-    .container-full .news-detail img {
-        max-width: 500px;
-        background-position: center center;
-        border-radius: 10px;
-    }
+.dashboard-container .news-description figure {
+    width: 100%;
+    display:flex;
+    justify-content:center;
+}
 
-    .container-full .news-detail .news-title {
-        padding: 20px;
-        color: #fff;
-        text-align: center;
-        font-size: 18px;
-        font-weight: 700;
-        font-style: italic;
-    }
+.container-full .news-detail img,
+.dashboard-container .news-detail img,
+.dashboard-container .news-description ck-img{
+    max-width: 500px!important;
+    height:auto !important;
+    background-position: center center;
+    border-radius: 10px;
+}
 
-    .container-full .news-detail .news-description {
-        margin-top: 20px;
-        font-weight: 500;
-        text-align: justify;
-        color: #000;
-    }
+.container-full .news-detail .news-title,
+.dashboard-container .news-detail .news-title {
+    padding: 20px;
+    color: #fff;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    font-style: italic;
+}
+
+.container-full .news-detail .news-description,
+.dashboard-container .news-detail .news-description {
+    margin-top: 20px;
+    font-weight: 500;
+    text-align: justify;
+    color: #000;
+}
 
 .container-full .news-other .news-item {
     padding: 0;
@@ -731,7 +742,7 @@ footer {
     }
 
     .tournament .filter-body .reset-btn,
-    .tournament .filter-body .submit-btn {
+    .tournament .filter-body .submit-btn{
         width: 80%;
         height: 40px;
         border-radius: 20px;
@@ -1543,7 +1554,8 @@ footer {
         text-shadow: 0 0 3px #02b7ff;
     }
 
-    .start-tour .start-btn {
+    .start-tour .start-btn,
+    .dashboard-container #editBtn {
         width: 200px;
         height: 40px;
         background-color: #41f3c0;
@@ -1556,7 +1568,8 @@ footer {
         border: 1px #aaa solid;
     }
 
-        .start-tour .start-btn:hover {
+        .start-tour .start-btn:hover,
+        .dashboard-container #editBtn:hover {
             font-size: 18px;
             box-shadow: 0 0 10px 5px #02b7ff;
             transition: font-size 0.1s ease;
