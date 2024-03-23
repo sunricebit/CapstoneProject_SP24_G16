@@ -104,7 +104,7 @@ namespace PoolComVnWebClient.Controllers
             {
                 int tourId = await response.Content.ReadFromJsonAsync<int>();
                 ViewBag.TourId = tourId;
-                return RedirectToAction("StepTwoAddBanner", "CreateTournament", new { tourId = tourId });
+                return RedirectToAction("StepTwoAddBanner","CreateTournament", new { tourId = tourId });
             }
             else
             {
@@ -113,7 +113,7 @@ namespace PoolComVnWebClient.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("CreateTournament/StepTwoAddBanner/{tourID}")]
         public async Task<IActionResult> StepTwoAddBanner(int tourId)
         {
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
@@ -138,7 +138,7 @@ namespace PoolComVnWebClient.Controllers
             }
         }
 
-        [HttpPost("StepTwoAddBanner/{tourID}")]
+        [HttpPost("CreateTournament/StepTwoAddBanner/{tourID}")]
         public async Task<IActionResult> StepTwoAddBanner(IFormFile banner, int tourId)
         {
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];

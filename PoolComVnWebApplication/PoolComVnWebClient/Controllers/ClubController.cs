@@ -291,6 +291,104 @@ namespace PoolComVnWebClient.Controllers
                 return View(ClubPostDTO);
             }
         }
+        [HttpGet]
+        public IActionResult ClubPostDetails(int id,int? clubid)
+        {
+
+            if (clubid == null)
+            {
+                string email = HttpContext.Request.Cookies["Email"];
+                var responseaccount = client.GetAsync($"{ApiUrl}/Account/GetAccountByEmail/{email}").Result;
+                if (!responseaccount.IsSuccessStatusCode)
+                {
+                    ModelState.AddModelError(string.Empty, "Không thể lấy thông tin tài khoản.");
+                    return View();
+                }
+                var AccountData = responseaccount.Content.ReadAsStringAsync().Result;
+                var account = JsonConvert.DeserializeObject<AccountDTO>(AccountData);
+                var response2 = client.GetAsync($"{ApiUrl}/Club/GetClubByAccountId/?accountID={account.AccountID}").Result;
+                if (!response2.IsSuccessStatusCode)
+                {
+                    if (response2.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        return View();
+                    }
+                    else
+                    {
+
+                        ModelState.AddModelError(string.Empty, "Không thể lấy thông tin câu lạc bộ.");
+                        return View();
+                    }
+                }
+                var ClubData = response2.Content.ReadAsStringAsync().Result;
+                var club = JsonConvert.DeserializeObject<ClubDTO>(ClubData);
+                var response3 = client.GetAsync($"{ApiUrl}/ClubPost/GetByClubId/{club.ClubId}").Result;
+                if (response3.StatusCode == HttpStatusCode.NotFound)
+                {
+                    ViewBag.ClubPost = null;
+                }
+                else if (response3.IsSuccessStatusCode)
+                {
+                    var clubPostData = response3.Content.ReadAsStringAsync().Result;
+                    var clubPosts = JsonConvert.DeserializeObject<List<ClubPostDTO>>(clubPostData);
+                    ViewBag.ClubPost = clubPosts;
+                }
+                ViewBag.Club = club;
+                ViewBag.AccountEmail = email;
+                return View();
+            }
+            else
+            {
+                var response4 = client.GetAsync($"{ApiUrl}/Club/{clubid}").Result;
+                if (!response4.IsSuccessStatusCode)
+                {
+                    ModelState.AddModelError(string.Empty, "Không thể lấy thông tin câu lạc bộ.");
+                    return View();
+                }
+                var ClubData = response4.Content.ReadAsStringAsync().Result;
+                var club = JsonConvert.DeserializeObject<ClubDTO>(ClubData);
+                ViewBag.Club = club;
+                var response2 = client.GetAsync($"{ApiUrl}/ClubPost/GetByClubId/{club.ClubId}").Result;
+                if (response2.StatusCode == HttpStatusCode.NotFound)
+                {
+                    ViewBag.ClubPost = null;
+                }
+                else if (response2.IsSuccessStatusCode)
+                {
+                    var clubPostData = response2.Content.ReadAsStringAsync().Result;
+                    var clubPosts = JsonConvert.DeserializeObject<List<ClubPostDTO>>(clubPostData);
+                    ViewBag.ClubPost = clubPosts;
+                }
+                var response3 = client.GetAsync($"{ApiUrl}/Account/GetAccountById/{club.AccountId}").Result;
+                if (!response3.IsSuccessStatusCode)
+                {
+                    ModelState.AddModelError(string.Empty, "Không thể lấy thông tin tài khoản.");
+                    return View();
+                }
+                var AccountData = response3.Content.ReadAsStringAsync().Result;
+                var account = JsonConvert.DeserializeObject<AccountDTO>(AccountData);
+                ViewBag.AccountEmail = account.Email;
+                var response = client.GetAsync($"{ApiUrl}/ClubPost/{id}").Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonContent = response.Content.ReadAsStringAsync().Result;
+                    var newsDetails = JsonConvert.DeserializeObject<ClubPostDTO>(jsonContent);
+                    return View(newsDetails);
+                }
+                else if (response.StatusCode == HttpStatusCode.NotFound)
+                {
+
+                    return NotFound();
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Lỗi khi lấy chi tiết tin tức.");
+                    return View();
+                }
+            }
+           
+        }
 
         public IActionResult ClubTournament(int? id)
         {
@@ -531,7 +629,6 @@ namespace PoolComVnWebClient.Controllers
         }
         public IActionResult CreateClub()
         {
-            
             return View();
         }
         [HttpPost]
@@ -781,6 +878,11 @@ namespace PoolComVnWebClient.Controllers
                 return View();
                
             }
+        }
+
+        public IActionResult CreateSoloMatch()
+        {
+            return View();
         }
     }
 }

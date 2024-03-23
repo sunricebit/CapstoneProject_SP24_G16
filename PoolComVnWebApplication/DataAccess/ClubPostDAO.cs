@@ -26,7 +26,7 @@ namespace DataAccess
         // Read ClubPost
         public ClubPost GetClubPostById(int postId)
         {
-            return _context.ClubPosts.Find(postId);
+            return _context.ClubPosts.FirstOrDefault(p=>p.PostId==postId);
         }
         public List<ClubPost> GetClubPostByClubId(int clubId)
         {
@@ -42,7 +42,7 @@ namespace DataAccess
         // Update ClubPost
         public void UpdateClubPost(ClubPost updatedClubPost)
         {
-            var existingClubPost = _context.ClubPosts.Find(updatedClubPost.PostId);
+            var existingClubPost = _context.ClubPosts.FirstOrDefault(p => p.PostId == updatedClubPost.PostId);
 
             if (existingClubPost != null)
             {
@@ -51,7 +51,8 @@ namespace DataAccess
                 existingClubPost.CreatedDate = updatedClubPost.CreatedDate;
                 existingClubPost.UpdatedDate = updatedClubPost.UpdatedDate;
                 existingClubPost.Link = updatedClubPost.Link;
-
+                existingClubPost.Flyer = updatedClubPost?.Flyer;
+                existingClubPost.Status = updatedClubPost?.Status;
                 _context.SaveChanges();
             }
         }

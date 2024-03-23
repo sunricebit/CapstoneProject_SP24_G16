@@ -30,15 +30,15 @@
                         </div>
 
                         <div class="py-2">
-                            <p class="fw-bold">Email</p>
-                            <div>@ViewBag.AccountEmail</div>
-                        </div>
-
-                        <div class="py-2">
                             <p class="fw-bold">Liên hệ</p>
                             <input type="text" asp-for="Phone" required minlength="9" maxlength="13">
                         </div>
 
+                        <div class="py-2">
+                            <p class="fw-bold">Email</p>
+                            <div>@ViewBag.AccountEmail</div>
+                        </div>
+                     
                         <div class="py-2">
                             <p class="fw-bold">Địa chỉ</p>
                             <select class="select-address" id="provinceSelect">

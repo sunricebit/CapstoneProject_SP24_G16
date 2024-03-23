@@ -16,6 +16,7 @@ namespace BusinessObject.Models
         public int ClubId { get; set; }
         public string Description { get; set; } = null!;
         public byte Status { get; set; }
+        public string? Flyer { get; set; }
 
         public virtual Club Club { get; set; } = null!;
         public virtual GameType GameType { get; set; } = null!;
