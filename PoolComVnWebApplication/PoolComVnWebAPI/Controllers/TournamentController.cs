@@ -25,7 +25,7 @@ namespace PoolComVnWebAPI.Controllers
         }
 
         [HttpGet("GetAllTournament")]
-        [Authorize]
+        //[Authorize]
         public IActionResult Index()
         {
             List<Tournament> tournaments = _tournamentDAO.GetAllTournament().ToList();

@@ -2,31 +2,21 @@
     Layout = "~/Views/Shared/_CreateTournamentLayout.cshtml";
 }
 @model PoolComVnWebClient.DTO.CreateTournamentInputDTO
-@if (!ViewData.ModelState.IsValid)
-{
-    <div class="alert alert-danger">
-        <ul>
-            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-            {
-                <li>@error.ErrorMessage</li>
-            }
-        </ul>
-    </div>
-}
 
-@if (ViewBag.Error != null)
-{
-    <div class="alert alert-danger">
-        <ul>
-            @foreach (var error in ViewBag.Error)
-            {
-                <li>@error</li>
-            }
-        </ul>
-    </div>
-}
 <div class="container-full">
     <div class="create-tour d-flex justify-content-end">
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach (var error in ViewBag.Error)
+                    {
+                        <li>@error</li>
+                    }
+                </ul>
+            </div>
+        }
         <form class="create-tour-display col-lg-10" method="post" asp-controller="CreateTournament"
               asp-action="StepOneCreateTournament" method="post" id="create-form">
             <div class="create-step-one">
@@ -60,11 +50,11 @@
                         <input class="input-date" type="date" asp-for="EndTime">
                     </div>
                     @*<div class="tour-input">
-                        <div class="input-title">
-                            <span class="input-requir">*</span>
-                            <span>Địa chỉ</span>
-                        </div>
-                        <input class="input-content" type="text" name="" id="">
+                    <div class="input-title">
+                    <span class="input-requir">*</span>
+                    <span>Địa chỉ</span>
+                    </div>
+                    <input class="input-content" type="text" name="" id="">
                     </div>*@
                     <div class="tour-input d-flex">
                         <div class="tour-input-line">
@@ -259,7 +249,7 @@
         isManyStageValue = selectedOption.getAttribute('isManyStage');
         knockoutOptions.disabled = !(isManyStageValue === 'true');
         isKnockoutOn = (isManyStageValue === 'true');
-        if (isManyStageValue === 'true'){
+        if (isManyStageValue === 'true') {
             if (knockoutNumber.classList.contains('d-none')) {
                 knockoutNumber.classList.remove('d-none');
             }
@@ -395,10 +385,10 @@
             var value = input.value;
 
             var prefix = roundName.startsWith('round') ? 'W' : 'L';
-            if (prefix == 'W'){
+            if (prefix == 'W') {
                 raceNumberValues[roundName] = prefix + roundName.slice(5) + '-' + value;
             }
-            else{
+            else {
                 raceNumberValues[roundName] = prefix + roundName.slice(9) + '-' + value;
             }
         });

@@ -15,12 +15,14 @@ namespace PoolComVnWebAPI.Controllers
     public class PlayerController : ControllerBase
     {
         private readonly PlayerDAO _playerDAO;
+        private readonly TournamentDAO _tournamentDAO;
         private readonly IMapper _mapper;
         private static List<PlayerDTO> selectedPlayers = new List<PlayerDTO>();
-        public PlayerController(PlayerDAO playerDAO, IMapper mapper)
+        public PlayerController(PlayerDAO playerDAO,  IMapper mapper, TournamentDAO tournamentDAO)
         {
             _playerDAO = playerDAO;
             _mapper = mapper;
+            _tournamentDAO = tournamentDAO;
         }
 
 
@@ -177,9 +179,30 @@ namespace PoolComVnWebAPI.Controllers
 
         [HttpGet("GetNumberPlayerByTourId")]
         public IActionResult GetNumberPlayerByTourId(int tourId)
-    {
+        {
             int numberPlayers = _playerDAO.GetNumberPlayerByTourId(tourId);
             return Ok(numberPlayers);
+        }
+
+        [HttpGet("GenerateBotInTour")]
+        public IActionResult GenerateBotInTour(int tourId)
+        {
+            int numberHumanPlayers = _playerDAO.GetNumberPlayerByTourId(tourId);
+            int numberPlayersOfTour = _tournamentDAO.GetTournament(tourId).MaxPlayerNumber;
+            int numberBotPlayer = numberPlayersOfTour - numberHumanPlayers;
+            
+            for (int i = 0; i < numberBotPlayer; i++)
+            {
+                Player botPlayer = new Player()
+                {
+                    PlayerName = "BOT",
+                    CountryId = Constant.NationVietNamId,
+                    TourId = tourId,
+                };
+                _playerDAO.AddPlayer(botPlayer);
+            }
+
+            return Ok();
         }
     }
 }
