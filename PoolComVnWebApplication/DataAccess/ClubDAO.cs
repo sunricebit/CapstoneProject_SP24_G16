@@ -67,7 +67,8 @@ namespace DataAccess
                 searchQuery = searchQuery.ToLower();
 
                 var clubs = _context.Clubs
-                                    .Where(c => c.ClubName.ToLower().Contains(searchQuery) || c.Address.ToLower().Contains(searchQuery))
+                                    .Where(c => c.ClubName.ToLower().Contains(searchQuery) 
+                                    || c.Address.ToLower().Contains(searchQuery))
                                     .ToList();
                 return clubs;
             }

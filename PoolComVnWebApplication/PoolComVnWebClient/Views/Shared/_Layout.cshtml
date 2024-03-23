@@ -26,12 +26,12 @@
             <div class="large-user col-xl-10 px-0 mx-0 d-none d-xl-flex row">
                 <ul class="nav-menu col-10 px-0">
                     <li><a asp-controller="home" asp-action="Index">Tin tức</a></li>
-                    <li><a href="/Tournament/TournamentList">Giải đấu</a></li>
+                    <li><a asp-controller="tournament" asp-action="TournamentList">Giải đấu</a></li>
                     <li><a asp-controller="home" asp-action="Club">Câu lạc bộ</a></li>
                     <li><a href="">Xếp hạng</a></li>
                     <li><a asp-controller="home" asp-action="GameRules">Luật chơi</a></li>
                     <li><a asp-controller="home" asp-action="Contact">Liên hệ</a></li>
-                    <li><a asp-action="Manage" asp-controller="home">Mở rộng</a></li>
+                    <li><a asp-controller="home" asp-action="Manager">Mở rộng</a></li>
                 </ul>
 
                 @*<div class="login col-2 text-center d-none">
