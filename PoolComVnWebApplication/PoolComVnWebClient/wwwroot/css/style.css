@@ -688,12 +688,14 @@ footer {
         background: linear-gradient(#ddd 20%, #fff 100%);
     }
 
-    .tournament .tour-search {
+    .tournament .tour-search,
+    .dashboard-container .tour-search {
         border-bottom: 1px solid #fff;
         margin-right: 30px;
     }
 
-        .tournament .tour-search .search-input {
+        .tournament .tour-search .search-input,
+        .dashboard-container .tour-search .search-input {
             border: none;
             background: none;
             color: #fff;
@@ -702,17 +704,20 @@ footer {
             padding: 5px 0;
         }
 
-            .tournament .tour-search .search-input::placeholder {
+            .tournament .tour-search .search-input::placeholder,
+            .dashboard-container .tour-search .search-input::placeholder {
                 color: #ffffffa3;
             }
 
-        .tournament .tour-search .search-btn {
+        .tournament .tour-search .search-btn,
+        .dashboard-container .tour-search .search-btn {
             color: #fff;
             width: 20px;
             height: 20px;
         }
 
-            .tournament .tour-search .search-btn:hover {
+            .tournament .tour-search .search-btn:hover,
+            .dashboard-container .tour-search .search-btn:hover {
                 cursor: pointer;
             }
 
@@ -1795,7 +1800,7 @@ footer {
         border-radius: 10px;
         border: 2px #aaa solid;
         overflow: hidden;
-        min-width: 600px;
+        min-width: 500px;
     }
 
     .start-display .start-title {
@@ -1851,63 +1856,68 @@ footer {
         cursor: pointer;
     }
 
-    .match-display .match-detail .details-body,
-    .solo-detail .match-detail .details-body {
+    .match-display .match-detail .details-body {
         padding: 20px 50px;
         min-height: 400px;
         max-height: 80vh;
         overflow-y: auto;
     }
 
-    .match-display .match-detail .match-time,
-    .solo-detail .match-detail .match-time {
-        font-size: 12px;
-        font-weight: 700;
-        margin: 20px 0 0 50px;
+.solo-detail .match-detail .details-body {
+    padding: 20px 50px;
+    height: calc(100% - 44px);
+    overflow-y: auto;
+}
+
+.match-display .match-detail .match-time,
+.solo-detail .match-detail .match-time {
+    font-size: 12px;
+    font-weight: 700;
+    margin: 20px 0 0 50px;
+}
+
+.match-display .match-detail .match-complete,
+.solo-detail .match-detail .match-complete {
+    padding: 2px 10px;
+    margin: 20px 20px 0 0;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid #346585;
+}
+
+.match-display .match-detail .details-player,
+.solo-detail .match-detail .details-player {
+    font-size: 28px;
+    font-weight: 600;
+    border-bottom: 1px solid #455d64;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+    .match-display .match-detail .details-player img,
+    .solo-detail .match-detail .details-player img {
+        width: 42px;
+        height: 28px;
+        border-radius: 5px;
     }
 
-    .match-display .match-detail .match-complete,
-    .solo-detail .match-detail .match-complete {
-        padding: 2px 10px;
-        margin: 20px 20px 0 0;
-        border-radius: 10px;
-        font-size: 12px;
-        font-weight: 700;
-        border: 1px solid #346585;
+.match-display .match-detail .score-board,
+.solo-detail .match-detail .score-board {
+    padding: 30px 0 20px 0;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+    .match-display .match-detail .score-board span,
+    .solo-detail .match-detail .score-board span {
+        line-height: 20px;
     }
 
-    .match-display .match-detail .details-player,
-    .solo-detail .match-detail .details-player {
-        font-size: 28px;
-        font-weight: 600;
-        border-bottom: 1px solid #455d64;
-        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    }
-
-        .match-display .match-detail .details-player img,
-        .solo-detail .match-detail .details-player img {
-            width: 42px;
-            height: 28px;
-            border-radius: 5px;
-        }
-
-    .match-display .match-detail .score-board,
-    .solo-detail .match-detail .score-board {
-        padding: 30px 0 20px 0;
-        font-size: 12px;
-        font-weight: 700;
-    }
-
-        .match-display .match-detail .score-board span,
-        .solo-detail .match-detail .score-board span {
-            line-height: 20px;
-        }
-
-    .match-display .match-detail .name-board div,
-    .solo-detail .match-detail .name-board div {
-        padding-right: 10px;
-        max-width: 200px;
-    }
+.match-display .match-detail .name-board div,
+.solo-detail .match-detail .name-board div {
+    padding-right: 10px;
+    max-width: 200px;
+}
 
 .board-line {
     border-bottom: 1px #fff solid;
@@ -2593,11 +2603,13 @@ tr:not(:first-child).isFinish {
                 margin-right: 5px;
             }
 
-            .player-histories .history-line .player.win {
+            .player-histories .history-line .player.win,
+            .solo-detail .details-player.win {
                 background: linear-gradient(90deg, #00000000 0%, #37e57c 50%, #00000000 100%);
             }
 
-            .player-histories .history-line .player.lose {
+            .player-histories .history-line .player.lose,
+            .solo-detail .details-player.lose {
                 background: linear-gradient(90deg, #00000000 0%, #dd8484 50%, #00000000 100%);
             }
 
@@ -4408,7 +4420,7 @@ tr:not(:first-child).isFinish {
         background-color: #0b083ac9;
         padding: 5px;
         border-radius: 20px;
-        opacity: 0.4;
+        opacity: 0.7;
         transition: opacity 0.5s ease;
         z-index: 99;
     }
@@ -4615,7 +4627,7 @@ tr:not(:first-child).isFinish {
 
 /* clubSoloMatchDetail.html */
 .solo-detail {
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
     .solo-detail .solo-general {
@@ -4634,7 +4646,7 @@ tr:not(:first-child).isFinish {
 
     .solo-detail .match-detail {
         background: #fff;
-        max-height: calc(100vh - 150px);
+        max-height: calc(100vh - 110px);
     }
 
     .solo-detail .details-body .score-board:last-child {
@@ -4662,6 +4674,11 @@ tr:not(:first-child).isFinish {
             .solo-detail .match-statistic .statistic-content .streak {
                 width: 200px;
                 text-align: center;
+                font-weight: 700;
+            }
+
+            .solo-detail .match-statistic .statistic-content .percent-number {
+                font-weight: 700;
             }
 
             .solo-detail .match-statistic .statistic-content .total {
@@ -4687,6 +4704,7 @@ tr:not(:first-child).isFinish {
         font-size: 14px;
         font-weight: 700;
         margin: 10px 0 0 50px;
+        height: 22px;
     }
 
     .solo-detail .match-detail .detail-score {

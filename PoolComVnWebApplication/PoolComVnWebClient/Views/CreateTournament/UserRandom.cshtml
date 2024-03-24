@@ -74,8 +74,6 @@
 </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
-    var playerNumber;
-
     var playerPick;
     var playerPickBg;
     var randomBtnGroup;
@@ -243,6 +241,7 @@
         playerPick.classList.add('d-none');
         playerPick.style.transform = 'scale(1)';
 
+        var playerIdRandom;
         const playerNext = document.getElementById('randomMatch' + playerCount);
         if (playerCount === playerNumber) {
             const playerExist = document.querySelector('.player');
