@@ -107,6 +107,33 @@ namespace PoolComVnWebClient.Controllers
         }
         public IActionResult AddPost(int clubid)
         {
+            string email = HttpContext.Request.Cookies["Email"];
+            var response = client.GetAsync($"{ApiUrl}/Account/GetAccountByEmail/{email}").Result;
+            if (!response.IsSuccessStatusCode)
+            {
+                ModelState.AddModelError(string.Empty, "Không thể lấy thông tin tài khoản.");
+                return View();
+            }
+            var AccountData = response.Content.ReadAsStringAsync().Result;
+            var account = JsonConvert.DeserializeObject<AccountDTO>(AccountData);
+            var response2 = client.GetAsync($"{ApiUrl}/Club/GetClubByAccountId/?accountID={account.AccountID}").Result;
+            if (!response2.IsSuccessStatusCode)
+            {
+                if (response2.StatusCode == HttpStatusCode.NotFound)
+                {
+                    return View();
+                }
+                else
+                {
+
+                    ModelState.AddModelError(string.Empty, "Không thể lấy thông tin câu lạc bộ.");
+                    return View();
+                }
+            }
+            var ClubData = response2.Content.ReadAsStringAsync().Result;
+            var club = JsonConvert.DeserializeObject<ClubDTO>(ClubData);
+            ViewBag.Club = club;
+            ViewBag.AccountEmail = email;
             ViewBag.ClubID = clubid;
             return View();
         }
