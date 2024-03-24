@@ -22,6 +22,11 @@ namespace DataAccess
             return  _context.Provinces.ToList();
         }
 
+        public District GetDistrictByDistrictCode(string districtCode)
+        {
+            return _context.Districts.FirstOrDefault(d => d.Code == districtCode);
+        }
+
         public List<District> GetDistrictsByProvinceCodeAsync(string provinceCode)
         {
             return  _context.Districts.Where(d => d.ProvinceCode == provinceCode).ToList();
@@ -33,6 +38,12 @@ namespace DataAccess
                    .SelectMany(p => p.Districts)
                    .ToList();
         }
+
+      public Province GetProvinceByProvinceCode(string provinceCode)
+        {
+            return _context.Provinces.FirstOrDefault(p => p.Code == provinceCode);
+        }
+
         public List<Ward> GetWardsByDistrictCodeAsync(string districtCode)
         {
             return _context.Wards.Where(w => w.DistrictCode == districtCode).ToList();

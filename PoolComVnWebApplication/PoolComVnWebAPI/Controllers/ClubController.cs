@@ -120,7 +120,8 @@ namespace PoolComVnWebAPI.Controllers
                     Address = club.Address,
                     Avatar = club.Avatar,
                     AccountId = club.AccountId,
-                    Status = club.Status
+                    Status = club.Status,
+                    WardCode = club.WardCode
                 };
 
                 return Ok(clubDto);
