@@ -60,6 +60,47 @@ namespace PoolComVnWebAPI.Controllers
             }
 
         }
+        [HttpGet("GetTournamentsByClubId")]
+        public IActionResult GetTournamentsByClubId(int clubId)
+        {
+            try
+            {
+                List<Tournament> tournaments = _tournamentDAO.GetTournamentsByClubId(clubId);
+                List<TournamentDetailDTO> tournamentDetails = new List<TournamentDetailDTO>();
+                foreach (var tour in tournaments)
+                {
+                    TournamentDetailDTO tournamentDetailDTO = new TournamentDetailDTO()
+                    {
+                        Address = tour.Club.Address,
+                        ClubName = tour.Club.ClubName,
+                        TournamentId = tour.TourId,
+                        TournamentName = tour.TourName,
+                        Description = tour.Description,
+                        StartTime = tour.StartDate ?? DateTime.Now,
+                        EndTime = tour.EndDate,
+                        Flyer = tour.Flyer,
+                        GameType = tour.GameTypeId == Constant.Game8Ball ? Constant.String8Ball
+                                        : (tour.GameTypeId == Constant.Game9Ball ? Constant.String9Ball : Constant.String10Ball),
+                        Status = tour.Status,
+                        TourTypeId = tour.TournamentTypeId,
+                        RaceWin = GetRaceWinNumbers(tour.RaceToString),
+                        RaceLose = GetRaceLoseNumbers(tour.RaceToString),
+                        RegisterDate = tour.RegistrationDeadline,
+                        MaxPlayer = tour.MaxPlayerNumber,
+                        Access = tour.Access == null ? true : tour.Access.Value,
+                        EntryFee = tour.EntryFee,
+                        TotalPrize = tour.TotalPrize,
+                    };
+
+                    tournamentDetails.Add(tournamentDetailDTO);
+                }
+                return Ok(tournamentDetails);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"Lỗi khi lấy thông tin giải đấu: {e.Message}");
+            }
+        }
 
         private List<RaceNumber> GetRaceWinNumbers(string raceString)
         {

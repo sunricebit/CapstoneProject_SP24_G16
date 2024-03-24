@@ -107,6 +107,33 @@ namespace PoolComVnWebClient.Controllers
         }
         public IActionResult AddPost(int clubid)
         {
+            string email = HttpContext.Request.Cookies["Email"];
+            var response = client.GetAsync($"{ApiUrl}/Account/GetAccountByEmail/{email}").Result;
+            if (!response.IsSuccessStatusCode)
+            {
+                ModelState.AddModelError(string.Empty, "Không thể lấy thông tin tài khoản.");
+                return View();
+            }
+            var AccountData = response.Content.ReadAsStringAsync().Result;
+            var account = JsonConvert.DeserializeObject<AccountDTO>(AccountData);
+            var response2 = client.GetAsync($"{ApiUrl}/Club/GetClubByAccountId/?accountID={account.AccountID}").Result;
+            if (!response2.IsSuccessStatusCode)
+            {
+                if (response2.StatusCode == HttpStatusCode.NotFound)
+                {
+                    return View();
+                }
+                else
+                {
+
+                    ModelState.AddModelError(string.Empty, "Không thể lấy thông tin câu lạc bộ.");
+                    return View();
+                }
+            }
+            var ClubData = response2.Content.ReadAsStringAsync().Result;
+            var club = JsonConvert.DeserializeObject<ClubDTO>(ClubData);
+            ViewBag.Club = club;
+            ViewBag.AccountEmail = email;
             ViewBag.ClubID = clubid;
             return View();
         }
@@ -419,16 +446,16 @@ namespace PoolComVnWebClient.Controllers
                 }
                 var ClubData = response2.Content.ReadAsStringAsync().Result;
                 var club = JsonConvert.DeserializeObject<ClubDTO>(ClubData);
-                var response3 = client.GetAsync($"{ApiUrl}/ClubPost/GetByClubId/{club.ClubId}").Result;
+                var response3 = client.GetAsync($"{ApiUrl}/Tournament/GetTournamentsByClubId?clubId={club.ClubId}").Result;
                 if (response3.StatusCode == HttpStatusCode.NotFound)
                 {
-                    ViewBag.ClubPost = null;
+                    ViewBag.Tournament = null;
                 }
                 else if (response3.IsSuccessStatusCode)
                 {
-                    var clubPostData = response3.Content.ReadAsStringAsync().Result;
-                    var clubPosts = JsonConvert.DeserializeObject<List<ClubPostDTO>>(clubPostData);
-                    ViewBag.ClubPost = clubPosts;
+                    var tournamentData = response3.Content.ReadAsStringAsync().Result;
+                    var tours = JsonConvert.DeserializeObject<List<TournamentDetailDTO>>(tournamentData);
+                    ViewBag.Tournament = tours;
                 }
                 ViewBag.Club = club;
                 ViewBag.AccountEmail = email;
@@ -445,16 +472,16 @@ namespace PoolComVnWebClient.Controllers
                 var ClubData = response.Content.ReadAsStringAsync().Result;
                 var club = JsonConvert.DeserializeObject<ClubDTO>(ClubData);
                 ViewBag.Club = club;
-                var response2 = client.GetAsync($"{ApiUrl}/ClubPost/GetByClubId/{club.ClubId}").Result;
+                var response2 = client.GetAsync($"{ApiUrl}/GetTournamentsByClubId?clubId={club.ClubId}").Result;
                 if (response2.StatusCode == HttpStatusCode.NotFound)
                 {
-                    ViewBag.ClubPost = null;
+                    ViewBag.Tournament = null;
                 }
                 else if (response2.IsSuccessStatusCode)
                 {
-                    var clubPostData = response2.Content.ReadAsStringAsync().Result;
-                    var clubPosts = JsonConvert.DeserializeObject<List<ClubPostDTO>>(clubPostData);
-                    ViewBag.ClubPost = clubPosts;
+                    var tournamentData = response2.Content.ReadAsStringAsync().Result;
+                    var tours = JsonConvert.DeserializeObject<List<TournamentDTO>>(tournamentData);
+                    ViewBag.Tournament = tours;
                 }
                 var response3 = client.GetAsync($"{ApiUrl}/Account/GetAccountById/{club.AccountId}").Result;
                 if (!response3.IsSuccessStatusCode)
