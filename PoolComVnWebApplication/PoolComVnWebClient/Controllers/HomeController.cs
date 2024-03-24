@@ -67,16 +67,16 @@ namespace PoolComVnWebClient.Controllers
             var response = client.GetAsync($"https://localhost:5000/api/Account/GetAccountByEmail/{email}").Result;
             var AccountData = response.Content.ReadAsStringAsync().Result;
             var account = JsonConvert.DeserializeObject<AccountDTO>(AccountData);
-            if(account.RoleID == 2 || account.RoleID == 3)
+            if (account.RoleID == 2 || account.RoleID == 3)
             {
                 return RedirectToAction("Index");
             }
             else if (account.RoleID == 1)
             {
                 return RedirectToAction("Index", "Manager");
-            }  
+            }
             else
-            return RedirectToAction("Index", "NewsManage");
+                return RedirectToAction("Index", "NewsManage");
         }
 
         [HttpGet]
@@ -117,7 +117,7 @@ namespace PoolComVnWebClient.Controllers
 
         [HttpGet]
         public IActionResult Contact()
-        {      
+        {
             ViewBag.SuccessMessage = TempData["SuccessMessage"];
             ViewBag.ErrorMessage = TempData["ErrorMessage"];
             return View();
@@ -136,7 +136,7 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Club(int? page, string searchQuery, string provinceName, string? cityName)
+        public async Task<IActionResult> Club(int? page, string searchQuery, string? provinceCode, string? districtCode, string? wardCode)
         {
             try
             {
@@ -144,9 +144,10 @@ namespace PoolComVnWebClient.Controllers
                 int pageSize = 6;
 
                 List<ClubDTO> clublists = null;
-                if (!string.IsNullOrEmpty(provinceName) || !string.IsNullOrEmpty(cityName))
+                if (!string.IsNullOrEmpty(provinceCode) || !string.IsNullOrEmpty(districtCode) || 
+                    !string.IsNullOrEmpty(wardCode))
                 {
-                    clublists = await GetFilteredClubsByProvinceAndCity(provinceName, cityName);
+                    clublists = await GetFilteredClubsLocation(provinceCode, districtCode, wardCode);
                 }
                 else
                 {
@@ -155,7 +156,7 @@ namespace PoolComVnWebClient.Controllers
                 ViewBag.SearchQuery = searchQuery;
                 if (clublists != null)
                 {
-                    var paginatedClubsList = PaginatedList<ClubDTO>.CreateAsync(clublists, pageNumber, pageSize);
+                    var paginatedClubsList =  PaginatedList<ClubDTO>.CreateAsync(clublists, pageNumber, pageSize);
                     return View(paginatedClubsList);
                 }
                 else
@@ -176,14 +177,22 @@ namespace PoolComVnWebClient.Controllers
             }
         }
 
-        private async Task<List<ClubDTO>?> GetFilteredClubsByProvinceAndCity(string provinceName, string? cityName)
+        private async Task<List<ClubDTO>?> GetFilteredClubsLocation(string? provinceCode, string? districtCode, string? wardCode)
         {
             try
             {
-                string apiUrl = $"https://localhost:5000/api/Club/GetClubsByProvinceAndCity?provinceName={provinceName}";
-                if (!string.IsNullOrEmpty(cityName) && cityName != "Quận/Huyện")
+                string apiUrl = $"https://localhost:5000/api/Club/GetClubsByLocation?";
+                if (!string.IsNullOrEmpty(provinceCode) && provinceCode != "Tỉnh")
                 {
-                    apiUrl += $"&cityName={cityName}";
+                    apiUrl += $"provinceCode={provinceCode}&";
+                }
+                if (!string.IsNullOrEmpty(districtCode) && districtCode != "Quận/Huyện")
+                {
+                    apiUrl += $"districtCode={districtCode}&";
+                }
+                if (!string.IsNullOrEmpty(wardCode) && wardCode != "Phường/Xã")
+                {
+                    apiUrl += $"&wardCode={wardCode}";
                 }
 
                 var response = await client.GetAsync(apiUrl);

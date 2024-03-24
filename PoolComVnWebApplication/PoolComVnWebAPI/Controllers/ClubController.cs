@@ -169,12 +169,12 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
-        [HttpGet("GetClubsByProvinceAndCity")]
-        public ActionResult<IEnumerable<ClubDTO>> GetClubsByProvinceAndCity(string provinceName, string? cityName)
+        [HttpGet("GetClubsByLocation")]
+        public ActionResult<IEnumerable<ClubDTO>> GetClubsByLocation(string? provinceCode, string? districtCode, string? wardCode)
         {
             try
             {
-                var clubs = _clubDAO.GetClubsByProvinceAndCity(provinceName, cityName);
+                var clubs = _clubDAO.GetClubsByFilters(provinceCode, districtCode, wardCode);
 
                 if (clubs == null || clubs.Count == 0)
                 {
