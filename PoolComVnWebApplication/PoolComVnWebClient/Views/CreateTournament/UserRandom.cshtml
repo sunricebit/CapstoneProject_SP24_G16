@@ -89,7 +89,7 @@
     const playerView = document.querySelector('.players-view');
     
     var tourId = $(".tour-id").text().trim();
-    var playerNumber = $(".numberOfPlayer").text().trim();
+    var playerNumber = parseInt($(".numberOfPlayer").text().trim());
 
     console.log('playerNumber:', playerNumber);
 
@@ -139,6 +139,7 @@
                     + '<img src="/Image/VietNamFlag.png" alt="">'
                     + '</div>'
                     + '<div class="player-name"></div>'
+                    + '<div class="player-id d-none"></div>'
                     + '</div>'
                     + '</div>'
                     + '</div>'
@@ -161,6 +162,7 @@
     let random;
     let imgRandom;
     let nameRandom;
+    let playerIdRandom;
     var isPlayerPick = false;
     let isEventCompleted = true;
 
@@ -241,7 +243,6 @@
         playerPick.classList.add('d-none');
         playerPick.style.transform = 'scale(1)';
 
-        var playerIdRandom;
         const playerNext = document.getElementById('randomMatch' + playerCount);
         if (playerCount === playerNumber) {
             const playerExist = document.querySelector('.player');
@@ -326,11 +327,16 @@
             .querySelector('img').src;
         nameRandom = random.querySelector('.player-name')
             .textContent;
+        playerIdRandom = random.querySelector('.player-id')
+            .textContent;
 
         playerPick.querySelector('.player-flag')
             .querySelector('img').src = imgRandom;
         playerPick.querySelector('.player-name')
             .textContent = nameRandom;
+
+        playerPick.querySelector('.player-id')
+            .textContent = playerIdRandom;
     }
 
     const randomBtn = document.querySelector('.random-btn');
@@ -363,7 +369,7 @@
     function saveBracket(tourId) {
         var matchData = [];
         $('.matchRandom').each(function () {
-            var matchNumber = $(this).attr('id');
+            var matchNumber = $(this).find('.match-box').attr('id').replace('match', '');
             var p1Id = $(this).find('.player-1 .player-id').text();
             var p2Id = $(this).find('.player-2 .player-id').text();
             var match = {
