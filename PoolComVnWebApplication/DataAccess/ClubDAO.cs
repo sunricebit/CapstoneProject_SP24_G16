@@ -60,22 +60,33 @@ namespace DataAccess
                 return null;
             }
         }
-        public List<Club> GetClubsByProvinceAndCity(string provinceName, string? cityName)
+
+        public List<Club> GetClubsByFilters(string? provinceCode, string? districtCode, string? wardCode)
         {
             try
             {
-                provinceName = provinceName.ToLower();
-                cityName = cityName?.ToLower();
+                var query = _context.Clubs.AsQueryable();
 
-                var clubs = _context.Clubs
-                                    .Where(c => c.Address.ToLower().Contains(provinceName)
-                                            && (string.IsNullOrEmpty(cityName) || c.Address.ToLower().Contains(cityName)))
-                                    .ToList();
-                return clubs;
+                if (!string.IsNullOrEmpty(provinceCode) && provinceCode != "0")
+                {
+                    query = query.Where(c => c.WardCodeNavigation.DistrictCodeNavigation.ProvinceCode == provinceCode);
+                }
+
+                if (!string.IsNullOrEmpty(districtCode) && districtCode != "0")
+                {
+                    query = query.Where(c => c.WardCodeNavigation.DistrictCode == districtCode);
+                }
+
+                if (!string.IsNullOrEmpty(wardCode) && wardCode != "0")
+                {
+                    query = query.Where(c => c.WardCode == wardCode);
+                }
+
+                return query.ToList();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Lỗi khi tìm kiếm câu lạc bộ theo tỉnh/thành phố và quận/huyện: {ex.Message}");
+                Console.WriteLine($"Lỗi khi tìm kiếm câu lạc bộ: {ex.Message}");
                 return null;
             }
         }

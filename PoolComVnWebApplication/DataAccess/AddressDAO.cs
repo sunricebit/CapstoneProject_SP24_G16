@@ -33,6 +33,13 @@ namespace DataAccess
                    .SelectMany(p => p.Districts)
                    .ToList();
         }
+        public List<Ward> GetWardsByDistrictNameAsync(string districtName)
+        {
+            return _context.Districts
+                   .Where(d => d.Name == districtName)
+                   .SelectMany(d => d.Wards)
+                   .ToList();
+        }
         public List<Ward> GetWardsByDistrictCodeAsync(string districtCode)
         {
             return _context.Wards.Where(w => w.DistrictCode == districtCode).ToList();

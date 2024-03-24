@@ -27,8 +27,11 @@ namespace PoolComVnWebClient.Controllers
             try
             {
                 int pageNumber = page ?? 1;
-                int pageSize = 8;
-
+                int pageSize = 6;
+                ViewBag.SearchQuery = searchQuery;
+                ViewBag.GameType = gameType;
+                ViewBag.StartDate = startDate;
+                ViewBag.EndDate = endDate;
                 List<TournamentOutputDTO> tournamentsList = null;
 
                 // Kiểm tra nếu có thông số lọc được cung cấp
@@ -36,13 +39,25 @@ namespace PoolComVnWebClient.Controllers
                 {
                     tournamentsList = await GetFilteredTournamentsListAsync(gameType, startDate, endDate);
                 }
-                else
+                else if (!string.IsNullOrEmpty(searchQuery))
                 {
                     tournamentsList = await GetSearchTournamentsListAsync(searchQuery);
+                    
                 }
+                else
+                {
+                    var response = await client.GetAsync(ApiUrl + "/GetAllTour");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        tournamentsList = await response.Content.ReadFromJsonAsync<List<TournamentOutputDTO>>();
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Lỗi khi lấy danh sách giải đấu từ API");
+                        return RedirectToAction("InternalServerError", "Error");
+                    }
 
-                ViewBag.SearchQuery = searchQuery;
-
+                }
                 if (tournamentsList != null)
                 {
                     var paginatedTournamentsList = PaginatedList<TournamentOutputDTO>.CreateAsync(tournamentsList, pageNumber, pageSize);
@@ -177,7 +192,8 @@ namespace PoolComVnWebClient.Controllers
             return View();
         }
 
-        public IActionResult TournamentBracketForManager() {
+        public IActionResult TournamentBracketForManager()
+        {
             return View();
         }
 
