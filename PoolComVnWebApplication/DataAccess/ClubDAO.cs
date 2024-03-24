@@ -60,6 +60,26 @@ namespace DataAccess
                 return null;
             }
         }
+        public List<Club> GetClubsByProvinceAndCity(string provinceName, string? cityName)
+        {
+            try
+            {
+                provinceName = provinceName.ToLower();
+                cityName = cityName?.ToLower();
+
+                var clubs = _context.Clubs
+                                    .Where(c => c.Address.ToLower().Contains(provinceName)
+                                            && (string.IsNullOrEmpty(cityName) || c.Address.ToLower().Contains(cityName)))
+                                    .ToList();
+                return clubs;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi tìm kiếm câu lạc bộ theo tỉnh/thành phố và quận/huyện: {ex.Message}");
+                return null;
+            }
+        }
+
         public List<Club> GetClubsBySearch(string searchQuery)
         {
             try
