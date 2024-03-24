@@ -477,6 +477,13 @@ namespace PoolComVnWebClient.Controllers
             ViewBag.NumberOfPlayer = numberOfPlayer;
             ViewBag.NumberRecommend = numberPlayerRecommend;
             ViewBag.IsDouble = false;
+
+            if (numberPlayerRecommend == maxNumberOfTournament)
+            {
+                await client
+                .GetAsync(Constant.ApiUrl + "/Player/GenerateBotInTour?tourId=" + tourId);
+            }
+
             if (knockOutNumber.HasValue) 
             {
                 ViewBag.KnockOutNumber = knockOutNumber;
@@ -487,28 +494,41 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult UserRandom(int tourId)
+        public async Task<IActionResult> UserRandom(int tourId)
         {
+            int maxNumberOfTournament = await client
+                .GetFromJsonAsync<int>(Constant.ApiUrl + "/Tournament/GetTourMaxNumberOfPlayer?tourId=" + tourId);
+            ViewBag.MaxNumberOfTournament = maxNumberOfTournament;
             ViewBag.TourID = tourId;
             return View();
         }
 
         [HttpGet]
-        public IActionResult UserCustom(int tourId)
+        public async Task<IActionResult> UserCustom(int tourId)
         {
+            int maxNumberOfTournament = await client
+                .GetFromJsonAsync<int>(Constant.ApiUrl + "/Tournament/GetTourMaxNumberOfPlayer?tourId=" + tourId);
+            ViewBag.MaxNumberOfTournament = maxNumberOfTournament;
             ViewBag.TourID = tourId;
             return View();
         }
 
         [HttpGet]
-        public IActionResult SystemRandom(int tourId)
+        public async Task<IActionResult> SystemRandom(int tourId)
         {
+            int maxNumberOfTournament = await client
+                .GetFromJsonAsync<int>(Constant.ApiUrl + "/Tournament/GetTourMaxNumberOfPlayer?tourId=" + tourId);
+            int? knockOutNumber = await client
+                .GetFromJsonAsync<int?>(Constant.ApiUrl + "/Tournament/GetTourKnockoutNumber?tourId=" + tourId);
+            ViewBag.MaxNumberOfTournament = maxNumberOfTournament;
+            ViewBag.KnockOutNumber = knockOutNumber;
             ViewBag.TourID = tourId;
             return View();
         }
 
-        public IActionResult SystemSingleRandom()
+        public IActionResult SystemSingleRandom(int tourId)
         {
+            ViewBag.TourID = tourId;
             return View();
         }
 

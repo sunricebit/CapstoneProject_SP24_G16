@@ -73,7 +73,6 @@ namespace PoolComVnWebAPI.Controllers
 
         [HttpPost("CreateTourStTwo")]
         // [Authorize]
-
         public IActionResult CreateTourStTwo([FromBody] CreateTourStepTwoDTO BannerDTO)
         {
             try
@@ -82,6 +81,26 @@ namespace PoolComVnWebAPI.Controllers
                 tour.Flyer = BannerDTO.Flyer;
                 _tournamentDAO.UpdateTournament(tour);
                 return Ok(BannerDTO.TourID);
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+
+        [HttpPost("UpdateBracketStepSix")]
+        // [Authorize]
+        public IActionResult UpdateBracketStepSix([FromBody]UpdateStepSixTournamentDTO updateStepSixTournamentDTO)
+        {
+            try
+            {
+                Tournament tournament = _tournamentDAO.GetTournament(updateStepSixTournamentDTO.TourId);
+                tournament.MaxPlayerNumber = updateStepSixTournamentDTO.MaxPlayerNumber;
+                tournament.KnockoutPlayerNumber = updateStepSixTournamentDTO.KnockOutNumberPlayer;
+                tournament.RaceToString = updateStepSixTournamentDTO.RaceToString;
+                _tournamentDAO.UpdateTournament(tournament);
+                return Ok();
             }
             catch (Exception e)
             {

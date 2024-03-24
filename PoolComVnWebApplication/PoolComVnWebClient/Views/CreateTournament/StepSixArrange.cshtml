@@ -6,6 +6,7 @@
     int numberPlayerRecommend = ViewBag.NumberRecommend;
     int knockOutNumber = ViewBag.KnockOutNumber;
 }
+<div class="tourId d-none">@tourId</div>
 <div class="numberOfPlayer d-none">@maxNumberOfTournament</div>
 <div class="knockOutNumber d-none">@knockOutNumber</div>
 <div class="container-full">
@@ -57,23 +58,24 @@
     </div>
 </div>
 
-if (number)
-<div id="first-popup" class="confirm-popup">
-    <div class="confirm-content">
-        <div class="confirm-title">
-            Số người chơi chưa đủ với sơ đồ 32!
-        </div>
-        <div class="d-flex justify-content-around">
-            <div class="exit-btn" style="width: 200px;">
-                Thêm người chơi
+@if (numberPlayerRecommend < maxNumberOfTournament)
+{
+    <div id="first-popup" class="confirm-popup">
+        <div class="confirm-content">
+            <div class="confirm-title">
+                Số người chơi chưa đủ với sơ đồ @maxNumberOfTournament!
             </div>
-            <div id="new-bracket-btn" class="save-random" style="width: 200px;">
-                Sử dụng sơ đồ 16
+            <div class="d-flex justify-content-around">
+                <div class="exit-btn" style="width: 200px;">
+                    Thêm người chơi
+                </div>
+                <div id="new-bracket-btn" class="save-random" style="width: 200px;">
+                    Sử dụng sơ đồ <div class="numberPlayerRecommend">@numberPlayerRecommend</div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
+}
 <div id="second-popup" class="confirm-popup d-none">
     <div class="confirm-content" style="min-height: 500px; width: 900px;">
         <form class="confirm-form">
@@ -106,7 +108,7 @@ if (number)
                                 <span class="input-requir">*</span>
                                 <span>Số người vào loại trực tiếp</span>
                             </div>
-                            <select class="input-content knockout-options">
+                            <select class="input-content knockout-options" id="knockOutNumber">
                                 <option value="2" checked>2</option>
                             </select>
                         </div>
@@ -147,7 +149,7 @@ if (number)
                     </div>
                 </div>
                 <div class="tour-input">
-                    <button class="submit-btn" type="submit">Lưu và chuyển đến xếp trận</button>
+                    <button class="submit-btn" type="submit" onclick="updateTour()">Lưu và chuyển đến xếp trận</button>
                 </div>
             </div>
         </form>
@@ -167,8 +169,8 @@ if (number)
     var imgList;
 
     // Gán giá trị cho playerNumber và finalSinglePlayer từ dữ liệu nhận được
-    var playerNumber = $(".tour-id").text().trim();
-    var finalSinglePlayer = data.finalSinglePlayer;
+    var playerNumber = $(".numberOfPlayer").text().trim();
+    var finalSinglePlayer = $(".knockOutNumber").text().trim();
 
     let roundNumber = Math.log2(playerNumber / 2);
     let finalSingleRound = roundNumber - Math.log2(finalSinglePlayer) + 1;
@@ -559,6 +561,62 @@ if (number)
             element.classList.add('multi');
         });
     })
+
+    function getAndSetRaceNumberString() {
+        var raceNumberInputs = document.querySelectorAll('.race-number');
+        var raceNumberValues = {};
+
+        raceNumberInputs.forEach(function (input) {
+            var roundName = input.getAttribute('name');
+            var value = input.value;
+
+            var prefix = roundName.startsWith('round') ? 'W' : 'L';
+            if (prefix == 'W') {
+                raceNumberValues[roundName] = prefix + roundName.slice(5) + '-' + value;
+            }
+            else {
+                raceNumberValues[roundName] = prefix + roundName.slice(9) + '-' + value;
+            }
+        });
+
+        var raceNumberString = Object.values(raceNumberValues).join(',');
+
+        return raceNumberString;
+    }
+
+    function updateTour() {
+        var selectKnockOutNumberElement = document.getElementById("knockOutNumber");
+
+        // lấy giá trị knock-out number
+        var knockOutNumber = selectKnockOutNumberElement.value;
+        // giá trị của player recommend
+        var playerNumber = $(".numberPlayerRecommend").text().trim();
+        var tourId = $(".tourId").text().trim();
+        var raceToString = getAndSetRaceNumberString();
+
+        // Tạo đối tượng DTO từ các giá trị thu thập được
+        var updateDTO = {
+            TourId: parseInt(tourId),
+            RaceToString: raceToString,
+            KnockOutNumberPlayer: parseInt(knockOutNumber),
+            MaxPlayerNumber: parseInt(playerNumber)
+        };
+        console.log(updateDTO);
+
+        $.ajax({
+            url: "https://localhost:5000/api/CreateTournament/UpdateBracketStepSix",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(updateDTO),
+            success: function (response) {
+                console.log("Tournament updated successfully!");
+                window.location.href = "/CreateTournament/StepSixArrange?tourId=" + updateDTO.TourId;
+            },
+            error: function (xhr, status, error) {
+                console.error("Error updating tournament:", error);
+            }
+        });
+    }
 
     //open second-popup
     const newBracketBtn = document.getElementById('new-bracket-btn');
