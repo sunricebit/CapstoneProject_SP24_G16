@@ -167,8 +167,6 @@ namespace PoolComVnWebClient.Controllers
         {
             return View();
         }
-
-        //Tournament detail for club and manage of club
         public IActionResult TournamentMatchListForManager()
         {
             return View();

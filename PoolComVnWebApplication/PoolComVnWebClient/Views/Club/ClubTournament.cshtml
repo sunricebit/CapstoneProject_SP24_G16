@@ -73,8 +73,8 @@
     @foreach (var tournament in ViewBag.Tournament)
     {
         <div class="tour-item col-md-6 col-lg-4">
-            <a href="#" class="item-body">
-                <div class="tour-box">
+                        <a asp-action="TournamentDetail" asp-controller="Tournament" asp-route-tourId="@tournament.TournamentId" class="item-body">
+                            <div class="tour-box">
                     <div class="tour-status @(tournament.Status.ToString() == "schedule" ? "schedule-status" : tournament.Status.ToString() == "start" ? "start-status" : "finish-status")"></div>
                                 <img class="tour-image" src="@(!string.IsNullOrEmpty(tournament.Flyer) ? tournament.Flyer : "https://firebasestorage.googleapis.com/v0/b/poolcomvn-82664.appspot.com/o/Club%2Fdefault.jpg?alt=media&token=0d297640-cb3a-4ee7-97de-47c1a5af67ae")" alt="">
                                 <div>
