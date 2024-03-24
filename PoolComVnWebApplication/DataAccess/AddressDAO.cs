@@ -37,5 +37,10 @@ namespace DataAccess
         {
             return _context.Wards.Where(w => w.DistrictCode == districtCode).ToList();
         }
+
+        public Ward GetWardsByWardCode(string? wardCode)
+        {
+            return _context.Wards.FirstOrDefault(w => w.Code == wardCode);
+        }
     }
 }

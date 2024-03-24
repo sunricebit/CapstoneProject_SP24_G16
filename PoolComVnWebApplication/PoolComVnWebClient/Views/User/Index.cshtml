@@ -11,19 +11,19 @@
                     <div>
                         <div class="info-line">
                             <div class="title">Tên</div>
-                            <div class="content">Vũ Hoài Nam</div>
+                            <div class="content">@ViewBag.User.FullName</div>
                         </div>
                         <div class="info-line">
                             <div class="title">Ngày sinh</div>
-                            <div class="content">22/09/2001</div>
+                            <div class="content">@ViewBag.User.Dob</div>
                         </div>
                         <div class="info-line">
                             <div class="title">Số điện thoại</div>
-                            <div class="content">0923459456</div>
+                            <div class="content">@ViewBag.Account.PhoneNumber</div>
                         </div>
                     </div>
                 </div>
-                <a class="edit-btn text-center col-6">
+                <a asp-action="UserDetails" asp-controller="User" sclass="edit-btn text-center col-6">
                     Sửa thông tin
                 </a>
             </div>

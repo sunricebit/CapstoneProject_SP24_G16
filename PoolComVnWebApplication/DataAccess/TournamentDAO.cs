@@ -199,5 +199,19 @@ namespace DataAccess
                 throw e;
             }
         }
+
+        public List<Tournament> GetTournamentsByClubId(int clubId)
+        {
+            try
+            {
+                var tournaments = _context.Tournaments.Include(x => x.Club).Where(t => t.ClubId == clubId).ToList();
+                return tournaments;
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
     }
 }
