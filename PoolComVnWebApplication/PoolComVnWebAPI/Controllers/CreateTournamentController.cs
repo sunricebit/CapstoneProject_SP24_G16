@@ -7,5 +7,6 @@ namespace PoolComVnWebAPI.Controllers
     [ApiController]
     public class CreateTournamentController : ControllerBase
     {
+
     }
 }

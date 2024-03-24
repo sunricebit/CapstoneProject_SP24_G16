@@ -532,15 +532,21 @@ namespace BusinessObject.Models
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasIndex(e => e.AccountId, "IX_Users_AccountID");
-
-                entity.Property(e => e.UserId).ValueGeneratedNever();
-
                 entity.Property(e => e.AccountId).HasColumnName("AccountID");
 
                 entity.Property(e => e.Address).HasMaxLength(255);
 
-                entity.Property(e => e.Dob).HasColumnName("DOB");
+                entity.Property(e => e.Avatar).HasMaxLength(300);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Dob)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DOB");
+
+                entity.Property(e => e.FullName).HasMaxLength(255);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.WardCode)
                     .HasMaxLength(20)
@@ -548,7 +554,9 @@ namespace BusinessObject.Models
 
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.Users)
-                    .HasForeignKey(d => d.AccountId);
+                    .HasForeignKey(d => d.AccountId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Users_Accounts");
 
                 entity.HasOne(d => d.WardCodeNavigation)
                     .WithMany(p => p.Users)

@@ -16,13 +16,15 @@ namespace PoolComVnWebAPI.Controllers
     {
         private readonly PlayerDAO _playerDAO;
         private readonly TournamentDAO _tournamentDAO;
+        private readonly AccountDAO _accountDAO;
         private readonly IMapper _mapper;
         private static List<PlayerDTO> selectedPlayers = new List<PlayerDTO>();
-        public PlayerController(PlayerDAO playerDAO,  IMapper mapper, TournamentDAO tournamentDAO)
+        public PlayerController(PlayerDAO playerDAO,  IMapper mapper, TournamentDAO tournamentDAO, AccountDAO accountDAO)
         {
             _playerDAO = playerDAO;
             _mapper = mapper;
             _tournamentDAO = tournamentDAO;
+            _accountDAO = accountDAO;
         }
 
 
@@ -67,23 +69,45 @@ namespace PoolComVnWebAPI.Controllers
         }
 
 
-        [HttpGet("AddPlayer")]
-        public IActionResult Post([FromBody] PlayerDTO playerDto)
+        [HttpPost("AddPlayer")]
+        public IActionResult AddPlayer([FromBody] PlayerDTO playerDto)
         {
-            if (playerDto == null)
+            try
             {
-                return BadRequest();
+                var account = _accountDAO.GetAccountByEmail(playerDto.Email);
+                var user = _accountDAO.GetUserByAccountById(account.AccountId);
+                var tour = _tournamentDAO.GetTournament(playerDto.TourId??0);
+                var country = _playerDAO.GetCountryByID(playerDto.CountryId);
+                if (playerDto == null)
+                {
+                    return BadRequest("Dữ liệu người chơi không hợp lệ.");
+                }
+
+                var player = new Player
+                {
+                    PlayerName = playerDto.PlayerName,
+                    CountryId = playerDto.CountryId,
+                    Level = playerDto.Level ?? 0,
+                    UserId =user.UserId,
+                    TourId = playerDto.TourId,
+                    PhoneNumber = playerDto.PhoneNumber,
+                    Email = playerDto.Email,
+                    IsPayed = playerDto.IsPayed,
+                    User = user,
+                    Tour = tour,
+                    Country = country
+
+                };
+
+                _playerDAO.AddPlayer(player);
+
+                return Ok();
             }
-
-            var player = _mapper.Map<Player>(playerDto);
-
-
-            player.PlayerId = 0;
-
-            _playerDAO.AddPlayer(player);
-
-            var createdPlayerDto = _mapper.Map<PlayerDTO>(player);
-            return CreatedAtAction(nameof(Get), new { id = createdPlayerDto.PlayerId }, createdPlayerDto);
+            catch (Exception ex)
+            {
+              
+                return StatusCode(500, $"Đã xảy ra lỗi khi thêm người chơi: {ex.Message}");
+            }
         }
 
         [HttpPost("AddPlayerToTournament")]

@@ -98,47 +98,7 @@ namespace DataAccess
             }
         }
 
-        //public void AddPlayersFromExcel(IEnumerable<PlayerDTO> playerDtos)
-        //{
-        //    foreach (var playerDto in playerDtos)
-        //    {
-        //        try
-        //        {
-        //            var playerName = playerDto.PlayerName?.Trim();
-        //            var countryName = playerDto.CountryName?.Trim();
-        //            var phoneNumber = playerDto.PhoneNumber?.Trim();
-        //            var level = playerDto.Level.ToString(); // Convert level to string
-
-        //            if (string.IsNullOrEmpty(playerName) || string.IsNullOrEmpty(countryName) ||
-        //                string.IsNullOrEmpty(phoneNumber) || string.IsNullOrEmpty(level))
-        //            {
-        //                continue;
-        //            }
-
-        //            if (!int.TryParse(level, out int parsedLevel))
-        //            {
-        //                Console.WriteLine($"Invalid level format for player {playerName}. Skipping.");
-        //                continue;
-        //            }
-
-        //            var processedPlayer = new PlayerDTO
-        //            {
-        //                PlayerName = playerName,
-        //                CountryName = countryName,
-        //                PhoneNumber = phoneNumber,
-        //                Level = parsedLevel
-        //            };
-
-        //            // Add the processed player to the collection
-        //            ProcessedPlayers.Add(processedPlayer);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Console.WriteLine($"Error processing row: {ex.Message}");
-        //        }
-        //    }
-
-        //}
+      
 
         public IEnumerable<Player> GetPlayersByTournament(int tourId)
         {
@@ -201,6 +161,16 @@ namespace DataAccess
 
                 throw e;
             }
+        }
+
+        public User GetUserByID(int? userId)
+        {
+            return _context.Users.FirstOrDefault(u => u.UserId == userId);
+        }
+
+        public Country GetCountryByID(int? countryId)
+        {
+            return _context.Countries.FirstOrDefault(c => c.CountryId == countryId);
         }
     }
 }
