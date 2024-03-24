@@ -1,13 +1,7 @@
 ﻿using BusinessObject.Models;
 using DataAccess;
-using Firebase.Auth;
-using Firebase.Storage;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PoolComVnWebAPI.DTO;
-using System.IdentityModel.Tokens.Jwt;
-using static PoolComVnWebAPI.DTO.CreateTourStepOneDTO;
 
 namespace PoolComVnWebAPI.Controllers
 {
@@ -16,12 +10,10 @@ namespace PoolComVnWebAPI.Controllers
     public class TournamentController : ControllerBase
     {
         private readonly TournamentDAO _tournamentDAO;
-        private readonly ClubDAO _clubDAO;
-
-        public TournamentController(TournamentDAO tournamentDAO, ClubDAO clubDAO)
+        
+        public TournamentController(TournamentDAO tournamentDAO)
         {
             _tournamentDAO = tournamentDAO;
-            _clubDAO = clubDAO;
         }
 
         [HttpGet("GetAllTournament")]
@@ -128,94 +120,82 @@ namespace PoolComVnWebAPI.Controllers
             return Ok();
         }
 
-        [HttpPost("CreateTourStOne")]
-        [Authorize]
-        public IActionResult CreateTourStOne([FromBody] CreateTourStepOneDTO inputDto)
+        [HttpGet("SearchTournament")]
+        public ActionResult<IEnumerable<TournamentOutputDTO>> SearchTournament(string searchQuery)
         {
-            // Lấy giá trị token từ header
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-            // Giải mã token để lấy các claims
-            var handler = new JwtSecurityTokenHandler();
-            var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
-
-            // Xử lý logic của bạn với các claims
-            var roleClaim = jsonToken?.Claims.FirstOrDefault(claim => claim.Type.Equals("Role"));
-            var account = jsonToken?.Claims.FirstOrDefault(claim => claim.Type.Equals("Account"));
-            if (!Constant.BusinessRole.ToString().Equals(roleClaim.Value))
-            {
-                return BadRequest("Unauthorize");
-            }
-            var club = _clubDAO.GetClubByAccountId(Int32.Parse(account.Value));
-            int clubId = club.ClubId;
-
             try
             {
-                Tournament tour = new Tournament()
+                var tournaments = _tournamentDAO.GetTournamentBySearch(searchQuery);
+
+                if (tournaments == null || tournaments.Count == 0)
                 {
-                    TourName = inputDto.TournamentName,
-                    Access = inputDto.Access,
-                    ClubId = clubId,
-                    Description = inputDto.Description,
-                    StartDate = inputDto.StartTime,
-                    EndDate = inputDto.EndTime,
-                    EntryFee = inputDto.EntryFee.Value,
-                    KnockoutPlayerNumber = inputDto.TournamentTypeId == Constant.DoubleEliminate ? inputDto.KnockoutNumber : null,
-                    GameTypeId = inputDto.GameTypeId,
-                    TotalPrize = inputDto.PrizeMoney,
-                    TournamentTypeId = inputDto.TournamentTypeId,
-                    MaxPlayerNumber = inputDto.MaxPlayerNumber,
-                    RegistrationDeadline = inputDto.RegistrationDeadline,
-                    RaceToString = inputDto.RaceNumberString,
-                    Status = Constant.TournamentIncoming,
-                };
-                _tournamentDAO.CreateTournament(tour);
-                return Ok(_tournamentDAO.GetLastestTournament().TourId);
-            }
-            catch (Exception e)
-            {
+                    return NotFound("Không tìm thấy giải đấu nào phù hợp.");
+                }
 
-                throw e;
+                var tournamentDTOs = new List<TournamentOutputDTO>();
+                foreach (var tour in tournaments)
+                {
+                    var tourDTO = new TournamentOutputDTO
+                    {
+                        TournamentId = tour.TourId,
+                        TournamentName = tour.TourName,
+                        StartTime = tour.StartDate ?? DateTime.Now,
+                        EndTime = tour.EndDate,
+                        Address = tour.Club.Address,
+                        ClubName = tour.Club.ClubName,
+                        Description = tour.Description,
+                        GameType = tour.GameTypeId == Constant.Game8Ball ? Constant.String8Ball :
+                                   (tour.GameTypeId == Constant.Game9Ball ? Constant.String9Ball : Constant.String10Ball),
+                        Status = tour.Status,
+                        Flyer = tour.Flyer
+                    };
+                    tournamentDTOs.Add(tourDTO);
+                }
+                    return Ok(tournamentDTOs);
+            }
+            catch (Exception ex)
+            {
+                // Xử lý ngoại lệ nếu có lỗi xảy ra
+                return StatusCode(500, $"Lỗi khi tìm kiếm giải đấu: {ex.Message}");
             }
         }
 
-        [HttpPost("CreateTourStFour")]
-       // [Authorize]
-
-        public IActionResult CreateTourStTwo([FromBody] CreateTourStepFourDTO BannerDTO)
+        [HttpGet("FilterTournaments")]
+        public IActionResult FilterTournaments(string? gameTypeName, DateTime? startDate, DateTime? endDate)
         {
-           
-            //var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-       
-            //var handler = new JwtSecurityTokenHandler();
-            //var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
-
-           
-            //var roleClaim = jsonToken?.Claims.FirstOrDefault(claim => claim.Type.Equals("Role"));
-            //var account = jsonToken?.Claims.FirstOrDefault(claim => claim.Type.Equals("Account"));
-            ////if (!Constant.BusinessRole.ToString().Equals(roleClaim.Value))
-            ////{
-            ////    return BadRequest("Unauthorize");
-            ////}
-
-            //int clubId = _clubDAO.GetClubIdByAccountId(Int32.Parse(account.Value));
-
             try
             {
-                Tournament tour = _tournamentDAO.GetTournament(BannerDTO.TourID);
-                tour.Flyer = BannerDTO.Flyer;
-                _tournamentDAO.UpdateTournament(tour);
-                return Ok(BannerDTO.TourID);
+                var tournaments = _tournamentDAO.GetTournamentsByFilters(gameTypeName, startDate, endDate);
+
+                // Chuyển đổi danh sách giải đấu thành danh sách DTO
+                List<TournamentOutputDTO> tournamentDTOs = new List<TournamentOutputDTO>();
+                foreach (var tournament in tournaments)
+                {
+                    var tournamentDTO = new TournamentOutputDTO
+                    {
+                        TournamentId = tournament.TourId,
+                        TournamentName = tournament.TourName,
+                        StartTime = tournament.StartDate ?? DateTime.Now,
+                        EndTime = tournament.EndDate,
+                        Address = tournament.Club.Address,
+                        ClubName = tournament.Club.ClubName,
+                        Description = tournament.Description,
+                        GameType = tournament.GameTypeId == Constant.Game8Ball ? Constant.String8Ball
+                                    : (tournament.GameTypeId == Constant.Game9Ball ? Constant.String9Ball : Constant.String10Ball),
+                        Status = tournament.Status,
+                        Flyer = tournament.Flyer
+                    };
+                    tournamentDTOs.Add(tournamentDTO);
+                }
+
+                // Trả về danh sách giải đấu
+                return Ok(tournamentDTOs);
             }
             catch (Exception e)
             {
-
-                throw e;
+                return StatusCode(500, e.Message);
             }
         }
-
-      
 
 
         [HttpGet("GetAllTour")]
@@ -264,6 +244,34 @@ namespace PoolComVnWebAPI.Controllers
             catch (Exception e)
             {
 
+                throw e;
+            }
+        }
+
+        [HttpGet("GetTourMaxNumberOfPlayer")]
+        public IActionResult GetTourMaxNumberOfPlayer(int tourId)
+        {
+            try
+            {
+                int maxNumberPlayer = _tournamentDAO.GetTourMaxNumberOfPlayer(tourId);
+                return Ok(maxNumberPlayer);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        [HttpGet("GetTourKnockoutNumber")]
+        public IActionResult GetTourKnockoutNumber(int tourId)
+        {
+            try
+            {
+                int? knockOutNumber = _tournamentDAO.GetTourKnockoutNumber(tourId);
+                return Ok(knockOutNumber);
+            }
+            catch (Exception e)
+            {
                 throw e;
             }
         }

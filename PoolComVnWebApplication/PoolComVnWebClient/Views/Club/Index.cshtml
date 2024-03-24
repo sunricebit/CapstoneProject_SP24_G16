@@ -21,51 +21,58 @@
 }
 else
 {
-   
-    
-<div class="dashboard-container container">
-    <div class="row news-items p-0 m-0">
+
+
+    <div class="dashboard-container container">
+        <div class="row news-items p-0 m-0">
+            <div class="d-flex justify-content-end p-0 mb-5">
+                <div class="tour-search d-flex justify-content-end align-items-center">
+                    <i class="search-btn fa-solid fa-magnifying-glass"></i>
+                    <input class="search-input px-2" type="text" placeholder="Giải đấu, địa chỉ,..." />
+                </div>
+            </div>
             @if (ViewBag.AccountEmail == email)
             {
                 <div class="item-content d-flex justify-content-center">
-            <a asp-action="AddPost" asp-controller="Club" asp-route-clubid="@ViewBag.CLub.ClubId" class="create-btn d-flex justify-content-center align-items-center">
-                <div class="text-center">
-                    <i class="fa-solid fa-plus fa-beat"></i>
-                    <div>Tạo bài viết mới</div>
-                </div>
-            </a>
-        </div>
-            }
-            @if (((List<ClubPostDTO>)ViewBag.ClubPost)?.Count != 0)
-        {
-            foreach (var post in ViewBag.ClubPost)
-            {
-                <div class="item-content d-flex justify-content-center">
-                        <a asp-action="ClubPostDetails" asp-controller="Club" asp-route-id="@post.PostId" asp-route-clubid="@post.ClubId" class="news-item">
-                            <div class="news-date">@post.UpdatedDate.ToString("yyyy-MM-dd")</div>
-                            @if (ViewBag.AccountEmail == email){
-                                <div class="hidden-btn" data-post-id="@post.PostId">
-                                    <i class="fa-solid fa-eye-slash"></i>
+                    <a asp-action="AddPost" asp-controller="Club" asp-route-clubid="@ViewBag.CLub.ClubId" class="create-btn d-flex justify-content-center align-items-center">
+                        <div class="text-center">
+                            <i class="fa-solid fa-plus fa-beat"></i>
+                            <div>Tạo bài viết mới</div>
                         </div>
-                            }
-                        <div class="news-image">
-                            <img src="@post.Flyer" alt="" />
-                        </div>
-                        <div class="news-title">@post.Title</div>
                     </a>
                 </div>
             }
-        }
-        else
-        {
-            <p>Câu lạc bộ chưa có bài đăng nào.</p>
-        }
+            @if (((List<ClubPostDTO>)ViewBag.ClubPost)?.Count != 0)
+            {
+                foreach (var post in ViewBag.ClubPost)
+                {
+                    <div class="item-content d-flex justify-content-center">
+                        <a asp-action="ClubPostDetails" asp-controller="Club" asp-route-id="@post.PostId" asp-route-clubid="@post.ClubId" class="news-item">
+                            <div class="news-date">@post.UpdatedDate.ToString("yyyy-MM-dd")</div>
+                            @if (ViewBag.AccountEmail == email)
+                            {
+                                <div class="hidden-btn" data-post-id="@post.PostId">
+                                    <i class="fa-solid fa-eye-slash"></i>
+                                </div>
+                            }
+                            <div class="news-image">
+                                <img src="@post.Flyer" alt="" />
+                            </div>
+                            <div class="news-title">@post.Title</div>
+                        </a>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Câu lạc bộ chưa có bài đăng nào.</p>
+            }
 
 
+        </div>
     </div>
-</div>
 
-<script>
+    <script>
         const hiddenBtns = document.querySelectorAll('.hidden-btn');
 
         hiddenBtns.forEach(hiddenBtn => {
@@ -93,7 +100,7 @@ else
                             newsImage.classList.remove('hidden');
                         }
                     } else {
-                        
+
                         console.error('Lỗi khi gọi API:', response.statusText);
                     }
                 } catch (error) {
@@ -103,7 +110,7 @@ else
         });
 
         //Handle active nav
-    const clubNavBtn = document.querySelector('.club-post');
-    clubNavBtn.classList.add('active');
-</script>
+        const clubNavBtn = document.querySelector('.club-post');
+        clubNavBtn.classList.add('active');
+    </script>
 }

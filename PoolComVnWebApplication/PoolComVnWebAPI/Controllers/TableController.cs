@@ -82,30 +82,9 @@ namespace PoolComVnWebAPI.Controllers
         }
 
         // GET: api/Table/AddTableToTournament
-        [HttpGet("AddTableToTournament")]
-        [Authorize]
+        [HttpPost("AddTableToTournament")]
         public IActionResult AddTableToTournament(List<int> lstTableId)
         {
-            // Lấy giá trị token từ header
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-            // Giải mã token để lấy các claims
-            var handler = new JwtSecurityTokenHandler();
-            var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
-
-            // Xử lý logic của bạn với các claims
-            var roleClaim = jsonToken?.Claims.FirstOrDefault(claim => claim.Type.Equals("Role"));
-            var account = jsonToken?.Claims.FirstOrDefault(claim => claim.Type.Equals("Account"));
-            if (!Constant.BusinessRole.ToString().Equals(roleClaim?.Value))
-            {
-                return BadRequest("Unauthorized");
-            }
-
-            if (!Int32.TryParse(account?.Value, out int accountId))
-            {
-                return BadRequest("Invalid AccountId claim");
-            }
-            
             _tableDAO.AddTableToTournament(lstTableId);
 
             return Ok();

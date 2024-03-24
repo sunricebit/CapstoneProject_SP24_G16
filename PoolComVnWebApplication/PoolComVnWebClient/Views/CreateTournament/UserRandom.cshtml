@@ -1,7 +1,9 @@
 ﻿@{
     Layout = "~/Views/Shared/_BackBtnLayout.cshtml";
     int tourId = ViewBag.TourId;
+    int maxNumberOfTournament = ViewBag.MaxNumberOfTournament;
 }
+<div class="numberOfPlayer d-none">@maxNumberOfTournament</div>
 <div class="tour-id d-none">@tourId</div>
 <div class="container-full">
     <div class="random-round d-flex justify-content-between row">
@@ -63,15 +65,15 @@
             </div>
             <div class="players-note save save-btn d-none">
                 <i class="fa-solid fa-floppy-disk px-2"></i>
-                <span style="font-size: 20px;">Lưu và xem sơ đồ đấu</span>
+                <button onclick="saveBracket(@tourId)">
+                    <span style="font-size: 20px;">Lưu và xem sơ đồ đấu</span>
+                </button>
             </div>
         </div>
     </div>
 </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
-    var playerNumber;
-
     var playerPick;
     var playerPickBg;
     var randomBtnGroup;
@@ -83,62 +85,39 @@
     let matchCount = 0;
     
 
-
-
     //add html to Player view
     const playerView = document.querySelector('.players-view');
-    var playerNumber;
-    var tourId;
+    
+    var tourId = $(".tour-id").text().trim();
+    var playerNumber = parseInt($(".numberOfPlayer").text().trim());
 
-    $(document).ready(function () {
-        var urlParams = new URLSearchParams(window.location.search);
-        tourId = urlParams.get('tourId');
-        // Gọi AJAX khi trang được tải
-        $.ajax({
-            url: 'https://localhost:5000/api/Tournament/GetTourInfo',
-            method: 'GET',
-            data: { tourId: tourId },
-            success: function (data) {
-                // Gán giá trị cho playerNumber và finalSinglePlayer từ dữ liệu nhận được
-                playerNumber = data.playerNumber;
+    console.log('playerNumber:', playerNumber);
 
-                console.log('playerNumber:', playerNumber);
+    for (var i = 0; i < (playerNumber / 2); i++) {
+        matchesListHTML += '<div class="d-flex justify-content-center matchRandom">'
+            + '<div class="match-box" id="match' + (i + 1) + '">'
+            + '<div class="d-flex">'
+            + '<div class="match-number col-2 text-center">'
+            + (i + 1)
+            + '</div>'
+            + '<div class="player-match col-8">'
+            + '<div id="randomMatch' + (++matchCount) + '" class="d-flex justify-content-start align-items-center randomMatch player-1">'
+            + '</div>'
+            + '<div id="randomMatch' + (++matchCount) + '" class="d-flex justify-content-start align-items-center randomMatch player-2">'
+            + '</div>'
+            + '</div>'
+            + '</div>'
+            + '</div>'
+            + '</div>'
+    }
 
-                for (var i = 0; i < (playerNumber / 2); i++) {
-                    matchesListHTML += '<div class="d-flex justify-content-center">'
-                        + '<div class="match-box" id="match' + (i + 1) + '">'
-                        + '<div class="d-flex">'
-                        + '<div class="match-number col-2 text-center">'
-                        + (i + 1)
-                        + '</div>'
-                        + '<div class="player-match col-8">'
-                        + '<div id="randomMatch' + (++matchCount) + '" class="d-flex justify-content-start align-items-center randomMatch">'
-                        + '</div>'
-                        + '<div id="randomMatch' + (++matchCount) + '" class="d-flex justify-content-start align-items-center randomMatch">'
-                        + '</div>'
-                        + '</div>'
-                        + '</div>'
-                        + '</div>'
-                        + '</div>'
-                }
-
-                matchList.innerHTML = matchesListHTML;
-
-            },
-            error: function (xhr, textStatus, errorThrown) {
-                console.log('Error:', errorThrown);
-            }
-        });
-
-        loadPlayer();
-    });
-
+    matchList.innerHTML = matchesListHTML;
+    loadPlayer();
     function loadPlayer() {
         console.log('1');
         $.ajax({
-            url: 'https://localhost:5000/api/Player/GetPlayerByTourId',
+            url: 'https://localhost:5000/api/Player/GetPlayerByTourId?tourId=' + tourId,
             method: 'GET',
-            data: { tourId: tourId },
             success: function (data) {
                 var players = data;
                 var playerViewHTML = '';
@@ -160,6 +139,7 @@
                     + '<img src="/Image/VietNamFlag.png" alt="">'
                     + '</div>'
                     + '<div class="player-name"></div>'
+                    + '<div class="player-id d-none"></div>'
                     + '</div>'
                     + '</div>'
                     + '</div>'
@@ -182,6 +162,7 @@
     let random;
     let imgRandom;
     let nameRandom;
+    let playerIdRandom;
     var isPlayerPick = false;
     let isEventCompleted = true;
 
@@ -269,11 +250,14 @@
                 .querySelector('img').src;
             nameRandom = playerExist.querySelector('.player-name')
                 .textContent;
+            playerIdRandom = playerExist.querySelector('.player-id')
+                .textContent;
             playerExist.classList.add('flash');
             removeElement(playerExist);
         }
         playerNext.innerHTML = '<img src=' + imgRandom + ' />'
-            + '<div class="player-name">' + nameRandom + '</div>';
+            + '<div class="player-name">' + nameRandom + '</div>'
+            + '<div class="player-id d-none">' + playerIdRandom + '</div>';
 
         //scroll to align-center
         if (playerCount % 2 === 1) {
@@ -343,11 +327,16 @@
             .querySelector('img').src;
         nameRandom = random.querySelector('.player-name')
             .textContent;
+        playerIdRandom = random.querySelector('.player-id')
+            .textContent;
 
         playerPick.querySelector('.player-flag')
             .querySelector('img').src = imgRandom;
         playerPick.querySelector('.player-name')
             .textContent = nameRandom;
+
+        playerPick.querySelector('.player-id')
+            .textContent = playerIdRandom;
     }
 
     const randomBtn = document.querySelector('.random-btn');
@@ -377,4 +366,32 @@
         loadPlayer();
     }
 
+    function saveBracket(tourId) {
+        var matchData = [];
+        $('.matchRandom').each(function () {
+            var matchNumber = $(this).find('.match-box').attr('id').replace('match', '');
+            var p1Id = $(this).find('.player-1 .player-id').text();
+            var p2Id = $(this).find('.player-2 .player-id').text();
+            var match = {
+                MatchNumber: matchNumber,
+                P1Id: parseInt(p1Id),
+                P2Id: parseInt(p2Id),
+            };
+            matchData.push(match);
+        });
+        var jsonData = JSON.stringify(matchData);
+        console.log(jsonData);
+        $.ajax({
+            url: 'https://localhost:5000/api/MatchOfTour/SaveMatchesRandom/' + tourId,
+            method: 'POST',
+            contentType: 'application/json',
+            data: jsonData,
+            success: function (response) {
+                window.location.href = '/Tournament/TournamentDetailForManager?tourId=' + tourId;
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.log('Error:', errorThrown);
+            }
+        });
+    }
 </script>

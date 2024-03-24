@@ -126,7 +126,8 @@ namespace PoolComVnWebAPI.Controllers
                 {
                     var player2 = _mapper.Map<Player>(player);
                     player2.PlayerId = 0;
-
+                    player2.CountryId = Constant.NationVietNamId;
+                    player2.TourId = player.TourId;
                     _playerDAO.AddPlayer(player2);
                 }
 

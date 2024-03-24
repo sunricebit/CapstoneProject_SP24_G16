@@ -27,7 +27,7 @@ namespace PoolComVnWebClient.Controllers
             client = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             client.DefaultRequestHeaders.Accept.Add(contentType);
-            ApiUrl = ApiUrl + "/Tournament";
+            ApiUrl = ApiUrl + "/CreateTournament";
         }
 
         public IActionResult Index()
@@ -104,7 +104,7 @@ namespace PoolComVnWebClient.Controllers
             {
                 int tourId = await response.Content.ReadFromJsonAsync<int>();
                 ViewBag.TourId = tourId;
-                return RedirectToAction("StepTwoAddBanner","CreateTournament", new { tourId = tourId });
+                return RedirectToAction("StepTwoAddBanner", "CreateTournament", new { tourId = tourId });
             }
             else
             {
@@ -270,7 +270,7 @@ namespace PoolComVnWebClient.Controllers
         public async Task<IActionResult> StepThreeReview(int? tourId)
         {
             TournamentDetailDTO tourDetail;
-            var responseGetTourdetail = await client.GetAsync(ApiUrl + "/GetTournament?tourId=" + tourId);
+            var responseGetTourdetail = await client.GetAsync(Constant.ApiUrl + "/Tournament/GetTournament?tourId=" + tourId);
             if (responseGetTourdetail.IsSuccessStatusCode)
             {
                 tourDetail = await responseGetTourdetail.Content.ReadFromJsonAsync<TournamentDetailDTO>();
@@ -292,13 +292,13 @@ namespace PoolComVnWebClient.Controllers
             }
             else
             {
-                var status = responseGetTourdetail.StatusCode;
+                var status = responseGetLstPlayer.StatusCode;
                 return RedirectToAction("InternalServerError", "Error");
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> StepFourAddTable(int? tourId)
+        [HttpGet("CreateTournament/StepFourAddTable/{tourID}")]
+        public async Task<IActionResult> StepFourAddTable(int tourId)
         {
             ViewBag.TourId = tourId;
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
@@ -314,7 +314,7 @@ namespace PoolComVnWebClient.Controllers
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
             var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Table" + "/AddTableToTournament", lstTableId);
-            
+
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction("StepFivePlayerList", "CreateTournament", new { tourId = tourId });
@@ -340,15 +340,15 @@ namespace PoolComVnWebClient.Controllers
             {
                 ViewBag.TourId = tourId;
                 return View();
-        }
+            }
             else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
                 return RedirectToAction("Unauthorized", "Error");
-    }
+            }
             else
             {
                 return RedirectToAction("NotAccess", "Error");
-}
+            }
         }
 
         [HttpPost("ImportPlayers/{id}")]
@@ -389,7 +389,7 @@ namespace PoolComVnWebClient.Controllers
                                 continue;
                             }
                             bool fee;
-                            if (feeText == "Rồi") 
+                            if (feeText == "Rồi")
                             {
                                 fee = true;
 
@@ -433,8 +433,8 @@ namespace PoolComVnWebClient.Controllers
             {
                 return RedirectToAction("InternalServerError", "Error", new { message = ex.Message });
             }
-
         }
+
         public async Task<string> UploadFromFirebase(FileStream stream, string filename)
         {
             var auth = new FirebaseAuthProvider(new FirebaseConfig(ApiKey));
@@ -526,35 +526,80 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult StepSixArrange(int tourId)
+        public async Task<IActionResult> StepSixArrange(int tourId)
         {
+            int numberOfPlayer = await client
+                .GetFromJsonAsync<int>(Constant.ApiUrl + "/Player" + "/GetNumberPlayerByTourId?tourId=" + tourId);
+            int maxNumberOfTournament = await client
+                .GetFromJsonAsync<int>(Constant.ApiUrl + "/Tournament/GetTourMaxNumberOfPlayer?tourId=" + tourId);
+            int? knockOutNumber = await client
+                .GetFromJsonAsync<int?>(Constant.ApiUrl + "/Tournament/GetTourKnockoutNumber?tourId=" + tourId);
+            int logOfMaxNumberOfTournament = (int)Math.Log2(maxNumberOfTournament);
+            int numberPlayerCheck = (int)Math.Pow(2, logOfMaxNumberOfTournament - 1);
+            int numberPlayerRecommend = maxNumberOfTournament;
+            while (numberOfPlayer < numberPlayerCheck)
+            {
+                numberPlayerRecommend = numberPlayerCheck;
+                logOfMaxNumberOfTournament--;
+                numberPlayerCheck = (int)Math.Pow(2, logOfMaxNumberOfTournament - 1);
+            }
+
+            ViewBag.MaxNumberOfTournament = maxNumberOfTournament;
+            ViewBag.NumberOfPlayer = numberOfPlayer;
+            ViewBag.NumberRecommend = numberPlayerRecommend;
+            ViewBag.IsDouble = false;
+
+            if (numberPlayerRecommend == maxNumberOfTournament)
+            {
+                await client
+                .GetAsync(Constant.ApiUrl + "/Player/GenerateBotInTour?tourId=" + tourId);
+            }
+
+            if (knockOutNumber.HasValue) 
+            {
+                ViewBag.KnockOutNumber = knockOutNumber;
+                ViewBag.IsDouble = true;
+            }
+            ViewBag.TourId = tourId;
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UserRandom(int tourId)
+        {
+            int maxNumberOfTournament = await client
+                .GetFromJsonAsync<int>(Constant.ApiUrl + "/Tournament/GetTourMaxNumberOfPlayer?tourId=" + tourId);
+            ViewBag.MaxNumberOfTournament = maxNumberOfTournament;
             ViewBag.TourID = tourId;
             return View();
         }
 
         [HttpGet]
-        public IActionResult UserRandom(int tourId)
+        public async Task<IActionResult> UserCustom(int tourId)
         {
+            int maxNumberOfTournament = await client
+                .GetFromJsonAsync<int>(Constant.ApiUrl + "/Tournament/GetTourMaxNumberOfPlayer?tourId=" + tourId);
+            ViewBag.MaxNumberOfTournament = maxNumberOfTournament;
             ViewBag.TourID = tourId;
             return View();
         }
 
         [HttpGet]
-        public IActionResult UserCustom(int tourId)
+        public async Task<IActionResult> SystemRandom(int tourId)
         {
+            int maxNumberOfTournament = await client
+                .GetFromJsonAsync<int>(Constant.ApiUrl + "/Tournament/GetTourMaxNumberOfPlayer?tourId=" + tourId);
+            int? knockOutNumber = await client
+                .GetFromJsonAsync<int?>(Constant.ApiUrl + "/Tournament/GetTourKnockoutNumber?tourId=" + tourId);
+            ViewBag.MaxNumberOfTournament = maxNumberOfTournament;
+            ViewBag.KnockOutNumber = knockOutNumber;
             ViewBag.TourID = tourId;
             return View();
         }
 
-        [HttpGet]
-        public IActionResult SystemRandom(int tourId)
+        public IActionResult SystemSingleRandom(int tourId)
         {
             ViewBag.TourID = tourId;
-            return View();
-        }
-
-        public IActionResult SystemSingleRandom()
-        {
             return View();
         }
 

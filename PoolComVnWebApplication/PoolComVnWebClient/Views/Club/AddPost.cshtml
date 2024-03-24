@@ -1,6 +1,11 @@
-﻿@model PoolComVnWebClient.DTO.ClubPostDTO;
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    Layout = "~/Views/Shared/_ClubLayout.cshtml";
+}
+
+@model PoolComVnWebClient.DTO.ClubPostDTO;
 <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
-<div class="container">
+<div class="dashboard-container container">
     <div class="add-news">
         <div class="box-header">Tạo bài viết</div>
         <form id="news-form" method="post" asp-controller="Club" asp-action="AddPost" enctype="multipart/form-data" asp-route-clubid="@ViewBag.ClubID">

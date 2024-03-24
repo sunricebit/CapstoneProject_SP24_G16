@@ -111,7 +111,7 @@
                         </div>
 
                         <div class="tour-input pt-5">
-                            <button class="submit-btn" onclick="submitForm()">Lưu và chuyển sang bước 3</button>
+                            <button class="submit-btn" onclick="submitForm()">Lưu và chuyển sang bước 6</button>
                         </div>
                     </div>
 
@@ -156,8 +156,8 @@
                 PhoneNumber: phoneNumber,
                 Email: email,
                 Level: parseInt(level),
-                IsPayed: isPayed === "true" ? true : false
-
+                IsPayed: isPayed === "true" ? true : false,
+                TourId = tourId,
             });
         });
 
@@ -186,7 +186,7 @@
                 console.error('Error during AJAX request:', error);
             });
             console.log("abc");
-        window.location.href = '/CreateTournament/StepThreeAddTable?tourId=' + parseInt(tourIdValue);
+        window.location.href = '/CreateTournament/StepSixArrange?tourId=' + parseInt(tourIdValue);
     }
 
     const allCheckboxBtn = document.querySelector('.all-checkbox');
