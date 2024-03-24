@@ -27,21 +27,21 @@
             </div>
         </div>
     </div>
-    <div class="add-news d-flex justify-content-end d-none">
-        <div>
+    <div class="add-news d-flex justify-content-end d-none mt-0 mx-lg-5 mx-md-0 ">
+        <div style="width:100%;">
             <div class="box-header">Chi tiết bài viết</div>
             <form id="news-form" method="post" asp-controller="NewsManage" asp-action="EditNews" enctype="multipart/form-data">
                 <input type="hidden" asp-for="ClubId" value="@Model.ClubId" />
                 <input type="hidden" asp-for="CreatedDate" value="@Model.CreatedDate" />
                 <input type="hidden" asp-for="UpdatedDate" value="@Model.UpdatedDate" />
                 <input type="hidden" asp-for="PostId" value="@Model.PostId" />
-                <div class="box-body row py-5 px-5">
-                    <div class="col-lg-10 px-5 pt-2">
+                <div class="box-body row py-5 m-0">
+                    <div class="col-lg-12 px-5 pt-2">
                         <strong class="mt-1">Tiêu đề</strong>
                         <input type="text" class="nameInput mt-1" id="news-title" asp-for="Title" value="@Model.Title"/>
                         <div class="text-danger nameErr px-2 py-1"></div>
                     </div>
-                    <div class="col-lg-10 px-5 pt-2">
+                    <div class="col-lg-12 px-5 pt-2">
                         <strong class="mt-1">Mô tả chi tiết</strong>
                         <div class="form-group">
                             <textarea asp-for="Description" class="form-control"
@@ -49,7 +49,7 @@
                         </div>
                         <div class="text-danger descErr px-2 py-1"></div>
                     </div>
-                    <div class="col-lg-10 px-5 pt-2">
+                    <div class="col-lg-12 px-5 pt-2">
                         <strong class="mt-1">Ảnh đại diện</strong>
                         @if (!string.IsNullOrEmpty(Model.Flyer))
                         {
@@ -64,17 +64,20 @@
                         }
                         <div class="text-danger bannerErr px-2 py-1"></div>
                     </div>
-                    <div class="col-lg-10 px-5 pt-2">
-                        <label for="statusToggle">Trạng thái</label>
-                        <div class="form-check form-switch">
-                            <input type="hidden" name="Status" value="false" />
-                            <input type="checkbox" class="form-check-input" id="statusToggle" name="Status" @(Model.Status.HasValue && Model.Status.Value ? "checked" : "") onchange="changeStatus()" />
+                    <div class="col-lg-12 px-5 pt-5">
+                        <strong for="statusToggle">Trạng thái</strong>
+                        <input type="hidden" name="Status" value="false" />
+                        <div class="d-flex align-items-center mt-2">
+                            <input type="checkbox" id="statusToggle" name="Status" style="width:16px; height:16px"
+                            @(Model.Status.HasValue && Model.Status.Value ? "checked" : "") onchange="changeStatus()" /> 
+                            <span class="mx-2" style="line-height:16px;">Hiển thị bài viết</span>
                         </div>
                     </div>
 
-                    <div class="col-lg-6 px-5 pt-5 d-flex justify-content-around">
+                    <div class="col-lg-12 px-5 pt-5 d-flex justify-content-start">
                         <button type="submit" class="btn btn-success">Chỉnh sửa</button>
-                        <a asp-action="ClubPostDetails" asp-controller="Club" asp-route-id="@Model.PostId" asp-route-clubid="@Model.ClubId" class="btn btn-danger">HỦY</a>
+                        <a asp-action="ClubPostDetails" asp-controller="Club" asp-route-id="@Model.PostId" asp-route-clubid="@Model.ClubId" 
+                        class="mx-3 btn btn-danger">HỦY</a>
                     </div>
                     <div class="col-lg-6 px-5 pt-5" id="form-message"></div>
                 </div>

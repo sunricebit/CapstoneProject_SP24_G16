@@ -20,9 +20,7 @@
                     if (news.Status == true && news.NewsId != Model.NewsId)
                     {
                         <a href="@Url.Action("NewsDetail", "Home", new { id = news.NewsId })" class="news-item row">
-                            <div class="news-image col-4 p-0">
-                                <img src="@news.Flyer" alt="" />
-                            </div>
+                            <div class="news-image col-4 p-0" style="background-image: url('@news.Flyer');"></div>
                             <div class="news-title col-8">@news.Title</div>
                         </a>
                     }
