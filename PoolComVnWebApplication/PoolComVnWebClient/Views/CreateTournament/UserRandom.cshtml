@@ -89,7 +89,7 @@
     const playerView = document.querySelector('.players-view');
     
     var tourId = $(".tour-id").text().trim();
-    var playerNumber = $(".numberOfPlayer").text().trim();
+    var playerNumber = parseInt($(".numberOfPlayer").text().trim());
 
     console.log('playerNumber:', playerNumber);
 
