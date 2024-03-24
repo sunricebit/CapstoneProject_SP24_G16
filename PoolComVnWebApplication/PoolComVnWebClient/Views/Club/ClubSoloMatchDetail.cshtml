@@ -7,63 +7,78 @@
         <div class="match-detail col-10 col-lg-5 p-0">
             <div class="match-header d-flex justify-content-between">
                 <div class="match-title">
-                    <span>Trận đấu</span>
+                    <span>Chạm <span id="race-to">7</span></span>
                 </div>
+                <div class="game-type">9 bi</div>
             </div>
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="match-time">
-                    <span>13:20</span>
-                    <span> - 14:20</span>
-                    <span>22/02/2024</span>
-                </div>
-                <div class="match-complete">Đã xong</div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="match-rule">
-                    <i>9 bi, chạm 21, phá luân phiên</i>
-                </div>
-            </div>
-            <div class="details-body mt-2">
-                <div class="details-player d-flex justify-content-between">
-                    <span class="d-flex align-items-center">
-                        <img src="~/images/VietNamFlag.png" alt="">
-                        <span class="px-2">Kiên máy xúc</span>
-                    </span>
-                    <span>3</span>
-                </div>
-                <div class="match-statistic">
-                    <div class="statistic-content">
-                        <div class="title">Chuỗi thắng liên tiếp:</div>
-                        <span class="streak">0</span>
+            <div style="overflow-y: auto; height: calc(100% - 44px)">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="match-time">
+                        <span>13:20</span>
+                        <span> - 14:20</span>
+                        <span>22/02/2024</span>
                     </div>
-                    <div class="statistic-content">
-                        <span class="title">Tỉ lệ ván thắng:</span>
-                        <div class="percent">
-                            <div class="percent-number text-center">60%</div>
-                            <div class="total">
-                                <div class="percent" style="width: 120px;"></div>
+                    <div class="match-complete">Đã xong</div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="match-rule">
+                        <i>Break box, phá luân phiên</i>
+                    </div>
+                </div>
+                <div class="details-body mt-2">
+                    <div>
+                        <div class="details-player d-flex justify-content-between">
+                            <span class="d-flex align-items-center">
+                                <img src="Image/VietNamFlag.png" alt="">
+                                <span class="px-2">Kiên máy xúc</span>
+                            </span>
+                            <span class="score-number">3</span>
+                        </div>
+                        <div class="control-box d-flex justify-content-end">
+                            <button class="control-btn down">-</button>
+                            <button class="control-btn up">+</button>
+                        </div>
+                    </div>
+                    <div class="match-statistic">
+                        <div class="statistic-content">
+                            <div class="title">Chuỗi thắng liên tiếp:</div>
+                            <span class="streak">0</span>
+                        </div>
+                        <div class="statistic-content">
+                            <span class="title">Tỉ lệ ván thắng:</span>
+                            <div class="percent">
+                                <div class="percent-number text-center">60%</div>
+                                <div class="total">
+                                    <div class="percent" style="width: 120px;"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="details-player d-flex justify-content-between pt-5">
-                    <span class="d-flex align-items-center">
-                        <img src="~/images/VietNamFlag.png" alt="">
-                        <span class="px-2">Kiên sành điệu</span>
-                    </span>
-                    <span>2</span>
-                </div>
-                <div class="match-statistic">
-                    <div class="statistic-content">
-                        <div class="title">Chuỗi thắng liên tiếp:</div>
-                        <span class="streak">0</span>
+                    <div>
+                        <div class="details-player d-flex justify-content-between pt-5">
+                            <span class="d-flex align-items-center">
+                                <img src="Image/VietNamFlag.png" alt="">
+                                <span class="px-2">Kiên sành điệu</span>
+                            </span>
+                            <span class="score-number">2</span>
+                        </div>
+                        <div class="control-box d-flex justify-content-end">
+                            <button class="control-btn down">-</button>
+                            <button class="control-btn up">+</button>
+                        </div>
                     </div>
-                    <div class="statistic-content">
-                        <span class="title">Tỉ lệ ván thắng:</span>
-                        <div class="percent">
-                            <div class="percent-number text-center">40%</div>
-                            <div class="total">
-                                <div class="percent" style="width: 80px;"></div>
+                    <div class="match-statistic">
+                        <div class="statistic-content">
+                            <div class="title">Chuỗi thắng liên tiếp:</div>
+                            <span class="streak">0</span>
+                        </div>
+                        <div class="statistic-content">
+                            <span class="title">Tỉ lệ ván thắng:</span>
+                            <div class="percent">
+                                <div class="percent-number text-center">40%</div>
+                                <div class="total">
+                                    <div class="percent" style="width: 80px;"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -76,7 +91,7 @@
                     <span>Bảng điểm</span>
                 </div>
             </div>
-            <div class="details-body">
+            <div class="details-body" style="height: calc(100% - 44px)">
                 <div class="score-board d-flex align-items-end ">
                     <div class="name-board">
                         <div class="board-line"><span>Nam Vũ</span></div>
@@ -447,3 +462,53 @@
         </div>
     </div>
 </div>
+<div class="confirm-popup d-none">
+    <div class="confirm-content">
+        <div class="confirm-title">
+            Kết thúc trận đấu.
+        </div>
+        <div class="d-flex justify-content-around">
+            <div class="exit-btn" style="width: 200px;">
+                Hủy
+            </div>
+            <div class="save-random" style="width: 200px;">
+                Kết thúc
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const controlBtns = document.querySelectorAll('.control-btn');
+    const ractTo = document.getElementById('race-to');
+    const popup = document.querySelector('.confirm-popup');
+    var raceToNumber = parseInt(ractTo.textContent);
+
+    controlBtns.forEach(controlBtn => {
+        controlBtn.addEventListener('click', () => {
+            const parent = controlBtn.parentNode.parentNode;
+            const score = parent.querySelector('.score-number');
+            var scoreNumber = score.textContent;
+
+            if (controlBtn.classList.contains('up')) {
+                if (parseInt(scoreNumber) < raceToNumber) {
+                    score.textContent = parseInt(scoreNumber) + 1;
+                }
+                if (parseInt(scoreNumber) + 1 >= raceToNumber) {
+                    popup.classList.remove('d-none');
+                    popup.querySelector('.exit-btn').addEventListener('click', () => {
+                        popup.classList.add('d-none');
+                    })
+                    popup.querySelector('.save-random').addEventListener('click', () => {
+                        controlBtns.forEach(btn => {
+                            btn.classList.add('d-none');
+                        })
+                        popup.classList.add('d-none');
+                    })
+                }
+            } else if (controlBtn.classList.contains('down') && parseInt(scoreNumber) > 0) {
+                score.textContent = parseInt(scoreNumber) - 1;
+            }
+        })
+    })
+</script>
