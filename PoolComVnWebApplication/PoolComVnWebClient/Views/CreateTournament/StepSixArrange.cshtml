@@ -9,6 +9,7 @@
 <div class="tourId d-none">@tourId</div>
 <div class="numberOfPlayer d-none">@maxNumberOfTournament</div>
 <div class="knockOutNumber d-none">@knockOutNumber</div>
+<div class="numberPlayerRecommend d-none">@numberPlayerRecommend</div>
 <div class="container-full">
     <div class="create-tour d-flex justify-content-end">
         <div class="create-tour-display col-lg-10 py-0">
@@ -70,7 +71,7 @@
                     Thêm người chơi
                 </div>
                 <div id="new-bracket-btn" class="save-random" style="width: 200px;">
-                    Sử dụng sơ đồ <div class="numberPlayerRecommend">@numberPlayerRecommend</div>
+                    Sử dụng sơ đồ @numberPlayerRecommend
                 </div>
             </div>
         </div>
@@ -99,7 +100,7 @@
                                 <span>Kích thước sơ đồ</span>
                             </div>
                             <!-- disabled -->
-                            <input class="input-content size-bracket" value="16" readonly>
+                            <input class="input-content size-bracket" value="@numberPlayerRecommend" readonly>
                         </div>
                     </div>
                     <div class="knockout-number tour-input mx-3">
