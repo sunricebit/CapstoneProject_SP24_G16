@@ -26,7 +26,13 @@ namespace DataAccess
         {
             return  _context.Districts.Where(d => d.ProvinceCode == provinceCode).ToList();
         }
-
+        public List<District> GetDistrictsByProvinceNameAsync(string provinceName)
+        {
+            return _context.Provinces
+                   .Where(p => p.Name == provinceName)
+                   .SelectMany(p => p.Districts)
+                   .ToList();
+        }
         public List<Ward> GetWardsByDistrictCodeAsync(string districtCode)
         {
             return _context.Wards.Where(w => w.DistrictCode == districtCode).ToList();
