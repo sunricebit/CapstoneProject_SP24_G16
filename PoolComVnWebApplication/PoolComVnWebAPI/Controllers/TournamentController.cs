@@ -1,12 +1,7 @@
 ﻿using BusinessObject.Models;
 using DataAccess;
-using Firebase.Auth;
-using Firebase.Storage;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PoolComVnWebAPI.DTO;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace PoolComVnWebAPI.Controllers
 {
@@ -124,43 +119,6 @@ namespace PoolComVnWebAPI.Controllers
         {
             return Ok();
         }
-
-        [HttpPost("CreateTourStFour")]
-       // [Authorize]
-
-        public IActionResult CreateTourStTwo([FromBody] CreateTourStepFourDTO BannerDTO)
-        {
-           
-            //var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-       
-            //var handler = new JwtSecurityTokenHandler();
-            //var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
-
-           
-            //var roleClaim = jsonToken?.Claims.FirstOrDefault(claim => claim.Type.Equals("Role"));
-            //var account = jsonToken?.Claims.FirstOrDefault(claim => claim.Type.Equals("Account"));
-            ////if (!Constant.BusinessRole.ToString().Equals(roleClaim.Value))
-            ////{
-            ////    return BadRequest("Unauthorize");
-            ////}
-
-            //int clubId = _clubDAO.GetClubIdByAccountId(Int32.Parse(account.Value));
-
-            try
-            {
-                Tournament tour = _tournamentDAO.GetTournament(BannerDTO.TourID);
-                tour.Flyer = BannerDTO.Flyer;
-                _tournamentDAO.UpdateTournament(tour);
-                return Ok(BannerDTO.TourID);
-            }
-            catch (Exception e)
-            {
-
-                throw e;
-            }
-        }
-
 
         [HttpGet("SearchTournament")]
         public ActionResult<IEnumerable<TournamentOutputDTO>> SearchTournament(string searchQuery)
@@ -304,7 +262,7 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
-        [HttpGet("GetTourMaxNumberOfPlayer")]
+        [HttpGet("GetTourKnockoutNumber")]
         public IActionResult GetTourKnockoutNumber(int tourId)
         {
             try

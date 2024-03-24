@@ -58,9 +58,15 @@ namespace PoolComVnWebAPI.Controllers
         public IActionResult RandomMatch(int tourId)
         {
             var playersInTour = _playerDAO.GetPlayersByTournament(tourId).ToList();
+            var botPlayer = playersInTour.Where(p => p.PlayerName.Equals("BOT")).ToList();
+
+            foreach (var player in botPlayer)
+            {
+                playersInTour.Remove(player);
+            }
 
             List<MatchOfTournamentOutputDTO> lstMatch = new List<MatchOfTournamentOutputDTO>();
-            int count = playersInTour.Count();
+            int count = playersInTour.Count() + botPlayer.Count();
             for(int i = 0; i < (count/2); i++)
             {
                 MatchOfTournamentOutputDTO matchOfTournament = new MatchOfTournamentOutputDTO();
@@ -74,12 +80,25 @@ namespace PoolComVnWebAPI.Controllers
                 matchOfTournament.P1Country = p1.Country.CountryImage;
                 playersInTour.Remove(p1);
 
-                Player p2 = playersInTour[randomId];
-                matchOfTournament.P2Name = p2.PlayerName;
-                matchOfTournament.P2Id = p2.PlayerId;
-                matchOfTournament.P2Country = p2.Country.CountryImage;
-                playersInTour.Remove(p2);
-                lstMatch.Add(matchOfTournament);
+                if (botPlayer.Count() > 0)
+                {
+                    Player p2 = botPlayer[0];
+                    matchOfTournament.P2Name = p2.PlayerName;
+                    matchOfTournament.P2Id = p2.PlayerId;
+                    matchOfTournament.P2Country = p2.Country.CountryImage;
+                    botPlayer.Remove(p2);
+                    lstMatch.Add(matchOfTournament);
+                }
+                else
+                {
+                    randomId = rand.Next(0, playersInTour.Count - 1);
+                    Player p2 = playersInTour[randomId];
+                    matchOfTournament.P2Name = p2.PlayerName;
+                    matchOfTournament.P2Id = p2.PlayerId;
+                    matchOfTournament.P2Country = p2.Country.CountryImage;
+                    playersInTour.Remove(p2);
+                    lstMatch.Add(matchOfTournament);
+                }
             }
 
 
