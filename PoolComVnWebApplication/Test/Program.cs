@@ -1,33 +1,124 @@
-﻿namespace Test
+﻿using System.Reflection.Metadata;
+using System.Reflection.Metadata.Ecma335;
+using System.Xml.Linq;
+
+namespace Test
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            int n = 32;
-            int d = 2;
+            //int n = 32;
+            //int d = 2;
 
 
-            int a = Convert.ToInt32(Math.Log2(n));
-            int w = Convert.ToInt32(Math.Log2(d));
-            int x = 0;
+            //int a = Convert.ToInt32(Math.Log2(n));
+            //int w = Convert.ToInt32(Math.Log2(d));
+            //int x = 0;
 
-            for (int i = (a - 1); i >= w; i--)
+            //for (int i = (a - 1); i >= w; i--)
+            //{
+            //    x = x + Convert.ToInt32(Math.Pow(2, i));
+            //}
+
+            //int y = 2 * x;
+
+            ////Console.WriteLine(x);
+            ////Console.WriteLine(y);
+
+            //for (int i = 0; i <= 60; i++)
+            //{
+            //    int resultWin = win(i, n, d, x, y, w, a);
+            //    int resultLose = lose(i, n, d, x, y, w, a);
+            //    Console.WriteLine(i + "\tw:" + resultWin + "\tl:" + resultLose);
+            //}
+
+            Console.WriteLine(roundName(1, 32, 8));
+            Console.WriteLine(roundName(17, 32, 8));
+            Console.WriteLine(roundName(32, 32, 8));
+            Console.WriteLine(roundName(40, 32, 8));
+            Console.WriteLine(roundName(59, 32, 8));
+        }
+
+        public static string roundName(int matchNum, int playerNumber, int finalSinglePlayer)
+        {
+            int roundNumber = Convert.ToInt32(Math.Log2(playerNumber / 2));
+            int finalSingleRound = roundNumber - Convert.ToInt32(Math.Log2(finalSinglePlayer)) + 1;
+            int numberMatchEachRound;
+            int count = 0;
+            int winRound = 0;
+            int loseRound = 0;
+
+            for (int i = 0; i <= finalSingleRound; i++)
             {
-                x = x + Convert.ToInt32(Math.Pow(2, i));
+                winRound++;
+                numberMatchEachRound = Convert.ToInt32(Math.Pow(2, roundNumber - i));
+                for (int j = 0; j < numberMatchEachRound; j++)
+                {
+                    if (i == 0)
+                    {
+                        if (++count == matchNum)
+                        {
+                            return "W" + winRound;
+                        }
+                    }
+                    else
+                    {
+                        if (++count == matchNum)
+                        {
+                            return "W" + winRound;
+                        }
+                    }
+                }
+            }
+            for (int i = 1; i <= finalSingleRound; i++)
+            {
+                loseRound++;
+                numberMatchEachRound = Convert.ToInt32(Math.Pow(2, roundNumber - i));
+                for (int j = 0; j < numberMatchEachRound; j++)
+                {
+                    if (++count == matchNum)
+                    {
+                        return "L" + loseRound;
+                    }
+                }
+                loseRound++;
+                for (int j = 0; j < numberMatchEachRound; j++)
+                {
+                    if (++count == matchNum)
+                    {
+                        return "L" + loseRound;
+                    }
+                }
             }
 
-            int y = 2 * x;
-
-            //Console.WriteLine(x);
-            //Console.WriteLine(y);
-
-            for (int i = 0; i <= 60; i++)
+            for (int i = finalSingleRound; i <= roundNumber; i++)
             {
-                int resultWin = win(i, n, d, x, y, w, a);
-                int resultLose = lose(i, n, d, x, y, w, a);
-                Console.WriteLine(i + "\tw:" + resultWin + "\tl:" + resultLose);
+                winRound++;
+                numberMatchEachRound = Convert.ToInt32(Math.Pow(2, roundNumber - i));
+                if (i == finalSingleRound)
+                {
+                    for (int j = 0; j < numberMatchEachRound; j++)
+                    {
+                        if (++count == matchNum)
+                        {
+                            return "W" + winRound;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int j = 0; j < numberMatchEachRound; j++)
+                    {
+                        if (++count == matchNum)
+                        {
+                            return "W" + winRound;
+                        }
+                    }
+                }
+
             }
+            return "";
         }
 
         public static int win(int m, int n, int d, int x, int y, int w, int a)
