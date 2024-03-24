@@ -6,8 +6,8 @@
 @if (ViewBag.LatestNews != null && ViewBag.LatestNews.Status == true)
 {
     var latestNews = ViewBag.LatestNews;
-    <div class="row">
-        <div class="col-md-12">
+    <div class="row mx-0">
+        <div class="col-md-12 px-0">
             <a href="@Url.Action("NewsDetail", "Home", new { id = latestNews.NewsId })">
                 <div class="news-header" style="background-image: url('@latestNews.Flyer');">
                     <div class="news-description">

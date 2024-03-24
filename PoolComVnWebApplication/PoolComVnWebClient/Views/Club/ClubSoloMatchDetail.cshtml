@@ -27,6 +27,7 @@
                 </div>
                 <div style="padding: 20px 50px; height: calc(100% - 56px);">
                     <div class="first-player">
+                        <!--khi load trận nào đã xong thêm class win đã thắng, thua nếu lose -->
                         <div class="details-player d-flex justify-content-between">
                             <span class="d-flex align-items-center">
                                 <img src="Image/VietNamFlag.png" alt="">
@@ -55,6 +56,7 @@
                         </div>
                     </div>
                     <div class="second-player">
+                        <!--khi load trận nào đã xong thêm class win đã thắng, thua nếu lose -->
                         <div class="details-player d-flex justify-content-between mt-5">
                             <span class="d-flex align-items-center">
                                 <img src="Image/VietNamFlag.png" alt="">
@@ -99,8 +101,8 @@
                     </div>
                     <div class="general-score">
                         <div class="board-line px-2"><span>Điểm</span></div>
-                        <div class="text-center board-line"><span>6</span></div>
-                        <div class="text-center"><span>3</span></div>
+                        <div class="text-center board-line"><span class="first-total-score">6</span></div>
+                        <div class="text-center"><span class="second-total-score">3</span></div>
                     </div>
                     <div id="set-1" class="detail-score">
                         <div class="round-score board-line"><span>1</span></div>
@@ -160,8 +162,8 @@
                     </div>
                     <div class="general-score">
                         <div class="board-line px-2"><span>Điểm</span></div>
-                        <div class="text-center board-line"><span>6</span></div>
-                        <div class="text-center"><span>3</span></div>
+                        <div class="text-center board-line"><span class="first-total-score">6</span></div>
+                        <div class="text-center"><span class="second-total-score">3</span></div>
                     </div>
                     <div id="set-11" class="detail-score">
                         <div class="round-score board-line"><span>11</span></div>
@@ -221,55 +223,56 @@
                     </div>
                     <div class="general-score">
                         <div class="board-line px-2"><span>Điểm</span></div>
-                        <div class="text-center board-line"><span>6</span></div>
-                        <div class="text-center"><span>3</span></div>
+                        <div class="text-center board-line"><span class="first-total-score">6</span></div>
+                        <div class="text-center"><span class="second-total-score">3</span></div>
                     </div>
                     <div id="set-21" class="detail-score">
                         <div class="round-score board-line"><span>21</span></div>
-                        <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                        <div class="board-line first-mark"><span>&nbsp;</span></div>
                         <div class="second-mark"><span>&nbsp;</span></div>
                     </div>
-                    <div id="set-12" class="detail-score">
+                    <!-- Load cho đủ 10 trận 1 hàng -->
+                    <div class="detail-score">
                         <div class="round-score board-line"><span>&nbsp;</span></div>
                         <div class="board-line first-mark"><span>&nbsp;</i></span></div>
                         <div class="second-mark"><span>&nbsp;</span></div>
                     </div>
-                    <div id="set-13" class="detail-score">
+                    <div class="detail-score">
                         <div class="round-score board-line"><span>&nbsp;</span></div>
                         <div class="board-line first-mark"><span>&nbsp;</i></span></div>
                         <div class="second-mark"><span>&nbsp;</span></div>
                     </div>
-                    <div id="set-14" class="detail-score">
+                    <div class="detail-score">
                         <div class="round-score board-line"><span>&nbsp;</span></div>
                         <div class="board-line first-mark"><span>&nbsp;</i></span></div>
                         <div class="second-mark"><span>&nbsp;</span></div>
                     </div>
-                    <div id="set-15" class="detail-score">
+                    <div class="detail-score">
                         <div class="round-score board-line"><span>&nbsp;</span></div>
                         <div class="board-line first-mark"><span>&nbsp;</i></span></div>
                         <div class="second-mark"><span>&nbsp;</span></div>
                     </div>
-                    <div id="set-16" class="detail-score">
+                    <div class="detail-score">
                         <div class="round-score board-line"><span>&nbsp;</span></div>
                         <div class="board-line first-mark"><span>&nbsp;</i></span></div>
                         <div class="second-mark"><span>&nbsp;</span></div>
                     </div>
-                    <div id="set-17" class="detail-score">
+                    <div class="detail-score">
                         <div class="round-score board-line"><span>&nbsp;</span></div>
                         <div class="board-line first-mark"><span>&nbsp;</i></span></div>
                         <div class="second-mark"><span>&nbsp;</span></div>
                     </div>
-                    <div id="set-18" class="detail-score">
+                    <div class="detail-score">
                         <div class="round-score board-line"><span>&nbsp;</span></div>
                         <div class="board-line first-mark"><span>&nbsp;</i></span></div>
                         <div class="second-mark"><span>&nbsp;</span></div>
                     </div>
-                    <div id="set-19" class="detail-score">
+                    <div class="detail-score">
                         <div class="round-score board-line"><span>&nbsp;</span></div>
                         <div class="board-line first-mark"><span>&nbsp;</i></span></div>
                         <div class="second-mark"><span>&nbsp;</span></div>
                     </div>
-                    <div id="set-20" class="detail-score">
+                    <div class="detail-score">
                         <div class="round-score board-line"><span>&nbsp;</span></div>
                         <div class="board-line first-mark"><span>&nbsp;</i></span></div>
                         <div class="second-mark"><span>&nbsp;</span></div>
@@ -340,6 +343,7 @@
                         updateScore();
                         updateMark(2, playerTag);
                         countMaxRun();
+                        updateScoreEachTable();
 
                         parent.querySelector('.details-player').classList.add('win');
                         document.querySelectorAll('.details-player').forEach(player => {
@@ -347,7 +351,7 @@
                                 player.classList.add('lose');
                             }
                         })
-
+                        removeEmptyScoreTable();
                     }
                 }
             } else if (controlBtn.classList.contains('down') && parseInt(scoreNumber) > 0) {
@@ -357,6 +361,7 @@
                 onOffDownBtn();
             }
             countMaxRun();
+            updateScoreEachTable();
         })
     })
 
@@ -412,8 +417,6 @@
     function updateMark(controlTag, playerTag) {
         if (totalScoreNumber > 0) {
             const setBox = document.getElementById('set-' + totalScoreNumber);
-            console.log(totalScoreNumber)
-            console.log(setBox)
             if (controlTag === 1) {
                 if (playerTag === 1) {
                     setBox.querySelector('.first-mark').innerHTML =
@@ -482,4 +485,57 @@
         }
     }
     countMaxRun();
+
+    removeEmptyScoreTable();
+    function removeEmptyScoreTable() {
+        if (document.querySelector('.details-player').classList.contains('win')
+            || document.querySelector('.details-player').classList.contains('lose')) {
+            var maxSetNumber = 0;
+            for (var i = (detailScoreList.length - 1); i > totalScoreNumber; i--) {
+                if (i % 10 === 1) {
+                    console.log(i);
+                    const setBox = document.getElementById('set-' + i);
+                    const firstMark = setBox.querySelector('.first-mark');
+                    const secondMark = setBox.querySelector('.second-mark');
+
+                    console.log(firstMark.querySelector('i'))
+                    if (firstMark.querySelector('i') === null
+                        && secondMark.querySelector('i') === null) {
+                        setBox.parentNode.remove();
+                    }
+                    maxSetNumber = i;
+                }
+            }
+
+            for (var i = totalScoreNumber + 1; i < maxSetNumber; i++) {
+                const setBox = document.getElementById('set-' + i);
+                setBox.innerHTML = '<div class="round-score board-line"><span>&nbsp;</span></div>'
+                    + '<div class="board-line first-mark"><span>&nbsp;</i></span></div>'
+                    + '<div class="second-mark"><span>&nbsp;</span></div>';
+            }
+        }
+    }
+
+    updateScoreEachTable();
+    function updateScoreEachTable() {
+        const scoreBoardList = document.querySelectorAll('.score-board');
+        var countWinFisrtLine;
+        var countWinSecondLine;
+        scoreBoardList.forEach(scoreBoard => {
+            countWinFisrtLine = 0;
+            countWinSecondLine = 0;
+            const firstTotal = scoreBoard.querySelector('.first-total-score');
+            const secondTotal = scoreBoard.querySelector('.second-total-score');
+            const detailScoreList = scoreBoard.querySelectorAll('.detail-score');
+            detailScoreList.forEach(detailScore => {
+                if (detailScore.querySelector('.first-mark').querySelector('i') !== null) {
+                    countWinFisrtLine++;
+                } else if (detailScore.querySelector('.second-mark').querySelector('i') !== null) {
+                    countWinSecondLine++;
+                }
+            })
+            firstTotal.textContent = countWinFisrtLine;
+            secondTotal.textContent = countWinSecondLine;
+        })
+    }
 </script>
