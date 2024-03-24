@@ -48,11 +48,8 @@
                     {
                         <a asp-controller="Club" asp-action="Index" asp-route-id="@club.ClubId" class="club-box">
                             <div class="club-box-border">
-                                <div class="club-box-bg" style="background-image: url('@club.Avatar');">
-                                </div>
-                                <div class="club-image">
-                                    <img src="@club.Avatar" alt="">
-                                </div>
+                                <div class="club-box-bg" style="background-image: url('@club.Avatar');"></div>
+                                <div class="club-image" style="background-image: url('@club.Avatar');"></div>
                                 <div class="club-info">
                                     <div class="club-name">@club.ClubName</div>
                                     <div class="club-address">

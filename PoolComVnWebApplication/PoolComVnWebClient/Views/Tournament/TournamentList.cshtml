@@ -79,7 +79,7 @@
             </div>
             <div class="mt-5 d-flex row">
                 @foreach(var tour in Model.Items){
-                    <div class="tour-item col-sm-6 col-md-4 col-lg-3">
+                    <div class="tour-item col-md-6 col-lg-4">
                         <a href="/Tournament/TournamentDetail?tourId=@tour.TournamentId" class="item-body">
                             @if(tour.Status == Constant.TournamentIncoming){
                                 <div class="tour-status schedule-status"></div>
