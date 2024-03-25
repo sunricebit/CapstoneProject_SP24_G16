@@ -8,14 +8,6 @@
                 <div class="col-10">
                     <div class="login-title">Đăng nhập</div>
                     <form method="post" action="@Url.Action("Login", "Authentication")">
-                        @if (!string.IsNullOrEmpty(message))
-                        {
-                            <div class="container">
-                                <div class="notification text-center">
-                                    @message
-                                </div>
-                            </div>
-                        }
                         <div class="input-form">
                             <i class="fa-solid fa-user col-12"></i>
                             <input class="username-input col-12" name="email" type="text" placeholder="Email">
@@ -39,6 +31,12 @@
                                 <a href="">Quên mật khẩu?</a>
                             </div>
                         </div>
+                        @if (!string.IsNullOrEmpty(message))
+                        {
+                            <div class="input-form d-flex justify-content-center">
+                                <span class="text-danger">@message</span>
+                            </div>
+                        }
                         <div class="input-form d-flex justify-content-center">
                             <input class="submit-btn" type="submit" value="Đăng nhập">
                         </div>
