@@ -1,7 +1,12 @@
 ﻿@{
     Layout = "~/Views/Shared/_TournamentLayout.cshtml";
+    int tourId = ViewBag.TourId;
+    int maxNumberOfTournament = ViewBag.MaxNumberOfTournament;
+    int knockOutNumber = ViewBag.KnockOutNumber;
 }
-
+<div class="numberOfPlayer d-none">@maxNumberOfTournament</div>
+<div class="knockOutNumber d-none">@knockOutNumber</div>
+<div class="tourId d-none">@tourId</div>
 <div class="container-bracket">
     <div class="bracket-tab">
         <div class="bracket-content d-flex">

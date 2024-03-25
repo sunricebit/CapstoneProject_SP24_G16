@@ -172,5 +172,19 @@ namespace DataAccess
         {
             return _context.Countries.FirstOrDefault(c => c.CountryId == countryId);
         }
+
+        public int GetNumberPlayerExBotByTourId(int tourId)
+        {
+            try
+            {
+                int numberPlayers = _context.Players.Where(p => p.TourId == tourId && !p.PlayerName.Equals("BOT")).Count();
+                return numberPlayers;
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
     }
 }
