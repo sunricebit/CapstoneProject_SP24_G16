@@ -9,6 +9,7 @@ using Firebase.Storage;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
+using System.Drawing.Printing;
 using PoolComVnWebAPI.DTO;
 using OfficeOpenXml;
 
@@ -28,10 +29,13 @@ namespace PoolComVnWebClient.Controllers
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             client.DefaultRequestHeaders.Accept.Add(contentType);
         }
-        public IActionResult Index(int? id)
+        public IActionResult Index(int? id, int? page)
         {
+            int pageNumber = page ?? 1;
+            
             if (id == null)
             {
+                int pageSize = 5;
                 if (TempData.ContainsKey("SuccessMessage"))
                 {
                     ViewBag.Success = TempData["SuccessMessage"];
@@ -70,7 +74,11 @@ namespace PoolComVnWebClient.Controllers
                 {
                     var clubPostData = response3.Content.ReadAsStringAsync().Result;
                     var clubPosts = JsonConvert.DeserializeObject<List<ClubPostDTO>>(clubPostData);
+                    var paginatedClubPosts = PaginatedList<ClubPostDTO>.CreateAsync(clubPosts, pageNumber, pageSize);
                     ViewBag.ClubPost = clubPosts;
+                    ViewBag.Club = club;
+                    ViewBag.AccountEmail = email;
+                    return View(paginatedClubPosts);
                 }
                 ViewBag.Club = club;
                 ViewBag.AccountEmail = email;
@@ -78,6 +86,7 @@ namespace PoolComVnWebClient.Controllers
             }
             else
             {
+                int pageSize = 6;
                 var response = client.GetAsync($"{ApiUrl}/Club/{id}").Result;
                 if (!response.IsSuccessStatusCode)
                 {
@@ -96,7 +105,10 @@ namespace PoolComVnWebClient.Controllers
                 {
                     var clubPostData = response2.Content.ReadAsStringAsync().Result;
                     var clubPosts = JsonConvert.DeserializeObject<List<ClubPostDTO>>(clubPostData);
+                    var paginatedClubPosts = PaginatedList<ClubPostDTO>.CreateAsync(clubPosts, pageNumber, pageSize);
                     ViewBag.ClubPost = clubPosts;
+                    ViewBag.Club = club;
+                    return View(paginatedClubPosts);
                 }
                 var response3 = client.GetAsync($"{ApiUrl}/Account/GetAccountById/{club.AccountId}").Result;
                 if (!response3.IsSuccessStatusCode)

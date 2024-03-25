@@ -2,9 +2,9 @@
     Layout = "~/Views/Shared/_BackBtnLayout.cshtml";
 }
 
-<div class="container-full" style="margin-top: 80px;">
+<div class="container-full mb-lg-0 mb-5" style="margin-top: 80px;">
     <div class="solo-detail row d-flex justify-content-around mx-0">
-        <div class="match-detail col-10 col-lg-5 p-0">
+        <div class="match-detail col-10 col-lg-5 p-0 m-5 m-lg-0 mt-lg-2">
             <div class="match-header d-flex justify-content-between">
                 <div class="match-title">
                     <span>Chạm <span id="race-to">11</span></span>
@@ -34,6 +34,7 @@
                                 <span class="px-2">Kiên máy xúc</span>
                             </span>
                             <span class="score-number first">6</span>
+                            <input type="text" class="save-vari d-none" value="6">
                         </div>
                         <div class="control-box d-flex justify-content-end">
                             <button id="first-down-btn" class="control-btn down">-</button>
@@ -63,6 +64,7 @@
                                 <span class="px-2">Kiên sành điệu</span>
                             </span>
                             <span class="score-number second">3</span>
+                            <input type="text" class="save-vari d-none" value="3">
                         </div>
                         <div class="control-box d-flex justify-content-end">
                             <button id="second-down-btn" class="control-btn down">-</button>
@@ -84,10 +86,13 @@
                             </div>
                         </div>
                     </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="start-btn disable" style="margin-top: 20px; width: 80%;">Lưu thay đổi</div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="match-detail col-10 col-lg-6 p-0 m-5 m-lg-0">
+        <div class="match-detail col-10 col-lg-6 p-0 mt-2">
             <div class="match-header d-flex justify-content-between">
                 <div class="match-title">
                     <span>Bảng điểm</span>
@@ -304,6 +309,7 @@
     const popup = document.querySelector('.confirm-popup');
     const firstDown = document.getElementById('first-down-btn');
     const secondDown = document.getElementById('second-down-btn');
+    const saveBtn = document.querySelector('.start-btn');
     var raceToNumber = parseInt(ractTo.textContent);
     var totalScoreNumber = 0;
 
@@ -311,6 +317,8 @@
         controlBtn.addEventListener('click', () => {
             const parent = controlBtn.parentNode.parentNode;
             var score = parent.querySelector('.score-number');
+            var saveVari = parent.querySelector('.save-vari').value;
+            console.log(saveVari)
             var scoreNumber = score.textContent;
             var playerTag = 0;
 
@@ -362,6 +370,7 @@
             }
             countMaxRun();
             updateScoreEachTable();
+            onOffSaveBtn();
         })
     })
 
@@ -398,15 +407,15 @@
             const secondMark = setBox.querySelector('.second-mark');
 
             if (firstMark.querySelector('i') !== null) {
-                firstDown.hidden = false;
+                firstDown.classList.remove('disable');
             } else {
-                firstDown.hidden = true;
+                firstDown.classList.add('disable');
             }
 
             if (secondMark.querySelector('i') !== null) {
-                secondDown.hidden = false;
+                secondDown.classList.remove('disable');
             } else {
-                secondDown.hidden = true;
+                secondDown.classList.add('disable');
             }
         } else {
             firstDown.hidden = true;
@@ -538,4 +547,31 @@
             secondTotal.textContent = countWinSecondLine;
         })
     }
+
+    function onOffSaveBtn() {
+        var isEqual = true;
+        const scoreList = document.querySelectorAll('.score-number')
+        for (var i = 0; i < scoreList.length; i++) {
+            const parent = scoreList[i].parentNode;
+            // console.log(parent.querySelector('.save-vari').value !== scoreList[i].textContent)
+            if (parent.querySelector('.save-vari').value !== scoreList[i].textContent) {
+                isEqual = false;
+                break;
+            }
+        }
+        console.log(isEqual);
+        if (isEqual === false) {
+            saveBtn.classList.remove('disable');
+        } else {
+            saveBtn.classList.add('disable');
+        }
+    }
+
+    saveBtn.addEventListener('click', () => {
+        document.querySelectorAll('.score-number').forEach(score => {
+            const parent = score.parentNode;
+            parent.querySelector('.save-vari').value = score.textContent;
+            saveBtn.classList.add('disable');
+        })
+    })
 </script>
