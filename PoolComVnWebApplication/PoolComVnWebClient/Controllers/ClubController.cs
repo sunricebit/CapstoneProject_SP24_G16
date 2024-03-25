@@ -417,6 +417,81 @@ namespace PoolComVnWebClient.Controllers
             }
            
         }
+        [HttpPost]
+        public async Task<IActionResult> UpdateClubPost(ClubPostDTO clubPostDTO, IFormFile BannerFile)
+        {
+
+            clubPostDTO.UpdatedDate = DateTime.Now;
+            if (BannerFile != null && BannerFile.Length > 0)
+            {
+                await DeleteFromFirebase(clubPostDTO.Title,clubPostDTO.Flyer);
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(BannerFile.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase", fileName);
+
+                using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
+                {
+                    BannerFile.CopyTo(memoryStream);
+
+
+                }
+                var fileStream2 = new FileStream(filePath, FileMode.Open);
+                var downloadLink = await UploadFromFirebase(fileStream2, BannerFile.FileName, "ClubPost", clubPostDTO.Title, 0);
+                fileStream2.Close();
+                clubPostDTO.Flyer = downloadLink;
+            }
+            int index = 1;
+            string pattern = @"<img.*?src=""(.*?)"".*?>";
+            MatchCollection matches = Regex.Matches(clubPostDTO.Description, pattern);
+            foreach (Match match in matches)
+            {
+                string src = match.Groups[1].Value;
+                if (src.Contains("/o/"))
+                {
+                    continue;
+                }
+                string filenameWithoutFirebase = src.Replace("/Firebase/", "");
+                string absolutePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase", filenameWithoutFirebase);
+                var fileStream2 = new FileStream(absolutePath, FileMode.Open);
+                var downloadLink = await UploadFromFirebase(fileStream2, filenameWithoutFirebase, "ClubPost", clubPostDTO.Title, index);
+                index++;
+                fileStream2.Close();
+                clubPostDTO.Description = clubPostDTO.Description.Replace(src, downloadLink);
+            }
+            try
+            {
+                string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase");
+                string[] filePaths = Directory.GetFiles(directoryPath);
+                foreach (string filePath in filePaths)
+                {
+                    System.IO.File.Delete(filePath);
+                }
+
+                Console.WriteLine("All images in the directory have been deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while deleting images: {ex.Message}");
+            }
+
+            var response = client.PostAsJsonAsync($"{ApiUrl}/ClubPost/Update/{clubPostDTO.PostId}", clubPostDTO).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+
+                return RedirectToAction("Index");
+            }
+            else if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+
+                return NotFound();
+            }
+            else
+            {
+
+                ModelState.AddModelError(string.Empty, "Lỗi khi cập nhật tin tức.");
+                return View(clubPostDTO);
+            }
+        }
 
         public IActionResult ClubTournament(int? id)
         {
@@ -766,8 +841,54 @@ namespace PoolComVnWebClient.Controllers
         [HttpPost]
         public async Task<IActionResult> ClubDetails(ClubDTO ClubDTO, IFormFile BannerFile,string ward)
         {
+            if (BannerFile != null && BannerFile.Length > 0)
+            {
+                await DeleteFromFirebase(ClubDTO.ClubName,ClubDTO.Avatar);
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(BannerFile.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase", fileName);
 
-            return View();
+                using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
+                {
+                    BannerFile.CopyTo(memoryStream);
+
+
+                }
+                var fileStream2 = new FileStream(filePath, FileMode.Open);
+                var downloadLink = await UploadFromFirebase(fileStream2, BannerFile.FileName, "Club", ClubDTO.ClubName, 0);
+                fileStream2.Close();
+                ClubDTO.Avatar = downloadLink;
+            }
+            string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase");
+            try
+            {
+
+                string[] filePaths = Directory.GetFiles(directoryPath);
+                foreach (string filePath in filePaths)
+                {
+                    System.IO.File.Delete(filePath);
+                }
+
+                Console.WriteLine("All images in the directory have been deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while deleting images: {ex.Message}");
+            }
+            if (ward != null)
+            {
+                ClubDTO.WardCode = ward;
+            }
+            var response = await client.PostAsJsonAsync($"{ApiUrl}/Club/UpdateClub?id={ClubDTO.ClubId}", ClubDTO);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Lỗi khi thêm tin tức.");
+                return View(ClubDTO);
+            }
         }    
 
         public IActionResult ClubTable(int? id)
