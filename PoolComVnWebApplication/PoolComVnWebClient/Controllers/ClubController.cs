@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using PoolComVnWebAPI.DTO;
+using OfficeOpenXml;
 
 namespace PoolComVnWebClient.Controllers
 {
@@ -927,16 +928,27 @@ namespace PoolComVnWebClient.Controllers
                 }
                 var ClubData = response2.Content.ReadAsStringAsync().Result;
                 var club = JsonConvert.DeserializeObject<ClubDTO>(ClubData);
-                var response3 = client.GetAsync($"{ApiUrl}/ClubPost/GetByClubId/{club.ClubId}").Result;
+                var response3 = client.GetAsync($"{ApiUrl}/Table/GetTablesByClubId/{club.ClubId}").Result;
                 if (response3.StatusCode == HttpStatusCode.NotFound)
                 {
-                    ViewBag.ClubPost = null;
+                    ViewBag.Table = null;
                 }
                 else if (response3.IsSuccessStatusCode)
                 {
-                    var clubPostData = response3.Content.ReadAsStringAsync().Result;
-                    var clubPosts = JsonConvert.DeserializeObject<List<ClubPostDTO>>(clubPostData);
-                    ViewBag.ClubPost = clubPosts;
+                    var TableData = response3.Content.ReadAsStringAsync().Result;
+                    var tables = JsonConvert.DeserializeObject<List<TableDTO>>(TableData);
+                    var tableCounts = tables
+                    .GroupBy(t => t.TableName)
+                    .Select(g => new TableInfoViewModel
+                    {
+                        TableName = g.Key,
+                        Quantity = g.Count(),
+                        Size = g.First().Size,
+                        Price = g.First().Price,
+                        Image = g.First().Image,
+                    })
+                    .ToList();
+                    ViewBag.Table = tableCounts;
                 }
                 ViewBag.Club = club;
                 ViewBag.AccountEmail = email;
@@ -953,16 +965,27 @@ namespace PoolComVnWebClient.Controllers
                 var ClubData = response.Content.ReadAsStringAsync().Result;
                 var club = JsonConvert.DeserializeObject<ClubDTO>(ClubData);
                 ViewBag.Club = club;
-                var response2 = client.GetAsync($"{ApiUrl}/ClubPost/GetByClubId/{club.ClubId}").Result;
+                var response2 = client.GetAsync($"{ApiUrl}/Table/GetTablesByClubId/{club.ClubId}").Result;
                 if (response2.StatusCode == HttpStatusCode.NotFound)
                 {
-                    ViewBag.ClubPost = null;
+                    ViewBag.Table = null;
                 }
                 else if (response2.IsSuccessStatusCode)
                 {
-                    var clubPostData = response2.Content.ReadAsStringAsync().Result;
-                    var clubPosts = JsonConvert.DeserializeObject<List<ClubPostDTO>>(clubPostData);
-                    ViewBag.ClubPost = clubPosts;
+                    var TableData = response2.Content.ReadAsStringAsync().Result;
+                    var Tables = JsonConvert.DeserializeObject<List<TableDTO>>(TableData);
+                    var tableCounts = Tables
+                   .GroupBy(t => t.TableName)
+                   .Select(g => new TableInfoViewModel
+                   {
+                       TableName = g.Key,
+                       Quantity = g.Count(),
+                       Size = g.First().Size,
+                       Price = g.First().Price,
+                       Image = g.First().Image,
+                   })
+                    .ToList();
+                    ViewBag.Table = tableCounts;
                 }
                 var response3 = client.GetAsync($"{ApiUrl}/Account/GetAccountById/{club.AccountId}").Result;
                 if (!response3.IsSuccessStatusCode)
@@ -1007,16 +1030,17 @@ namespace PoolComVnWebClient.Controllers
                 }
                 var ClubData = response2.Content.ReadAsStringAsync().Result;
                 var club = JsonConvert.DeserializeObject<ClubDTO>(ClubData);
-                var response3 = client.GetAsync($"{ApiUrl}/ClubPost/GetByClubId/{club.ClubId}").Result;
+                var response3 = client.GetAsync($"{ApiUrl}/Table/GetTablesByClubId/{club.ClubId}").Result;
                 if (response3.StatusCode == HttpStatusCode.NotFound)
                 {
-                    ViewBag.ClubPost = null;
+                    ViewBag.Table = null;
                 }
                 else if (response3.IsSuccessStatusCode)
                 {
-                    var clubPostData = response3.Content.ReadAsStringAsync().Result;
-                    var clubPosts = JsonConvert.DeserializeObject<List<ClubPostDTO>>(clubPostData);
-                    ViewBag.ClubPost = clubPosts;
+                    var TableData = response3.Content.ReadAsStringAsync().Result;
+                    var tables = JsonConvert.DeserializeObject<List<TableDTO>>(TableData);
+                    
+                    ViewBag.Table = tables;
                 }
                 ViewBag.Club = club;
                 ViewBag.AccountEmail = email;
@@ -1033,16 +1057,16 @@ namespace PoolComVnWebClient.Controllers
                 var ClubData = response.Content.ReadAsStringAsync().Result;
                 var club = JsonConvert.DeserializeObject<ClubDTO>(ClubData);
                 ViewBag.Club = club;
-                var response2 = client.GetAsync($"{ApiUrl}/ClubPost/GetByClubId/{club.ClubId}").Result;
+                var response2 = client.GetAsync($"{ApiUrl}/Table/GetTablesByClubId/{club.ClubId}").Result;
                 if (response2.StatusCode == HttpStatusCode.NotFound)
                 {
-                    ViewBag.ClubPost = null;
+                    ViewBag.Table = null;
                 }
                 else if (response2.IsSuccessStatusCode)
                 {
-                    var clubPostData = response2.Content.ReadAsStringAsync().Result;
-                    var clubPosts = JsonConvert.DeserializeObject<List<ClubPostDTO>>(clubPostData);
-                    ViewBag.ClubPost = clubPosts;
+                    var TableData = response2.Content.ReadAsStringAsync().Result;
+                    var tables = JsonConvert.DeserializeObject<List<TableDTO>>(TableData);
+                    ViewBag.Table = tables;
                 }
                 var response3 = client.GetAsync($"{ApiUrl}/Account/GetAccountById/{club.AccountId}").Result;
                 if (!response3.IsSuccessStatusCode)
@@ -1057,7 +1081,70 @@ namespace PoolComVnWebClient.Controllers
                
             }
         }
+        [HttpPost("ImportTables")]
+        public async Task<IActionResult> ImportTables(IFormFile ImportTables)
+        {
+            
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
+            try
+            {
+                if (ImportTables == null || ImportTables.Length <= 0)
+                {
+                    return BadRequest("Invalid file.");
+                }
 
+                var fileExtension = Path.GetExtension(ImportTables.FileName)?.ToLower();
+                var importedTables = new List<TableDTO>();
+
+                if (fileExtension == ".xls" || fileExtension == ".xlsx")
+                {
+                    using (var package = new ExcelPackage(ImportTables.OpenReadStream()))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0];
+
+                        for (int row = 2; row <= worksheet.Dimension.End.Row; row++)
+                        {
+                            var tableName = worksheet.Cells[row, 1].Text?.Trim();
+                            var tag = worksheet.Cells[row, 2].Text?.Trim();
+                            var size = worksheet.Cells[row, 3].Text?.Trim();
+                            var hourlyPriceText = worksheet.Cells[row, 4].Text?.Trim();
+
+                            if (string.IsNullOrEmpty(tableName) || string.IsNullOrEmpty(tag) ||
+                                string.IsNullOrEmpty(size) || string.IsNullOrEmpty(hourlyPriceText))
+                            {
+                                continue;
+                            }
+
+                            if (!int.TryParse(hourlyPriceText, out int hourlyPrice))
+                            {
+                                continue;
+                            }
+
+                            var table = new TableDTO
+                            {
+                                TableName = tableName,
+                                TagName = tag,
+                                Size = size,
+                                Price = hourlyPrice
+                            };
+
+                            importedTables.Add(table);
+                        }
+
+                        ViewBag.ImportedTables = importedTables;
+                        return View("ClubTableManage");
+                    }
+                }
+                else
+                {
+                    return View("ErrorView");
+                }
+            }
+            catch (IOException ex)
+            {
+                return RedirectToAction("InternalServerError", "Error", new { message = ex.Message });
+            }
+        }
         public IActionResult CreateSoloMatch()
         {
             return View();
