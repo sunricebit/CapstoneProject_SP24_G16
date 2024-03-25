@@ -11,6 +11,7 @@ using System.Net.Sockets;
 using System.Text.RegularExpressions;
 using System.Drawing.Printing;
 
+
 namespace PoolComVnWebClient.Controllers
 {
     public class ClubController : Controller

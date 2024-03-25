@@ -1,4 +1,4 @@
-﻿namespace PoolComVnWebAPI.DTO
+﻿namespace PoolComVnWebClient.DTO
 {
     public class WardDTO
     {
