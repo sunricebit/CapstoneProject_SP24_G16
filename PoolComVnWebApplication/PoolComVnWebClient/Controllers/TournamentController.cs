@@ -187,8 +187,32 @@ namespace PoolComVnWebClient.Controllers
             return View();
         }
 
-        public IActionResult TournamentDetailForManager()
+        public async Task<IActionResult> TournamentDetailForManager(int tourId)
         {
+            TournamentDetailDTO tourDetail = new TournamentDetailDTO();
+            var responseGetTourdetail = await client.GetAsync(ApiUrl + "/GetTournament?tourId=" + tourId);
+            if (responseGetTourdetail.IsSuccessStatusCode)
+            {
+                tourDetail = await responseGetTourdetail.Content.ReadFromJsonAsync<TournamentDetailDTO>();
+                ViewBag.TournamentDetail = tourDetail;
+            }
+            else
+            {
+                var status = responseGetTourdetail.StatusCode;
+                return RedirectToAction("InternalServerError", "Error");
+            }
+            List<PlayerDTO> lstPlayer;
+            var responseGetLstPlayer = await client.GetAsync(Constant.ApiUrl + "/Player" + "/GetPlayerByTourId?tourId=" + tourId);
+            if (responseGetLstPlayer.IsSuccessStatusCode)
+            {
+                lstPlayer = await responseGetLstPlayer.Content.ReadFromJsonAsync<List<PlayerDTO>>();
+                ViewBag.PlayerLst = lstPlayer;
+            }
+            else
+            {
+                var status = responseGetTourdetail.StatusCode;
+                return RedirectToAction("InternalServerError", "Error");
+            }
             return View();
         }
 
