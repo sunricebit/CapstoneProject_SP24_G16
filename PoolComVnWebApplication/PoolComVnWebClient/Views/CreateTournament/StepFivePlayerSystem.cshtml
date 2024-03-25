@@ -22,7 +22,7 @@
                 <div class="display-content">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <button class="list-player" >Thêm vào danh sách</button>
+                            <button class="list-player">Thêm vào danh sách</button>
                             <button class="club-player" disabled>Thêm vào thành viên</button>
                         </div>
                         <div class="player-search d-flex align-items-end">
@@ -333,7 +333,7 @@
         // Send AJAX request to update the table in StepTwoPlayerList.cshtml
         $.ajax({
             url: 'https://localhost:5000/api/Player/MoveSelectedPlayers',
-                type: 'POST',
+            type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ selectedPlayers: selectedPlayers }),
             success: function (data) {
@@ -349,5 +349,8 @@
     $('.list-player').on('click', function () {
         moveSelectedPlayers();
     });
-        });
+
+    //Handle active nav
+    const createTourStepBtn = document.querySelector('.step-five');
+    createTourStepBtn.classList.add('active');
 </script>

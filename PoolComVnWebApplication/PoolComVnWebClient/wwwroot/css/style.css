@@ -2870,11 +2870,24 @@ tr:not(:first-child).isFinish {
             background: #9c1515;
         }
 
-    .tour-step .step-title {
-        font-weight: 600;
-        color: #fff;
-        line-height: 40px;
-    }
+        .tour-step.disable{
+            opacity:0.5;
+        }
+
+            .tour-step.disable:hover{
+                cursor:default;
+            }
+
+            .tour-step.disable .step-number:hover {
+                background: #4d5c60;
+                cursor: default;
+            }
+
+            .tour-step .step-title {
+                font-weight: 600;
+                color: #fff;
+                line-height: 40px;
+            }
 
 .step-network-line {
     width: 20px;
