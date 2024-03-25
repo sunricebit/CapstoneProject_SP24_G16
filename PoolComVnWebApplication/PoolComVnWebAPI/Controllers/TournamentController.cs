@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Models;
 using DataAccess;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using PoolComVnWebAPI.DTO;
 
@@ -58,8 +59,53 @@ namespace PoolComVnWebAPI.Controllers
 
                 throw e;
             }
-
         }
+
+        [HttpGet("GetTournamentForStOne")]
+        public IActionResult GetTournamentForStOne(int tourId)
+        {
+            try
+            {
+                Tournament tour = _tournamentDAO.GetTournament(tourId);
+                TournamentDTO tournamentDetailDTO = new TournamentDTO()
+                {
+                    TourId = tour.TourId,
+                    TourName = tour.TourName,
+                    Description = tour.Description,
+                    StartDate = tour.StartDate ?? DateTime.Now,
+                    EndDate = tour.EndDate,
+                    GameTypeId = tour.GameTypeId,
+                    Status = tour.Status,
+                    TournamentTypeId = tour.TournamentTypeId,
+                    RegistrationDeadline = tour.RegistrationDeadline,
+                    MaxPlayerNumber = tour.MaxPlayerNumber,
+                    Access = tour.Access == null ? true : tour.Access.Value,
+                    EntryFee = tour.EntryFee,
+                    TotalPrize = tour.TotalPrize,
+                    KnockoutPlayerNumber = tour.KnockoutPlayerNumber,
+                };
+                return Ok(tournamentDetailDTO);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        [HttpGet("GetFlyer")]
+        public IActionResult GetFlyer(int tourId)
+        {
+            try
+            {
+                Tournament tour = _tournamentDAO.GetTournament(tourId);
+                return Ok(tour.Flyer);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         [HttpGet("GetTournamentsByClubId")]
         public IActionResult GetTournamentsByClubId(int clubId)
         {
@@ -158,6 +204,21 @@ namespace PoolComVnWebAPI.Controllers
         [HttpPost]
         public IActionResult UpdateTournament([FromBody] TournamentDTO tournamentDTO)
         {
+            var tournament = _tournamentDAO.GetTournament(tournamentDTO.TourId);
+            tournament.TourName = tournamentDTO.TourName;
+            tournament.MaxPlayerNumber = tournamentDTO.MaxPlayerNumber;
+            tournament.Description = tournamentDTO.Description;
+            tournament.StartDate = tournamentDTO.StartDate;
+            tournament.EndDate = tournamentDTO.EndDate;
+            tournament.GameTypeId = tournamentDTO.GameTypeId;
+            tournament.TournamentTypeId = tournamentDTO.TournamentTypeId;
+            tournament.KnockoutPlayerNumber = tournamentDTO.KnockoutPlayerNumber;
+            tournament.RaceToString = tournamentDTO.RaceToString;
+            tournament.EntryFee = tournament.EntryFee;
+            tournament.TotalPrize = tournament.TotalPrize;
+            tournament.RegistrationDeadline = tournament.RegistrationDeadline;
+            tournament.Access = tournament.Access;
+            _tournamentDAO.UpdateTournament(tournament);
             return Ok();
         }
 

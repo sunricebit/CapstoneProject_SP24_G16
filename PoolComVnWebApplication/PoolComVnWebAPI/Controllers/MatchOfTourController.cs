@@ -41,6 +41,8 @@ namespace PoolComVnWebAPI.Controllers
                     MatchCode = match.MatchCode,
                     LoseNextMatch = match.LoseToMatch,
                     WinNextMatch = match.WinToMatch,
+                    P1Id = p1 != null ? p1.PlayerId : null,
+                    P2Id = p2 != null ? p2.PlayerId : null,
                     P1Country = p1 != null ? p1.Player.Country.CountryImage : null,
                     P1Name = p1 != null ? p1.Player.PlayerName : null,
                     P1Score = p1 == null ? "_" : p1.Score.ToString(),
@@ -122,8 +124,8 @@ namespace PoolComVnWebAPI.Controllers
                 };
                 count++;
                 _matchDAO.AddMatch(matchOfTournament);
-                _playerDAO.AddPlayerToMatch(matchOfTournament.MatchId, match.P1Id);
-                _playerDAO.AddPlayerToMatch(matchOfTournament.MatchId, match.P2Id);
+                _playerDAO.AddPlayerToMatch(matchOfTournament.MatchId, match.P1Id.Value);
+                _playerDAO.AddPlayerToMatch(matchOfTournament.MatchId, match.P2Id.Value);
             }
             GenerateAllMatchOfTour(tourId);
             return Ok();

@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "~/Views/Shared/_CreateTournamentLayout.cshtml";
     int? tourId = ViewBag.TourId as int?;
+    string? imageSource = ViewBag.Image;
 }
 
 <div class="container-full">
@@ -25,7 +26,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="m-0 preview-image"></div>
+                        @if (string.IsNullOrEmpty(imageSource)){
+                            <div class="m-0 preview-image"></div>
+                        }
+                        else{
+                            <div class="m-0 preview-image" style="background-image: url('@imageSource'); display: block;"></div>
+                        }
                         <input type="file" name="banner" class="imageInput mt-1" accept="image/*" />
                         <input id="file-name" class="d-none" />
                         <input type="hidden" id="TourId" name="tourId" value="@tourId" />

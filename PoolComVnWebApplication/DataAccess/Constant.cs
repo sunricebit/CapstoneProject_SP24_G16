@@ -26,6 +26,12 @@ namespace DataAccess
         public const int TournamentIncoming = 0;
         public const int TournamentInProgress = 1;
         public const int TournamentComplete = 2;
+        public const byte CreateTourStepOne = 11;
+        public const byte CreateTourStepTwo = 12;
+        public const byte CreateTourStepThree = 13;
+        public const byte CreateTourStepFour = 14;
+        public const byte CreateTourStepFive = 15;
+        public const byte CreateTourStepSix = 16;
 
         public const int AccessPublic = 1;
         public const int AccessPrivate = 2;

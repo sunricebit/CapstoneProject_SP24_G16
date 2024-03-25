@@ -22,6 +22,18 @@ namespace PoolComVnWebClient.Common
         public const int TournamentIncoming = 0;
         public const int TournamentInProgress = 1;
         public const int TournamentComplete = 2;
+        public const byte SvCreateTourStepOne = 11;
+        public const byte SvCreateTourStepTwo = 12;
+        public const byte SvCreateTourStepThree = 13;
+        public const byte SvCreateTourStepFour = 14;
+        public const byte SvCreateTourStepFive = 15;
+        public const byte SvCreateTourStepSix = 16;
+        public const byte CreateTourStepOne = 1;
+        public const byte CreateTourStepTwo = 2;
+        public const byte CreateTourStepThree = 3;
+        public const byte CreateTourStepFour = 4;
+        public const byte CreateTourStepFive = 5;
+        public const byte CreateTourStepSix = 6;
 
         public const int AccessPublic = 1;
         public const int AccessPrivate = 2;

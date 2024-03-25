@@ -246,7 +246,7 @@
                 </div>
                 <div class="detail-score">
                     <div class="round-score board-line"><span>10</span></div>
-                    <div class="board-line"><span>&nbsp;</i></span></div>
+                    <div class="board-line"><span>&nbsp;<i></i></span></div>
                     <div><span>&nbsp;</span></div>
                 </div>
                 <div class="detail-score">
@@ -290,7 +290,7 @@
     //(tính theo đấu loại đơn)
     let roundNumber = Math.log2(playerNumber / 2);
 
-    //Số người chơi vào vòng loại trực tiếp 
+    //Số người chơi vào vòng loại trực tiếp
     var finalSinglePlayer = $(".knockOutNumber").text().trim();
 
     //số vòng đấu nhánh thắng tính từ R2 -> R(cuối) vòng loại
@@ -437,32 +437,32 @@
                 + '<div class="match-number col-2 p-0 text-center">'
                 + count
                 + '</div>'
-                    + '<div class="player-match col-8">'
-                    + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src=""/>'
-                    + '<!-- 15 char -->'
-                    + '<div class="player1-name"></div>'
-                    + '<div class="player1-id d-none"></div>'
-                    + '</div>'
-                    + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src=""/>'
-                    + '<!-- 15 char -->'
-                    + '<div class="player2-name"></div>'
-                    + '<div class="player2-id d-none"></div>'
-                    + '</div>'
-                    + '</div>'
-                    + '<div class="col-2">'
-                    + '<div class="match-score player1-score"></div>'
-                    + '<div class="match-score player2-score"></div>'
-                    + '</div>'
-                    + '<div class="match-table">Table <span class="table-number"></span></div>'
-                    + '<div class="match-raceTo">Race to <span class="raceTo-number"></span></div>'
-                    + '<div class="next-match d-flex">'
-                    + '<div class="next-win">W: <span class="win-match-number"></span>,</div>'
-                    + '<div class="next-lose">L: <span class="lose-match-number"></span></div>'
-                    + '</div>'
-                    + '</div>'
-                    + '</div>'
+                + '<div class="player-match col-8">'
+                + '<div class="d-flex justify-content-start align-items-center">'
+                + '<img src=""/>'
+                + '<!-- 15 char -->'
+                + '<div class="player1-name"></div>'
+                + '<div class="player1-id d-none"></div>'
+                + '</div>'
+                + '<div class="d-flex justify-content-start align-items-center">'
+                + '<img src=""/>'
+                + '<!-- 15 char -->'
+                + '<div class="player2-name"></div>'
+                + '<div class="player2-id d-none"></div>'
+                + '</div>'
+                + '</div>'
+                + '<div class="col-2">'
+                + '<div class="match-score player1-score"></div>'
+                + '<div class="match-score player2-score"></div>'
+                + '</div>'
+                + '<div class="match-table">Table <span class="table-number"></span></div>'
+                + '<div class="match-raceTo">Race to <span class="raceTo-number"></span></div>'
+                + '<div class="next-match d-flex">'
+                + '<div class="next-win">W: <span class="win-match-number"></span>,</div>'
+                + '<div class="next-lose">L: <span class="lose-match-number"></span></div>'
+                + '</div>'
+                + '</div>'
+                + '</div>'
         }
     }
     loseMatchBody.innerHTML = loseBody;
@@ -754,7 +754,7 @@
     const matchBoxList = document.querySelectorAll('.match-box');
     matchBoxList.forEach(element => {
         element.addEventListener('click', () => {
-            
+
             matchDisplay.classList.remove('d-none');
         })
     });
@@ -871,11 +871,11 @@
         element.classList.add('d-none');
     })
 
-    // binding dữ liệu 
+    // binding dữ liệu
     function bindingData() {
-        var touId =  $(".tourId").text().trim();
+        var tourId = $(".tourId").text().trim();
         $.ajax({
-            url: 'https://localhost:5000/api/MatchOfTour/RandomMatch',
+            url: 'https://localhost:5000/api/MatchOfTour/GetMatchForBracket',
             method: 'GET',
             data: { tourId: tourId },
             success: function (data) {
@@ -884,46 +884,38 @@
                 });
                 var matches = data;
                 matches.forEach(function (match) {
-                    var matchNumber = match.matchNumber;
-                    var matchBox = $('#' + matchNumber); // Tìm thẻ match-box có ID tương ứng với matchNumber
+                    var count = match.MatchNumber;
+                    var player1Name = match.P1Name;
+                    var player2Name = match.P2Name;
+                    var player1Score = match.P1Score;
+                    var player2Score = match.P2Score;
+                    var tableNumber = match.TableNumber;
+                    var raceToNumber = match.RaceToNumber;
+                    var winMatchNumber = match.WinNextMatch;
+                    var loseMatchNumber = match.LoseNextMatch;
 
+                    // Find the corresponding match box element by ID
+                    var matchBox = document.getElementById('match' + count);
+                    if (matchBox) {
+                        // Update the inner HTML of the elements with new data
+                        matchBox.querySelector('.player1-name').innerText = player1Name;
+                        matchBox.querySelector('.player2-name').innerText = player2Name;
+                        matchBox.querySelector('.player1-score').innerText = player1Score;
+                        matchBox.querySelector('.player2-score').innerText = player2Score;
+                        matchBox.querySelector('.table-number').innerText = tableNumber;
+                        matchBox.querySelector('.raceTo-number').innerText = raceToNumber;
+                        matchBox.querySelector('.win-match-number').innerText = winMatchNumber;
+                        matchBox.querySelector('.lose-match-number').innerText = loseMatchNumber;
 
-                    var player1Element = matchBox.find('.player-1').first();
-
-                    // Kiểm tra nếu phần tử tồn tại
-                    if (player1Element.length > 0) {
-                        var playerNameElement = player1Element.find('.player-name');
-                        var playerName = match.p1Name;
-                        playerNameElement.text(playerName);
-
-                        var countryImageElement = player1Element.find('img');
-                        var countryImage = match.p1Country;
-                        countryImageElement.attr('src', countryImage);
-
-                        var playerIdElement = player1Element.find('.player-id');
-                        var playerId = match.p1Id;
-                        playerIdElement.text(playerId);
-                    } else {
-                        console.log('Không tìm thấy phần tử player-1 trong .matchbox');
-                    }
-
-                    var player2Element = matchBox.find('.player-2').first();
-
-                    // Kiểm tra nếu phần tử tồn tại
-                    if (player2Element.length > 0) {
-                        var playerNameElement = player2Element.find('.player-name');
-                        var playerName = match.p2Name;
-                        playerNameElement.text(playerName);
-
-                        var countryImageElement = player2Element.find('img');
-                        var countryImage = match.p2Country;
-                        countryImageElement.attr('src', countryImage);
-
-                        var playerIdElement = player2Element.find('.player-id');
-                        var playerId = match.p2Id;
-                        playerIdElement.text(playerId);
-                    } else {
-                        console.log('Không tìm thấy phần tử player-2 trong .matchbox');
+                        // Update the player IDs (assuming they are hidden with "d-none" class)
+                        var player1IdElements = matchBox.getElementsByClassName('player1-id');
+                        var player2IdElements = matchBox.getElementsByClassName('player2-id');
+                        if (player1IdElements.length > 0) {
+                            player1IdElements[0].innerText = match.P1Id;
+                        }
+                        if (player2IdElements.length > 0) {
+                            player2IdElements[0].innerText = match.P2Id;
+                        }
                     }
                 });
             },
@@ -932,5 +924,4 @@
             }
         });
     }
-
 </script>

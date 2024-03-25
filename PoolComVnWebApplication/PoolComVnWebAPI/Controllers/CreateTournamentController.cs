@@ -109,5 +109,59 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
+        [HttpPost("CheckStep")]
+        public IActionResult CheckStep(int tourId)
+        {
+            try
+            {
+                var tournament = _tournamentDAO.GetTournament(tourId);
+                if (tournament != null)
+                {
+                    switch (tournament.Status)
+                    {
+                        case Constant.CreateTourStepOne:
+                            return Ok(Constant.CreateTourStepOne);
+                        case Constant.CreateTourStepTwo:
+                            return Ok(Constant.CreateTourStepTwo);
+                        case Constant.CreateTourStepThree:
+                            return Ok(Constant.CreateTourStepThree);
+                        case Constant.CreateTourStepFour:
+                            return Ok(Constant.CreateTourStepFour);
+                        case Constant.CreateTourStepFive:
+                            return Ok(Constant.CreateTourStepFive);
+                        case Constant.CreateTourStepSix:
+                            return Ok(Constant.CreateTourStepSix);
+                        default:
+                            return Ok(Constant.CreateTourStepSix);
+                    }
+                }
+                return Ok(Constant.CreateTourStepOne);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        [HttpPost("UpdateStep")]
+        public IActionResult UpdateStep(int tourId, byte step)
+        {
+            try
+            {
+                var tournament = _tournamentDAO.GetTournament(tourId);
+                if (tournament != null)
+                {
+                    tournament.Status = step;
+                    _tournamentDAO.UpdateTournament(tournament);
+                }
+                return Ok();
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
+
     }
 }

@@ -113,16 +113,14 @@ namespace PoolComVnWebClient.Controllers
                 {
                     HttpOnly = true,
                     Secure = true,
-                    SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict,
-                    Expires = DateTime.UtcNow.AddDays(1),
+                    SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict
                 });
 
                 Response.Cookies.Append("Email", email, new CookieOptions
                 {
                     HttpOnly = true,
                     Secure = true,
-                    SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict,
-                    Expires = DateTime.UtcNow.AddDays(1),
+                    SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict
                 });
 
                 return RedirectToAction("Index", "Home");

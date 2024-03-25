@@ -1,14 +1,9 @@
 ﻿using Firebase.Auth;
 using Firebase.Storage;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using OfficeOpenXml;
 using PoolComVnWebClient.Common;
 using PoolComVnWebClient.DTO;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Net.Http;
 using System.Net.Http.Headers;
 
 namespace PoolComVnWebClient.Controllers
@@ -36,7 +31,7 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> StepOneCreateTournament()
+        public async Task<IActionResult> StepOneCreateTournament(int? tourId)
         {
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
@@ -47,7 +42,37 @@ namespace PoolComVnWebClient.Controllers
             var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Authorization/CheckAuthorization", rolesAccess);
             if (response.IsSuccessStatusCode)
             {
-                return View();
+                if (tourId != null)
+                {
+                    // binding data trong này
+                    TournamentDTO tournament = await client.GetFromJsonAsync<TournamentDTO>(Constant.ApiUrl 
+                        + "/Tournament/GetTournamentForStOne?tourId=" + tourId);
+                    CreateTournamentInputDTO inputDTO = new CreateTournamentInputDTO()
+                    {
+                        TournamentName = tournament.TourName,
+                        Description = tournament.Description,
+                        Access = tournament.Access.Value,
+                        EndTime = tournament.EndDate,
+                        EntryFee = tournament.EntryFee,
+                        GameTypeId = tournament.GameTypeId,
+                        KnockoutNumber = tournament.KnockoutPlayerNumber,
+                        MaxPlayerNumber = tournament.MaxPlayerNumber,
+                        PrizeMoney = tournament.TotalPrize,
+                        RaceNumberString = tournament.RaceToString,
+                        RegistrationDeadline = tournament.RegistrationDeadline,
+                        StartTime = tournament.StartDate,
+                        TournamentTypeId = tournament.TournamentTypeId,
+                    };
+                    ViewBag.CurrentStep = Constant.CreateTourStepOne;
+                    ViewBag.StepOpen = CheckStep(tourId.Value);
+                    return View(inputDTO);
+                }
+                else
+                {
+                    ViewBag.CurrentStep = Constant.CreateTourStepOne;
+                    ViewBag.StepOpen = Constant.CreateTourStepOne;
+                    return View();
+                }
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
@@ -59,8 +84,8 @@ namespace PoolComVnWebClient.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> StepOneCreateTournament(CreateTournamentInputDTO inputDTO)
+        [HttpPost("CreateTournament/StepOneCreateTournament?tourId={tourId}")]
+        public async Task<IActionResult> StepOneCreateTournament(CreateTournamentInputDTO inputDTO, int? tourId)
         {
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
@@ -77,39 +102,83 @@ namespace PoolComVnWebClient.Controllers
                     }
                 }
 
-            }
+                if (inputDTO.StartTime <= DateTime.Now)
+                {
+                    errors.Add("Thời gian bắt đầu phải lớn hơn thời gian hiện tại.");
+                }
 
-            if (inputDTO.StartTime <= DateTime.Now)
-            {
-                errors.Add("Thời gian bắt đầu phải lớn hơn thời gian hiện tại.");
-            }
+                if (inputDTO.EndTime < inputDTO.StartTime)
+                {
+                    errors.Add("Thời gian kết thúc phải lớn hơn thời gian bắt đầu.");
+                }
 
-            if (inputDTO.EndTime < inputDTO.StartTime)
-            {
-                errors.Add("Thời gian kết thúc phải lớn hơn thời gian bắt đầu.");
-            }
+                if (inputDTO.RegistrationDeadline > inputDTO.StartTime)
+                {
+                    errors.Add("Thời hạn đăng ký trước thời gian bắt đầu.");
+                }
 
-            if (inputDTO.RegistrationDeadline > inputDTO.StartTime)
-            {
-                errors.Add("Thời hạn đăng ký trước thời gian bắt đầu.");
+                if (errors.Count > 0)
+                {
+                    ViewBag.Error = errors;
+                    ViewBag.CurrentStep = Constant.CreateTourStepOne;
+                    if (tourId != null)
+                    {
+                        ViewBag.StepOpen = CheckStep(tourId.Value);
+                    }
+                    else
+                    {
+                        ViewBag.StepOpen = Constant.CreateTourStepOne;
+                    }
+                    return View(inputDTO);
+                }
             }
-
-            if (errors.Count > 0)
+            HttpResponseMessage response;
+            if (tourId != null)
             {
-                ViewBag.Error = errors;
-                return View();
-            }
-            var response = await client.PostAsJsonAsync(ApiUrl + "/CreateTourStOne", inputDTO);
-            if (response.IsSuccessStatusCode)
-            {
-                int tourId = await response.Content.ReadFromJsonAsync<int>();
-                ViewBag.TourId = tourId;
-                return RedirectToAction("StepTwoAddBanner", "CreateTournament", new { tourId = tourId });
+                TournamentDTO tournamentDTO = new TournamentDTO()
+                {
+                    TourId = tourId.Value,
+                    Description = inputDTO.Description,
+                    StartDate = inputDTO.StartTime,
+                    EndDate = inputDTO.EndTime,
+                    TourName = inputDTO.TournamentName,
+                    GameTypeId = inputDTO.GameTypeId,
+                    TournamentTypeId = inputDTO.TournamentTypeId,
+                    MaxPlayerNumber = inputDTO.MaxPlayerNumber,
+                    KnockoutPlayerNumber = inputDTO.KnockoutNumber,
+                    RaceToString = inputDTO.RaceNumberString,
+                    EntryFee = inputDTO.EntryFee.Value,
+                    TotalPrize = inputDTO.PrizeMoney,
+                    RegistrationDeadline = inputDTO.RegistrationDeadline,
+                    Access = inputDTO.Access,
+                };
+                response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Tournament/UpdateTournament", tournamentDTO);
+                if (response.IsSuccessStatusCode)
+                {
+                    ViewBag.TourId = tourId;
+                    return RedirectToAction("StepTwoAddBanner", "CreateTournament", new { tourId = tourId });
+                }
+                else
+                {
+                    var status = response.StatusCode;
+                    return RedirectToAction("InternalServerError", "Error");
+                }
             }
             else
             {
-                var status = response.StatusCode;
-                return RedirectToAction("InternalServerError", "Error");
+                response = await client.PostAsJsonAsync(ApiUrl + "/CreateTourStOne", inputDTO);
+                if (response.IsSuccessStatusCode)
+                {
+                    tourId = await response.Content.ReadFromJsonAsync<int>();
+                    await UpdateStep(tourId.Value, Constant.CreateTourStepOne, Constant.CreateTourStepOne);
+                    ViewBag.TourId = tourId;
+                    return RedirectToAction("StepTwoAddBanner", "CreateTournament", new { tourId = tourId });
+                }
+                else
+                {
+                    var status = response.StatusCode;
+                    return RedirectToAction("InternalServerError", "Error");
+                }
             }
         }
 
@@ -125,7 +194,12 @@ namespace PoolComVnWebClient.Controllers
             var response = await client.PostAsJsonAsync(Constant.ApiUrl + "/Authorization/CheckAuthorization", rolesAccess);
             if (response.IsSuccessStatusCode)
             {
+                // binding data ở đây
+                ViewBag.Image = await client.GetStringAsync(Constant.ApiUrl 
+                    + "/Tournament/GetFlyer?tourId=" + tourId);
                 ViewBag.TourId = tourId;
+                ViewBag.CurrentStep = Constant.CreateTourStepTwo;
+                ViewBag.StepOpen = CheckStep(tourId);
                 return View();
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
@@ -174,6 +248,8 @@ namespace PoolComVnWebClient.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     ViewBag.TourId = await response.Content.ReadFromJsonAsync<int>();
+                    byte stepOpen = await CheckStep(tourId);
+                    await UpdateStep(tourId, Constant.CreateTourStepTwo, stepOpen);
                     return RedirectToAction("StepThreeReview", new { tourId = tourId });
                 }
                 else
@@ -217,6 +293,9 @@ namespace PoolComVnWebClient.Controllers
                 int numberOfPlayer = await responseGetLstPlayer.Content.ReadFromJsonAsync<int>();
                 ViewBag.NumberOfPlayer = numberOfPlayer;
                 ViewBag.TourId = tourId;
+                ViewBag.CurrentStep = Constant.CreateTourStepThree;
+                ViewBag.StepOpen = CheckStep(tourId.Value);
+                await UpdateStep(tourId.Value, ViewBag.CurrentStep, ViewBag.StepOpen);
                 return View();
             }
             else
@@ -233,6 +312,8 @@ namespace PoolComVnWebClient.Controllers
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
             var response = await client.GetFromJsonAsync<IEnumerable<TableDTO>>(Constant.ApiUrl + "/Table" + "/GetAllTablesForTournament");
+            ViewBag.CurrentStep = Constant.CreateTourStepFour;
+            //ViewBag.StepOpen = CheckStep(tourId);
             return View(response);
         }
 
@@ -246,6 +327,8 @@ namespace PoolComVnWebClient.Controllers
 
             if (response.IsSuccessStatusCode)
             {
+                byte stepOpen = await CheckStep(tourId);
+                await UpdateStep(tourId, Constant.CreateTourStepFour, stepOpen);
                 return RedirectToAction("StepFivePlayerList", "CreateTournament", new { tourId = tourId });
             }
             else
@@ -268,6 +351,8 @@ namespace PoolComVnWebClient.Controllers
             if (response.IsSuccessStatusCode)
             {
                 ViewBag.TourId = tourId;
+                ViewBag.CurrentStep = Constant.CreateTourStepFive;
+                //ViewBag.StepOpen = CheckStep(tourId.Value);
                 return View();
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
@@ -350,6 +435,8 @@ namespace PoolComVnWebClient.Controllers
                         ViewBag.ImportedPlayers = importedPlayers;
 
                     }
+                    ViewBag.CurrentStep = Constant.CreateTourStepFive;
+                    //ViewBag.StepOpen = CheckStep(id);
                     return View("StepFivePlayerList");
                 }
                 else
@@ -388,12 +475,10 @@ namespace PoolComVnWebClient.Controllers
             catch (Exception ex)
             {
 
-                Console.WriteLine("Exception was thrown : {0}", ex);
+                Console.WriteLine("Exception was thrown : {0}", ex); 
                 return null;
             }
         }
-
-
 
         [HttpGet]
         public async Task<IActionResult> StepFiveJoinList()
@@ -484,12 +569,14 @@ namespace PoolComVnWebClient.Controllers
                 .GetAsync(Constant.ApiUrl + "/Player/GenerateBotInTour?tourId=" + tourId);
             }
 
-            if (knockOutNumber.HasValue) 
+            if (knockOutNumber.HasValue)
             {
                 ViewBag.KnockOutNumber = knockOutNumber;
                 ViewBag.IsDouble = true;
             }
             ViewBag.TourId = tourId;
+            ViewBag.CurrentStep = Constant.CreateTourStepSix;
+            //ViewBag.StepOpen = Constant.CreateTourStepSix;
             return View();
         }
 
@@ -526,6 +613,7 @@ namespace PoolComVnWebClient.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult SystemSingleRandom(int tourId)
         {
             ViewBag.TourID = tourId;
@@ -536,6 +624,64 @@ namespace PoolComVnWebClient.Controllers
         public IActionResult CreateTournament()
         {
             return View();
+        }
+
+        private async Task<byte> CheckStep(int tourId)
+        {
+            byte stepOpen = await client.GetFromJsonAsync<byte>(ApiUrl + "/CheckStep?tourId=" + tourId);
+            switch (stepOpen)
+            {
+                case Constant.SvCreateTourStepOne:
+                    stepOpen = Constant.CreateTourStepOne;
+                    break;
+                case Constant.SvCreateTourStepTwo:
+                    stepOpen = Constant.CreateTourStepTwo;
+                    break;
+                case Constant.SvCreateTourStepThree:
+                    stepOpen = Constant.CreateTourStepThree;
+                    break;
+                case Constant.SvCreateTourStepFour:
+                    stepOpen = Constant.CreateTourStepFour;
+                    break;
+                case Constant.SvCreateTourStepFive:
+                    stepOpen = Constant.CreateTourStepFive;
+                    break;
+                default:
+                    stepOpen = Constant.CreateTourStepSix;
+                    break;
+            }
+            return stepOpen;
+        }
+
+        private async Task UpdateStep(int tourId, byte step, byte stepOpen)
+        {
+            if (stepOpen <= step)
+            {
+                byte updateStep;
+                switch (step)
+                {
+                    case Constant.CreateTourStepOne:
+                        updateStep = Constant.SvCreateTourStepTwo;
+                        break;
+                    case Constant.CreateTourStepTwo:
+                        updateStep = Constant.SvCreateTourStepThree;
+                        break;
+                    case Constant.CreateTourStepThree:
+                        updateStep = Constant.SvCreateTourStepFour;
+                        break;
+                    case Constant.CreateTourStepFour:
+                        updateStep = Constant.SvCreateTourStepFive;
+                        break;
+                    case Constant.CreateTourStepFive:
+                        updateStep = Constant.SvCreateTourStepSix;
+                        break;
+                    default:
+                        updateStep = Constant.SvCreateTourStepSix;
+                        break;
+                }
+                await client.GetAsync(ApiUrl + "/UpdateStep?tourId=" + tourId
+                    + "&step=" + updateStep);
+            }
         }
     }
 }

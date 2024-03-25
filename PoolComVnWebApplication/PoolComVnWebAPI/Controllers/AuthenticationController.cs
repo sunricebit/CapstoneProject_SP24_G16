@@ -98,7 +98,6 @@ namespace PoolComVnWebAPI.Controllers
             };
 
             var token = new JwtSecurityToken(_config["Jwt:Issuer"], _config["Jwt:Audience"], claims,
-                            expires: DateTime.Now.AddHours(1),
                             signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

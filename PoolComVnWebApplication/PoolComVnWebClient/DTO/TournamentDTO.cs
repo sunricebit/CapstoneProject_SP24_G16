@@ -9,21 +9,23 @@
         public int TournamentTypeId { get; set; }
         public int PlayerNumber { get; set; }
         public int EntryFee { get; set; }
-        public int TotalPrice { get; set; }
+        public int? TotalPrize { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string DrawType { get; set; } = null!;
         public string RaceToString { get; set; } = null!;
         public string PaymentType { get; set; } = null!;
         public DateTime RegistrationDeadline { get; set; }
-        public int AccessId { get; set; }
         public int MaxPlayerNumber { get; set; }
+        public int? KnockoutPlayerNumber { get; set; }
         public string Rules { get; set; } = null!;
         public byte Status { get; set; }
         public int ClubId { get; set; }
+        public bool? Access { get; set; }
     }
 
-    public class TournamentBracketOutputDTO {
+    public class TournamentBracketOutputDTO
+    {
         public List<MatchOfTournamentOutputDTO> matchOfTournamentOutputDTOs;
     }
 
@@ -31,8 +33,8 @@
     {
         public int MatchNumber { get; set; }
         public string? MatchCode { get; set; }
-        public int P1Id { get; set; }
-        public int P2Id { get; set; }
+        public int? P1Id { get; set; }
+        public int? P2Id { get; set; }
         public string? P1Country { get; set; }
         public string? P2Country { get; set; }
         public string? P1Name { get; set; }
