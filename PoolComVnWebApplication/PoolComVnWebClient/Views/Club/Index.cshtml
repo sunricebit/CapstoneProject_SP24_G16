@@ -175,7 +175,7 @@ else
                         }
                         else
                         {
-                            <div class="pagination-btn @(pageNum == Model.PageIndex ? "active" : "")" onclick="@($"{goToPageFunction}({pageNum}, '{@ViewBag.SearchQuery}', '{@ViewBag.GameType}', '{@ViewBag.StartDate}', '{@ViewBag.EndDate}')")">@pageNum</div>
+                            <div class="pagination-btn @(pageNum == Model.PageIndex ? "active" : "")" onclick="@($"{goToPageFunction}({pageNum}, '{@ViewBag.SearchQuery}')")">@pageNum</div>
                         }
                     }
                     <div class="pagination-btn-big" onclick="nextPage()">Sau</div>
