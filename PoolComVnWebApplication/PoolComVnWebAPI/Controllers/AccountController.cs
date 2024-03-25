@@ -10,10 +10,11 @@ namespace PoolComVnWebAPI.Controllers
     public class AccountController : ControllerBase
     {
         private readonly AccountDAO _accountDAO;
-
-        public AccountController(AccountDAO accountDAO)
+        private readonly AddressDAO _addressDAO;
+        public AccountController(AccountDAO accountDAO,AddressDAO addressDAO)
         {
             _accountDAO = accountDAO;
+            _addressDAO = addressDAO;
         }
         [HttpGet]
         public ActionResult<IEnumerable<AccountDTO>> Get()
@@ -44,6 +45,7 @@ namespace PoolComVnWebAPI.Controllers
         {
             try
             {
+
                 var user = _accountDAO.GetUserByAccountById(accountId);
                 if (user == null)
                 {
@@ -67,6 +69,36 @@ namespace PoolComVnWebAPI.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message); 
+            }
+        }
+        [HttpPost("CreateUser")]
+        public ActionResult CreateUser([FromBody] UserDTO userDTO)
+        {
+            try
+            {
+
+                var account = _accountDAO.GetAccountById(userDTO.AccountId);
+                var ward = _addressDAO.GetWardsByWardCode(userDTO.WardCode);
+                var user = new User
+                {
+                   
+                    FullName = userDTO.FullName,
+                    Dob = userDTO.Dob,
+                    Avatar = userDTO.Avatar,
+                    CreatedDate = userDTO.CreatedDate,
+                   UpdatedDate = userDTO.UpdatedDate,
+                   AccountId = userDTO.AccountId,
+                   Address = userDTO.Address,
+                   WardCode = userDTO.WardCode,
+                   Account = account,
+                   WardCodeNavigation = ward
+                };
+                _accountDAO.AddUser(user);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
         [HttpGet("GetAccountByEmail/{email}")]
@@ -141,8 +173,6 @@ namespace PoolComVnWebAPI.Controllers
                 {
                     return NotFound();
                 }
-
-                // Map Account to AccountDTO
                 var accountDTO = new AccountDTO
                 {
                     AccountID = account.AccountId,
@@ -152,7 +182,6 @@ namespace PoolComVnWebAPI.Controllers
                     PhoneNumber = account.PhoneNumber,
                     verifyCode = account.VerifyCode,
                     Status = account.Status
-                    // Map other properties as needed
                 };
 
                 return Ok(accountDTO);
@@ -168,10 +197,8 @@ namespace PoolComVnWebAPI.Controllers
         {
             try
             {
-                // Use the constructor to create an Account instance from the DTO
                 var account = new Account
                 {
-                    // Map properties from DTO to entity
                     AccountId = accountDTO.AccountID,
                     Email = accountDTO.Email,
                     Password = accountDTO.Password,
@@ -183,11 +210,8 @@ namespace PoolComVnWebAPI.Controllers
 
 
                 _accountDAO.AddAccount(account);
-
-                // Use the constructor to create an AccountDTO instance from the entity
                 var createdAccountDTO = new AccountDTO
                 {
-                    // Map properties from entity to DTO
                     AccountID = account.AccountId,
                     Email = account.Email,
                     Password = account.Password,
@@ -215,7 +239,6 @@ namespace PoolComVnWebAPI.Controllers
                     return BadRequest("Invalid Account ID");
                 }
 
-                // Map AccountDTO to Account
                 var updatedAccount = new Account
                 {
                     AccountId = updatedAccountDTO.AccountID,
@@ -225,7 +248,6 @@ namespace PoolComVnWebAPI.Controllers
                     PhoneNumber = updatedAccountDTO.PhoneNumber,
                     VerifyCode = updatedAccountDTO.verifyCode,
                     Status = updatedAccountDTO.Status
-                    // Map other properties as needed
                 };
 
                 _accountDAO.UpdateAccount(updatedAccount);

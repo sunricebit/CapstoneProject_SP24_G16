@@ -42,6 +42,33 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
+        [HttpGet("districts/byProvinceName/{provinceName}")]
+        public IActionResult GetDistrictsByProvinceName(string provinceName)
+        {
+            try
+            {
+                var districts = _addressDAO.GetDistrictsByProvinceNameAsync(provinceName);
+                return Ok(districts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        [HttpGet("wards/byDistrictName/{districtName}")]
+        public IActionResult GetWardsByDistrictName(string districtName)
+        {
+            try
+            {
+                var wards = _addressDAO.GetWardsByDistrictNameAsync(districtName);
+                return Ok(wards);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
         [HttpGet("wards/{districtCode}")]
         public IActionResult GetWardsByDistrictCode(string districtCode)
         {

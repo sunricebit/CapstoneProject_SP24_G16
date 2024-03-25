@@ -60,6 +60,37 @@ namespace DataAccess
                 return null;
             }
         }
+
+        public List<Club> GetClubsByFilters(string? provinceCode, string? districtCode, string? wardCode)
+        {
+            try
+            {
+                var query = _context.Clubs.AsQueryable();
+
+                if (!string.IsNullOrEmpty(provinceCode) && provinceCode != "0")
+                {
+                    query = query.Where(c => c.WardCodeNavigation.DistrictCodeNavigation.ProvinceCode == provinceCode);
+                }
+
+                if (!string.IsNullOrEmpty(districtCode) && districtCode != "0")
+                {
+                    query = query.Where(c => c.WardCodeNavigation.DistrictCode == districtCode);
+                }
+
+                if (!string.IsNullOrEmpty(wardCode) && wardCode != "0")
+                {
+                    query = query.Where(c => c.WardCode == wardCode);
+                }
+
+                return query.ToList();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi tìm kiếm câu lạc bộ: {ex.Message}");
+                return null;
+            }
+        }
+
         public List<Club> GetClubsBySearch(string searchQuery)
         {
             try

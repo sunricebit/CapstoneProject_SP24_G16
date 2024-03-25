@@ -35,19 +35,14 @@ namespace PoolComVnWebClient.Controllers
                 var jsonContent = response.Content.ReadAsStringAsync().Result;
                 var newsList = JsonConvert.DeserializeObject<List<NewsDTO>>(jsonContent);
 
-                // Lọc ra các tin tức có trạng thái là true
                 var visibleNewsList = newsList.Where(news => news.Status == true).ToList();
 
-                // Đảm bảo có đủ tin tức để hiển thị trên mỗi trang
                 while (visibleNewsList.Count < pageSize * pageNumber)
                 {
                     visibleNewsList.AddRange(newsList.Where(news => news.Status == false).Take(pageSize * pageNumber - visibleNewsList.Count));
                 }
 
-                // Tạo danh sách phân trang
                 var paginatedNewsList = PaginatedList<NewsDTO>.CreateAsync(visibleNewsList, pageNumber, pageSize);
-
-                // Lấy tin tức mới nhất
                 NewsDTO latestNews = visibleNewsList.FirstOrDefault();
 
                 ViewBag.LatestNews = latestNews;
@@ -72,16 +67,16 @@ namespace PoolComVnWebClient.Controllers
             var response = client.GetAsync($"https://localhost:5000/api/Account/GetAccountByEmail/{email}").Result;
             var AccountData = response.Content.ReadAsStringAsync().Result;
             var account = JsonConvert.DeserializeObject<AccountDTO>(AccountData);
-            if(account.RoleID == 2 || account.RoleID == 3)
+            if (account.RoleID == 2 || account.RoleID == 3)
             {
                 return RedirectToAction("Index");
             }
             else if (account.RoleID == 1)
             {
                 return RedirectToAction("Index", "Manager");
-            }  
+            }
             else
-            return RedirectToAction("Index", "NewsManage");
+                return RedirectToAction("Index", "NewsManage");
         }
 
         [HttpGet]
@@ -122,7 +117,7 @@ namespace PoolComVnWebClient.Controllers
 
         [HttpGet]
         public IActionResult Contact()
-        {      
+        {
             ViewBag.SuccessMessage = TempData["SuccessMessage"];
             ViewBag.ErrorMessage = TempData["ErrorMessage"];
             return View();
@@ -141,18 +136,34 @@ namespace PoolComVnWebClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult Club(int? page, string searchQuery)
+        public async Task<IActionResult> Club(int? page, string searchQuery, string? provinceCode, string? districtCode, string? wardCode)
         {
             try
             {
                 int pageNumber = page ?? 1;
                 int pageSize = 6;
 
-                var searchClubsList = GetSearchClubsList(searchQuery);
+                List<ClubDTO> clublists = null;
+                if (!string.IsNullOrEmpty(provinceCode) || !string.IsNullOrEmpty(districtCode) || 
+                    !string.IsNullOrEmpty(wardCode))
+                {
+                    clublists = await GetFilteredClubsLocation(provinceCode, districtCode, wardCode);
+                }
+                else
+                {
+                    clublists = await GetSearchClubsList(searchQuery);
+                }
                 ViewBag.SearchQuery = searchQuery;
-
-                var paginatedClubsList = PaginatedList<ClubDTO>.CreateAsync(searchClubsList, pageNumber, pageSize);
-                return View(paginatedClubsList);
+                if (clublists != null)
+                {
+                    var paginatedClubsList =  PaginatedList<ClubDTO>.CreateAsync(clublists, pageNumber, pageSize);
+                    return View(paginatedClubsList);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Lỗi khi lấy danh sách giải đấu từ API");
+                    return RedirectToAction("InternalServerError", "Error");
+                }
             }
             catch (HttpRequestException ex)
             {
@@ -166,16 +177,54 @@ namespace PoolComVnWebClient.Controllers
             }
         }
 
-        private List<ClubDTO> GetSearchClubsList(string searchQuery)
+        private async Task<List<ClubDTO>?> GetFilteredClubsLocation(string? provinceCode, string? districtCode, string? wardCode)
+        {
+            try
+            {
+                string apiUrl = $"https://localhost:5000/api/Club/GetClubsByLocation?";
+                if (!string.IsNullOrEmpty(provinceCode) && provinceCode != "Tỉnh")
+                {
+                    apiUrl += $"provinceCode={provinceCode}&";
+                }
+                if (!string.IsNullOrEmpty(districtCode) && districtCode != "Quận/Huyện")
+                {
+                    apiUrl += $"districtCode={districtCode}&";
+                }
+                if (!string.IsNullOrEmpty(wardCode) && wardCode != "Phường/Xã")
+                {
+                    apiUrl += $"&wardCode={wardCode}";
+                }
+
+                var response = await client.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonContent = await response.Content.ReadAsStringAsync();
+                    var clubsList = JsonConvert.DeserializeObject<List<ClubDTO>>(jsonContent);
+                    return clubsList;
+                }
+                else
+                {
+                    return new List<ClubDTO>();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while getting filtered clubs list: {ex.Message}");
+                return new List<ClubDTO>();
+            }
+        }
+
+        private async Task<List<ClubDTO>> GetSearchClubsList(string searchQuery)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(searchQuery))
                 {
-                    var response = client.GetAsync($"https://localhost:5000/api/Club").Result;
+                    var response = await client.GetAsync($"https://localhost:5000/api/Club");
                     if (response.IsSuccessStatusCode)
                     {
-                        var jsonContent = response.Content.ReadAsStringAsync().Result;
+                        var jsonContent = await response.Content.ReadAsStringAsync();
                         var clubsList = JsonConvert.DeserializeObject<List<ClubDTO>>(jsonContent);
                         return clubsList;
                     }
@@ -186,10 +235,10 @@ namespace PoolComVnWebClient.Controllers
                 }
                 else
                 {
-                    var response = client.GetAsync($"https://localhost:5000/api/Club/Search?searchQuery={searchQuery}").Result;
+                    var response = await client.GetAsync($"https://localhost:5000/api/Club/Search?searchQuery={searchQuery}");
                     if (response.IsSuccessStatusCode)
                     {
-                        var jsonContent = response.Content.ReadAsStringAsync().Result;
+                        var jsonContent = await response.Content.ReadAsStringAsync();
                         var clubsList = JsonConvert.DeserializeObject<List<ClubDTO>>(jsonContent);
                         return clubsList;
                     }
@@ -205,6 +254,7 @@ namespace PoolComVnWebClient.Controllers
                 return new List<ClubDTO>();
             }
         }
+
 
     }
 }

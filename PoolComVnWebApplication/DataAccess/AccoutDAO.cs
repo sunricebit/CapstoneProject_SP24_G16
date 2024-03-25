@@ -326,5 +326,18 @@ namespace DataAccess
         {
             return _context.Users.FirstOrDefault(u=> u.AccountId == accountId);
         }
+
+        public void AddUser(User user)
+        {
+            try
+            {
+                _context.Users.Add(user);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

@@ -245,27 +245,32 @@ button {
 
 .container .news-image,
 .container-full .news-image {
-    overflow: hidden;
     border-radius: 20px;
     width: 300px;
     height: 200px;
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
 }
 
     .container .news-image.hidden,
     .container .tour-box.hidden,
+    .dashboard-container .tour-box.hidden,
     .container .item-box.hidden {
         opacity: 0.3;
     }
 
-.container .news-item img,
-.container-full .news-item img {
-    display: block;
+.container .news-item .img,
+.container-full .news-item .img {
     width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
     transition: transform 0.3s;
 }
 
-    .container .news-item img:hover,
-    .container-full .news-item img:hover {
+    .container .news-item .img:hover,
+    .container-full .news-item .img:hover {
         transform: scale(1.1);
     }
 
@@ -766,6 +771,9 @@ footer {
     .tournament .tour-item {
         padding: 10px;
         position: relative;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 32px;
     }
 
 .history-content .tour-item {
@@ -777,9 +785,8 @@ footer {
     .history-content .tour-item .item-body {
         display: block;
         background: #eaeaea;
-        width: 100%;
+        width: 300px;
         border-radius: 5px;
-        /* overflow: hidden; */
         position: relative;
         min-height: 460px;
         transition: transform 0.5s ease;
@@ -853,7 +860,11 @@ footer {
 
 .tournament .tour-item .tour-image,
 .history-content .tour-item .tour-image {
-    width: 100%;
+    width: 300px;
+    height: 200px;
+    overflow: hidden;
+    background-position: center;
+    background-size: cover;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
@@ -911,6 +922,9 @@ footer {
 .history-content .tour-item .tour-club-image {
     width: 28px;
     height: 28px;
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
     border-radius: 50%;
 }
 
@@ -1140,6 +1154,10 @@ footer {
         font-weight: 600;
     }
 
+        .manage-nav .back-btn a {
+            color: #fff;
+        }
+
     .manage-nav .menu-body {
         position: absolute;
         top: 50px;
@@ -1329,7 +1347,7 @@ footer {
             }
 
         .container-full .tour-info .tour-image img {
-            width: 80%;
+            width: 50%;
         }
 
     .container-full .info-line {
@@ -2941,6 +2959,10 @@ tr:not(:first-child).isFinish {
         color: #fff;
     }
 
+        .create-tour .tour-input .input-content::placeholder {
+            color: #fff;
+        }
+
     .confirm-popup .tour-input .input-title {
         color: #000;
         font-weight: 500;
@@ -3494,6 +3516,7 @@ tr:not(:first-child).isFinish {
         background-position: center;
         background-size: cover;
         overflow: hidden;
+        border-radius: 10px;
     }
 
     .upload-img.avt {
@@ -4283,6 +4306,7 @@ tr:not(:first-child).isFinish {
     box-shadow: 0 0 10px 5px #000;
     overflow-y: auto;
     padding-bottom: 100px;
+    display: none;
 }
 
     .club-dashboard-nav::-webkit-scrollbar {
@@ -4377,13 +4401,14 @@ tr:not(:first-child).isFinish {
     }
 
 .dashboard-container {
-    width: calc(100% - 300px);
+    width: 100%;
     position: fixed;
     overflow: auto;
     top: 50px;
-    left: 300px;
+    left: 0;
     z-index: 98;
     height: calc(100vh - 50px);
+    padding: 50px 2%;
 }
 
     .dashboard-container.table {
@@ -4819,13 +4844,8 @@ tr:not(:first-child).isFinish {
     border-radius: 10px;
     overflow: hidden;
     border: #fff solid 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.club-list .club-box img {
-    height: 270px;
+    background-position: center;
+    background-size: cover;
 }
 
 .club-list .club-box .club-info {
@@ -5036,7 +5056,8 @@ tr:not(:first-child).isFinish {
             text-indent: 10px;
         }
 
-        .change-info .menu-info button {
+        .change-info .menu-info button,
+        .change-info .menu-info .cancle-btn {
             border: 2px solid #ccc;
             border-radius: 6px;
             height: 40px;
@@ -5045,12 +5066,25 @@ tr:not(:first-child).isFinish {
             font-weight: 600;
             width: 200px;
             line-height: 40px;
+            display: block;
+            text-align: center;
         }
 
-            .change-info .menu-info button:hover {
-                background: #31b08c;
-                color: #fff;
+        .change-info .menu-info .cancle-btn {
+            background-color: #dc2222;
+            color: #fff;
+        }
+
+            .change-info .menu-info .cancle-btn:hover {
+                background-color: #a70d10;
+                cursor: pointer;
             }
+
+        .change-info .menu-info button:hover {
+            background: #31b08c;
+            color: #fff;
+            cursor: pointer;
+        }
 
     .change-info .containUser .title {
         font-size: 28px;
@@ -5360,5 +5394,14 @@ tr:not(:first-child).isFinish {
 
     .history-content .tour-item {
         width: 33.33%;
+    }
+
+    .club-dashboard-nav {
+        display: block;
+    }
+
+    .dashboard-container {
+        width: calc(100% - 300px);
+        left: 300px;
     }
 }

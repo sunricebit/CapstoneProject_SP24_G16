@@ -1,13 +1,17 @@
 ﻿@using PoolComVnWebClient.DTO
 @model PaginatedList<ClubDTO>
+
 <div class="container">
     <div class="tournament">
         <div class="normal-body">
             <div class="d-flex justify-content-end mt-4 row">
                 <div class="d-flex justify-content-end col-lg-6 col-12 order-1 order-lg-2">
-                    <div class="tour-search d-flex justify-content-end align-items-center">
+                    <div method="get" action="/Home/Club" class="tour-search d-flex justify-content-end align-items-center">
                         <i class="search-btn fa-solid fa-magnifying-glass" onclick="search()"></i>
-                        <input id="searchInput" class="search-input px-2" type="text" placeholder="Câu lạc bộ, địa chỉ,..." value="@ViewBag.SearchQuery" />
+                        <form method="get" action="/Home/Club">
+                            <input id="searchInput" class="search-input px-2" type="text" name="searchQuery" placeholder="Câu lạc bộ, địa chỉ,..." value="@ViewBag.SearchQuery" />
+                            <button type="submit" class="search-btn fa-solid fa-magnifying-glass"></button>
+                        </form>
                     </div>
 
                     <div class="tour-filter d-flex align-items-center">
@@ -15,17 +19,24 @@
                             <span>Bộ lọc</span>
                             <i class="fa-solid fa-filter px-2"></i>
                         </div>
-                        <form class="filter-body d-none" onsubmit="submitFilter(event)">
+                        <form method="get" action="/Home/Club" class="filter-body d-none" onsubmit="submitFilter(event)">
                             <div class="row d-flex justify-content-center">
                                 <div class="d-flex justify-content-center col-4">
-                                    <select class="tour-province col-4" onchange="displayCities()">
+                                    <input type="hidden" id="provinceCode" name="provinceCode" value="0" />       
+                                    <select id="provinceSelect" class="tour-province col-4" name="provinceName">
                                         <option selected hidden value="0">Tỉnh</option>
                                     </select>
                                 </div>
-
                                 <div class="d-flex justify-content-center col-4">
-                                    <select class="tour-city col-4" disabled>
-                                        <option selected hidden>Khu vực</option>
+                                    <input type="hidden" id="districtCode" name="districtCode" value="0" />
+                                    <select id="districtSelect" class="tour-province tour-district col-4" name="districtName" disabled>
+                                        <option selected hidden value="0">Quận/Huyện</option>
+                                    </select>
+                                </div>
+                                <div class="d-flex justify-content-center col-4">
+                                    <input type="hidden" id="wardCode" name="wardCode" value="0" />
+                                    <select id="wardSelect" class="tour-province tour-ward col-4" name="wardName" disabled>
+                                        <option selected hidden value="0">Phường/Xã</option>
                                     </select>
                                 </div>
                             </div>
@@ -42,13 +53,10 @@
                 <div class="club-list d-flex row justify-content-around">
                     @foreach (var club in Model.Items)
                     {
-                        <a asp-controller="club" asp-action="Index" asp-route-id="@club.ClubId" class="club-box">
+                        <a asp-controller="Club" asp-action="Index" asp-route-id="@club.ClubId" class="club-box">
                             <div class="club-box-border">
-                                <div class="club-box-bg" style="background-image: url('@club.Avatar');">
-                                </div>
-                                <div class="club-image">
-                                    <img src="@club.Avatar" alt="">
-                                </div>
+                                <div class="club-box-bg" style="background-image: url('@club.Avatar');"></div>
+                                <div class="club-image" style="background-image: url('@club.Avatar');"></div>
                                 <div class="club-info">
                                     <div class="club-name">@club.ClubName</div>
                                     <div class="club-address">
@@ -80,6 +88,7 @@
         </div>
     </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
     //tour-filter button
@@ -95,108 +104,101 @@
         }
     })
 
-    // Hàm gọi API để lấy danh sách tỉnh/thành phố
-    async function fetchProvinces() {
-        try {
-            const response = await fetch('https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1');
-            const provincesData = await response.json();
-            const provincesDropdown = document.querySelector('.tour-province');
-            provincesData.forEach(province => {
-                const option = document.createElement('option');
-                option.text = province.name;
-                provincesDropdown.add(option);
+    $(document).ready(function () {
+        function loadProvinces() {
+            $.ajax({
+                url: 'https://localhost:5000/api/Address/provinces',
+                type: 'GET',
+                success: function (data) {
+                    var provinceSelect = $('#provinceSelect');
+                    provinceSelect.empty().append('<option value="0" selected hidden>Tỉnh</option>');
+                    $.each(data, function (index, province) {
+                        provinceSelect.append('<option value="' + province.code + '">' + province.name + '</option>');
+                    });
+                },
+                error: function () {
+                    alert('Đã xảy ra lỗi khi gọi API.');
+                }
             });
-        } catch (error) {
-            console.error('Error fetching provinces:', error);
         }
-    }
-
-    // Hàm gọi API để lấy danh sách quận/huyện dựa trên tỉnh/thành phố được chọn
-    async function fetchDistricts(selectedProvince) {
-        try {
-            const response = await fetch(`https://vn-public-apis.fpo.vn/districts/getAll?provinceCode=${selectedProvince}&limit=-1`);
-            const districtsData = await response.json();
-            const citiesDropdown = document.querySelector('.tour-city');
-            citiesDropdown.disabled = false;
-            citiesDropdown.innerHTML = '';
-            districtsData.forEach(district => {
-                const option = document.createElement('option');
-                option.text = district.name;
-                citiesDropdown.add(option);
-            });
-        } catch (error) {
-            console.error('Error fetching districts:', error);
-        }
-    }
-    document.addEventListener('DOMContentLoaded', () => {
-        fetchProvinces();
-    });
-
-    const tourProvince = document.querySelector('.tour-province');
-    const tourCity = document.querySelector('.tour-city');
-
-    tourProvince.addEventListener('change', () => {
-        const selectedProvince = tourProvince.value;
-        if (selectedProvince !== "0") {
-            fetchDistricts(selectedProvince);
-        } else {
-            tourCity.innerHTML = '';
-            tourCity.disabled = true;
-        }
-    });
-
-    function displayCities() {
-        const tourProvince = document.querySelector('.tour-province');
-        const tourCity = document.querySelector('.tour-city');
-        const selectedProvince = tourProvince.value;
-        const cities = provinces[selectedProvince];
-        tourCity.innerHTML = '';
-        cities.forEach(city => {
-            const option = document.createElement('option');
-            option.text = city;
-            tourCity.add(option);
+        loadProvinces();
+        $('#provinceSelect').change(function () {
+            var provinceCode = $(this).val();
+            $('#provinceCode').val(provinceCode);
+            if (provinceCode !== "0") {
+                $.ajax({
+                    url: 'https://localhost:5000/api/Address/districts/' + provinceCode,
+                    type: 'GET',
+                    success: function (data) {
+                        var districtSelect = $('#districtSelect');
+                        districtSelect.empty().append('<option value="0" selected hidden>Quận/Huyện</option>');
+                        $.each(data, function (index, district) {
+                            districtSelect.append('<option value="' + district.code + '">' + district.name + '</option>');
+                        });
+                        districtSelect.prop('disabled', false);
+                    },
+                    error: function () {
+                        alert('Đã xảy ra lỗi khi gọi API.');
+                    }
+                });
+            }
         });
-    }
 
-    function submitFilter(event) {
-        event.preventDefault();
-        var selectedProvince = document.querySelector('.tour-province').value;
-        var selectedCity = document.querySelector('.tour-city').value;
-        var url = "@Url.Action("Club", "Home")";
-        if (selectedProvince) {
-            url += "?searchQuery=" + encodeURIComponent(selectedCity);
-        }
-        window.location.href = url;
-    }
-
-
-    function search() {
-        var searchQuery = document.getElementById('searchInput').value.trim();
-        window.location.href = "@Url.Action("Club", "Home")?searchQuery=" + searchQuery;
-    }
-
-    document.getElementById("searchInput").addEventListener("keyup", function (event) {
-        if (event.key === "Enter") {
-            search();
-        }
+        $('#districtSelect').change(function () {
+            var districtCode = $(this).val();
+            $('#districtCode').val(districtCode);
+            if (districtCode !== "0") {
+                $.ajax({
+                    url: 'https://localhost:5000/api/Address/wards/' + districtCode,
+                    type: 'GET',
+                    success: function (data) {
+                        var wardSelect = $('#wardSelect');
+                        wardSelect.empty().append('<option value="0" selected hidden>Phường/Xã</option>');
+                        $.each(data, function (index, ward) {
+                            wardSelect.append('<option value="' + ward.code + '">' + ward.name + '</option>');
+                        });
+                        wardSelect.prop('disabled', false);
+                    },
+                    error: function () {
+                        alert('Đã xảy ra lỗi khi gọi API.');
+                    }
+                });
+            }
+        });
+    });
+    $('#wardSelect').change(function () {
+        var wardCode = $(this).val();
+        $('#wardCode').val(wardCode);
     });
 
     function prevPage() {
-        var currentPage = @Model.PageIndex;
+        const currentPage = @Model.PageIndex;
         if (currentPage > 1) {
             goToPage(currentPage - 1);
         }
     }
 
     function nextPage() {
-        var currentPage = @Model.PageIndex;
-        var totalPages = @Model.TotalPages;
+        const currentPage = @Model.PageIndex;
+        const totalPages = @Model.TotalPages;
         if (currentPage < totalPages) {
             goToPage(currentPage + 1);
         }
     }
 
     function goToPage(pageNum) {
-        window.location.href = "@Url.Action("Club", "Home")?page=" + pageNum;
+        var searchQuery = $('#searchInput').val(); // Lấy giá trị của trường tìm kiếm
+        var provinceCode = $('#provinceCode').val(); // Lấy giá trị của trường tỉnh
+        var districtCode = $('#districtCode').val(); // Lấy giá trị của trường quận/huyện
+        var wardCode = $('#wardCode').val(); // Lấy giá trị của trường phường/xã
+
+        // Chuyển đến trang mới với các tham số tìm kiếm
+        window.location.href = "@Url.Action("Club", "Home")" +
+            "?page=" + pageNum +
+            "&searchQuery=" + searchQuery +
+            "&provinceCode=" + provinceCode +
+            "&districtCode=" + districtCode +
+            "&wardCode=" + wardCode;
     }
+
 </script>

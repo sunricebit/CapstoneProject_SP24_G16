@@ -169,6 +169,43 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
+        [HttpGet("GetClubsByLocation")]
+        public ActionResult<IEnumerable<ClubDTO>> GetClubsByLocation(string? provinceCode, string? districtCode, string? wardCode)
+        {
+            try
+            {
+                var clubs = _clubDAO.GetClubsByFilters(provinceCode, districtCode, wardCode);
+
+                if (clubs == null || clubs.Count == 0)
+                {
+                    return NotFound("Không tìm thấy câu lạc bộ nào ở tỉnh/thành phố hoặc quận/huyện đã cho.");
+                }
+
+                // Chuyển đổi danh sách Club sang danh sách ClubDTO để trả về cho client
+                var clubDTOs = new List<ClubDTO>();
+                foreach (var club in clubs)
+                {
+                    var clubDto = new ClubDTO
+                    {
+                        ClubId = club.ClubId,
+                        ClubName = club.ClubName,
+                        Facebook = club.Facebook,
+                        Phone = club.Phone,
+                        Address = club.Address,
+                        Avatar = club.Avatar,
+                        AccountId = club.AccountId,
+                        Status = club.Status
+                    };
+                    clubDTOs.Add(clubDto);
+                }
+                return Ok(clubDTOs);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Lỗi khi tìm kiếm câu lạc bộ: {ex.Message}");
+            }
+        }
+
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] ClubDTO updatedClubDto)
         {
