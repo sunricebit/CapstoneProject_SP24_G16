@@ -21,7 +21,7 @@ namespace PoolComVnWebAPI.Controllers
             _clubDAO = clubDAO;
             _mapper = mapper;
         }
-
+        
         // GET: api/Table
         [HttpGet]
         public IActionResult GetAllTables()
@@ -161,6 +161,37 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
+        [HttpGet("GetTablesByClubId/{clubId}")]
+        public IActionResult GetTablesByClubId(int clubId)
+        {
+            try
+            {
+                var tables = _tableDAO.GetAllTablesForClub(clubId);
+
+                if (tables == null)
+                {
+                    return NotFound("No tables found for the provided ClubId.");
+                }
+
+                return Ok(tables.Select(table => new TableDTO
+                {
+                    TableId = table.TableId,
+                    TableName = table.TableName,
+                    ClubId = table.ClubId,
+                    TagName = table.TagName,
+                    Status = table.Status,
+                    Size = table.Size,
+                    Image = table.Image,
+                    IsScheduling = table.IsScheduling,
+                    IsUseInTour = table.IsUseInTour,
+                    Price = table.Price
+                }).ToList());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal Server Error: {ex.Message}");
+            }
+        }
 
 
         [HttpGet("Update/{id}")]

@@ -69,8 +69,8 @@ namespace DataAccess
                 .ForMember(dest => dest.Size, opt => opt.MapFrom(src => src.Size))
                 .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Image))
                 .ForMember(dest => dest.IsScheduling, opt => opt.MapFrom(src => src.IsScheduling))
-                .ForMember(dest => dest.IsUseInTour, opt => opt.MapFrom(src => src.IsUseInTour));
-
+                .ForMember(dest => dest.IsUseInTour, opt => opt.MapFrom(src => src.IsUseInTour))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price));
             CreateMap<TableDTO, Table>()
                 .ForMember(dest => dest.TableId, opt => opt.MapFrom(src => src.TableId))
                 .ForMember(dest => dest.TableName, opt => opt.MapFrom(src => src.TableName))
@@ -80,7 +80,7 @@ namespace DataAccess
                 .ForMember(dest => dest.Size, opt => opt.MapFrom(src => src.Size))
                 .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Image))
                 .ForMember(dest => dest.IsScheduling, opt => opt.MapFrom(src => src.IsScheduling))
-                .ForMember(dest => dest.IsUseInTour, opt => opt.MapFrom(src => src.IsUseInTour));
+                .ForMember(dest => dest.IsUseInTour, opt => opt.MapFrom(src => src.IsUseInTour)).ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price));
         }
     }
 }
