@@ -63,7 +63,7 @@ namespace PoolComVnWebAPI.Controllers
         {
             try
             {
-                var wards = _addressDAO.GetWardsByDistrictNameAsync(districtName);
+                var wards = _addressDAO.GetWardsByDistrictCodeAsync(districtName);
                 return Ok(wards);
             }
             catch (Exception ex)
