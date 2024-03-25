@@ -142,18 +142,34 @@ namespace PoolComVnWebClient.Controllers
             {
                 int pageNumber = page ?? 1;
                 int pageSize = 6;
-
+                ViewBag.SearchQuery = searchQuery;
+                ViewBag.ProvinceCode = provinceCode;
+                ViewBag.DistrictCode = districtCode;
+                ViewBag.WardCode = wardCode;
                 List<ClubDTO> clublists = null;
                 if (!string.IsNullOrEmpty(provinceCode) || !string.IsNullOrEmpty(districtCode) || 
                     !string.IsNullOrEmpty(wardCode))
                 {
                     clublists = await GetFilteredClubsLocation(provinceCode, districtCode, wardCode);
                 }
-                else
+                else if(!string.IsNullOrEmpty(searchQuery))
                 {
                     clublists = await GetSearchClubsList(searchQuery);
                 }
-                ViewBag.SearchQuery = searchQuery;
+                else
+                {
+                    var response = await client.GetAsync($"https://localhost:5000/api/Club");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        clublists = await response.Content.ReadFromJsonAsync<List<ClubDTO>>();
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Lỗi khi lấy danh sách giải đấu từ API");
+                        return RedirectToAction("InternalServerError", "Error");
+                    }
+                }
+                
                 if (clublists != null)
                 {
                     var paginatedClubsList =  PaginatedList<ClubDTO>.CreateAsync(clublists, pageNumber, pageSize);

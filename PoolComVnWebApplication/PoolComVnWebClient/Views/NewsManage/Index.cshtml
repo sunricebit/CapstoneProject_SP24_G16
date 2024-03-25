@@ -100,12 +100,12 @@
             <div class="pagination-btn-big" onclick="prevPage()">Trước</div>
             @foreach (var pageNum in Enumerable.Range(1, Model.TotalPages))
             {
-                <div class="pagination-btn @(pageNum == Model.PageIndex ? "active" : "")" onclick="goToPage(@pageNum)">@pageNum</div>
+                <div class="pagination-btn @(pageNum == Model.PageIndex ? "active" : "")" onclick="goToPage(@pageNum, '@ViewBag.SearchQuery')">@pageNum</div>
             }
             <div class="pagination-btn-big" onclick="nextPage()">Sau</div>
-
         </div>
     </div>
+
     @*Phân trang end*@
 </div>
 
@@ -116,7 +116,8 @@
     function prevPage() {
         var currentPage = @Model.PageIndex;
         if (currentPage > 1) {
-            goToPage(currentPage - 1);
+            var searchQuery = '@ViewBag.SearchQuery';
+            goToPage(currentPage - 1, searchQuery);
         }
     }
 
@@ -124,13 +125,16 @@
         var currentPage = @Model.PageIndex;
         var totalPages = @Model.TotalPages;
         if (currentPage < totalPages) {
-            goToPage(currentPage + 1);
+            var searchQuery = '@ViewBag.SearchQuery';
+            goToPage(currentPage + 1, searchQuery);
         }
     }
 
-    function goToPage(pageNum) {
-        window.location.href = "@Url.Action("Index", "NewsManage")?page=" + pageNum;
+    function goToPage(pageNum, searchQuery) {
+        window.location.href = "@Url.Action("Index", "NewsManage")?page=" + pageNum + "&searchQuery=" + searchQuery;
     }
+
+
 
     function Search() {
         const inputElement = document.querySelector('.news-input');
