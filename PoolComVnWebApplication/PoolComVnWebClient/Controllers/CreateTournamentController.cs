@@ -84,14 +84,14 @@ namespace PoolComVnWebClient.Controllers
                 errors.Add("Thời gian bắt đầu phải lớn hơn thời gian hiện tại.");
             }
 
-            if (inputDTO.EndTime <= inputDTO.StartTime)
+            if (inputDTO.EndTime < inputDTO.StartTime)
             {
                 errors.Add("Thời gian kết thúc phải lớn hơn thời gian bắt đầu.");
             }
 
             if (inputDTO.RegistrationDeadline > inputDTO.StartTime)
             {
-                errors.Add("Thời hạn đăng ký phải nằm giữa thời gian bắt đầu và kết thúc.");
+                errors.Add("Thời hạn đăng ký trước thời gian bắt đầu.");
             }
 
             if (errors.Count > 0)
@@ -169,78 +169,7 @@ namespace PoolComVnWebClient.Controllers
                 }
                 BannerDTO.TourId = tourId;
 
-                var response = await client.PostAsJsonAsync(ApiUrl + "/Creat" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "" +
-                    "eTourStTwo", BannerDTO);
+                var response = await client.PostAsJsonAsync(ApiUrl + "/CreateTourStTwo", BannerDTO);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -282,7 +211,7 @@ namespace PoolComVnWebClient.Controllers
                 return RedirectToAction("InternalServerError", "Error");
             }
 
-            var responseGetLstPlayer = await client.GetAsync(Constant.ApiUrl + "/Player" + "/GetNumberPlayerByTourId?tourId=" + tourId);
+            var responseGetLstPlayer = await client.GetAsync(Constant.ApiUrl + "/Player" + "/GetNumberPlayerExBotByTourId?tourId=" + tourId);
             if (responseGetLstPlayer.IsSuccessStatusCode)
             {
                 int numberOfPlayer = await responseGetLstPlayer.Content.ReadFromJsonAsync<int>();
@@ -303,7 +232,7 @@ namespace PoolComVnWebClient.Controllers
             ViewBag.TourId = tourId;
             var tokenFromCookie = HttpContext.Request.Cookies["TokenJwt"];
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenFromCookie);
-            var response = await client.GetFromJsonAsync<IEnumerable<TableDTO>>(Constant.ApiUrl + "/Table" + "/GetAllTablesForClub");
+            var response = await client.GetFromJsonAsync<IEnumerable<TableDTO>>(Constant.ApiUrl + "/Table" + "/GetAllTablesForTournament");
             return View(response);
         }
 
