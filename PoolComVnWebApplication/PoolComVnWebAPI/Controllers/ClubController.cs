@@ -120,7 +120,8 @@ namespace PoolComVnWebAPI.Controllers
                     Address = club.Address,
                     Avatar = club.Avatar,
                     AccountId = club.AccountId,
-                    Status = club.Status
+                    Status = club.Status,
+                    WardCode = club.WardCode
                 };
 
                 return Ok(clubDto);
@@ -206,8 +207,8 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] ClubDTO updatedClubDto)
+        [HttpPost("UpdateClub")]
+        public IActionResult UpdatePost(int id, [FromBody] ClubDTO updatedClubDto)
         {
             if (updatedClubDto == null)
             {
@@ -225,6 +226,8 @@ namespace PoolComVnWebAPI.Controllers
             existingClub.Phone = updatedClubDto.Phone;
             existingClub.Facebook = updatedClubDto.Facebook;
             existingClub.Avatar = updatedClubDto.Avatar;
+            existingClub.Status = updatedClubDto.Status;
+            existingClub.WardCode = updatedClubDto.WardCode;
             _clubDAO.UpdateClub(existingClub);
 
             return NoContent();

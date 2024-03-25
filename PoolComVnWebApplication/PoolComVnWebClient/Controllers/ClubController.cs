@@ -9,6 +9,7 @@ using Firebase.Storage;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
+using PoolComVnWebAPI.DTO;
 
 namespace PoolComVnWebClient.Controllers
 {
@@ -742,10 +743,32 @@ namespace PoolComVnWebClient.Controllers
             }
             var ClubData = response2.Content.ReadAsStringAsync().Result;
             var club = JsonConvert.DeserializeObject<ClubDTO>(ClubData);
+
+            var responseWard = client.GetAsync($"{ApiUrl}/Address/getwardsBywardCode/{club.WardCode}").Result;
+            var wardData = responseWard.Content.ReadAsStringAsync().Result;
+            var ward = JsonConvert.DeserializeObject<WardDTO>(wardData);
+            
+            var responseDistrict = client.GetAsync($"{ApiUrl}/Address/GetdistrictsByDistrictCode/{ward.DistrictCode}").Result;        
+            var districtData = responseDistrict.Content.ReadAsStringAsync().Result;
+            var district = JsonConvert.DeserializeObject<DistrictDTO>(districtData);
+
+            var responseProvince = client.GetAsync($"{ApiUrl}/Address/getProvincesByProvinceCode/{district.ProvinceCode}").Result;
+            var provinceData = responseProvince.Content.ReadAsStringAsync().Result;
+            var province = JsonConvert.DeserializeObject<ProvinceDTO>(provinceData);
+            
             ViewBag.Club = club;
             ViewBag.AccountEmail = email;
+            ViewBag.Ward = ward;
+            ViewBag.District = district;
+            ViewBag.Province = province;
             return View(club);
         }
+        [HttpPost]
+        public async Task<IActionResult> ClubDetails(ClubDTO ClubDTO, IFormFile BannerFile,string ward)
+        {
+
+            return View();
+        }    
 
         public IActionResult ClubTable(int? id)
         {

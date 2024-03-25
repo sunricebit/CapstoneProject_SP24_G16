@@ -16,7 +16,7 @@ namespace BusinessObject.Models
         public string? Description { get; set; }
         public int GameTypeId { get; set; }
         public int TournamentTypeId { get; set; }
-        public int PlayerNumber { get; set; } // ? có cần trường này không
+        public int PlayerNumber { get; set; }
         public int EntryFee { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime EndDate { get; set; }

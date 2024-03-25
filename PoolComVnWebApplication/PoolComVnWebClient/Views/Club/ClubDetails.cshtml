@@ -2,6 +2,7 @@
     Layout = "~/Views/Shared/_ClubLayout.cshtml";
 }
 @model PoolComVnWebClient.DTO.ClubDTO;
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <div class="dashboard-container container">
     <div class="change-info row mt-3">
         <div class="col-10 d-block p-0">
@@ -24,6 +25,11 @@
                                 </div>
                             </div>
                         </div>
+                        <input type="hidden" asp-for="ClubId" value="@Model.ClubId" />
+                        <input type="hidden" asp-for="Avatar" value="@Model.Avatar" />
+                        <input type="hidden" asp-for="AccountId" value="@Model.AccountId" />
+                        <input type="hidden" asp-for="Status" value="@Model.Status" />
+                        <input type="hidden" asp-for="WardCode" value="@Model.WardCode" />
                         <div class="py-2">
                             <p class="fw-bold">Tên câu lạc bộ</p>
                             <input type="text" class="firstName" asp-for="ClubName" required minlength="3" maxlength="30">
@@ -41,15 +47,18 @@
                      
                         <div class="py-2">
                             <p class="fw-bold">Địa chỉ</p>
-                            <select class="select-address" id="provinceSelect">
-                                <option value="0" selected hidden>Tỉnh</option>
+                           <select class="select-address" id="provinceSelect">
+                                <option value="@ViewBag.Province.Code" selected>@ViewBag.Province.Name</option>
                             </select>
                             <select class="select-address" id="districtSelect" disabled>
                                 <option value="0" selected hidden>Quận/Huyện</option>
+                                <option value="@ViewBag.District.Code" selected>@ViewBag.District.Name</option>
                             </select>
                             <select class="select-address" id="wardSelect" disabled>
                                 <option value="0" selected hidden>Phường/Xã</option>
+                                <option value="@ViewBag.Ward.Code" selected>@ViewBag.Ward.Name</option>
                             </select>
+                            <input type="hidden" id="wardInput" name="ward" />
                         </div>
                         <div class="py-2">
                             <p class="fw-bold">Địa chỉ cụ thể</p>
@@ -98,4 +107,68 @@
     //Handel active nav
     const clubNavBtn = document.querySelector('.club-change-info');
     clubNavBtn.classList.add('active');
+    $(document).ready(function () {
+        function loadProvinces() {
+            $.ajax({
+                url: 'https://localhost:5000/api/Address/provinces',
+                type: 'GET',
+                success: function (data) {
+                    var provinceSelect = $('#provinceSelect');
+                    provinceSelect.empty().append('<option value="@ViewBag.Province.Code" selected>@ViewBag.Province.Name</option>');
+                    $.each(data, function (index, province) {
+                        provinceSelect.append('<option value="' + province.code + '">' + province.name + '</option>');
+                    });
+                },
+                error: function () {
+                    alert('Đã xảy ra lỗi khi gọi API.');
+                }
+            });
+        }
+        loadProvinces();
+        $('#provinceSelect').change(function () {
+            var provinceCode = $(this).val();
+            if (provinceCode !== "0") {
+                $.ajax({
+                    url: 'https://localhost:5000/api/Address/districts/' + provinceCode,
+                    type: 'GET',
+                    success: function (data) {
+                        var districtSelect = $('#districtSelect');
+                        districtSelect.empty().append('<option value="0" selected hidden>Quận/Huyện</option>');
+                        $.each(data, function (index, district) {
+                            districtSelect.append('<option value="' + district.code + '">' + district.name + '</option>');
+                        });
+                        districtSelect.prop('disabled', false);
+                    },
+                    error: function () {
+                        alert('Đã xảy ra lỗi khi gọi API.');
+                    }
+                });
+            }
+        });
+
+        $('#districtSelect').change(function () {
+            var districtCode = $(this).val();
+            if (districtCode !== "0") {
+                $.ajax({
+                    url: 'https://localhost:5000/api/Address/wards/' + districtCode,
+                    type: 'GET',
+                    success: function (data) {
+                        var wardSelect = $('#wardSelect');
+                        wardSelect.empty().append('<option value="0" selected hidden>Phường/Xã</option>');
+                        $.each(data, function (index, ward) {
+                            wardSelect.append('<option value="' + ward.code + '">' + ward.name + '</option>');
+                        });
+                        wardSelect.prop('disabled', false);
+                    },
+                    error: function () {
+                        alert('Đã xảy ra lỗi khi gọi API.');
+                    }
+                });
+            }
+        });
+    });
+    $('#wardSelect').change(function () {
+        var selectedWard = $(this).val();
+        $('#wardInput').val(selectedWard);
+    });
 </script>
