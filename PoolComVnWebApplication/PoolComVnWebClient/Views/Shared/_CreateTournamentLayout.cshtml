@@ -15,8 +15,9 @@
     <div class="main-background"></div>
     <header>
         <nav class="manage-nav">
-            <div class="nav-menu d-flex align-items-center">
-                <i class="fa-solid fa-bars nav-icon"></i>
+            <div class="back-btn">
+                <i class="fa-solid fa-chevron-left"></i>
+                <span>Trở lại</span>
             </div>
             <div class="logo-image d-flex justify-content-center align-items-center">
                 <a href="">
@@ -25,56 +26,37 @@
                 </a>
             </div>
 
-            <div class="user-menu-btn">
-                <i class="fa-solid fa-user user-icon"></i>
-                <ul class="user-menu text-center">
-                    <li><a href="">Hồ sơ</a></li>
-                    <li><a href="">Đăng xuất</a></li>
-                </ul>
-            </div>
-            <div class="menu-body ">
-                <div class="nav-body my-0 d-flex justify-content-lg-start
-                        justify-content-center row">
-                    <a href="/NewsManage/Index">Tin tức</a>
-                    <a href="/Tournament/TournamentList">Giải đấu</a>
-                    <a href="">Câu lạc bộ</a>
-                    <a href="">Xếp hạng</a>
-                    <a asp-controller="home" asp-action="GameRules">Luật chơi</a>
-                    <a asp-controller="home" asp-action="Contact">Liên hệ</a>
-                    <a href="">Mở rộng</a>
-                </div>
-            </div>
         </nav>
     </header>
 
     <div class="tour-step-nav">
-        <a href="/CreateTournament/StepOneCreateTournament" class="tour-step">
-            <div class="step-number @*active*@">1</div>
+        <a class="tour-step">
+            <div class="step-number step-one">1</div>
             <div class="step-title">Cài đặt</div>
         </a>
         <div class="step-network-line"></div>
-        <a href="/CreateTournament/StepTwoPlayerList" class="tour-step">
-            <div class="step-number">2</div>
+        <a class="tour-step disable">
+            <div class="step-number step-two">2</div>
             <div class="step-title">Ảnh bìa</div>
         </a>
         <div class="step-network-line"></div>
-        <a href="/CreateTournament/StepThreeAddTable" class="tour-step">
-            <div class="step-number">3</div>
+        <a class="tour-step disable">
+            <div class="step-number step-three">3</div>
             <div class="step-title">Tạo giải</div>
         </a>
         <div class="step-network-line"></div>
-        <a href="#step4" class="tour-step">
-            <div class="step-number">4</div>
+        <a class="tour-step disable">
+            <div class="step-number step-four">4</div>
             <div class="step-title">Bàn đấu</div>
         </a>
         <div class="step-network-line"></div>
-        <a href="#step5" class="tour-step">
-            <div class="step-number">5</div>
+        <a class="tour-step disable">
+            <div class="step-number step-five">5</div>
             <div class="step-title">Người chơi</div>
         </a>
         <div class="step-network-line"></div>
-        <a href="#step6" class="tour-step">
-            <div class="step-number">6</div>
+        <a class="tour-step disable">
+            <div class="step-number step-six">6</div>
             <div class="step-title">Xếp trận</div>
         </a>
     </div>
@@ -85,22 +67,11 @@
 
 <script>
 
-    //Handle option menu
-    const navMenuBtn = document.querySelector('.nav-menu');
-    const menuBody = document.querySelector('.menu-body');
-
-    let menuVisible = true;
-
-    navMenuBtn.addEventListener('click', () => {
-        if (menuVisible) {
-            menuBody.classList.remove('d-none');
-            menuBody.classList.add('d-flex');
-        } else {
-            menuBody.classList.add('d-none');
-            menuBody.classList.remove('d-flex');
-        }
-        menuVisible = !menuVisible;
-    });
+    //Handle back btn
+    const backBtn = document.querySelector('.back-btn');
+    backBtn.addEventListener('click',()=>{
+        window.location.href = '/Club/ClubTournament';
+    })
 
     //Handle tour step
     const stepBtns = document.querySelectorAll('.step-number');
@@ -112,6 +83,28 @@
             btn.classList.add('active');
         })
     })
+
+    //Handle step btn
+    const tourId = document.getElementById('tour-id');
+    if (tourId !== null) {
+        const currentStep = document.getElementById('current-step');
+        var stepNum = parseInt(currentStep.value);
+        var tourIdNum = parseInt(tourId.value);
+        document.querySelector('.step-one').parentNode.href = "/CreateTournament/StepOneCreateTournament?TourId=" + tourIdNum;
+        document.querySelector('.step-two').parentNode.href = "/CreateTournament/StepTwoAddBanner?TourId=" + tourIdNum;
+        document.querySelector('.step-three').parentNode.href = "/CreateTournament/StepThreeReview?TourId=" + tourIdNum;
+        document.querySelector('.step-three').parentNode.href = "/CreateTournament/StepThreeReview?TourId=" + tourIdNum;
+        document.querySelector('.step-four').parentNode.href = "/CreateTournament/StepFourAddTable?TourId=" + tourIdNum;
+        document.querySelector('.step-five').parentNode.href = "/CreateTournament/StepFivePlayerList?TourId=" + tourIdNum;
+        document.querySelector('.step-six').parentNode.href = "/CreateTournament/StepSixArrange?TourId=" + tourIdNum;
+        const stepLockList = document.querySelectorAll('.step-number');
+        for (var i = 1; i <= stepNum; i++) {
+            const parent = stepLockList[i].parentNode;
+            if (parent !== null && parent.classList.contains('disable')) {
+                parent.classList.remove('disable');
+            }
+        }
+    }
 
 </script>
 

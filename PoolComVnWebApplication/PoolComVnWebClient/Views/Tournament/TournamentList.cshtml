@@ -92,8 +92,7 @@
                             {
                                 <div class="tour-status finish-status"></div>
                             }
-                            @*<img class="tour-image" src="~/images/new_1.jpg" alt="">*@
-                            <img class="tour-image" src="@tour.Flyer" alt="">
+                            <div class="tour-image" style="background-image: url(@tour.Flyer);"></div>
                             <div>
                                 <div class="tour-type d-flex justify-content-center align-items-center">
                                     @tour.GameType
@@ -126,17 +125,56 @@
             </div>
         </div>
 
-        <!-- Phân trang -->
-        <div class="pagination d-flex justify-content-center align-items-center m-0">
-            <div class="pagination-content d-flex justify-content-center align-items-center m-0">
-                <div class="pagination-btn-big" onclick="prevPage()">Trước</div>
-                @for (int pageNum = 1; pageNum <= Model.TotalPages; pageNum++)
+        @{
+            // Định nghĩa ngưỡng cần hiển thị dấu "..."
+            int threshold = 1;
+
+            // Tính toán danh sách phân trang cần hiển thị
+            List<int> displayedPages = new List<int>();
+            bool showLeadingDots = false;
+            bool showTrailingDots = false;
+
+            for (int pageNum = 1; pageNum <= Model.TotalPages; pageNum++)
+            {
+                if (pageNum == 1 || pageNum == Model.TotalPages || Math.Abs(pageNum - Model.PageIndex) <= threshold)
                 {
-                    <div class="pagination-btn @(pageNum == Model.PageIndex ? "active" : "")" onclick="goToPage(@pageNum, '@ViewBag.SearchQuery', '@ViewBag.GameType', '@ViewBag.StartDate', '@ViewBag.EndDate')">@pageNum</div>
+                    displayedPages.Add(pageNum);
                 }
-                <div class="pagination-btn-big" onclick="nextPage()">Sau</div>
+                else if (pageNum < Model.PageIndex - threshold && !showLeadingDots)
+                {
+                    displayedPages.Add(-1); // Placeholder for leading dots
+                    showLeadingDots = true;
+                }
+                else if (pageNum > Model.PageIndex + threshold && !showTrailingDots)
+                {
+                    displayedPages.Add(-1); // Placeholder for trailing dots
+                    showTrailingDots = true;
+                }
+            }
+
+            // Hàm JavaScript để chuyển đến trang
+            string goToPageFunction = "goToPage";
+
+            // Định dạng mã HTML cho phân trang
+            <div class="pagination d-flex justify-content-center align-items-center m-0">
+                <div class="pagination-content d-flex justify-content-center align-items-center m-0">
+                    <div class="pagination-btn-big" onclick="prevPage()">Trước</div>
+                    @foreach (int pageNum in displayedPages)
+                    {
+                        if (pageNum == -1)
+                        {
+                            <div class="pagination-more">...</div>
+                        }
+                        else
+                        {
+                            <div class="pagination-btn @(pageNum == Model.PageIndex ? "active" : "")" onclick="@($"{goToPageFunction}({pageNum}, '{@ViewBag.SearchQuery}', '{@ViewBag.GameType}', '{@ViewBag.StartDate}', '{@ViewBag.EndDate}')")">@pageNum</div>
+                        }
+                    }
+                    <div class="pagination-btn-big" onclick="nextPage()">Sau</div>
+                </div>
             </div>
-        </div>
+        }
+
     </div>
 </div>
 

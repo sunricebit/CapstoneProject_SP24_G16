@@ -839,17 +839,17 @@ footer {
 }
 
 .tournament .tour-circle .schedule-circle {
-    background: rgb(255, 255, 0);
+    background: radial-gradient(circle, #fff, rgb(255, 255, 0) 65%);
 }
 
 .tournament .tour-circle .start-circle {
     margin-left: 20px;
-    background: rgb(0, 255, 0);
+    background: radial-gradient(circle, #fff, rgb(0, 255, 0) 65%);
 }
 
 .tournament .tour-circle .finish-circle {
     margin-left: 20px;
-    background: rgb(255, 0, 0);
+    background: radial-gradient(circle, #fff, rgb(255, 0, 0) 65%);
 }
 
 .tournament .tour-circle span {
@@ -2870,6 +2870,20 @@ tr:not(:first-child).isFinish {
             background: #9c1515;
         }
 
+    .tour-step.disable {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    /*.tour-step.disable:hover{
+                cursor:default;
+            }
+
+            .tour-step.disable .step-number:hover {
+                background: #4d5c60;
+                cursor: default;
+            }*/
+
     .tour-step .step-title {
         font-weight: 600;
         color: #fff;
@@ -3146,6 +3160,7 @@ tr:not(:first-child).isFinish {
     width: 200px;
     text-align: center;
     background-color: #242424a6;
+    color: #fff;
 }
 
     .create-tour .step-two-nav:last-child {
@@ -4512,22 +4527,23 @@ tr:not(:first-child).isFinish {
         font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         font-style: italic;
         display: block;
+        font-size: 14px;
         border-bottom-left-radius: 20px;
         border-bottom-right-radius: 20px;
     }
 
     .schedule-item .item-name {
         color: #1c324ddf;
-        font-weight: 800;
-        font-size: 24px;
+        font-weight: 700;
+        font-size: 20px;
         font-style: italic;
     }
 
     .schedule-item .item-address {
         color: #1c324ddf;
-        font-size: 20px;
+        font-size: 16px;
         font-style: italic;
-        font-weight: 400;
+        font-weight: 500;
     }
 
     .schedule-item .item-bonus {
@@ -4536,14 +4552,6 @@ tr:not(:first-child).isFinish {
         font-size: 36px;
         font-style: italic;
         font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    }
-
-    .schedule-item .info-btn {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 200px;
-        height: 150px;
     }
 
     .schedule-item .game-type,
@@ -4574,18 +4582,16 @@ tr:not(:first-child).isFinish {
 }
 
 .schedule-item .btn-join {
-    width: 100px;
+    width: 200px;
     height: 50px;
     background: #1c324ddf;
     color: white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 5px;
-    border-bottom-left-radius: 2px;
-    border-bottom-right-radius: 40px;
+    border-radius: 10px;
     border: 2px #1c324ddf solid;
     text-decoration: none;
     text-align: center;
     line-height: 45px;
+    margin-bottom: 20px;
 }
 
     .schedule-item .btn-join:hover {
@@ -4642,11 +4648,11 @@ tr:not(:first-child).isFinish {
     }
 
 .schedule-item .item-more {
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
     .schedule-item .item-more .item-more-image {
-        width: 40%;
+        width: 60%;
         border-radius: 20px;
     }
 
@@ -5180,7 +5186,7 @@ tr:not(:first-child).isFinish {
         }
 
 .match-display .table-input {
-    padding: 20px
+    padding: 20px;
 }
 
     .match-display .table-input .input-title {
@@ -5384,6 +5390,24 @@ tr:not(:first-child).isFinish {
             width: calc(100% - 500px);
             margin-top: 0;
         }
+
+    .schedule-item .item-date {
+        font-size: 16px;
+    }
+
+    .schedule-item .item-name {
+        font-weight: 800;
+        font-size: 24px;
+    }
+
+    .schedule-item .item-address {
+        font-size: 20px;
+        font-weight: 400;
+    }
+
+    .schedule-item .item-more .item-more-image {
+        width: 40%;
+    }
 }
 
 /*width>=1280px */

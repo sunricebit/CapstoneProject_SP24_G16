@@ -10,7 +10,7 @@
                         <i class="search-btn fa-solid fa-magnifying-glass" onclick="search()"></i>
                         <form method="get" action="/Home/Club">
                             <input id="searchInput" class="search-input px-2" type="text" name="searchQuery" placeholder="Câu lạc bộ, địa chỉ,..." value="@ViewBag.SearchQuery" />
-                            <button type="submit" class="search-btn fa-solid fa-magnifying-glass"></button>
+                            <button type="submit"></button>
                         </form>
                     </div>
 
@@ -80,13 +80,28 @@
     <div class="pagination d-flex justify-content-center align-items-center m-0">
         <div class="pagination-content d-flex justify-content-center align-items-center m-0">
             <div class="pagination-btn-big" onclick="prevPage()">Trước</div>
-            @for (int pageNum = 1; pageNum <= Model.TotalPages; pageNum++)
+            @if (Model.PageIndex > 3)
             {
-                <div class="pagination-btn @(pageNum == Model.PageIndex ? "active" : "")" onclick="goToPage(@pageNum)">@pageNum</div>
+                <div class="pagination-btn" onclick="goToPage(1, '@ViewBag.SearchQuery', '@ViewBag.GameType', '@ViewBag.StartDate', '@ViewBag.EndDate')">1</div>
+                <div class="pagination-btn">...</div>
+            }
+            @for (int pageNum = Model.PageIndex - 2; pageNum <= Model.PageIndex + 2 && pageNum <= Model.TotalPages; pageNum++)
+            {
+                if (pageNum > 0)
+                {
+                    <div class="pagination-btn @(pageNum == Model.PageIndex ? "active" : "")" onclick="goToPage(@pageNum, '@ViewBag.SearchQuery', '@ViewBag.GameType', '@ViewBag.StartDate', '@ViewBag.EndDate')">@pageNum</div>
+                }
+            }
+            @if (Model.PageIndex < Model.TotalPages - 2)
+            {
+                <div class="pagination-btn">...</div>
+                <div class="pagination-btn" onclick="goToPage(@Model.TotalPages, '@ViewBag.SearchQuery', '@ViewBag.GameType', '@ViewBag.StartDate', '@ViewBag.EndDate')">@Model.TotalPages</div>
             }
             <div class="pagination-btn-big" onclick="nextPage()">Sau</div>
         </div>
     </div>
+
+
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -174,7 +189,7 @@
     function prevPage() {
         const currentPage = @Model.PageIndex;
         if (currentPage > 1) {
-            goToPage(currentPage - 1);
+            goToPage(currentPage - 1, '@ViewBag.SearchQuery', '@ViewBag.ProvinceCode', '@ViewBag.DistrictCode', '@ViewBag.WardCode');
         }
     }
 
@@ -182,16 +197,11 @@
         const currentPage = @Model.PageIndex;
         const totalPages = @Model.TotalPages;
         if (currentPage < totalPages) {
-            goToPage(currentPage + 1);
+            goToPage(currentPage + 1, '@ViewBag.SearchQuery', '@ViewBag.ProvinceCode', '@ViewBag.DistrictCode', '@ViewBag.WardCode');
         }
     }
 
-    function goToPage(pageNum) {
-        var searchQuery = $('#searchInput').val(); // Lấy giá trị của trường tìm kiếm
-        var provinceCode = $('#provinceCode').val(); // Lấy giá trị của trường tỉnh
-        var districtCode = $('#districtCode').val(); // Lấy giá trị của trường quận/huyện
-        var wardCode = $('#wardCode').val(); // Lấy giá trị của trường phường/xã
-
+    function goToPage(pageNum, searchQuery, provinceCode, districtCode, wardCode) {
         // Chuyển đến trang mới với các tham số tìm kiếm
         window.location.href = "@Url.Action("Club", "Home")" +
             "?page=" + pageNum +
@@ -200,5 +210,6 @@
             "&districtCode=" + districtCode +
             "&wardCode=" + wardCode;
     }
+
 
 </script>

@@ -20,6 +20,7 @@ namespace BusinessObject.Models
         public int? TableId { get; set; }
         public int? WinToMatch { get; set; }
         public int? LoseToMatch { get; set; }
+        public int? RaceTo { get; set; }
 
         public virtual Table? Table { get; set; }
         public virtual Tournament Tour { get; set; } = null!;

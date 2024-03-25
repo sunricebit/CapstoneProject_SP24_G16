@@ -1,77 +1,111 @@
 ﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
-@{
-    Layout = "~/Views/Shared/_ClubLayout.cshtml";
-}
+@using PoolComVnWebClient.DTO
+@model PaginatedList<ClubPostDTO>
 @{
     string email = HttpContextAccessor.HttpContext.Request.Cookies["Email"];
 }
-@using PoolComVnWebClient.DTO
-@model ClubDTO
+@{
+    Layout = "~/Views/Shared/_ClubLayout.cshtml";
+    ViewData["Title"] = "Club Posts";
+}
 
-@if (@ViewBag.Club == null)
-{
-    <div class="dashboard-container container">
-        <div class="row news-items p-0 m-0">
-            <div class="item-content d-flex justify-content-center">
-                <h3>Bạn chưa có câu lạc bộ</h3>
-                <a class="btn btn-primary ml-2" asp-action="CreateClub" asp-controller="Club">Thêm câu lạc bộ</a>
+<div class="dashboard-container container">
+    <div class="row news-items p-0 m-0">
+        <div class="d-flex justify-content-end p-0 mb-5">
+            <div class="tour-search d-flex justify-content-end align-items-center">
+                <i class="search-btn fa-solid fa-magnifying-glass"></i>
+                <input class="search-input px-2" type="text" placeholder="Giải đấu, địa chỉ,..." />
             </div>
         </div>
-    </div>
-}
-else
-{
-
-
-    <div class="dashboard-container container">
-        <div class="row news-items p-0 m-0">
-            <div class="d-flex justify-content-end p-0 mb-5">
-                <div class="tour-search d-flex justify-content-end align-items-center">
-                    <i class="search-btn fa-solid fa-magnifying-glass"></i>
-                    <input class="search-input px-2" type="text" placeholder="Giải đấu, địa chỉ,..." />
-                </div>
+        @if (ViewBag.AccountEmail == email)
+        {
+            <div class="item-content d-flex justify-content-center">
+                <a asp-action="AddPost" asp-controller="Club" asp-route-clubid="@ViewBag.CLub.ClubId" class="create-btn d-flex justify-content-center align-items-center">
+                    <div class="text-center">
+                        <i class="fa-solid fa-plus fa-beat"></i>
+                        <div>Tạo bài viết mới</div>
+                    </div>
+                </a>
             </div>
-            @if (ViewBag.AccountEmail == email)
+        }
+        @if (Model.Items.Count != 0)
+        {
+            foreach (var post in Model.Items)
             {
                 <div class="item-content d-flex justify-content-center">
-                    <a asp-action="AddPost" asp-controller="Club" asp-route-clubid="@ViewBag.CLub.ClubId" class="create-btn d-flex justify-content-center align-items-center">
-                        <div class="text-center">
-                            <i class="fa-solid fa-plus fa-beat"></i>
-                            <div>Tạo bài viết mới</div>
+                    <a asp-action="ClubPostDetails" asp-controller="Club" asp-route-id="@post.PostId" asp-route-clubid="@post.ClubId" class="news-item">
+                        <div class="news-date">@post.UpdatedDate.ToString("yyyy-MM-dd")</div>
+                        @if (ViewBag.AccountEmail == email)
+                        {
+                            <div class="hidden-btn" data-post-id="@post.PostId">
+                                <i class="fa-solid fa-eye-slash"></i>
+                            </div>
+                        }
+                        <div class="news-image">
+                            <div class="img" style="background-image: url(@post.Flyer);"></div>
                         </div>
+                        <div class="news-title">@post.Title</div>
                     </a>
                 </div>
             }
-            @if (((List<ClubPostDTO>)ViewBag.ClubPost)?.Count != 0)
+
+           
+        }
+        else
+        {
+            <p>Câu lạc bộ chưa có bài đăng nào.</p>
+        }
+        @{
+            // Định nghĩa ngưỡng cần hiển thị dấu "..."
+            int threshold = 1;
+
+            // Tính toán danh sách phân trang cần hiển thị
+            List<int> displayedPages = new List<int>();
+            bool showLeadingDots = false;
+            bool showTrailingDots = false;
+
+            for (int pageNum = 1; pageNum <= Model.TotalPages; pageNum++)
             {
-                foreach (var post in ViewBag.ClubPost)
+                if (pageNum == 1 || pageNum == Model.TotalPages || Math.Abs(pageNum - Model.PageIndex) <= threshold)
                 {
-                    <div class="item-content d-flex justify-content-center">
-                        <a asp-action="ClubPostDetails" asp-controller="Club" asp-route-id="@post.PostId" asp-route-clubid="@post.ClubId" class="news-item">
-                            <div class="news-date">@post.UpdatedDate.ToString("yyyy-MM-dd")</div>
-                            @if (ViewBag.AccountEmail == email)
-                            {
-                                <div class="hidden-btn" data-post-id="@post.PostId">
-                                    <i class="fa-solid fa-eye-slash"></i>
-                                </div>
-                            }
-                            <div class="news-image">
-                                <div class="img" style="background-image: url(@post.Flyer);"></div>
-                            </div>
-                            <div class="news-title">@post.Title</div>
-                        </a>
-                    </div>
+                    displayedPages.Add(pageNum);
+                }
+                else if (pageNum < Model.PageIndex - threshold && !showLeadingDots)
+                {
+                    displayedPages.Add(-1); // Placeholder for leading dots
+                    showLeadingDots = true;
+                }
+                else if (pageNum > Model.PageIndex + threshold && !showTrailingDots)
+                {
+                    displayedPages.Add(-1); // Placeholder for trailing dots
+                    showTrailingDots = true;
                 }
             }
-            else
-            {
-                <p>Câu lạc bộ chưa có bài đăng nào.</p>
-            }
 
+            // Hàm JavaScript để chuyển đến trang
+            string goToPageFunction = "goToPage";
 
-        </div>
+            // Định dạng mã HTML cho phân trang
+            <div class="pagination d-flex justify-content-center align-items-center m-0">
+                <div class="pagination-content d-flex justify-content-center align-items-center m-0">
+                    <div class="pagination-btn-big" onclick="prevPage()">Trước</div>
+                    @foreach (int pageNum in displayedPages)
+                    {
+                        if (pageNum == -1)
+                        {
+                            <div class="pagination-more">...</div>
+                        }
+                        else
+                        {
+                            <div class="pagination-btn @(pageNum == Model.PageIndex ? "active" : "")" onclick="@($"{goToPageFunction}({pageNum}, '{@ViewBag.SearchQuery}', '{@ViewBag.GameType}', '{@ViewBag.StartDate}', '{@ViewBag.EndDate}')")">@pageNum</div>
+                        }
+                    }
+                    <div class="pagination-btn-big" onclick="nextPage()">Sau</div>
+                </div>
+            </div>
+        }
     </div>
-}
+</div>
 
 <script>
     const hiddenBtns = document.querySelectorAll('.hidden-btn');
@@ -113,4 +147,24 @@ else
     //Handle active nav
     const clubNavBtn = document.querySelector('.club-post');
     clubNavBtn.classList.add('active');
+    function prevPage() {
+        var currentPage = @Model.PageIndex;
+        if (currentPage > 1) {
+            goToPage(currentPage - 1);
+        }
+    }
+
+    function nextPage() {
+        var currentPage = @Model.PageIndex;
+        var totalPages = @Model.TotalPages;
+        if (currentPage < totalPages) {
+            goToPage(currentPage + 1);
+        }
+    }
+
+    function goToPage(pageNum) {
+        var url = '@Url.Action("Index", "Club")';
+        url += '?page=' + pageNum;
+        window.location.href = url;
+    }
 </script>
