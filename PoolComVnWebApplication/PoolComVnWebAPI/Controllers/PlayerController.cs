@@ -202,6 +202,27 @@ namespace PoolComVnWebAPI.Controllers
             return Ok(lstPlayer);
         }
 
+        [HttpGet("GetPlayerExBotByTourId")]
+        public IActionResult GetPlayerExBotByTourId(int tourId)
+        {
+            var players = _playerDAO.GetPlayersByTournament(tourId);
+            List<PlayerDTO> lstPlayer = new List<PlayerDTO>();
+            foreach (Player p in players)
+            {
+                PlayerDTO playerDTO = new PlayerDTO
+                {
+                    PlayerId = p.PlayerId,
+                    PlayerName = p.PlayerName,
+                    CountryName = p.Country.CountryImage,
+                };
+                if (!playerDTO.PlayerName.Equals("BOT"))
+                {
+                    lstPlayer.Add(playerDTO);
+                }
+            }
+            return Ok(lstPlayer);
+        }
+
         [HttpGet("GetNumberPlayerByTourId")]
         public IActionResult GetNumberPlayerByTourId(int tourId)
         {
@@ -215,7 +236,7 @@ namespace PoolComVnWebAPI.Controllers
             int numberHumanPlayers = _playerDAO.GetNumberPlayerByTourId(tourId);
             int numberPlayersOfTour = _tournamentDAO.GetTournament(tourId).MaxPlayerNumber;
             int numberBotPlayer = numberPlayersOfTour - numberHumanPlayers;
-            
+
             for (int i = 0; i < numberBotPlayer; i++)
             {
                 Player botPlayer = new Player()
@@ -228,6 +249,13 @@ namespace PoolComVnWebAPI.Controllers
             }
 
             return Ok();
+        }
+
+        [HttpGet("GetNumberPlayerExBotByTourId")]
+        public IActionResult GetNumberPlayerExBotByTourId(int tourId)
+        {
+            int numberPlayers = _playerDAO.GetNumberPlayerExBotByTourId(tourId);
+            return Ok(numberPlayers);
         }
     }
 }

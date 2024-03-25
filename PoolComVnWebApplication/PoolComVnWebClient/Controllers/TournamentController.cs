@@ -155,38 +155,6 @@ namespace PoolComVnWebClient.Controllers
             }
         }
 
-
-        [HttpGet]
-        public IActionResult TournamentBracket(int tourId)
-        {
-            ViewBag.TourId = tourId;
-            return View();
-        }
-
-        public IActionResult TournamentSingleBracket(int tourId)
-        {
-            return View();
-        }
-
-        public IActionResult TournamentMatchList()
-        {
-            return View();
-        }
-
-        public IActionResult TournamentUpcoming()
-        {
-            return View();
-        }
-
-        public IActionResult TournamentPlayers()
-        {
-            return View();
-        }
-        public IActionResult TournamentMatchListForManager()
-        {
-            return View();
-        }
-
         public async Task<IActionResult> TournamentDetailForManager(int tourId)
         {
             TournamentDetailDTO tourDetail = new TournamentDetailDTO();
@@ -201,28 +169,18 @@ namespace PoolComVnWebClient.Controllers
                 var status = responseGetTourdetail.StatusCode;
                 return RedirectToAction("InternalServerError", "Error");
             }
-            List<PlayerDTO> lstPlayer;
-            var responseGetLstPlayer = await client.GetAsync(Constant.ApiUrl + "/Player" + "/GetPlayerByTourId?tourId=" + tourId);
-            if (responseGetLstPlayer.IsSuccessStatusCode)
+
+            var numberOfPlayerResponse = await client.GetAsync(Constant.ApiUrl + "/Player/GetNumberPlayerExBotByTourId?tourId=" + tourId);
+            if (numberOfPlayerResponse.IsSuccessStatusCode)
             {
-                lstPlayer = await responseGetLstPlayer.Content.ReadFromJsonAsync<List<PlayerDTO>>();
-                ViewBag.PlayerLst = lstPlayer;
+                int numberOfPlayer = await numberOfPlayerResponse.Content.ReadFromJsonAsync<int>();
+                ViewBag.NumberOfPlayer = numberOfPlayer;
             }
             else
             {
                 var status = responseGetTourdetail.StatusCode;
                 return RedirectToAction("InternalServerError", "Error");
             }
-            return View();
-        }
-
-        public IActionResult TournamentBracketForManager()
-        {
-            return View();
-        }
-
-        public IActionResult TournamentSingleBracketForManager()
-        {
             return View();
         }
 
@@ -242,7 +200,7 @@ namespace PoolComVnWebClient.Controllers
                 return RedirectToAction("InternalServerError", "Error");
             }
             List<PlayerDTO> lstPlayer;
-            var responseGetLstPlayer = await client.GetAsync(Constant.ApiUrl + "/Player" + "/GetPlayerByTourId?tourId=" + tourId);
+            var responseGetLstPlayer = await client.GetAsync(Constant.ApiUrl + "/Player" + "/GetPlayerExBotByTourId?tourId=" + tourId);
             if (responseGetLstPlayer.IsSuccessStatusCode)
             {
                 lstPlayer = await responseGetLstPlayer.Content.ReadFromJsonAsync<List<PlayerDTO>>();
@@ -253,6 +211,79 @@ namespace PoolComVnWebClient.Controllers
                 var status = responseGetTourdetail.StatusCode;
                 return RedirectToAction("InternalServerError", "Error");
             }
+            return View();
+        }
+
+        public async Task<IActionResult> TournamentBracketForManager(int tourId)
+        {
+            int maxNumberOfTournament = await client
+                .GetFromJsonAsync<int>(Constant.ApiUrl + "/Tournament/GetTourMaxNumberOfPlayer?tourId=" + tourId);
+            int? knockOutNumber = await client
+                .GetFromJsonAsync<int?>(Constant.ApiUrl + "/Tournament/GetTourKnockoutNumber?tourId=" + tourId);
+            ViewBag.MaxNumberOfTournament = maxNumberOfTournament;
+            ViewBag.KnockOutNumber = knockOutNumber;
+            ViewBag.TourId = tourId;
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TournamentSingleBracketForManager(int tourId)
+        {
+            int maxNumberOfTournament = await client
+                .GetFromJsonAsync<int>(Constant.ApiUrl + "/Tournament/GetTourMaxNumberOfPlayer?tourId=" + tourId);
+            ViewBag.MaxNumberOfTournament = maxNumberOfTournament;
+            ViewBag.TourId = tourId;
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TournamentBracket(int tourId)
+        {
+            int maxNumberOfTournament = await client
+               .GetFromJsonAsync<int>(Constant.ApiUrl + "/Tournament/GetTourMaxNumberOfPlayer?tourId=" + tourId);
+            int? knockOutNumber = await client
+                .GetFromJsonAsync<int?>(Constant.ApiUrl + "/Tournament/GetTourKnockoutNumber?tourId=" + tourId);
+            ViewBag.MaxNumberOfTournament = maxNumberOfTournament;
+            ViewBag.KnockOutNumber = knockOutNumber;
+            ViewBag.TourId = tourId;
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TournamentSingleBracket(int tourId)
+        {
+            int maxNumberOfTournament = await client
+                .GetFromJsonAsync<int>(Constant.ApiUrl + "/Tournament/GetTourMaxNumberOfPlayer?tourId=" + tourId);
+            ViewBag.MaxNumberOfTournament = maxNumberOfTournament;
+            ViewBag.TourId = tourId;
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult TournamentMatchList(int tourId)
+        {
+            ViewBag.TourId = tourId;
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult TournamentUpcoming(int tourId)
+        {
+            ViewBag.TourId = tourId;
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult TournamentPlayers(int tourId)
+        {
+            ViewBag.TourId = tourId;
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult TournamentMatchListForManager(int tourId)
+        {
+            ViewBag.TourId = tourId;
             return View();
         }
     }

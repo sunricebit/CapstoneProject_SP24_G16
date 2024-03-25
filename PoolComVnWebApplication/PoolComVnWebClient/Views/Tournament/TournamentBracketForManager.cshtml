@@ -1,6 +1,12 @@
 ﻿@{
     Layout = "~/Views/Shared/_TournamentLayout.cshtml";
+    int tourId = ViewBag.TourId;
+    int maxNumberOfTournament = ViewBag.MaxNumberOfTournament;
+    int knockOutNumber = ViewBag.KnockOutNumber;
 }
+<div class="numberOfPlayer d-none">@maxNumberOfTournament</div>
+<div class="knockOutNumber d-none">@knockOutNumber</div>
+<div class="tourId d-none">@tourId</div>
 
 <div class="container-bracket d-flex">
     <div class="start-tour">
@@ -277,12 +283,16 @@
 <script>
     const winMatchBody = document.getElementById('winer-match-body');
     //Số lượng người chơi tham gia giải
-    const playerNumber = 32;
+    // Gán giá trị cho playerNumber và finalSinglePlayer từ dữ liệu nhận được
+    var playerNumber = $(".numberOfPlayer").text().trim();
+
     //Số vòng đấu nhánh thắng trước vòng chung kết
     //(tính theo đấu loại đơn)
     let roundNumber = Math.log2(playerNumber / 2);
-    //Số người chơi vào vòng loại trực tiếp
-    const finalSinglePlayer = 4;
+
+    //Số người chơi vào vòng loại trực tiếp 
+    var finalSinglePlayer = $(".knockOutNumber").text().trim();
+
     //số vòng đấu nhánh thắng tính từ R2 -> R(cuối) vòng loại
     let finalSingleRound = roundNumber - Math.log2(finalSinglePlayer) + 1;
     //chiều rộng,cao của match
@@ -307,25 +317,27 @@
                     + '</div>'
                     + '<div class="player-match col-8">'
                     + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src="/images/VietNamFlag.png"/>'
+                    + '<img src=""/>'
                     + '<!-- 15 char -->'
-                    + '<div class="player-name">Vũ Hoài Nam</div>'
+                    + '<div class="player1-name"></div>'
+                    + '<div class="player1-id d-none"></div>'
                     + '</div>'
                     + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src="/images/VietNamFlag.png"/>'
+                    + '<img src=""/>'
                     + '<!-- 15 char -->'
-                    + '<div class="player-name">Vũ Hữu Quảng</div>'
+                    + '<div class="player2-name"></div>'
+                    + '<div class="player2-id d-none"></div>'
                     + '</div>'
                     + '</div>'
                     + '<div class="col-2">'
-                    + '<div class="match-score">6</div>'
-                    + '<div class="match-score">6</div>'
+                    + '<div class="match-score player1-score"></div>'
+                    + '<div class="match-score player2-score"></div>'
                     + '</div>'
-                    + '<div class="match-table">Table <span class="table-number">99</span></div>'
-                    + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
+                    + '<div class="match-table">Table <span class="table-number"></span></div>'
+                    + '<div class="match-raceTo">Race to <span class="raceTo-number"></span></div>'
                     + '<div class="next-match d-flex">'
-                    + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
-                    + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
+                    + '<div class="next-win">W: <span class="win-match-number"></span>,</div>'
+                    + '<div class="next-lose">L: <span class="lose-match-number"></span></div>'
                     + '</div>'
                     + '</div>'
                     + '</div>'
@@ -343,25 +355,27 @@
                     + '</div>'
                     + '<div class="player-match col-8">'
                     + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src="/images/VietNamFlag.png"/>'
+                    + '<img src=""/>'
                     + '<!-- 15 char -->'
-                    + '<div class="player-name">Vũ Hoài Nam</div>'
+                    + '<div class="player1-name"></div>'
+                    + '<div class="player1-id d-none"></div>'
                     + '</div>'
                     + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src="/images/VietNamFlag.png"/>'
+                    + '<img src=""/>'
                     + '<!-- 15 char -->'
-                    + '<div class="player-name">Vũ Hữu Quảng</div>'
+                    + '<div class="player2-name"></div>'
+                    + '<div class="player2-id d-none"></div>'
                     + '</div>'
                     + '</div>'
                     + '<div class="col-2">'
-                    + '<div class="match-score">6</div>'
-                    + '<div class="match-score">6</div>'
+                    + '<div class="match-score player1-score"></div>'
+                    + '<div class="match-score player2-score"></div>'
                     + '</div>'
-                    + '<div class="match-table">Table <span class="table-number">99</span></div>'
-                    + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
+                    + '<div class="match-table">Table <span class="table-number"></span></div>'
+                    + '<div class="match-raceTo">Race to <span class="raceTo-number"></span></div>'
                     + '<div class="next-match d-flex">'
-                    + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
-                    + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
+                    + '<div class="next-win">W: <span class="win-match-number"></span>,</div>'
+                    + '<div class="next-lose">L: <span class="lose-match-number"></span></div>'
                     + '</div>'
                     + '</div>'
                     + '</div>'
@@ -389,25 +403,27 @@
                 + '</div>'
                 + '<div class="player-match col-8">'
                 + '<div class="d-flex justify-content-start align-items-center">'
-                + '<img src="/images/VietNamFlag.png"/>'
+                + '<img src=""/>'
                 + '<!-- 15 char -->'
-                + '<div class="player-name">Vũ Hoài Nam</div>'
+                + '<div class="player1-name"></div>'
+                + '<div class="player1-id d-none"></div>'
                 + '</div>'
                 + '<div class="d-flex justify-content-start align-items-center">'
-                + '<img src="/images/VietNamFlag.png"/>'
+                + '<img src=""/>'
                 + '<!-- 15 char -->'
-                + '<div class="player-name">Vũ Hữu Quảng</div>'
+                + '<div class="player2-name"></div>'
+                + '<div class="player2-id d-none"></div>'
                 + '</div>'
                 + '</div>'
                 + '<div class="col-2">'
-                + '<div class="match-score">6</div>'
-                + '<div class="match-score">6</div>'
+                + '<div class="match-score player1-score"></div>'
+                + '<div class="match-score player2-score"></div>'
                 + '</div>'
-                + '<div class="match-table">Table <span class="table-number">99</span></div>'
-                + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
+                + '<div class="match-table">Table <span class="table-number"></span></div>'
+                + '<div class="match-raceTo">Race to <span class="raceTo-number"></span></div>'
                 + '<div class="next-match d-flex">'
-                + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
-                + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
+                + '<div class="next-win">W: <span class="win-match-number"></span>,</div>'
+                + '<div class="next-lose">L: <span class="lose-match-number"></span></div>'
                 + '</div>'
                 + '</div>'
                 + '</div>'
@@ -421,30 +437,32 @@
                 + '<div class="match-number col-2 p-0 text-center">'
                 + count
                 + '</div>'
-                + '<div class="player-match col-8">'
-                + '<div class="d-flex justify-content-start align-items-center">'
-                + '<img src="/images/VietNamFlag.png"/>'
-                + '<!-- 15 char -->'
-                + '<div class="player-name">Vũ Hoài Nam</div>'
-                + '</div>'
-                + '<div class="d-flex justify-content-start align-items-center">'
-                + '<img src="/images/VietNamFlag.png"/>'
-                + '<!-- 15 char -->'
-                + '<div class="player-name">Vũ Hữu Quảng</div>'
-                + '</div>'
-                + '</div>'
-                + '<div class="col-2">'
-                + '<div class="match-score">6</div>'
-                + '<div class="match-score">6</div>'
-                + '</div>'
-                + '<div class="match-table">Table <span class="table-number">99</span></div>'
-                + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
-                + '<div class="next-match d-flex">'
-                + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
-                + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
-                + '</div>'
-                + '</div>'
-                + '</div>'
+                    + '<div class="player-match col-8">'
+                    + '<div class="d-flex justify-content-start align-items-center">'
+                    + '<img src=""/>'
+                    + '<!-- 15 char -->'
+                    + '<div class="player1-name"></div>'
+                    + '<div class="player1-id d-none"></div>'
+                    + '</div>'
+                    + '<div class="d-flex justify-content-start align-items-center">'
+                    + '<img src=""/>'
+                    + '<!-- 15 char -->'
+                    + '<div class="player2-name"></div>'
+                    + '<div class="player2-id d-none"></div>'
+                    + '</div>'
+                    + '</div>'
+                    + '<div class="col-2">'
+                    + '<div class="match-score player1-score"></div>'
+                    + '<div class="match-score player2-score"></div>'
+                    + '</div>'
+                    + '<div class="match-table">Table <span class="table-number"></span></div>'
+                    + '<div class="match-raceTo">Race to <span class="raceTo-number"></span></div>'
+                    + '<div class="next-match d-flex">'
+                    + '<div class="next-win">W: <span class="win-match-number"></span>,</div>'
+                    + '<div class="next-lose">L: <span class="lose-match-number"></span></div>'
+                    + '</div>'
+                    + '</div>'
+                    + '</div>'
         }
     }
     loseMatchBody.innerHTML = loseBody;
@@ -465,25 +483,27 @@
                     + '</div>'
                     + '<div class="player-match col-8">'
                     + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src="/images/VietNamFlag.png"/>'
+                    + '<img src=""/>'
                     + '<!-- 15 char -->'
-                    + '<div class="player-name">Vũ Hoài Nam</div>'
+                    + '<div class="player1-name"></div>'
+                    + '<div class="player1-id d-none"></div>'
                     + '</div>'
                     + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src="/images/VietNamFlag.png"/>'
+                    + '<img src=""/>'
                     + '<!-- 15 char -->'
-                    + '<div class="player-name">Vũ Hữu Quảng</div>'
+                    + '<div class="player2-name"></div>'
+                    + '<div class="player2-id d-none"></div>'
                     + '</div>'
                     + '</div>'
                     + '<div class="col-2">'
-                    + '<div class="match-score">6</div>'
-                    + '<div class="match-score">6</div>'
+                    + '<div class="match-score player1-score"></div>'
+                    + '<div class="match-score player2-score"></div>'
                     + '</div>'
-                    + '<div class="match-table">Table <span class="table-number">99</span></div>'
-                    + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
+                    + '<div class="match-table">Table <span class="table-number"></span></div>'
+                    + '<div class="match-raceTo">Race to <span class="raceTo-number"></span></div>'
                     + '<div class="next-match d-flex">'
-                    + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
-                    + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
+                    + '<div class="next-win">W: <span class="win-match-number"></span>,</div>'
+                    + '<div class="next-lose">L: <span class="lose-match-number"></span></div>'
                     + '</div>'
                     + '</div>'
                     + '</div>'
@@ -503,25 +523,27 @@
                     + '</div>'
                     + '<div class="player-match col-8">'
                     + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src="/images/VietNamFlag.png"/>'
+                    + '<img src=""/>'
                     + '<!-- 15 char -->'
-                    + '<div class="player-name">Vũ Hoài Nam</div>'
+                    + '<div class="player1-name"></div>'
+                    + '<div class="player1-id d-none"></div>'
                     + '</div>'
                     + '<div class="d-flex justify-content-start align-items-center">'
-                    + '<img src="/images/VietNamFlag.png"/>'
+                    + '<img src=""/>'
                     + '<!-- 15 char -->'
-                    + '<div class="player-name">Vũ Hữu Quảng</div>'
+                    + '<div class="player2-name"></div>'
+                    + '<div class="player2-id d-none"></div>'
                     + '</div>'
                     + '</div>'
                     + '<div class="col-2">'
-                    + '<div class="match-score">6</div>'
-                    + '<div class="match-score">6</div>'
+                    + '<div class="match-score player1-score"></div>'
+                    + '<div class="match-score player2-score"></div>'
                     + '</div>'
-                    + '<div class="match-table">Table <span class="table-number">99</span></div>'
-                    + '<div class="match-raceTo">Race to <span class="raceTo-number">99</span></div>'
+                    + '<div class="match-table">Table <span class="table-number"></span></div>'
+                    + '<div class="match-raceTo">Race to <span class="raceTo-number"></span></div>'
                     + '<div class="next-match d-flex">'
-                    + '<div class="next-win">W: <span class="win-match-number">123</span>,</div>'
-                    + '<div class="next-lose">L: <span class="lose-match-number">111</span></div>'
+                    + '<div class="next-win">W: <span class="win-match-number"></span>,</div>'
+                    + '<div class="next-lose">L: <span class="lose-match-number"></span></div>'
                     + '</div>'
                     + '</div>'
                     + '</div>'
@@ -554,6 +576,7 @@
 
     zoomInBtn.removeEventListener
     applyZoom();
+    bindingData();
     function zoomIn() {
         if (currentZoom <= 1.5) {
             currentZoom += 0.1;
@@ -727,10 +750,11 @@
         matchDisplay.classList.add('d-none');
     })
 
-    //open popup
+    //open popup and binding data to popup
     const matchBoxList = document.querySelectorAll('.match-box');
     matchBoxList.forEach(element => {
         element.addEventListener('click', () => {
+            
             matchDisplay.classList.remove('d-none');
         })
     });
@@ -846,5 +870,67 @@
     playingElement.forEach(element => {
         element.classList.add('d-none');
     })
+
+    // binding dữ liệu 
+    function bindingData() {
+        var touId =  $(".tourId").text().trim();
+        $.ajax({
+            url: 'https://localhost:5000/api/MatchOfTour/RandomMatch',
+            method: 'GET',
+            data: { tourId: tourId },
+            success: function (data) {
+                imgList.forEach(img => {
+                    img.classList.remove('d-none');
+                });
+                var matches = data;
+                matches.forEach(function (match) {
+                    var matchNumber = match.matchNumber;
+                    var matchBox = $('#' + matchNumber); // Tìm thẻ match-box có ID tương ứng với matchNumber
+
+
+                    var player1Element = matchBox.find('.player-1').first();
+
+                    // Kiểm tra nếu phần tử tồn tại
+                    if (player1Element.length > 0) {
+                        var playerNameElement = player1Element.find('.player-name');
+                        var playerName = match.p1Name;
+                        playerNameElement.text(playerName);
+
+                        var countryImageElement = player1Element.find('img');
+                        var countryImage = match.p1Country;
+                        countryImageElement.attr('src', countryImage);
+
+                        var playerIdElement = player1Element.find('.player-id');
+                        var playerId = match.p1Id;
+                        playerIdElement.text(playerId);
+                    } else {
+                        console.log('Không tìm thấy phần tử player-1 trong .matchbox');
+                    }
+
+                    var player2Element = matchBox.find('.player-2').first();
+
+                    // Kiểm tra nếu phần tử tồn tại
+                    if (player2Element.length > 0) {
+                        var playerNameElement = player2Element.find('.player-name');
+                        var playerName = match.p2Name;
+                        playerNameElement.text(playerName);
+
+                        var countryImageElement = player2Element.find('img');
+                        var countryImage = match.p2Country;
+                        countryImageElement.attr('src', countryImage);
+
+                        var playerIdElement = player2Element.find('.player-id');
+                        var playerId = match.p2Id;
+                        playerIdElement.text(playerId);
+                    } else {
+                        console.log('Không tìm thấy phần tử player-2 trong .matchbox');
+                    }
+                });
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.log('Error:', errorThrown);
+            }
+        });
+    }
 
 </script>
