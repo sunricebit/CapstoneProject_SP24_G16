@@ -92,8 +92,7 @@
                             {
                                 <div class="tour-status finish-status"></div>
                             }
-                            @*<img class="tour-image" src="~/images/new_1.jpg" alt="">*@
-                            <img class="tour-image" src="@tour.Flyer" alt="">
+                            <div class="tour-image" style="background-image: url(@tour.Flyer);"></div>
                             <div>
                                 <div class="tour-type d-flex justify-content-center align-items-center">
                                     @tour.GameType
