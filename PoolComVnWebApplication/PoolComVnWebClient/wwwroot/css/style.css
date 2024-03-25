@@ -2870,18 +2870,19 @@ tr:not(:first-child).isFinish {
             background: #9c1515;
         }
 
-        .tour-step.disable{
-            opacity:0.5;
-        }
+    .tour-step.disable {
+        opacity: 0.5;
+        pointer-events: none;
+    }
 
-            .tour-step.disable:hover{
+            /*.tour-step.disable:hover{
                 cursor:default;
             }
 
             .tour-step.disable .step-number:hover {
                 background: #4d5c60;
                 cursor: default;
-            }
+            }*/
 
             .tour-step .step-title {
                 font-weight: 600;
