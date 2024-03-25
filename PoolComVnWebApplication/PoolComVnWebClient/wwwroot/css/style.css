@@ -245,27 +245,32 @@ button {
 
 .container .news-image,
 .container-full .news-image {
-    overflow: hidden;
     border-radius: 20px;
     width: 300px;
     height: 200px;
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
 }
 
     .container .news-image.hidden,
     .container .tour-box.hidden,
+    .dashboard-container .tour-box.hidden,
     .container .item-box.hidden {
         opacity: 0.3;
     }
 
-.container .news-item img,
-.container-full .news-item img {
-    display: block;
+.container .news-item .img,
+.container-full .news-item .img {
     width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
     transition: transform 0.3s;
 }
 
-    .container .news-item img:hover,
-    .container-full .news-item img:hover {
+    .container .news-item .img:hover,
+    .container-full .news-item .img:hover {
         transform: scale(1.1);
     }
 
@@ -766,6 +771,9 @@ footer {
     .tournament .tour-item {
         padding: 10px;
         position: relative;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 32px;
     }
 
 .history-content .tour-item {
@@ -777,9 +785,8 @@ footer {
     .history-content .tour-item .item-body {
         display: block;
         background: #eaeaea;
-        width: 100%;
+        width: 300px;
         border-radius: 5px;
-        /* overflow: hidden; */
         position: relative;
         min-height: 460px;
         transition: transform 0.5s ease;
@@ -832,17 +839,17 @@ footer {
 }
 
 .tournament .tour-circle .schedule-circle {
-    background: rgb(255, 255, 0);
+    background: radial-gradient(circle, #fff, rgb(255, 255, 0) 65%);
 }
 
 .tournament .tour-circle .start-circle {
     margin-left: 20px;
-    background: rgb(0, 255, 0);
+    background: radial-gradient(circle, #fff, rgb(0, 255, 0) 65%);
 }
 
 .tournament .tour-circle .finish-circle {
     margin-left: 20px;
-    background: rgb(255, 0, 0);
+    background: radial-gradient(circle, #fff, rgb(255, 0, 0) 65%);
 }
 
 .tournament .tour-circle span {
@@ -853,7 +860,11 @@ footer {
 
 .tournament .tour-item .tour-image,
 .history-content .tour-item .tour-image {
-    width: 100%;
+    width: 300px;
+    height: 200px;
+    overflow: hidden;
+    background-position: center;
+    background-size: cover;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
@@ -911,6 +922,9 @@ footer {
 .history-content .tour-item .tour-club-image {
     width: 28px;
     height: 28px;
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
     border-radius: 50%;
 }
 
@@ -1140,6 +1154,10 @@ footer {
         font-weight: 600;
     }
 
+        .manage-nav .back-btn a {
+            color: #fff;
+        }
+
     .manage-nav .menu-body {
         position: absolute;
         top: 50px;
@@ -1329,7 +1347,7 @@ footer {
             }
 
         .container-full .tour-info .tour-image img {
-            width: 80%;
+            width: 50%;
         }
 
     .container-full .info-line {
@@ -2852,6 +2870,20 @@ tr:not(:first-child).isFinish {
             background: #9c1515;
         }
 
+    .tour-step.disable {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    /*.tour-step.disable:hover{
+                cursor:default;
+            }
+
+            .tour-step.disable .step-number:hover {
+                background: #4d5c60;
+                cursor: default;
+            }*/
+
     .tour-step .step-title {
         font-weight: 600;
         color: #fff;
@@ -2940,6 +2972,10 @@ tr:not(:first-child).isFinish {
         caret-color: #fff;
         color: #fff;
     }
+
+        .create-tour .tour-input .input-content::placeholder {
+            color: #fff;
+        }
 
     .confirm-popup .tour-input .input-title {
         color: #000;
@@ -3124,6 +3160,7 @@ tr:not(:first-child).isFinish {
     width: 200px;
     text-align: center;
     background-color: #242424a6;
+    color: #fff;
 }
 
     .create-tour .step-two-nav:last-child {
@@ -3494,6 +3531,7 @@ tr:not(:first-child).isFinish {
         background-position: center;
         background-size: cover;
         overflow: hidden;
+        border-radius: 10px;
     }
 
     .upload-img.avt {
@@ -4283,6 +4321,7 @@ tr:not(:first-child).isFinish {
     box-shadow: 0 0 10px 5px #000;
     overflow-y: auto;
     padding-bottom: 100px;
+    display: none;
 }
 
     .club-dashboard-nav::-webkit-scrollbar {
@@ -4377,13 +4416,14 @@ tr:not(:first-child).isFinish {
     }
 
 .dashboard-container {
-    width: calc(100% - 300px);
+    width: 100%;
     position: fixed;
     overflow: auto;
     top: 50px;
-    left: 300px;
+    left: 0;
     z-index: 98;
     height: calc(100vh - 50px);
+    padding: 50px 2%;
 }
 
     .dashboard-container.table {
@@ -4487,22 +4527,23 @@ tr:not(:first-child).isFinish {
         font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         font-style: italic;
         display: block;
+        font-size: 14px;
         border-bottom-left-radius: 20px;
         border-bottom-right-radius: 20px;
     }
 
     .schedule-item .item-name {
         color: #1c324ddf;
-        font-weight: 800;
-        font-size: 24px;
+        font-weight: 700;
+        font-size: 20px;
         font-style: italic;
     }
 
     .schedule-item .item-address {
         color: #1c324ddf;
-        font-size: 20px;
+        font-size: 16px;
         font-style: italic;
-        font-weight: 400;
+        font-weight: 500;
     }
 
     .schedule-item .item-bonus {
@@ -4511,14 +4552,6 @@ tr:not(:first-child).isFinish {
         font-size: 36px;
         font-style: italic;
         font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    }
-
-    .schedule-item .info-btn {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 200px;
-        height: 150px;
     }
 
     .schedule-item .game-type,
@@ -4549,18 +4582,16 @@ tr:not(:first-child).isFinish {
 }
 
 .schedule-item .btn-join {
-    width: 100px;
+    width: 200px;
     height: 50px;
     background: #1c324ddf;
     color: white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 5px;
-    border-bottom-left-radius: 2px;
-    border-bottom-right-radius: 40px;
+    border-radius: 10px;
     border: 2px #1c324ddf solid;
     text-decoration: none;
     text-align: center;
     line-height: 45px;
+    margin-bottom: 20px;
 }
 
     .schedule-item .btn-join:hover {
@@ -4617,11 +4648,11 @@ tr:not(:first-child).isFinish {
     }
 
 .schedule-item .item-more {
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
     .schedule-item .item-more .item-more-image {
-        width: 40%;
+        width: 60%;
         border-radius: 20px;
     }
 
@@ -4819,13 +4850,8 @@ tr:not(:first-child).isFinish {
     border-radius: 10px;
     overflow: hidden;
     border: #fff solid 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.club-list .club-box img {
-    height: 270px;
+    background-position: center;
+    background-size: cover;
 }
 
 .club-list .club-box .club-info {
@@ -5036,7 +5062,8 @@ tr:not(:first-child).isFinish {
             text-indent: 10px;
         }
 
-        .change-info .menu-info button {
+        .change-info .menu-info button,
+        .change-info .menu-info .cancle-btn {
             border: 2px solid #ccc;
             border-radius: 6px;
             height: 40px;
@@ -5045,12 +5072,25 @@ tr:not(:first-child).isFinish {
             font-weight: 600;
             width: 200px;
             line-height: 40px;
+            display: block;
+            text-align: center;
         }
 
-            .change-info .menu-info button:hover {
-                background: #31b08c;
-                color: #fff;
+        .change-info .menu-info .cancle-btn {
+            background-color: #dc2222;
+            color: #fff;
+        }
+
+            .change-info .menu-info .cancle-btn:hover {
+                background-color: #a70d10;
+                cursor: pointer;
             }
+
+        .change-info .menu-info button:hover {
+            background: #31b08c;
+            color: #fff;
+            cursor: pointer;
+        }
 
     .change-info .containUser .title {
         font-size: 28px;
@@ -5146,7 +5186,7 @@ tr:not(:first-child).isFinish {
         }
 
 .match-display .table-input {
-    padding: 20px
+    padding: 20px;
 }
 
     .match-display .table-input .input-title {
@@ -5350,6 +5390,24 @@ tr:not(:first-child).isFinish {
             width: calc(100% - 500px);
             margin-top: 0;
         }
+
+    .schedule-item .item-date {
+        font-size: 16px;
+    }
+
+    .schedule-item .item-name {
+        font-weight: 800;
+        font-size: 24px;
+    }
+
+    .schedule-item .item-address {
+        font-size: 20px;
+        font-weight: 400;
+    }
+
+    .schedule-item .item-more .item-more-image {
+        width: 40%;
+    }
 }
 
 /*width>=1280px */
@@ -5360,5 +5418,14 @@ tr:not(:first-child).isFinish {
 
     .history-content .tour-item {
         width: 33.33%;
+    }
+
+    .club-dashboard-nav {
+        display: block;
+    }
+
+    .dashboard-container {
+        width: calc(100% - 300px);
+        left: 300px;
     }
 }

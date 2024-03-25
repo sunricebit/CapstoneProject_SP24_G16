@@ -15,8 +15,6 @@
                         </div>
                     </div>
                     <div class="upload-img ">
-
-                        <input type="file" name="banner" class="imageInput mt-1" accept="image/*" />
                         <div class="upload-title d-flex justify-content-center align-items-center">
                             <div>
                                 <div>
@@ -27,9 +25,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="preview-image-bg m-0">
-                            <img class="preview-image" />
-                        </div>
+                        <div class="m-0 preview-image"></div>
+                        <input type="file" name="banner" class="imageInput mt-1" accept="image/*" />
                         <input id="file-name" class="d-none" />
                         <input type="hidden" id="TourId" name="tourId" value="@tourId" />
                     </div>
@@ -58,7 +55,7 @@
             const reader = new FileReader();
 
             reader.onload = function (e) {
-                previewImage.src = e.target.result;
+                previewImage.style.backgroundImage = 'url(' + e.target.result + ')';
                 previewImage.style.display = 'block';
                 uploadTile.classList.add('d-none');
             };
@@ -67,4 +64,8 @@
             selectedFileName.value = imageInput.files[0].name;
         }
     });
+
+    //Handle active nav
+    const createTourStepBtn = document.querySelector('.step-two');
+    createTourStepBtn.classList.add('active');
 </script>

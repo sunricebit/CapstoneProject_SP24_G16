@@ -2,7 +2,7 @@
     Layout = "~/Views/Shared/_ClubLayout.cshtml";
 }
 
-<div class="dashboard-container container">
+<div class="dashboard-container">
     <div class="tournament mt-0">
         <div class="normal-body">
             <div class="d-flex justify-content-between mt-4 row">
@@ -77,6 +77,12 @@
                     <i class="fa-solid fa-chevron-down" onclick="buttonDownClick(1)"></i>
                 </div>
                 <div class="item-more d-none">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <a href="" class="btn-join">
+                            <span>Chi tiết</span>
+                            <i class="fa-solid fa-caret-right"></i>
+                        </a>
+                    </div>
                     <div class="d-flex justify-content-center">
                         <img src="~/images/new_1.jpg" class="item-more-image"></img>
                     </div>
@@ -84,12 +90,6 @@
                         <i class="fa-solid fa-chevron-up" onclick="buttonUpClick(1)"></i>
                     </div>
                 </div>
-            </div>
-            <div class="d-flex justify-content-center align-items-center info-btn">
-                <a href="" class="btn-join">
-                    <span>Chi tiết</span>
-                    <i class="fa-solid fa-caret-right"></i>
-                </a>
             </div>
             <div class="game-type">9 bi</div>
         </div>
@@ -114,6 +114,12 @@
                     <i class="fa-solid fa-chevron-down" onclick="buttonDownClick(2)"></i>
                 </div>
                 <div class="item-more d-none">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <a href="" class="btn-join">
+                            <span>Chi tiết</span>
+                            <i class="fa-solid fa-caret-right"></i>
+                        </a>
+                    </div>
                     <div class="d-flex justify-content-center">
                         <img src="~/images/thienluong.jpg" class="item-more-image"></img>
                     </div>
@@ -122,13 +128,7 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-center align-items-center info-btn">
-                <a href="" class="btn-join">
-                    <span>Chi tiết</span>
-                    <i class="fa-solid fa-caret-right"></i>
-                </a>
-            </div>
-                <div class="game-type">9 bi</div>
+            <div class="game-type">9 bi</div>
         </div>
         <div class="hidden-btn hidden-solo">
             <i class="fa-solid fa-eye-slash"></i>
@@ -151,6 +151,12 @@
                     <i class="fa-solid fa-chevron-down" onclick="buttonDownClick(3)"></i>
                 </div>
                 <div class="item-more d-none">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <a href="" class="btn-join">
+                            <span>Chi tiết</span>
+                            <i class="fa-solid fa-caret-right"></i>
+                        </a>
+                    </div>
                     <div class="d-flex justify-content-center">
                         <img src="~/images/thienluong.jpg" class="item-more-image"></img>
                     </div>
@@ -158,12 +164,6 @@
                         <i class="fa-solid fa-chevron-up" onclick="buttonUpClick(3)"></i>
                     </div>
                 </div>
-            </div>
-            <div class="d-flex justify-content-center align-items-center info-btn">
-                <a href="" class="btn-join">
-                    <span>Chi tiết</span>
-                    <i class="fa-solid fa-caret-right"></i>
-                </a>
             </div>
             <div class="game-type">9 bi</div>
         </div>
@@ -188,6 +188,12 @@
                     <i class="fa-solid fa-chevron-down" onclick="buttonDownClick(4)"></i>
                 </div>
                 <div class="item-more d-none">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <a href="" class="btn-join">
+                            <span>Chi tiết</span>
+                            <i class="fa-solid fa-caret-right"></i>
+                        </a>
+                    </div>
                     <div class="d-flex justify-content-center">
                         <img src="~/images/thienluong.jpg" class="item-more-image"></img>
                     </div>
@@ -195,12 +201,6 @@
                         <i class="fa-solid fa-chevron-up" onclick="buttonUpClick(4)"></i>
                     </div>
                 </div>
-            </div>
-            <div class="d-flex justify-content-center align-items-center info-btn">
-                <a href="" class="btn-join">
-                    <span>Chi tiết</span>
-                    <i class="fa-solid fa-caret-right"></i>
-                </a>
             </div>
             <div class="game-type">9 bi</div>
         </div>
@@ -273,7 +273,7 @@
         itemMore.classList.remove('d-none');
         var widthImg = itemImage.offsetWidth;
         var height = itemImage.offsetHeight;
-        item.style.height = 180 + height + "px";
+        item.style.height = 240 + height + "px";
         item.style.background = "linear-gradient(rgba(255, 255, 255, 0.888), rgba(255, 255, 255, 0.888))";
         console.log(itemImage.offsetHeight)
     }

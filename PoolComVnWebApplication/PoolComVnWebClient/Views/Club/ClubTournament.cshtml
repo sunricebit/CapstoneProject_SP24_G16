@@ -2,7 +2,7 @@
     Layout = "~/Views/Shared/_ClubLayout.cshtml";
 }
 
-<div class="dashboard-container container">
+<div class="dashboard-container">
     <div class="tournament mt-0">
         <div class="normal-body">
             <div class="d-flex justify-content-between mt-4 row">
@@ -69,48 +69,48 @@
                     </div>
                 </div>
             </div>
-           <div class="mt-5 d-flex flex-wrap">
-    @foreach (var tournament in ViewBag.Tournament)
-    {
-        <div class="tour-item col-md-6 col-lg-4">
+            <div class="mt-5 d-flex flex-wrap">
+                @foreach (var tournament in ViewBag.Tournament)
+                {
+                    <div class="tour-item col-md-6 col-lg-4">
                         <a asp-action="TournamentDetail" asp-controller="Tournament" asp-route-tourId="@tournament.TournamentId" class="item-body">
                             <div class="tour-box">
-                    <div class="tour-status @(tournament.Status.ToString() == "schedule" ? "schedule-status" : tournament.Status.ToString() == "start" ? "start-status" : "finish-status")"></div>
-                                <img class="tour-image" src="@(!string.IsNullOrEmpty(tournament.Flyer) ? tournament.Flyer : "https://firebasestorage.googleapis.com/v0/b/poolcomvn-82664.appspot.com/o/Club%2Fdefault.jpg?alt=media&token=0d297640-cb3a-4ee7-97de-47c1a5af67ae")" alt="">
+                                <div class="tour-status @(tournament.Status.ToString() == "schedule" ? "schedule-status" : tournament.Status.ToString() == "start" ? "start-status" : "finish-status")"></div>
+                                <div class="tour-image" style="background-image: url(@(!string.IsNullOrEmpty(tournament.Flyer) ? tournament.Flyer : "https://firebasestorage.googleapis.com/v0/b/poolcomvn-82664.appspot.com/o/Club%2Fdefault.jpg?alt=media&token=0d297640-cb3a-4ee7-97de-47c1a5af67ae"));"></div>
                                 <div>
-                        <div class="tour-type d-flex justify-content-center align-items-center">
-                            @tournament.GameType
-                        </div>
-                    </div>
-                    <div class="tour-title">
-                        @tournament.TournamentName
-                    </div>
-                    <div class="tour-club d-flex align-items-center">
-                        <img class="tour-club-image" src="@ViewBag.Club.Avatar" alt="">
-                        <span class="px-2">@tournament.ClubName</span>
-                    </div>
-                    <div class="tour-description">
-                        @tournament.Description
-                    </div>
-                    <div class="tour-time">
-                        <i class="fa-solid fa-calendar-days"></i>
-                        <span>@tournament.StartTime.ToString("dd/MM/yyyy")</span>
-                        -
-                        <span>@tournament.EndTime.ToString("dd/MM/yyyy")</span>
-                    </div>
+                                    <div class="tour-type d-flex justify-content-center align-items-center">
+                                        @tournament.GameType
+                                    </div>
+                                </div>
+                                <div class="tour-title">
+                                    @tournament.TournamentName
+                                </div>
+                                <div class="tour-club d-flex align-items-center">
+                                    <img class="tour-club-image" src="@ViewBag.Club.Avatar" alt="">
+                                    <span class="px-2">@tournament.ClubName</span>
+                                </div>
+                                <div class="tour-description">
+                                    @tournament.Description
+                                </div>
+                                <div class="tour-time">
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                    <span>@tournament.StartTime.ToString("dd/MM/yyyy")</span>
+                                    -
+                                    <span>@tournament.EndTime.ToString("dd/MM/yyyy")</span>
+                                </div>
 
-                    <div class="tour-position">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <span>@tournament.Address</span>
+                                <div class="tour-position">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    <span>@tournament.Address</span>
+                                </div>
+                            </div>
+                            <div class="hidden-btn hidden-tour">
+                                <i class="fa-solid fa-eye-slash"></i>
+                            </div>
+                        </a>
                     </div>
-                </div>
-                <div class="hidden-btn hidden-tour">
-                    <i class="fa-solid fa-eye-slash"></i>
-                </div>
-            </a>
-        </div>
-    }
-</div>
+                }
+            </div>
         </div>
     </div>
 

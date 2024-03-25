@@ -93,6 +93,20 @@
                     @(ViewBag.AccountEmail ?? "Email không được cung cấp")
                 </div>
             </div>
+            <div class="club-address">
+                <div class="address-title">Facebook</div>
+                @if (ViewBag.Club != null)
+                {
+                    <a href="@ViewBag.Club.Facebook" class="address-content" style="font-size: 32px;">
+                        <i class="fa-brands fa-square-facebook"></i>
+                    </a>
+                }
+                else
+                {
+                    <div>Facebook chưa có</div>
+                }
+
+            </div>
         </div>
     </div>
     

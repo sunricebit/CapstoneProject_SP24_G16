@@ -4,6 +4,8 @@
 @model PoolComVnWebClient.DTO.CreateTournamentInputDTO
 
 <div class="container-full">
+    <input id="current-step" class="d-none" value="3" />
+    <input id="tour-id" class="d-none" value="3" />
     <div class="create-tour d-flex justify-content-end">
 
         @if (ViewBag.Error != null)
@@ -443,4 +445,45 @@
 
     // Gọi hàm restoreInputValues() khi quay lại step
     restoreInputValues();
+
+    //Handle active nav
+    const createTourStepBtn = document.querySelector('.step-one');
+    createTourStepBtn.classList.add('active');
+
+
+
+    //Handle step btn
+    //const currentStep = document.getElementById('current-step');
+    //const tourId = document.getElementById('tour-id');
+    //var stepNum = parseInt(currentStep.value);
+    //var tourIdNum = parseInt(tourId.value);
+    //if(tourId !== null){
+    //    document.querySelector('.step-one').parentNode.href = "/CreateTournament/StepOneCreateTournament?TourId=" + tourIdNum;
+    //}
+    //if(stepNum > 0){
+    //    const stepLockList = document.querySelectorAll('.step-number');
+    //    var from = 0;
+
+    //    if (stepNum >= 1) { 
+    //        from = 1;
+    //        document.querySelector('.step-two').parentNode.href = "/CreateTournament/StepTwoAddBanner?TourId=" + tourIdNum;
+    //    }
+    //    if (stepNum >= 2) {
+    //        from = 4;
+    //        document.querySelector('.step-three').parentNode.href = "/CreateTournament/StepThreeReview?TourId=" + tourIdNum;
+    //        document.querySelector('.step-four').parentNode.href = "/CreateTournament/StepFourAddTable?TourId=" + tourIdNum;
+    //        document.querySelector('.step-five').parentNode.href = "/CreateTournament/StepFivePlayerList?TourId=" + tourIdNum;
+    //    }
+    //    if (stepNum >= 5) {
+    //        from = 5;
+    //        document.querySelector('.step-six').parentNode.href = "/CreateTournament/StepSixArrange?TourId=" + tourIdNum;
+    //    }
+
+    //    for (var i = 1; i <= from; i++) {
+    //        const parent = stepLockList[i].parentNode;
+    //        if (parent !== null && parent.classList.contains('disable')) {
+    //            parent.classList.remove('disable');
+    //        }
+    //    }
+    //}
 </script>

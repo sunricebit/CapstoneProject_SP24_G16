@@ -4,7 +4,7 @@
 @model PoolComVnWebClient.DTO.ClubDTO;
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <div class="dashboard-container container">
-    <div class="change-info row">
+    <div class="change-info row mt-3">
         <div class="col-10 d-block p-0">
             <div class="containUser pt-5 px-5">
                 <div class="title">
@@ -70,9 +70,9 @@
                             <input type="text" asp-for="Facebook" required minlength="9" maxlength="13">
                         </div>
 
-                        <div class="">
+                        <div class="d-flex">
                             <button type="submit" class="mt-4">Lưu thay đổi</button>
-                            <a asp-action="Index" asp-controller="Club" class="mx-lg-3 mt-4">Quay trở lại</a>
+                            <a asp-action="Index" asp-controller="Club" class="cancle-btn mx-lg-3 mt-4">Quay trở lại</a>
                         </div>
                     </div>
                 </form>

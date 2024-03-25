@@ -57,6 +57,20 @@ namespace PoolComVnWebAPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [HttpGet("wards/byDistrictName/{districtName}")]
+        public IActionResult GetWardsByDistrictName(string districtName)
+        {
+            try
+            {
+                var wards = _addressDAO.GetWardsByDistrictNameAsync(districtName);
+                return Ok(wards);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
         [HttpGet("wards/{districtCode}")]
         public IActionResult GetWardsByDistrictCode(string districtCode)
         {
