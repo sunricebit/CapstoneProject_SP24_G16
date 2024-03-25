@@ -31,6 +31,10 @@ namespace PoolComVnWebClient.Controllers
         {
             if (id == null)
             {
+                if (TempData.ContainsKey("SuccessMessage"))
+                {
+                    ViewBag.Success = TempData["SuccessMessage"];
+                }
                 string email = HttpContext.Request.Cookies["Email"];
                 var response = client.GetAsync($"{ApiUrl}/Account/GetAccountByEmail/{email}").Result;
                 if (!response.IsSuccessStatusCode)
@@ -400,8 +404,10 @@ namespace PoolComVnWebClient.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
+                    
                     var jsonContent = response.Content.ReadAsStringAsync().Result;
                     var newsDetails = JsonConvert.DeserializeObject<ClubPostDTO>(jsonContent);
+                    TempData["SuccessMessage"] = "Tạo mới bài viết" + newsDetails.Title + "thành công";
                     return View(newsDetails);
                 }
                 else if (response.StatusCode == HttpStatusCode.NotFound)
@@ -477,7 +483,7 @@ namespace PoolComVnWebClient.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-
+                TempData["SuccessMessage"] = "Chỉnh sửa bài viết" + clubPostDTO.Title + "thành công";
                 return RedirectToAction("Index");
             }
             else if (response.StatusCode == HttpStatusCode.NotFound)
@@ -882,6 +888,7 @@ namespace PoolComVnWebClient.Controllers
 
             if (response.IsSuccessStatusCode)
             {
+                TempData["SuccessMessage"] = "Chỉnh sửa thông tin câu lạc bộ thành công.";
                 return RedirectToAction("Index");
             }
             else
