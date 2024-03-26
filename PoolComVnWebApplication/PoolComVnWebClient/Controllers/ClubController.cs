@@ -33,7 +33,7 @@ namespace PoolComVnWebClient.Controllers
         public IActionResult Index(int? id, int? page)
         {
             int pageNumber = page ?? 1;
-            
+
             if (id == null)
             {
                 int pageSize = 5;
@@ -196,7 +196,7 @@ namespace PoolComVnWebClient.Controllers
                     string link = await task;
                     return link;
                 }
-                 else
+                else
                 {
                     var task = new FirebaseStorage(
                    Bucket,
@@ -210,9 +210,9 @@ namespace PoolComVnWebClient.Controllers
                 .PutAsync(stream, cancellation.Token);
                     string link = await task;
                     return link;
-                }  
-             
-                   
+                }
+
+
 
 
             }
@@ -271,7 +271,7 @@ namespace PoolComVnWebClient.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> AddPost(ClubPostDTO ClubPostDTO, IFormFile BannerFile,int clubid)
+        public async Task<IActionResult> AddPost(ClubPostDTO ClubPostDTO, IFormFile BannerFile, int clubid)
         {
             ClubPostDTO.CreatedDate = DateTime.Now;
             ClubPostDTO.UpdatedDate = DateTime.Now;
@@ -338,7 +338,7 @@ namespace PoolComVnWebClient.Controllers
             }
         }
         [HttpGet]
-        public IActionResult ClubPostDetails(int id,int? clubid)
+        public IActionResult ClubPostDetails(int id, int? clubid)
         {
 
             if (clubid == null)
@@ -418,7 +418,7 @@ namespace PoolComVnWebClient.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    
+
                     var jsonContent = response.Content.ReadAsStringAsync().Result;
                     var newsDetails = JsonConvert.DeserializeObject<ClubPostDTO>(jsonContent);
                     TempData["SuccessMessage"] = "Tạo mới bài viết" + newsDetails.Title + "thành công";
@@ -435,7 +435,7 @@ namespace PoolComVnWebClient.Controllers
                     return View();
                 }
             }
-           
+
         }
         [HttpPost]
         public async Task<IActionResult> UpdateClubPost(ClubPostDTO clubPostDTO, IFormFile BannerFile)
@@ -444,7 +444,7 @@ namespace PoolComVnWebClient.Controllers
             clubPostDTO.UpdatedDate = DateTime.Now;
             if (BannerFile != null && BannerFile.Length > 0)
             {
-                await DeleteFromFirebase(clubPostDTO.Title,clubPostDTO.Flyer);
+                await DeleteFromFirebase(clubPostDTO.Title, clubPostDTO.Flyer);
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(BannerFile.FileName);
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase", fileName);
 
@@ -842,15 +842,15 @@ namespace PoolComVnWebClient.Controllers
             var responseWard = client.GetAsync($"{ApiUrl}/Address/getwardsBywardCode/{club.WardCode}").Result;
             var wardData = responseWard.Content.ReadAsStringAsync().Result;
             var ward = JsonConvert.DeserializeObject<WardDTO>(wardData);
-            
-            var responseDistrict = client.GetAsync($"{ApiUrl}/Address/GetdistrictsByDistrictCode/{ward.DistrictCode}").Result;        
+
+            var responseDistrict = client.GetAsync($"{ApiUrl}/Address/GetdistrictsByDistrictCode/{ward.DistrictCode}").Result;
             var districtData = responseDistrict.Content.ReadAsStringAsync().Result;
             var district = JsonConvert.DeserializeObject<DistrictDTO>(districtData);
 
             var responseProvince = client.GetAsync($"{ApiUrl}/Address/getProvincesByProvinceCode/{district.ProvinceCode}").Result;
             var provinceData = responseProvince.Content.ReadAsStringAsync().Result;
             var province = JsonConvert.DeserializeObject<ProvinceDTO>(provinceData);
-            
+
             ViewBag.Club = club;
             ViewBag.AccountEmail = email;
             ViewBag.Ward = ward;
@@ -859,11 +859,11 @@ namespace PoolComVnWebClient.Controllers
             return View(club);
         }
         [HttpPost]
-        public async Task<IActionResult> ClubDetails(ClubDTO ClubDTO, IFormFile BannerFile,string ward)
+        public async Task<IActionResult> ClubDetails(ClubDTO ClubDTO, IFormFile BannerFile, string ward)
         {
             if (BannerFile != null && BannerFile.Length > 0)
             {
-                await DeleteFromFirebase(ClubDTO.ClubName,ClubDTO.Avatar);
+                await DeleteFromFirebase(ClubDTO.ClubName, ClubDTO.Avatar);
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(BannerFile.FileName);
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase", fileName);
 
@@ -910,7 +910,7 @@ namespace PoolComVnWebClient.Controllers
                 ModelState.AddModelError(string.Empty, "Lỗi khi thêm tin tức.");
                 return View(ClubDTO);
             }
-        }    
+        }
 
         public IActionResult ClubTable(int? id)
         {
@@ -1010,7 +1010,7 @@ namespace PoolComVnWebClient.Controllers
                 var account = JsonConvert.DeserializeObject<AccountDTO>(AccountData);
                 ViewBag.AccountEmail = account.Email;
                 return View();
-                
+
             }
         }
 
@@ -1052,7 +1052,7 @@ namespace PoolComVnWebClient.Controllers
                 {
                     var TableData = response3.Content.ReadAsStringAsync().Result;
                     var tables = JsonConvert.DeserializeObject<List<TableDTO>>(TableData);
-                    
+
                     ViewBag.Table = tables;
                 }
                 ViewBag.Club = club;
@@ -1091,13 +1091,13 @@ namespace PoolComVnWebClient.Controllers
                 var account = JsonConvert.DeserializeObject<AccountDTO>(AccountData);
                 ViewBag.AccountEmail = account.Email;
                 return View();
-               
+
             }
         }
         [HttpPost("ImportTables")]
         public async Task<IActionResult> ImportTables(IFormFile ImportTables)
         {
-            
+
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
             try
             {

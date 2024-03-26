@@ -95,10 +95,10 @@ namespace DataAccess
 
         public void AddTableToTournament(List<int> lstTableId)
         {
-            foreach(int i in lstTableId)
+            foreach (int i in lstTableId)
             {
                 var table = _context.Tables.FirstOrDefault(t => t.TableId == i);
-                table.IsUseInTour = true; 
+                table.IsUseInTour = true;
                 _context.Update(table);
             }
             _context.SaveChanges();

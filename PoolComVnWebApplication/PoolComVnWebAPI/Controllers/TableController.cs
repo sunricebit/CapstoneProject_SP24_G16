@@ -21,7 +21,7 @@ namespace PoolComVnWebAPI.Controllers
             _clubDAO = clubDAO;
             _mapper = mapper;
         }
-        
+
         // GET: api/Table
         [HttpGet]
         public IActionResult GetAllTables()
@@ -225,6 +225,6 @@ namespace PoolComVnWebAPI.Controllers
             return Ok();
         }
 
-        
+
     }
 }
