@@ -45,23 +45,6 @@ namespace PoolComVnWebAPI.Controllers
             var tableDTO = _mapper.Map<TableDTO>(table);
             return Ok(tableDTO);
         }
-        [HttpGet("IsTagNameExists/{tagName}")]
-        public IActionResult IsTagNameExists(string tagName)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(tagName))
-                {
-                    return BadRequest("Tag name cannot be null or empty.");
-                }
-
-                return Ok(_tableDAO.IsTagNameExistsAsync(tagName));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
 
         // GET: api/Table/GetAllTablesForClub
         [HttpGet("GetAllTablesForClub")]
@@ -142,7 +125,7 @@ namespace PoolComVnWebAPI.Controllers
             return Ok();
         }
 
-        [HttpPost("AddNewTable")]
+        [HttpGet("AddNewTable")]
         public IActionResult AddTable([FromBody] TableDTO tableDTO)
         {
             if (tableDTO == null)
@@ -153,7 +136,7 @@ namespace PoolComVnWebAPI.Controllers
             var table = _mapper.Map<Table>(tableDTO);
             _tableDAO.AddTable(table);
 
-            return Ok();
+            return CreatedAtAction("GetTableById", new { id = table.TableId }, tableDTO);
         }
 
         [HttpPost("UpdateTableToTournament")]
@@ -203,38 +186,6 @@ namespace PoolComVnWebAPI.Controllers
                     IsUseInTour = table.IsUseInTour,
                     Price = table.Price
                 }).ToList());
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal Server Error: {ex.Message}");
-            }
-        }
-        [HttpPost("AddListTable")]
-        public IActionResult AddListTable(List<TableDTO> tables)
-        {
-            try
-            {
-                if (tables == null || !tables.Any())
-                {
-                    return BadRequest("No tables provided.");
-                }
-
-                var tablesToAdd = tables.Select(t => new Table
-                {
-                    TableName = t.TableName,
-                    ClubId = t.ClubId,
-                    TagName = t.TagName,
-                    Status = t.Status,
-                    Size = t.Size,
-                    Image = t.Image,
-                    IsScheduling = t.IsScheduling,
-                    IsUseInTour = t.IsUseInTour,
-                    Price = t.Price
-                }).ToList();
-
-                _tableDAO.AddListTable(tablesToAdd);
-
-                return Ok("Tables added successfully.");
             }
             catch (Exception ex)
             {

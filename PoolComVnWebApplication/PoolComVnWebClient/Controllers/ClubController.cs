@@ -781,7 +781,7 @@ namespace PoolComVnWebClient.Controllers
                 clubDTO.Avatar = downloadLink;
             }
             string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase");
-            clubDTO.WardCode = ward;
+
             try
             {
 
@@ -1013,111 +1013,6 @@ namespace PoolComVnWebClient.Controllers
                 
             }
         }
-        [HttpPost]
-        public async Task<IActionResult> AddTable(TableDTO tableDTO,int clubid, IFormFile Image)
-        {
-
-            if (string.IsNullOrEmpty(tableDTO.TableName))
-            {
-                ModelState.AddModelError("TableName", "Tên bàn không được trống.");
-                return RedirectToAction("ClubTableManage");
-            }
-
-            if (string.IsNullOrEmpty(tableDTO.TagName))
-            {
-                ModelState.AddModelError("TagName", "Nhãn bàn không được trống.");
-                return RedirectToAction("ClubTableManage");
-            }
-
-            if (string.IsNullOrEmpty(tableDTO.Size))
-            {
-                ModelState.AddModelError("Size", "Kích thước không được trống.");
-                return RedirectToAction("ClubTableManage");
-            }
-
-            if (tableDTO.Price <= 0)
-            {
-                ModelState.AddModelError("Price", "Giá giờ chơi phải lớn hơn 0.");
-                return RedirectToAction("ClubTableManage");
-            }
-            if (Image == null)
-            {
-                ModelState.AddModelError("", "Ảnh không được trống.");
-                return RedirectToAction("ClubTableManage");
-            }
-            var responseTag = client.GetAsync($"{ApiUrl}/Table/IsTagNameExists/{tableDTO.TagName}").Result;
-            if (responseTag.IsSuccessStatusCode)
-            {
-                var responseContent = responseTag.Content.ReadAsStringAsync().Result;
-
-                if (bool.TryParse(responseContent, out var isTagNameExists) && isTagNameExists)
-                {
-                    ModelState.AddModelError("", "Tên đã tồn tại trong cơ sở dữ liệu.");
-                    return RedirectToAction("ClubTableManage");
-                }
-            }
-            else
-            {
-                ModelState.AddModelError("", "Đã xảy ra lỗi khi kiểm tra tên.");
-                return RedirectToAction("ClubTableManage");
-            }
-            if (Image != null && Image.Length > 0)
-            {
-               
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(Image.FileName);
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase", fileName);
-
-                using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
-                {
-                    Image.CopyTo(memoryStream);
-
-
-                }
-                var fileStream2 = new FileStream(filePath, FileMode.Open);
-                var downloadLink = await UploadFromFirebase(fileStream2, Image.FileName, "Table", $"{tableDTO.ClubId}", 0);
-                fileStream2.Close();
-                tableDTO.Image = downloadLink;
-            }
-            string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase");
-            try
-            {
-
-                string[] filePaths = Directory.GetFiles(directoryPath);
-                foreach (string filePath in filePaths)
-                {
-                    System.IO.File.Delete(filePath);
-                }
-
-                Console.WriteLine("All images in the directory have been deleted successfully.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred while deleting images: {ex.Message}");
-            }
-            tableDTO.IsUseInTour = false;
-            tableDTO.ClubId = clubid;
-            tableDTO.IsScheduling = false;
-            tableDTO.Status = true;
-            var responseData = await client.PostAsJsonAsync($"{ApiUrl}/Table/AddNewTable", tableDTO);
-            return RedirectToAction("ClubTableManage");
-        }
-        [HttpPost]
-        public IActionResult UpdateTable(TableDTO tableDTO, IFormFile Image)
-        {
-
-            return RedirectToAction("ClubTableManage");
-        }
-        [HttpGet]
-        public async Task<IActionResult> DeleteTable(int tableid)
-        {
-            var response = client.GetAsync($"{ApiUrl}/Table/{tableid}").Result;
-           
-                var TableData = response.Content.ReadAsStringAsync().Result;
-                var tables = JsonConvert.DeserializeObject<TableDTO>(TableData);
-                await DeleteFromFirebase($"{tables.ClubId}", tables.Image);
-              var response2 =  client.GetAsync($"{ApiUrl}/Table/Delete/{tableid}").Result;
-                return RedirectToAction("ClubTableManage");
-        }
 
         public IActionResult ClubTableManage(int? id)
         {
@@ -1157,8 +1052,7 @@ namespace PoolComVnWebClient.Controllers
                 {
                     var TableData = response3.Content.ReadAsStringAsync().Result;
                     var tables = JsonConvert.DeserializeObject<List<TableDTO>>(TableData);
-                    var tableNames = tables.Select(t => t.TableName).Distinct().ToList();
-                    ViewBag.TableNames = tableNames;
+                    
                     ViewBag.Table = tables;
                 }
                 ViewBag.Club = club;
@@ -1203,37 +1097,13 @@ namespace PoolComVnWebClient.Controllers
         [HttpPost("ImportTables")]
         public async Task<IActionResult> ImportTables(IFormFile ImportTables)
         {
-            string email = HttpContext.Request.Cookies["Email"];
-            var response = client.GetAsync($"{ApiUrl}/Account/GetAccountByEmail/{email}").Result;
-            if (!response.IsSuccessStatusCode)
-            {
-                ModelState.AddModelError(string.Empty, "Không thể lấy thông tin tài khoản.");
-                return View();
-            }
-            var AccountData = response.Content.ReadAsStringAsync().Result;
-            var account = JsonConvert.DeserializeObject<AccountDTO>(AccountData);
-            var response2 = client.GetAsync($"{ApiUrl}/Club/GetClubByAccountId/?accountID={account.AccountID}").Result;
-            if (!response2.IsSuccessStatusCode)
-            {
-                if (response2.StatusCode == HttpStatusCode.NotFound)
-                {
-                    return View();
-                }
-                else
-                {
-
-                    ModelState.AddModelError(string.Empty, "Không thể lấy thông tin câu lạc bộ.");
-                    return View();
-                }
-            }
-            var ClubData = response2.Content.ReadAsStringAsync().Result;
-            var club = JsonConvert.DeserializeObject<ClubDTO>(ClubData);
+            
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
             try
             {
                 if (ImportTables == null || ImportTables.Length <= 0)
                 {
-                    return View("Error");
+                    return BadRequest("Invalid file.");
                 }
 
                 var fileExtension = Path.GetExtension(ImportTables.FileName)?.ToLower();
@@ -1255,49 +1125,27 @@ namespace PoolComVnWebClient.Controllers
                             if (string.IsNullOrEmpty(tableName) || string.IsNullOrEmpty(tag) ||
                                 string.IsNullOrEmpty(size) || string.IsNullOrEmpty(hourlyPriceText))
                             {
-                                ModelState.AddModelError("", "Dữ liệu nhập thiếu trong tệp.");
-                                return RedirectToAction("ClubTableManage");
+                                continue;
                             }
 
                             if (!int.TryParse(hourlyPriceText, out int hourlyPrice))
                             {
-                                ModelState.AddModelError("", "Dữ liệu giá tiền không hợp lệ trong tệp.");
-                                return RedirectToAction("ClubTableManage");
-                            }
-                            var responseTag = client.GetAsync($"{ApiUrl}/Table/IsTagNameExists/{tag}").Result;
-                            if (responseTag.IsSuccessStatusCode)
-                            {
-                                var responseContent = responseTag.Content.ReadAsStringAsync().Result;
-
-                                if (bool.TryParse(responseContent, out var isTagNameExists) && isTagNameExists)
-                                {
-                                    ModelState.AddModelError("", "Tên đã tồn tại trong cơ sở dữ liệu.");
-                                    return RedirectToAction("ClubTableManage");
-                                }
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("", "Đã xảy ra lỗi khi kiểm tra tên.");
-                                return RedirectToAction("ClubTableManage");
+                                continue;
                             }
 
                             var table = new TableDTO
                             {
                                 TableName = tableName,
                                 TagName = tag,
-                                Size = size+" Feet",
-                                Price = hourlyPrice,
-                                IsScheduling = false,
-                                IsUseInTour = false,
-                                Image = "https://firebasestorage.googleapis.com/v0/b/poolcomvn-82664.appspot.com/o/Table%2Fdefault.jpg?alt=media&token=62241ee6-7893-4bbe-bc1b-09f2072c9df3",
-                                ClubId = club.ClubId
+                                Size = size,
+                                Price = hourlyPrice
                             };
 
                             importedTables.Add(table);
                         }
 
-                        var responseData = await client.PostAsJsonAsync($"{ApiUrl}/Table/AddListTable", importedTables);
-                        return RedirectToAction("ClubTableManage");
+                        ViewBag.ImportedTables = importedTables;
+                        return View("ClubTableManage");
                     }
                 }
                 else
