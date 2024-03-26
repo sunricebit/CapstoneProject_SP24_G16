@@ -4,6 +4,8 @@
 @{
     var stt = 1;
 }
+@using PoolComVnWebClient.DTO;
+@model TableDTO;
 <div class="dashboard-container table">
     <div class="news-manage m-2">
         <div class="manager-content">
@@ -52,8 +54,8 @@
                         <td class="text-center">@table.Size</td>
                         <td class="text-center">@table.Price VNĐ / giờ</td>
                         <td class="text-center">
-                            <a class="edit-btn"><i class="fa-solid fa-pencil p-2"></i></a>
-                            <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
+                                <a class="edit-btn" data-table-id="@table.TableId"><i class="fa-solid fa-pencil p-2"></i></a>
+                                <a asp-action="DeleteTable" asp-controller="Club" asp-route-tableid="@table.TableId"><i class="fa-solid fa-trash-can p-2"></i></a>
                         </td>
                     </tr>
                         stt++;
@@ -74,13 +76,15 @@
                 <i class="fa-solid fa-xmark"></i>
             </div>
         </div>
-        <form class="table-input" style="overflow-y: auto; height: 80vh;">
+        <form asp-action="AddTable" asp-controller="Club" method="post" asp-route-clubid="@ViewBag.Club.ClubId" enctype="multipart/form-data" class="table-input" style="overflow-y: auto; height: 80vh;">
             <div class="input-line">
                 <div class="input-title">Bàn đang có</div>
-                <select class="input-content">
+                <select name="NameValue" class="input-content" onchange="fillTableInfo()">
                     <option value="0">Chọn bàn</option>
-                    <option value="1">Rasson OX 9ft / 9ft</option>
-                    <option value="2">Diamond</option>
+                    @foreach (var tableName in ViewBag.TableNames)
+                    {
+                        <option value="@tableName">@tableName</option>
+                    }
                 </select>
             </div>
             <div class="input-line">
@@ -93,26 +97,26 @@
                         </div>
                     </div>
                     <div class="m-0 preview-image" style="width: 300px; height: 200px;"></div>
-                    <input type="file" class="imageInput mt-1" accept="image/*" />
+                    <input type="file" class="imageInput mt-1" name="Image" accept="image/*" />
                     <!-- lấy tên ảnh -->
                     <input id="file-name" class="d-none" />
                 </div>
             </div>
             <div class="input-line">
                 <div class="input-title">Nhãn bàn</div>
-                <input class="input-content">
-            </div>
+                <input asp-for="TagName"  class="input-content">
+            </div> 
             <div class="input-line">
                 <div class="input-title">Tên bàn</div>
-                <input class="input-content">
+                <input asp-for="TableName" name="TableName" class="input-content">
             </div>
             <div class="input-line">
                 <div class="input-title">Kích thước (ft)</div>
-                <input class="input-content">
+                <input asp-for="Size" name="Size" class="input-content">
             </div>
             <div class="input-line">
                 <div class="input-title">Giá giờ chơi (VNĐ / giờ)</div>
-                <input class="input-content">
+                <input asp-for="Price" name="Price" class="input-content">
             </div>
             <div class="input-line">
                 <input type="submit" class="create-table" value="Thêm vào danh sách">
@@ -131,40 +135,48 @@
                 <i class="fa-solid fa-xmark"></i>
             </div>
         </div>
-        <form class="table-input" style="overflow-y: auto; height: 80vh;">
+        <form asp-action="UpdateTable" asp-controller="Club" enctype="multipart/form-data" class="table-input" style="overflow-y: auto; height: 80vh;">
             <div class="input-line">
                 <div class="input-title">Bàn đang có</div>
-                <select class="input-content">
+                <select name="NameValue2" class="input-content" onchange="fillTableInfo2()">
                     <option value="0">Chọn bàn</option>
-                    <option value="1">Rasson OX 9ft / 9ft</option>
-                    <option value="2">Diamond</option>
+                    @foreach (var tableName in ViewBag.TableNames)
+                    {
+                        <option value="@tableName">@tableName</option>
+                    }
                 </select>
             </div>
+            <input type="hidden" asp-for="TableId" name="TableIdDetails"  />
+            <input type="hidden" asp-for="ClubId" name="ClubIdDetails"  />
+            <input type="hidden" asp-for="Image" name="ImageDetails"  />
+            <input type="hidden" asp-for="IsScheduling" name="IsSchedulingDetails"  />
+            <input type="hidden" asp-for="Status" name="StatusDetails"  />
+            <input type="hidden" asp-for="IsUseInTour" name="IsUseInTourDetails" />
             <div class="input-line">
                 <div class="input-title">Ảnh</div>
                 <div class="upload-img mt-2" style="border: dashed 3px #000; width: 320px;height: 220px;">
-                    <div class="m-0 preview-image" style="background-image: url(Image/rassonTable.png);
+                    <div class="m-0 preview-image image-details" style="background-image: url();
                         width: 300px; height: 200px;"></div>
-                    <input type="file" class="imageInput mt-1" accept="image/*" />
+                    <input type="file" name="Image" class="imageInput mt-1" accept="image/*" />
                     <!-- lấy tên ảnh -->
                     <input id="file-name" class="d-none" />
                 </div>
             </div>
             <div class="input-line">
                 <div class="input-title">Nhãn bàn</div>
-                <input class="input-content">
+                <input asp-for="TagName" name="TagNameDetails" class="input-content">
             </div>
             <div class="input-line">
                 <div class="input-title">Tên bàn</div>
-                <input class="input-content">
+                <input asp-for="TableName" name="TableNameDetails" class="input-content">
             </div>
             <div class="input-line">
                 <div class="input-title">Kích thước (ft)</div>
-                <input class="input-content">
+                <input asp-for="Size" name="SizeDetails" class="input-content">
             </div>
             <div class="input-line">
                 <div class="input-title">Giá giờ chơi (VNĐ / giờ)</div>
-                <input class="input-content">
+                <input asp-for="Price" name="PriceDetails" class="input-content">
             </div>
             <div class="input-line">
                 <input type="submit" class="create-table" value="Lưu chỉnh sửa">
@@ -225,7 +237,25 @@
     editPopup.addEventListener('click', () => {
         editDisplay.classList.add('d-none');
     })
-
+    function fetchTableDetails(tableId) {
+        return fetch(`https://localhost:5000/api/Table/${tableId}`)
+            .then(response => response.json())
+            .catch(error => {
+                console.error('Error fetching table details:', error);
+            });
+    }
+    function setTableDetailsInForm(data) {
+        document.querySelector('input[name="TableNameDetails"]').value = data.tableName;
+        document.querySelector('input[name="SizeDetails"]').value = data.size;
+        document.querySelector('input[name="PriceDetails"]').value = data.price;
+        document.querySelector('input[name="StatusDetails"]').value = data.status;
+        document.querySelector('.image-details').style.backgroundImage = `url(${data.image})`;
+        document.querySelector('input[name="IsSchedulingDetails"]').value = data.isScheduling;
+        document.querySelector('input[name="IsUseInTourDetails"]').value = data.isUseInTour;
+        document.querySelector('input[name="TagNameDetails"]').value = data.tagName;
+        document.querySelector('input[name="TableIdDetails"]').value = data.tableId;
+        document.querySelector('input[name="ClubIdDetails"]').value = data.clubId;
+    }
     //open popup edit table
     const editBtns = document.querySelectorAll('.edit-btn');
     editBtns.forEach(editBtn => {
@@ -233,12 +263,20 @@
             editDisplay.classList.remove('d-none');
             //Image validation
             const imgInput = editDisplay.querySelector('#file-name');
+            const tableId = editBtn.dataset.tableId;
+            console.log(tableId);
+            fetchTableDetails(tableId)
+                .then(data => {
+                    console.log('Table details:', data);
+                    setTableDetailsInForm(data);
+                });
 
             editDisplay.querySelector('.imageInput').addEventListener('change', function (event) {
                 const imageInput = event.target;
                 const previewImage = editDisplay.querySelector('.preview-image');
                 const selectedFileName = editDisplay.querySelector('#file-name');
                 const uploadTile = editDisplay.querySelector('.upload-title');
+               
 
                 if (imageInput.files && imageInput.files[0]) {
                     const reader = new FileReader();
@@ -255,8 +293,6 @@
             });
         })
     })
-
-    //Handle show file name
     document.querySelector('.file-import').addEventListener('change', function (event) {
         const imageInput = event.target;
         const selectedFileName = document.querySelector('#file-name');
@@ -266,4 +302,38 @@
             selectedFileName.textContent = imageInput.files[0].name;
         }
     });
+    
+</script>
+<script>
+    function fillTableInfo() {
+        var selectedTable = document.querySelector('[name="NameValue"]').value;
+        console.log(selectedTable);
+        var selectedTableInfo = @Json.Serialize(ViewBag.Table);
+        var tableInfo = selectedTableInfo.find(function (table) {
+            return table.tableName === selectedTable;
+            
+        });
+        if (tableInfo) {
+            document.querySelector('input[name="TableName"]').value = tableInfo.tableName;
+            document.querySelector('input[name="Size"]').value = tableInfo.size;
+            document.querySelector('input[name="Price"]').value = tableInfo.price;
+        }
+        }
+</script>
+<script>
+
+    function fillTableInfo2() {
+        var selectedTable = document.querySelector('[name="NameValue2"]').value;
+        console.log(selectedTable);
+        var selectedTableInfo = @Json.Serialize(ViewBag.Table);
+        var tableInfo = selectedTableInfo.find(function (table) {
+            return table.tableName === selectedTable;
+
+        });
+        if (tableInfo) {
+            document.querySelector('input[name="TableNameDetails"]').value = tableInfo.tableName;
+            document.querySelector('input[name="SizeDetails"]').value = tableInfo.size;
+            document.querySelector('input[name="PriceDetails"]').value = tableInfo.price;
+        }
+    }
 </script>

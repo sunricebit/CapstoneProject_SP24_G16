@@ -34,6 +34,15 @@ namespace DataAccess
             _context.SaveChanges();
         }
 
+        public bool IsTagNameExistsAsync(string tagName)
+        {
+            if (string.IsNullOrEmpty(tagName))
+            {
+                throw new ArgumentNullException(nameof(tagName));
+            }
+
+            return  _context.Tables.Any(t => t.TagName == tagName);
+        }
         // Read
         public Table GetTableById(int tableId)
         {
@@ -112,6 +121,16 @@ namespace DataAccess
                 table.IsUseInTour = false;
                 _context.Update(table);
             }
+            _context.SaveChanges();
+        }
+        public void AddListTable(List<Table> tables)
+        {
+            if (tables == null || !tables.Any())
+            {
+                throw new ArgumentException("No tables provided.");
+            }
+
+            _context.Tables.AddRange(tables);
             _context.SaveChanges();
         }
     }
