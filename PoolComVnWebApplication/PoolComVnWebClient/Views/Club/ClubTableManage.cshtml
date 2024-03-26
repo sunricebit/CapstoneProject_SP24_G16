@@ -1,17 +1,19 @@
 ﻿@{
     Layout = "~/Views/Shared/_ClubLayout.cshtml";
 }
-
+@{
+    var stt = 1;
+}
 <div class="dashboard-container table">
     <div class="news-manage m-2">
         <div class="manager-content">
             <div class="d-flex px-0">
                 <button class="import-excel m-0" onclick="downloadTemplate()">Tải mẫu</button>
 
-                <form id="importForm" method="post" enctype="multipart/form-data" class="import-form d-flex my-0">
+                <form id="importForm" asp-action="ImportTables" asp-controller="Club" method="post" enctype="multipart/form-data" class="import-form d-flex my-0">
                     <div class="import-input mx-3 table my-0">
                         <span id="file-name">Chọn tệp để tải lên</span>
-                        <input class="file-import" type="file" name="ImportPlayers" accept=".xls, .xlsx" />
+                        <input class="file-import" type="file" name="ImportTables" accept=".xls, .xlsx" />
                     </div>
                     <button type="submit">Nhập danh sách</button>
                 </form>
@@ -38,48 +40,24 @@
                         <th class="text-center w150">Giá giờ chơi</th>
                         <th class="w100 text-center">Hành động</th>
                     </tr>
+                  @foreach (var table in ViewBag.Table)
+               {    
                     <tr>
-                        <td>1</td>
+                        <td>@stt</td>
                         <td>
-                            <div class="img-frame" style="background-image: url(Image/new_1.jpg);"></div>
+                            <div class="img-frame" style="background-image: url(@table.Image);"></div>
                         </td>
-                        <td>Bàn 1</td>
-                        <td class="text-center">Rasson OX 9ft</td>
-                        <td class="text-center">9ft</td>
-                        <td class="text-center">70.000 VNĐ / giờ</td>
+                        <td>@table.TagName</td>
+                        <td class="text-center">@table.TableName</td>
+                        <td class="text-center">@table.Size</td>
+                        <td class="text-center">@table.Price VNĐ / giờ</td>
                         <td class="text-center">
                             <a class="edit-btn"><i class="fa-solid fa-pencil p-2"></i></a>
                             <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
                         </td>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <div class="img-frame" style="background-image: url(Image/thienluong.jpg);"></div>
-                        </td>
-                        <td>Bàn 1</td>
-                        <td class="text-center">Rasson OX 9ft</td>
-                        <td class="text-center">9ft</td>
-                        <td class="text-center">70.000 VNĐ / giờ</td>
-                        <td class="text-center">
-                            <a class="edit-btn"><i class="fa-solid fa-pencil p-2"></i></a>
-                            <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <div class="img-frame" style="background-image: url(Image/new_1.jpg);"></div>
-                        </td>
-                        <td>Bàn 1</td>
-                        <td class="text-center">Rasson OX 9ft</td>
-                        <td class="text-center">9ft</td>
-                        <td class="text-center">70.000 VNĐ / giờ</td>
-                        <td class="text-center">
-                            <a class="edit-btn"><i class="fa-solid fa-pencil p-2"></i></a>
-                            <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                        </td>
-                    </tr>
+                        stt++;
+                    }
                 </table>
             </div>
         </div>
@@ -196,6 +174,16 @@
 </div>
 
 <script>
+    function downloadTemplate() {
+
+        var hiddenAnchor = document.createElement('a');
+        hiddenAnchor.href = 'https://firebasestorage.googleapis.com/v0/b/poolcomvn-82664.appspot.com/o/Table%2FTableTemplate.xlsx?alt=media&token=450bf442-8f5a-42c8-8ac7-60ab7a1bdfe7';
+        hiddenAnchor.target = '_blank';
+        hiddenAnchor.download = 'DanhSachBan.xlsx';
+        document.body.appendChild(hiddenAnchor);
+        hiddenAnchor.click();
+        document.body.removeChild(hiddenAnchor);
+    }
     const createDisplay = document.getElementById('create-display');
     //close popup create table
     const createPopup = document.querySelector('#create-display .match-close');

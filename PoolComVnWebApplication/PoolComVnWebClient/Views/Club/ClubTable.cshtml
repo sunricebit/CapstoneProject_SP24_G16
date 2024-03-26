@@ -9,75 +9,33 @@
         </a>
     </div>
     <div class="overview-table row px-0 d-flex justify-content-center">
+        @foreach (var table in ViewBag.Table)
+     {
         <div class="table-box">
             <div class=" table-content align-items-center">
-                <div class="table-image" style="background-image: url('/images/new_1.jpg');"></div>
+                    <div class="table-image" style="background-image: url('@table.Image');"></div>
                 <div class="table-info">
                     <div class="info-line">
                         <div class="info-title">Tên bàn</div>
-                        <div class="info-description">Rasson OX 9ft</div>
+                        <div class="info-description">@table.TableName</div>
                     </div>
                     <div class="info-line">
                         <div class="info-title">Kích thước</div>
-                        <div class="info-description">9ft</div>
+                        <div class="info-description">@table.Size</div>
                     </div>
                     <div class="info-line">
                         <div class="info-title">Số lượng bàn</div>
-                        <div class="info-description">40</div>
+                            <div class="info-description">@table.Quantity</div>
                     </div>
                     <div class="info-line">
                         <div class="info-title">Giá giờ chơi</div>
-                        <div class="info-description">70.000 VNĐ / giờ</div>
+                        <div class="info-description">@table.Price VNĐ / giờ</div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="table-box">
-            <div class=" table-content align-items-center">
-                <div class="table-image" style="background-image: url('/images/new_1.jpg');"></div>
-                <div class="table-info">
-                    <div class="info-line">
-                        <div class="info-title">Tên bàn</div>
-                        <div class="info-description">Rasson OX 9ft</div>
-                    </div>
-                    <div class="info-line">
-                        <div class="info-title">Kích thước</div>
-                        <div class="info-description">9ft</div>
-                    </div>
-                    <div class="info-line">
-                        <div class="info-title">Số lượng bàn</div>
-                        <div class="info-description">40</div>
-                    </div>
-                    <div class="info-line">
-                        <div class="info-title">Giá giờ chơi</div>
-                        <div class="info-description">70.000 VNĐ / giờ</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="table-box">
-            <div class=" table-content align-items-center">
-                <div class="table-image" style="background-image: url('/images/new_1.jpg');"></div>
-                <div class="table-info">
-                    <div class="info-line">
-                        <div class="info-title">Tên bàn</div>
-                        <div class="info-description">Rasson OX 9ft</div>
-                    </div>
-                    <div class="info-line">
-                        <div class="info-title">Kích thước</div>
-                        <div class="info-description">9ft</div>
-                    </div>
-                    <div class="info-line">
-                        <div class="info-title">Số lượng bàn</div>
-                        <div class="info-description">40</div>
-                    </div>
-                    <div class="info-line">
-                        <div class="info-title">Giá giờ chơi</div>
-                        <div class="info-description">70.000 VNĐ / giờ</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      
+      }
     </div>
 </div>
 

@@ -39,7 +39,6 @@ namespace DataAccess
             return _context.ClubPosts.ToList();
         }
 
-        // Update ClubPost
         public void UpdateClubPost(ClubPost updatedClubPost)
         {
             var existingClubPost = _context.ClubPosts.FirstOrDefault(p => p.PostId == updatedClubPost.PostId);
@@ -56,6 +55,7 @@ namespace DataAccess
                 _context.SaveChanges();
             }
         }
+
 
         // Delete ClubPost
         public void DeleteClubPost(int postId)
