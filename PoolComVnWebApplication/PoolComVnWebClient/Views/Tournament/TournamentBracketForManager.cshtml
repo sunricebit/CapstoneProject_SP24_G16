@@ -61,7 +61,7 @@
         </div>
     </div>
 </div>
-<div class="match-display d-flex justify-content-center align-items-center">
+<div class="match-display first d-flex justify-content-center align-items-center d-none">
     <div class="match-detail ">
         <div class="match-header d-flex justify-content-between">
             <div class="match-title">
@@ -74,64 +74,22 @@
             </div>
         </div>
         <div class="details-body">
-            <div class="d-flex justify-content-between">
-                <div class="match-time m-0 mb-3">
-                    <span>13:20</span>
-                    <span> - 14:20</span>
-                    <span>22/02/2024</span>
-                </div>
-                <div class="match-complete m-0 mb-3">Đang chơi</div>
-            </div>
             <div class="edit-score">
                 <div class="player-score first">
                     <div class="player-header" style="width: 200px;">
                         Nguời chơi
                     </div>
-                    <div class="player-header text-center playing-element" style="width: 120px;">
-                        Điểm
-                    </div>
-                    <div class="player-header text-center playing-element" style="width: 120px;">
-                        Trạng thái
-                    </div>
                 </div>
                 <div class="player-score detail mt-2">
                     <div class="player-name">
                         <img src="/Image/VietNamFlag.png" alt="">
                         <span>Nam Vu Doan Thu</span>
                     </div>
-                    <div class="player-point playing-element">
-                        <div class="point-view-bg first-player">
-                            <div id="first-down-btn" class="control-btn point-minus down">-</div>
-                            <span class="point-view first">3</span>
-                            <div class="control-btn point-plus up">+</div>
-                        </div>
-                    </div>
-                    <div class="player-status playing-element">
-                        <select>
-                            <option value="0">Không</option>
-                            <option value="1">Bỏ giải</option>
-                            <option value="2">Bỏ trận</option>
-                        </select>
-                    </div>
                 </div>
                 <div class="player-score detail mt-2">
                     <div class="player-name">
                         <img src="/Image/VietNamFlag.png" alt="">
                         <span>Nam Vu Doan Thu</span>
-                    </div>
-                    <div class="player-point playing-element">
-                        <div class="point-view-bg second-player">
-                            <div id="second-down-btn" class="control-btn point-minus down">-</div>
-                            <span class="point-view second">2</span>
-                            <div class="control-btn point-plus up">+</div>
-                        </div>
-                    </div>
-                    <div class="player-status playing-element">
-                        <select>
-                            <option value="0">Không</option>
-                            <option value="1">Bỏ giải</option>
-                            <option value="2">Bỏ trận</option>
-                        </select>
                     </div>
                 </div>
             </div>
@@ -142,22 +100,7 @@
                         <div class="table-header">Mở bàn</div>
                         <div class="table-name open-table">
                             Chọn bàn
-                            <!-- <div class="search-box">
-                                <input type="text">
-                                <div class="player-name">
-                                    <span>Bàn 1</span>
-                                </div>
-                                <div class="player-name">
-                                    <span>Bàn 2</span>
-                                </div>
-                                <div class="player-name">
-                                    <span>Bàn 3</span>
-                                </div>
-                            </div> -->
                         </div>
-                        <!-- <div class="cancle-table open">
-                            <i class="fa-solid fa-xmark"></i>
-                        </div> -->
                     </div>
                     <div>
                         <div class="d-flex align-items-center" style="margin-top: 10px;">
@@ -184,20 +127,143 @@
                 </div>
             </div>
             <div class="details-next d-flex justify-content-around">
-                <div class="lose-next row">
+                <div class="lose-next row" onclick="scrollToElement(15)">
                     <div class="col-3">
                         <i class="fa-solid fa-angles-left"></i>
                     </div>
-                    <div class="text-center col-9 px-0" onclick="scrollToElement(15)">Thua (222)</div>
+                    <div class="text-center col-9 px-0">Thua (222)</div>
                 </div>
-                <div class="win-next row">
-                    <div class="text-center col-9 px-0" onclick="scrollToElement(12)">Thắng (123)</div>
+                <div class="win-next row" onclick="scrollToElement(12)">
+                    <div class="text-center col-9 px-0">Thắng (123)</div>
                     <div class="col-3">
                         <i class="fa-solid fa-angles-right"></i>
                     </div>
                 </div>
             </div>
-            <div class="score-board d-flex align-items-end playing-element">
+        </div>
+    </div>
+</div>
+
+<div class="match-display next d-flex justify-content-center align-items-center">
+    <div class="match-detail ">
+        <div class="match-header d-flex justify-content-between">
+            <div class="match-title">
+                <span>Trận 15</span>
+                <span>(W1-1)</span>
+                <span>Chạm <span id="race-to">7</span></span>
+            </div>
+            <div class="match-close">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+        </div>
+        <div class="details-body">
+            <div class="d-flex justify-content-between">
+                <div class="match-time m-0 mb-3">
+                    <span>13:20</span>
+                    <span> - 14:20</span>
+                    <span>22/02/2024</span>
+                </div>
+                <div class="match-complete m-0 mb-3">Đang chơi</div>
+            </div>
+            <div class="edit-score">
+                <div class="player-score first">
+                    <div class="player-header" style="width: 200px;">
+                        Nguời chơi
+                    </div>
+                    <div class="player-header text-center" style="width: 120px;">
+                        Điểm
+                    </div>
+                    <div class="player-header text-center" style="width: 120px;">
+                        Trạng thái
+                    </div>
+                </div>
+                <div class="player-score detail mt-2">
+                    <div class="player-name">
+                        <img src="/Image/VietNamFlag.png" alt="">
+                        <span>Nam Vu Doan Thu</span>
+                    </div>
+                    <div class="player-point">
+                        <div class="point-view-bg first-player">
+                            <div id="first-down-btn" class="control-btn point-minus down">-</div>
+                            <span class="point-view first">3</span>
+                            <div class="control-btn point-plus up">+</div>
+                        </div>
+                    </div>
+                    <div class="player-status">
+                        <select>
+                            <option value="0">Không</option>
+                            <option value="1">Bỏ giải</option>
+                            <option value="2">Bỏ trận</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="player-score detail mt-2">
+                    <div class="player-name">
+                        <img src="/Image/VietNamFlag.png" alt="">
+                        <span>Nam Vu Doan Thu</span>
+                    </div>
+                    <div class="player-point">
+                        <div class="point-view-bg second-player">
+                            <div id="second-down-btn" class="control-btn point-minus down">-</div>
+                            <span class="point-view second">2</span>
+                            <div class="control-btn point-plus up">+</div>
+                        </div>
+                    </div>
+                    <div class="player-status">
+                        <select>
+                            <option value="0">Không</option>
+                            <option value="1">Bỏ giải</option>
+                            <option value="2">Bỏ trận</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="edit-table mt-4 d-flex">
+                <div>
+                    <div class="d-flex align-items-center">
+                        <div class="table-header">Mở bàn</div>
+                        <div class="table-name">
+                            Chọn bàn
+                            <!-- <div class="search-box">
+                                <input type="text">
+                                <div class="player-name">
+                                    <span>Bàn 1</span>
+                                </div>
+                                <div class="player-name">
+                                    <span>Bàn 2</span>
+                                </div>
+                                <div class="player-name">
+                                    <span>Bàn 3</span>
+                                </div>
+                            </div> -->
+                        </div>
+                        <!-- <div class="cancle-table open">
+                            <i class="fa-solid fa-xmark"></i>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <div class="save-btn">
+                    Lưu
+                </div>
+            </div>
+            <div class="details-next d-flex justify-content-around">
+                <div class="lose-next row" onclick="scrollToElement(15)">
+                    <div class="col-3">
+                        <i class="fa-solid fa-angles-left"></i>
+                    </div>
+                    <div class="text-center col-9 px-0">Thua (222)</div>
+                </div>
+                <div class="win-next row" onclick="scrollToElement(12)">
+                    <div class="text-center col-9 px-0">Thắng (123)</div>
+                    <div class="col-3">
+                        <i class="fa-solid fa-angles-right"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="score-board d-flex align-items-end">
                 <div class="name-board">
                     <div class="board-line"><span>Nam Vũ</span></div>
                     <div><span>Quảng Vũ</span></div>
@@ -283,7 +349,7 @@
                     <div class="second-mark"><span>&nbsp;</span></div>
                 </div>
             </div>
-            <div class="score-board d-flex align-items-end playing-element">
+            <div class="score-board d-flex align-items-end">
                 <div class="name-board">
                     <div class="board-line"><span>Nam Vũ</span></div>
                     <div><span>Quảng Vũ</span></div>
@@ -372,7 +438,6 @@
         </div>
     </div>
 </div>
-    </div>
 <div id="confirm-popup" class="confirm-popup d-none">
     <div class="confirm-content">
         <div class="confirm-title">
@@ -663,6 +728,7 @@
 
     winMatchBody.innerHTML = winBody;
 
+    var startBoxWidth = 0;
     const lastMatchHeight = document.getElementById('match' + playerNumber / 2);
     const matchTableElement = lastMatchHeight.querySelector('.match-raceTo');
     matchTableElement.style.paddingBottom = '200px';
@@ -670,7 +736,7 @@
     window.addEventListener('load', centerPosition);
 
     function centerPosition() {
-        bracketTab.scrollLeft = loseMatchBody.offsetWidth - window.innerWidth / 2 + 125;
+        bracketTab.scrollLeft = loseMatchBody.offsetWidth - window.innerWidth / 2 + width / 2;
     }
 
     let currentZoom = 0.6;
@@ -685,7 +751,6 @@
 
     zoomInBtn.removeEventListener
     applyZoom();
-    bindingData();
     function zoomIn() {
         if (currentZoom <= 1.5) {
             currentZoom += 0.1;
@@ -728,7 +793,9 @@
         const elementRect = elementToScrollTo.getBoundingClientRect();
         const parentRect = bracketContent.getBoundingClientRect();
 
-        let distanceToLeft = elementRect.x - parentRect.x - window.innerWidth / 2 + 125;
+        console.log(elementRect.x)
+        console.log(parentRect.x)
+        let distanceToLeft = (elementRect.x - parentRect.x - (window.innerWidth) / 2 + width / 2 + startBoxWidth) / currentZoom;
         let distanceToTop = elementRect.top - parentRect.top - window.innerHeight / 4;
 
         bracketTab.scrollTo({
@@ -802,8 +869,12 @@
     const openTable = document.querySelector('.open-table');
     const scheduleTable = document.querySelector('.schedule-table');
 
-    openTable.addEventListener('click', onOffSearchBox);
-    scheduleTable.addEventListener('click', onOffSearchBox);
+    if (openTable !== null) {
+        openTable.addEventListener('click', onOffSearchBox);
+    }
+    if (scheduleTable !== null) {
+        scheduleTable.addEventListener('click', onOffSearchBox);
+    }
 
     function onOffSearchBox() {
         if (this.querySelector('.search-box') === null) {
@@ -859,11 +930,10 @@
         matchDisplay.classList.add('d-none');
     })
 
-    //open popup and binding data to popup
+    //open popup
     const matchBoxList = document.querySelectorAll('.match-box');
     matchBoxList.forEach(element => {
         element.addEventListener('click', () => {
-            
             matchDisplay.classList.remove('d-none');
         })
     });
@@ -875,6 +945,9 @@
     const startOkBtn = document.querySelector('.ok-start');
     const startCancleBtn = document.querySelector('.cancle-start');
     const startTour = document.querySelector('.start-tour');
+    if (!startTour.classList.contains('d-none')) {
+        startBoxWidth = 300;
+    }
 
     startBtn.addEventListener('click', () => {
         startPopup.classList.remove('d-none');
@@ -891,6 +964,7 @@
     startOkBtn.addEventListener('click', () => {
         startTour.classList.add('d-none');
         startPopup.classList.add('d-none');
+        startBoxWidth = 150;
     })
 
     //Handle click table
@@ -908,24 +982,28 @@
                     var scheduleParent = scheduleTable.parentNode.parentNode;
                     scheduleParent.classList.add('d-none');
 
-                    var removeOpen = document.createElement('div');
-                    removeOpen.classList.add('cancle-table', 'open');
+                    if (parent3.querySelector('.cancle-table') === null) {
+                        var removeOpen = document.createElement('div');
+                        removeOpen.classList.add('cancle-table', 'open');
 
-                    var removeIcon = document.createElement('i');
-                    removeIcon.classList.add('fa-solid', 'fa-xmark');
-                    removeOpen.appendChild(removeIcon);
+                        var removeIcon = document.createElement('i');
+                        removeIcon.classList.add('fa-solid', 'fa-xmark');
+                        removeOpen.appendChild(removeIcon);
 
-                    parent3.appendChild(removeOpen);
+                        parent3.appendChild(removeOpen);
 
-                    removeOpen.addEventListener('click', () => {
-                        nameInput.textContent = 'Chọn bàn';
-                        scheduleParent.classList.remove('d-none');
-                        parent3.removeChild(removeOpen);
-                        removeBtnSaveAndStart();
-                    })
+                        removeOpen.addEventListener('click', () => {
+                            nameInput.textContent = 'Chọn bàn';
+                            scheduleParent.classList.remove('d-none');
+                            parent3.removeChild(removeOpen);
+                            removeBtnSaveAndStart();
+                        })
+                    }
 
                     saveBtn.classList.add('d-none');
-                    startMatchBtn.classList.remove('d-none');
+                    if (startMatchBtn !== null) {
+                        startMatchBtn.classList.remove('d-none');
+                    }
                 } else {
                     const nameInput = parent3.querySelector('.table-name');
                     nameInput.textContent = tableName;
@@ -933,24 +1011,28 @@
                     var openParent = openTable.parentNode;
                     openParent.classList.add('d-none');
 
-                    var removeSchedule = document.createElement('div');
-                    removeSchedule.classList.add('cancle-table', 'schedule');
+                    if (parent3.querySelector('.cancle-table') === null) {
+                        var removeSchedule = document.createElement('div');
+                        removeSchedule.classList.add('cancle-table', 'schedule');
 
-                    var removeIcon = document.createElement('i');
-                    removeIcon.classList.add('fa-solid', 'fa-xmark');
-                    removeSchedule.appendChild(removeIcon);
+                        var removeIcon = document.createElement('i');
+                        removeIcon.classList.add('fa-solid', 'fa-xmark');
+                        removeSchedule.appendChild(removeIcon);
 
-                    parent3.appendChild(removeSchedule);
+                        parent3.appendChild(removeSchedule);
 
-                    removeSchedule.addEventListener('click', () => {
-                        nameInput.textContent = 'Chọn bàn';
-                        openParent.classList.remove('d-none');
-                        parent3.removeChild(removeSchedule);
-                        removeBtnSaveAndStart();
-                    })
+                        removeSchedule.addEventListener('click', () => {
+                            nameInput.textContent = 'Chọn bàn';
+                            openParent.classList.remove('d-none');
+                            parent3.removeChild(removeSchedule);
+                            removeBtnSaveAndStart();
+                        })
+                    }
 
                     saveBtn.classList.remove('d-none');
-                    startMatchBtn.classList.add('d-none');
+                    if (startMatchBtn !== null) {
+                        startMatchBtn.classList.add('d-none');
+                    }
                 }
             });
         });
@@ -962,19 +1044,24 @@
 
     removeBtnSaveAndStart();
     function removeBtnSaveAndStart() {
-        startMatchBtn.classList.add('d-none');
+        if (startMatchBtn !== null) {
+            startMatchBtn.classList.add('d-none');
+        }
         saveBtn.classList.add('d-none');
     }
 
-    startMatchBtn.addEventListener('click', () => {
-        playingElement.forEach(element => {
-            element.classList.remove('d-none');
+    if (startMatchBtn !== null) {
+        startMatchBtn.addEventListener('click', () => {
+            // playingElement.forEach(element => {
+            //     element.classList.remove('d-none');
+            // })
+            // startMatchBtn.classList.add('d-none');
+            // saveBtn.classList.remove('d-none');
+            // const removeOpen = document.querySelector('.cancle-table');
+            // removeOpen.classList.add('d-none');
         })
-        startMatchBtn.classList.add('d-none');
-        saveBtn.classList.remove('d-none');
-        const removeOpen = document.querySelector('.cancle-table');
-        removeOpen.classList.add('d-none');
-    })
+    }
+
 
     playingElement.forEach(element => {
         element.classList.add('d-none');

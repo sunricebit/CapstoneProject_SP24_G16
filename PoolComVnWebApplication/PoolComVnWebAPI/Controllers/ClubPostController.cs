@@ -102,6 +102,35 @@ namespace PoolComVnWebAPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+        [HttpPost("Update/{id}")]
+        public ActionResult Put([FromBody] ClubPostDTO clubPostDTO)
+        {
+            try
+            {
+               
+
+                var existingNews = _clubPostDAO.GetClubPostById(clubPostDTO.PostID);
+
+                if (existingNews == null)
+                {
+                    return NotFound();
+                }
+
+                existingNews.Title = clubPostDTO.Title;
+                existingNews.Description = clubPostDTO.Description;
+                existingNews.CreatedDate = clubPostDTO.CreatedDate;
+                existingNews.UpdatedDate = clubPostDTO.UpdatedDate;
+                existingNews.Link = clubPostDTO.Link;
+                existingNews.Flyer = clubPostDTO.Flyer;
+                existingNews.Status = clubPostDTO.Status;
+                _clubPostDAO.UpdateClubPost(existingNews);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         [HttpGet("GetByClubId/{clubId}")]
         public IActionResult GetByClubId(int clubId)
         {

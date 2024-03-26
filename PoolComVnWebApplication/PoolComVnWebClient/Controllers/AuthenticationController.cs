@@ -135,12 +135,12 @@ namespace PoolComVnWebClient.Controllers
             }
             else if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                string errorMessage = "Email or password wrong!";
+                string errorMessage = "Email hoặc mật khẩu đã bị sai!";
                 return Login(errorMessage);
             }
             else
             {
-                string errorMessage = "Account had been banned by admin.";
+                string errorMessage = "Tài khoản đã bị vô hiệu hoá bởi admin.";
                 return Login(errorMessage);
             }
         }
@@ -217,7 +217,7 @@ namespace PoolComVnWebClient.Controllers
             }
             else
             {
-                string message = "Verify Code wrong";
+                string message = "Code xác thực không đúng";
                 return await VerifyAccount(verifyAccountDTO.AccountId, message);
             }
         }
@@ -229,11 +229,11 @@ namespace PoolComVnWebClient.Controllers
                 var response = await client.PostAsJsonAsync(ApiUrl + "/SendEmailContact", contactDTO);
                 if (response.IsSuccessStatusCode)
                 {
-                    TempData["SuccessMessage"] = "Email sent successfully!";
+                    TempData["SuccessMessage"] = "Email gửi thành công!";
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Failed to send email.";
+                    TempData["ErrorMessage"] = "Gửi email thất bại.";
                 }
                 return RedirectToAction("Contact", "Home");
             }
@@ -250,7 +250,7 @@ namespace PoolComVnWebClient.Controllers
         {
             Response.Cookies.Delete("TokenJWT");
             Response.Cookies.Delete("Email");
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Authentication");
         }
     }
 }

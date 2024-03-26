@@ -20,6 +20,17 @@
                 </form>
             </div>
         </div>
+        @if (ViewBag.Success != null)
+        {
+
+            <div class="dashboard-container container">
+                <div class="row news-items p-0 m-0">
+                    <div class="item-content d-flex justify-content-center">
+                        <h3>@ViewBag.Success</h3>
+                    </div>
+                </div>
+            </div>
+        }
         @if (ViewBag.AccountEmail == email)
         {
             <div class="item-content d-flex justify-content-center">
