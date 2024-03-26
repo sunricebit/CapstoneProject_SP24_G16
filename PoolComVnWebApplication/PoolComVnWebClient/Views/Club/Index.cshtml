@@ -14,7 +14,10 @@
         <div class="d-flex justify-content-end p-0 mb-5">
             <div class="tour-search d-flex justify-content-end align-items-center">
                 <i class="search-btn fa-solid fa-magnifying-glass"></i>
-                <input class="search-input px-2" type="text" placeholder="Giải đấu, địa chỉ,..." />
+                <form method="get" asp-action="Index" asp-controller="Club" asp-route-clubid="@ViewBag.CLub.ClubId" class="search-form">
+                    <input class="search-input px-2" type="text" name="searchQuery" placeholder="Tiêu đề..." value="@ViewBag.SearchQuery" />
+                    <button type="submit"></button>
+                </form>
             </div>
         </div>
         @if (ViewBag.AccountEmail == email)
@@ -28,7 +31,7 @@
                 </a>
             </div>
         }
-        @if (Model.Items.Count != 0)
+        @if (Model.Items != null && Model.Items.Count != 0)
         {
             foreach (var post in Model.Items)
             {
@@ -48,12 +51,18 @@
                     </a>
                 </div>
             }
-
-           
+        }
+        else if (string.IsNullOrEmpty(ViewBag.SearchQuery))
+        {
+            <div class="alert alert-warning" role="alert">
+                Câu lạc bộ chưa có bài đăng nào.
+            </div>
         }
         else
         {
-            <p>Câu lạc bộ chưa có bài đăng nào.</p>
+            <div class="alert alert-danger" role="alert">
+                Không tìm thấy bài đăng nào theo tiêu đề "@ViewBag.SearchQuery".
+            </div>
         }
         @{
             // Định nghĩa ngưỡng cần hiển thị dấu "..."
@@ -88,7 +97,6 @@
             // Định dạng mã HTML cho phân trang
             <div class="pagination d-flex justify-content-center align-items-center m-0">
                 <div class="pagination-content d-flex justify-content-center align-items-center m-0">
-                    <div class="pagination-btn-big" onclick="prevPage()">Trước</div>
                     @foreach (int pageNum in displayedPages)
                     {
                         if (pageNum == -1)
@@ -99,8 +107,7 @@
                         {
                             <div class="pagination-btn @(pageNum == Model.PageIndex ? "active" : "")" onclick="@($"{goToPageFunction}({pageNum}, '{@ViewBag.SearchQuery}')")">@pageNum</div>
                         }
-                    }
-                    <div class="pagination-btn-big" onclick="nextPage()">Sau</div>
+                    }                 
                 </div>
             </div>
         }
@@ -149,22 +156,28 @@
     clubNavBtn.classList.add('active');
     function prevPage() {
         var currentPage = @Model.PageIndex;
+        var searchQuery = '@ViewBag.SearchQuery';
         if (currentPage > 1) {
-            goToPage(currentPage - 1);
+            goToPage(currentPage - 1, searchQuery);
         }
     }
 
     function nextPage() {
         var currentPage = @Model.PageIndex;
         var totalPages = @Model.TotalPages;
+        var searchQuery = '@ViewBag.SearchQuery';
         if (currentPage < totalPages) {
-            goToPage(currentPage + 1);
+            goToPage(currentPage + 1, searchQuery);
         }
     }
 
-    function goToPage(pageNum) {
+    function goToPage(pageNum, searchQuery) {
         var url = '@Url.Action("Index", "Club")';
         url += '?page=' + pageNum;
+        if (searchQuery) {
+            url += '&searchQuery=' + searchQuery;
+        }
         window.location.href = url;
     }
+
 </script>
