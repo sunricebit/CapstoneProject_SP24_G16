@@ -6,7 +6,8 @@
     int numberOfPlayer = ViewBag.NumberOfPlayer;
     int tourId = ViewBag.TourId;
 }
-
+<input id="current-step" class="d-none" value=@ViewBag.StepOpen />
+<div class="tour-id d-none">@tourId</div>
 <div class="container-full">
     <div class="create-tour d-flex justify-content-end">
         <div class="row mx-0 col-lg-10">

@@ -85,7 +85,7 @@
     })
 
     //Handle step btn
-    const tourId = document.getElementById('tour-id');
+    var tourId = $(".tour-id").text().trim();;
     if (tourId !== null) {
         const currentStep = document.getElementById('current-step');
         var stepNum = parseInt(currentStep.value);

@@ -3,7 +3,8 @@
     int? tourId = ViewBag.TourId as int?;
     string? imageSource = ViewBag.Image;
 }
-
+<input id="current-step" class="d-none" value=@ViewBag.StepOpen />
+<div class="tour-id d-none">@tourId</div>
 <div class="container-full">
     <div class="create-tour d-flex justify-content-end">
         <form class="create-tour-display col-lg-10" method="post" enctype="multipart/form-data" asp-controller="CreateTournament" asp-action="StepTwoAddBanner">

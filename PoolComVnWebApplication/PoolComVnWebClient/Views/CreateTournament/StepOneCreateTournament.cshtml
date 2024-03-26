@@ -1,11 +1,14 @@
 ﻿@{
     Layout = "~/Views/Shared/_CreateTournamentLayout.cshtml";
+    int? tourId = ViewBag.TourId;
 }
 @model PoolComVnWebClient.DTO.CreateTournamentInputDTO
 
 <div class="container-full">
-    <input id="current-step" class="d-none" value="3" />
-    <input id="tour-id" class="d-none" value="3" />
+    <input id="current-step" class="d-none" value=@ViewBag.StepOpen />
+    @if (tourId != null){
+        <div class="tour-id d-none">@tourId</div>
+    }
     <div class="create-tour d-flex justify-content-end">
 
         @if (ViewBag.Error != null)
@@ -399,52 +402,6 @@
 
         document.getElementById('RaceNumberString').value = raceNumberString;
     }
-
-    // Khai báo biến để lưu trữ dữ liệu nhập vào từ các input
-    var tournamentNameValue = '';
-    var descriptionValue = '';
-    var startTimeValue = '';
-    var endTimeValue = '';
-    var gameTypeIdValue = '';
-    var tournamentTypeIdValue = '';
-    var maxPlayerNumberValue = '';
-    var entryFeeValue = '';
-    var prizeMoneyValue = '';
-    var registrationDeadlineValue = '';
-
-    // Hàm để cập nhật giá trị của các biến khi có sự thay đổi trên input
-    function updateInputValues() {
-        tournamentNameValue = document.getElementById('TournamentName').value;
-        descriptionValue = document.getElementById('Description').value;
-        startTimeValue = document.getElementById('StartTime').value;
-        endTimeValue = document.getElementById('EndTime').value;
-        gameTypeIdValue = document.getElementById('GameTypeId').value;
-        tournamentTypeIdValue = document.getElementById('TournamentTypeId').value;
-        maxPlayerNumberValue = document.getElementById('MaxPlayerNumber').value;
-        entryFeeValue = document.getElementById('EntryFee').value;
-        prizeMoneyValue = document.getElementById('PrizeMoney').value;
-        registrationDeadlineValue = document.getElementById('RegistrationDeadline').value;
-    }
-
-    // Hàm để khôi phục giá trị đã lưu trữ vào các input khi quay lại step
-    function restoreInputValues() {
-        document.getElementById('TournamentName').value = tournamentNameValue;
-        document.getElementById('Description').value = descriptionValue;
-        document.getElementById('StartTime').value = startTimeValue;
-        document.getElementById('EndTime').value = endTimeValue;
-        document.getElementById('GameTypeId').value = gameTypeIdValue;
-        document.getElementById('TournamentTypeId').value = tournamentTypeIdValue;
-        document.getElementById('MaxPlayerNumber').value = maxPlayerNumberValue;
-        document.getElementById('EntryFee').value = entryFeeValue;
-        document.getElementById('PrizeMoney').value = prizeMoneyValue;
-        document.getElementById('RegistrationDeadline').value = registrationDeadlineValue;
-    }
-
-    // Gọi hàm updateInputValues() khi có sự thay đổi trên input
-    document.getElementById('create-form').addEventListener('input', updateInputValues);
-
-    // Gọi hàm restoreInputValues() khi quay lại step
-    restoreInputValues();
 
     //Handle active nav
     const createTourStepBtn = document.querySelector('.step-one');
