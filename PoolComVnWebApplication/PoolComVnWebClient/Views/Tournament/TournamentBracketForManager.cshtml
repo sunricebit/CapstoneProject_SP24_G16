@@ -799,7 +799,7 @@
             const elementRect = elementToScrollTo.getBoundingClientRect();
             const parentRect = bracketContent.getBoundingClientRect();
 
-            let distanceToLeft = (elementRect.x - parentRect.x + width / 2 +startBoxWidth/2) - window.innerWidth / 2;
+            let distanceToLeft = (elementRect.x - parentRect.x + width / 2 + startBoxWidth / 2) - window.innerWidth / 2;
             let distanceToTop = elementRect.top - parentRect.top - window.innerHeight / 4;
 
             bracketTab.scrollTo({
