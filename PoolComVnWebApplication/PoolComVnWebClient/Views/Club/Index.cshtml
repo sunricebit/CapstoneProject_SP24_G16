@@ -14,7 +14,10 @@
         <div class="d-flex justify-content-end p-0 mb-5">
             <div class="tour-search d-flex justify-content-end align-items-center">
                 <i class="search-btn fa-solid fa-magnifying-glass"></i>
-                <input class="search-input px-2" type="text" placeholder="Giải đấu, địa chỉ,..." />
+                <form method="get" asp-action="Index" asp-controller="Club" asp-route-clubid="@ViewBag.CLub.ClubId" class="search-form">
+                    <input class="search-input px-2" type="text" name="searchQuery" placeholder="Tiêu đề..." value="@ViewBag.SearchQuery" />
+                    <button type="submit"></button>
+                </form>
             </div>
         </div>
         @if (ViewBag.Success != null)
@@ -41,7 +44,7 @@
                 </a>
             </div>
         }
-        @if (Model.Items.Count != 0)
+        @if (Model.Items != null && Model.Items.Count != 0)
         {
             foreach (var post in Model.Items)
             {
@@ -61,10 +64,8 @@
                     </a>
                 </div>
             }
-
-
         }
-        else
+        else if (string.IsNullOrEmpty(ViewBag.SearchQuery))
         {
             <div>
                 <div class="item-content d-flex justify-content-center">
@@ -72,6 +73,12 @@
                         <div class="news-title text-center">Câu lạc bộ chưa có bài viết nào</div>
                     </div>
                 </div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                Không tìm thấy bài đăng nào theo tiêu đề "@ViewBag.SearchQuery".
             </div>
         }
         @{
@@ -107,7 +114,6 @@
             // Định dạng mã HTML cho phân trang
             <div class="pagination d-flex justify-content-center align-items-center m-0">
                 <div class="pagination-content d-flex justify-content-center align-items-center m-0">
-                    <div class="pagination-btn-big" onclick="prevPage()">Trước</div>
                     @foreach (int pageNum in displayedPages)
                     {
                         if (pageNum == -1)
@@ -118,8 +124,7 @@
                         {
                             <div class="pagination-btn @(pageNum == Model.PageIndex ? "active" : "")" onclick="@($"{goToPageFunction}({pageNum}, '{@ViewBag.SearchQuery}')")">@pageNum</div>
                         }
-                    }
-                    <div class="pagination-btn-big" onclick="nextPage()">Sau</div>
+                    }                 
                 </div>
             </div>
         }
@@ -135,55 +140,61 @@
 
             try {
                 const postId = hiddenBtn.dataset.postId;
-                const response = await fetch(https://localhost:5000/api/ClubPost/ChangeStatus?id=${postId}, {
+                const response = await fetch(`https://localhost:5000/api/ClubPost/ChangeStatus?id=${postId}`, {
                     method: 'Get',
                     headers: {
-                    'Content-Type': 'application/json'
-                }
-                        });
-        if (response.ok) {
-            if (hiddenBtn.querySelector('i').classList.contains('fa-eye-slash')) {
-                hiddenBtn.innerHTML = '<i class="fa-solid fa-eye"></i>';
-                var parent = hiddenBtn.parentNode;
-                var newsImage = parent.querySelector('.news-image');
-                newsImage.classList.add('hidden');
-            } else {
-                hiddenBtn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
-                var parent = hiddenBtn.parentNode;
-                var newsImage = parent.querySelector('.news-image');
-                newsImage.classList.remove('hidden');
-            }
-        } else {
-
-            console.error('Lỗi khi gọi API:', response.statusText);
-        }
-    } catch (error) {
-        console.error('Lỗi:', error);
-    }
+                        'Content-Type': 'application/json'
+                    }
                 });
-            });
+                if (response.ok) {
+                    if (hiddenBtn.querySelector('i').classList.contains('fa-eye-slash')) {
+                        hiddenBtn.innerHTML = '<i class="fa-solid fa-eye"></i>';
+                        var parent = hiddenBtn.parentNode;
+                        var newsImage = parent.querySelector('.news-image');
+                        newsImage.classList.add('hidden');
+                    } else {
+                        hiddenBtn.innerHTML = '<i class="fa-solid fa-eye-slash"></i>';
+                        var parent = hiddenBtn.parentNode;
+                        var newsImage = parent.querySelector('.news-image');
+                        newsImage.classList.remove('hidden');
+                    }
+                } else {
+
+                    console.error('Lỗi khi gọi API:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Lỗi:', error);
+            }
+        });
+    });
 
     //Handle active nav
     const clubNavBtn = document.querySelector('.club-post');
     clubNavBtn.classList.add('active');
     function prevPage() {
         var currentPage = @Model.PageIndex;
+        var searchQuery = '@ViewBag.SearchQuery';
         if (currentPage > 1) {
-            goToPage(currentPage - 1);
+            goToPage(currentPage - 1, searchQuery);
         }
     }
 
     function nextPage() {
         var currentPage = @Model.PageIndex;
         var totalPages = @Model.TotalPages;
+        var searchQuery = '@ViewBag.SearchQuery';
         if (currentPage < totalPages) {
-            goToPage(currentPage + 1);
+            goToPage(currentPage + 1, searchQuery);
         }
     }
 
-    function goToPage(pageNum) {
+    function goToPage(pageNum, searchQuery) {
         var url = '@Url.Action("Index", "Club")';
         url += '?page=' + pageNum;
+        if (searchQuery) {
+            url += '&searchQuery=' + searchQuery;
+        }
         window.location.href = url;
     }
+
 </script>
