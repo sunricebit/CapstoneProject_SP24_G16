@@ -53,7 +53,7 @@ namespace PoolComVnWebAPI.Controllers
                 Flyer = clubPost.Flyer,
                 Link = clubPost.Link,
                 Status = clubPost.Status,
-            }; ;
+            };
             return Ok(clubPost2);
         }
         [HttpGet("ChangeStatus")]
@@ -150,7 +150,46 @@ namespace PoolComVnWebAPI.Controllers
             }
         }
 
+        [HttpGet("SearchByTitleAndClubId")]
+        public IActionResult SearchByTitleAndClubId(string title, int clubId)
+        {
+            try
+            {
+                var clubPosts = _clubPostDAO.SearchClubPostsByTitleAndClubId(title, clubId);
 
-      
+                if (clubPosts == null || clubPosts.Count == 0)
+                {
+                    return NotFound("Không tìm thấy bài đăng nào cho tiêu đề và câu lạc bộ đã cung cấp.");
+                }
+
+                List<ClubPostDTO> clubPostsDto = new List<ClubPostDTO>();
+
+                foreach (var post in clubPosts)
+                {
+                    clubPostsDto.Add(new ClubPostDTO
+                    {
+                        PostID = post.PostId,
+                        ClubID = post.ClubId,
+                        Title = post.Title,
+                        Description = post.Description,
+                        CreatedDate = post.CreatedDate,
+                        UpdatedDate = post.UpdatedDate,
+                        Flyer = post.Flyer,
+                        Link = post.Link,
+                        Status = post.Status
+                    });
+                }
+
+                return Ok(clubPostsDto);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Lỗi máy chủ nội bộ: {ex.Message}");
+            }
+        }
+
+
+
+
     }
 }

@@ -39,6 +39,11 @@ namespace DataAccess
             return _context.ClubPosts.ToList();
         }
 
+        public List<ClubPost> SearchClubPostsByTitleAndClubId(string title, int clubId)
+        {
+            return _context.ClubPosts.Where(cp => cp.Title.Contains(title) && cp.ClubId == clubId).ToList();
+        }
+
         public void UpdateClubPost(ClubPost updatedClubPost)
         {
             var existingClubPost = _context.ClubPosts.FirstOrDefault(p => p.PostId == updatedClubPost.PostId);
