@@ -65,7 +65,7 @@
                 <i class="fa-solid fa-xmark"></i>
             </div>
         </div>
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center playing-element">
             <div class="match-time">
                 <span>13:20</span>
                 <span> - 14:20</span>
@@ -369,6 +369,7 @@
 
     winMatchBody.innerHTML = winBody;
 
+    var startBoxWidth = 0;
     const lastMatchHeight = document.getElementById('match' + playerNumber / 2);
     const lastMatchRect = lastMatchHeight.getBoundingClientRect();
     const matchTableElement = lastMatchHeight.querySelector('.match-raceTo');
@@ -437,7 +438,7 @@
         const elementRect = elementToScrollTo.getBoundingClientRect();
         const parentRect = bracketContent.getBoundingClientRect();
 
-        let distanceToLeft = elementRect.x - parentRect.x - window.innerWidth / 2 + 125;
+        let distanceToLeft = (elementRect.x - parentRect.x - (window.innerWidth) / 2 + width / 2 + startBoxWidth) / currentZoom;
         let distanceToTop = elementRect.top - parentRect.top - window.innerHeight / 4;
 
         bracketTab.scrollTo({
@@ -583,6 +584,9 @@
     const startOkBtn = document.querySelector('.ok-start');
     const startCancleBtn = document.querySelector('.cancle-start');
     const startTour = document.querySelector('.start-tour');
+    if (!startTour.classList.contains('d-none')) {
+        startBoxWidth = 300;
+    }
 
     startBtn.addEventListener('click', () => {
         startPopup.classList.remove('d-none');
@@ -599,6 +603,7 @@
     startOkBtn.addEventListener('click', () => {
         startTour.classList.add('d-none');
         startPopup.classList.add('d-none');
+        startBoxWidth = 0;
     })
 
     //Handle click table

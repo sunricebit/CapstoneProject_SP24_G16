@@ -98,7 +98,7 @@
         document.querySelector('.step-five').parentNode.href = "/CreateTournament/StepFivePlayerList?TourId=" + tourIdNum;
         document.querySelector('.step-six').parentNode.href = "/CreateTournament/StepSixArrange?TourId=" + tourIdNum;
         const stepLockList = document.querySelectorAll('.step-number');
-        for (var i = 1; i <= stepNum; i++) {
+        for (var i = 0; i < stepNum; i++) {
             const parent = stepLockList[i].parentNode;
             if (parent !== null && parent.classList.contains('disable')) {
                 parent.classList.remove('disable');
