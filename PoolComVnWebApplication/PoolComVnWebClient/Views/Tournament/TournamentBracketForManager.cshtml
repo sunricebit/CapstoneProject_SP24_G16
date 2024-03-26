@@ -786,25 +786,30 @@
 
     const matchDisplay = document.querySelector('.match-display');
     function scrollToElement(elementId) {
+        if (currentZoom !== 1) {
+            currentZoom = 1;
+            applyZoom();
+        }
+
         matchDisplay.classList.add('d-none');
+        setTimeout(() => {
 
-        // Get the element to scroll to by its ID
-        const elementToScrollTo = document.getElementById('match' + elementId);
-        const elementRect = elementToScrollTo.getBoundingClientRect();
-        const parentRect = bracketContent.getBoundingClientRect();
+            // Get the element to scroll to by its ID
+            const elementToScrollTo = document.getElementById('match' + elementId);
+            const elementRect = elementToScrollTo.getBoundingClientRect();
+            const parentRect = bracketContent.getBoundingClientRect();
 
-        console.log(elementRect.x)
-        console.log(parentRect.x)
-        let distanceToLeft = (elementRect.x - parentRect.x - (window.innerWidth) / 2 + width / 2 + startBoxWidth) / currentZoom;
-        let distanceToTop = elementRect.top - parentRect.top - window.innerHeight / 4;
+            let distanceToLeft = (elementRect.x - parentRect.x + width / 2 + startBoxWidth / 2) - window.innerWidth / 2;
+            let distanceToTop = elementRect.top - parentRect.top - window.innerHeight / 4;
 
-        bracketTab.scrollTo({
-            left: distanceToLeft,
-            top: distanceToTop,
-            behavior: 'smooth'
-        });
+            bracketTab.scrollTo({
+                left: distanceToLeft,
+                top: distanceToTop,
+                behavior: 'smooth'
+            });
 
-        flashingBox(elementToScrollTo);
+            flashingBox(elementToScrollTo);
+        }, 250);
     }
 
     function flashingBox(element) {

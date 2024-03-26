@@ -53,69 +53,35 @@
         </div>
     </div>
 </div>
-<div class="match-display d-flex justify-content-center align-items-center d-none">
+<div class="match-display first d-flex justify-content-center align-items-center d-none">
     <div class="match-detail ">
         <div class="match-header d-flex justify-content-between">
             <div class="match-title">
                 <span>Trận 15</span>
                 <span>(W1-1)</span>
-                <span>Race to 7</span>
+                <span>Chạm <span id="race-to">7</span></span>
             </div>
             <div class="match-close">
                 <i class="fa-solid fa-xmark"></i>
             </div>
         </div>
-        <div class="d-flex justify-content-between align-items-center playing-element">
-            <div class="match-time">
-                <span>13:20</span>
-                <span> - 14:20</span>
-                <span>22/02/2024</span>
-            </div>
-            <div class="match-complete">Đang chơi</div>
-        </div>
-        <div class="details-body mt-2">
+        <div class="details-body">
             <div class="edit-score">
                 <div class="player-score first">
                     <div class="player-header" style="width: 200px;">
                         Nguời chơi
                     </div>
-                    <div class="player-header text-center playing-element" style="width: 80px;">
-                        Điểm
-                    </div>
-                    <div class="player-header text-center playing-element" style="width: 120px;">
-                        Trạng thái
-                    </div>
                 </div>
-                <div class="player-score lose mt-2">
+                <div class="player-score detail mt-2">
                     <div class="player-name">
-                        <img src="~/images/VietNamFlag.png" alt="">
+                        <img src="/Image/VietNamFlag.png" alt="">
                         <span>Nam Vu Doan Thu</span>
                     </div>
-                    <div class="player-point playing-element">
-                        <input type="number" min="0" value="0">
-                    </div>
-                    <div class="player-status playing-element">
-                        <select>
-                            <option value="0">Không</option>
-                            <option value="1">Bỏ giải</option>
-                            <option value="2">Bỏ trận</option>
-                        </select>
-                    </div>
                 </div>
-                <div class="player-score win mt-2">
+                <div class="player-score detail mt-2">
                     <div class="player-name">
-                        <img src="~/images/VietNamFlag.png" alt="">
+                        <img src="/Image/VietNamFlag.png" alt="">
                         <span>Nam Vu Doan Thu</span>
-                    </div>
-                    <div class="player-point playing-element">
-                        <input type="number" min="0" value="0">
-                    </div>
-                    <div class="player-status playing-element">
-                        <select>
-                            <option value="0">Không</option>
-                            <option value="1">Bỏ giải</option>
-                            <option value="2">Bỏ trận</option>
-                        </select>
                     </div>
                 </div>
             </div>
@@ -126,22 +92,7 @@
                         <div class="table-header">Mở bàn</div>
                         <div class="table-name open-table">
                             Chọn bàn
-                            <!-- <div class="search-box">
-                                <input type="text">
-                                <div class="player-name">
-                                    <span>Bàn 1</span>
-                                </div>
-                                <div class="player-name">
-                                    <span>Bàn 2</span>
-                                </div>
-                                <div class="player-name">
-                                    <span>Bàn 3</span>
-                                </div>
-                            </div> -->
                         </div>
-                        <!-- <div class="cancle-table open">
-                            <i class="fa-solid fa-xmark"></i>
-                        </div> -->
                     </div>
                     <div>
                         <div class="d-flex align-items-center" style="margin-top: 10px;">
@@ -168,105 +119,328 @@
                 </div>
             </div>
             <div class="details-next d-flex justify-content-around">
-                <div class="lose-next row">
+                <div class="lose-next row" onclick="scrollToElement(15)">
                     <div class="col-3">
                         <i class="fa-solid fa-angles-left"></i>
                     </div>
-                    <div class="text-center col-9 px-0" onclick="scrollToElement(15)">Thua (222)</div>
+                    <div class="text-center col-9 px-0">Thua (222)</div>
                 </div>
-                <div class="win-next row">
-                    <div class="text-center col-9 px-0" onclick="scrollToElement(12)">Thắng (123)</div>
+                <div class="win-next row" onclick="scrollToElement(12)">
+                    <div class="text-center col-9 px-0">Thắng (123)</div>
                     <div class="col-3">
                         <i class="fa-solid fa-angles-right"></i>
                     </div>
                 </div>
             </div>
-            <div class="score-board d-flex align-items-end playing-element">
+        </div>
+    </div>
+</div>
+
+<div class="match-display next d-flex justify-content-center align-items-center">
+    <div class="match-detail ">
+        <div class="match-header d-flex justify-content-between">
+            <div class="match-title">
+                <span>Trận 15</span>
+                <span>(W1-1)</span>
+                <span>Chạm <span id="race-to">7</span></span>
+            </div>
+            <div class="match-close">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
+        </div>
+        <div class="details-body">
+            <div class="d-flex justify-content-between">
+                <div class="match-time m-0 mb-3">
+                    <span>13:20</span>
+                    <span> - 14:20</span>
+                    <span>22/02/2024</span>
+                </div>
+                <div class="match-complete m-0 mb-3">Đang chơi</div>
+            </div>
+            <div class="edit-score">
+                <div class="player-score first">
+                    <div class="player-header" style="width: 200px;">
+                        Nguời chơi
+                    </div>
+                    <div class="player-header text-center" style="width: 120px;">
+                        Điểm
+                    </div>
+                    <div class="player-header text-center" style="width: 120px;">
+                        Trạng thái
+                    </div>
+                </div>
+                <div class="player-score detail mt-2">
+                    <div class="player-name">
+                        <img src="/Image/VietNamFlag.png" alt="">
+                        <span>Nam Vu Doan Thu</span>
+                    </div>
+                    <div class="player-point">
+                        <div class="point-view-bg first-player">
+                            <div id="first-down-btn" class="control-btn point-minus down">-</div>
+                            <span class="point-view first">3</span>
+                            <div class="control-btn point-plus up">+</div>
+                        </div>
+                    </div>
+                    <div class="player-status">
+                        <select>
+                            <option value="0">Không</option>
+                            <option value="1">Bỏ giải</option>
+                            <option value="2">Bỏ trận</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="player-score detail mt-2">
+                    <div class="player-name">
+                        <img src="/Image/VietNamFlag.png" alt="">
+                        <span>Nam Vu Doan Thu</span>
+                    </div>
+                    <div class="player-point">
+                        <div class="point-view-bg second-player">
+                            <div id="second-down-btn" class="control-btn point-minus down">-</div>
+                            <span class="point-view second">2</span>
+                            <div class="control-btn point-plus up">+</div>
+                        </div>
+                    </div>
+                    <div class="player-status">
+                        <select>
+                            <option value="0">Không</option>
+                            <option value="1">Bỏ giải</option>
+                            <option value="2">Bỏ trận</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="edit-table mt-4 d-flex">
+                <div>
+                    <div class="d-flex align-items-center">
+                        <div class="table-header">Mở bàn</div>
+                        <div class="table-name">
+                            Chọn bàn
+                            <!-- <div class="search-box">
+                                <input type="text">
+                                <div class="player-name">
+                                    <span>Bàn 1</span>
+                                </div>
+                                <div class="player-name">
+                                    <span>Bàn 2</span>
+                                </div>
+                                <div class="player-name">
+                                    <span>Bàn 3</span>
+                                </div>
+                            </div> -->
+                        </div>
+                        <!-- <div class="cancle-table open">
+                            <i class="fa-solid fa-xmark"></i>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <div class="save-btn">
+                    Lưu
+                </div>
+            </div>
+            <div class="details-next d-flex justify-content-around">
+                <div class="lose-next row" onclick="scrollToElement(15)">
+                    <div class="col-3">
+                        <i class="fa-solid fa-angles-left"></i>
+                    </div>
+                    <div class="text-center col-9 px-0">Thua (222)</div>
+                </div>
+                <div class="win-next row" onclick="scrollToElement(12)">
+                    <div class="text-center col-9 px-0">Thắng (123)</div>
+                    <div class="col-3">
+                        <i class="fa-solid fa-angles-right"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="score-board d-flex align-items-end">
                 <div class="name-board">
                     <div class="board-line"><span>Nam Vũ</span></div>
                     <div><span>Quảng Vũ</span></div>
                 </div>
                 <div class="general-score">
                     <div class="board-line px-2"><span>Điểm</span></div>
-                    <div class="text-center board-line"><span>6</span></div>
-                    <div class="text-center"><span>3</span></div>
+                    <div class="text-center board-line"><span class="first-total-score">0</span></div>
+                    <div class="text-center"><span class="second-total-score">0</span></div>
                 </div>
-                <div class="detail-score">
+                <div id="set-1" class="detail-score">
                     <div class="round-score board-line"><span>1</span></div>
-                    <div class="board-line"><span><i class="fa-solid fa-xmark"></i></span></div>
-                    <div><span>&nbsp;</span></div>
+                    <div class="board-line first-mark"><span><i class="fa-solid fa-xmark"></i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
                 </div>
-                <div class="detail-score">
+                <div id="set-2" class="detail-score">
                     <div class="round-score board-line"><span>2</span></div>
-                    <div class="board-line"><span>&nbsp;</span></div>
-                    <div><span><i class="fa-solid fa-xmark"></i></span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</span></div>
+                    <div class="second-mark"><span><i class="fa-solid fa-xmark"></i></span></div>
                 </div>
-                <div class="detail-score">
+                <div id="set-3" class="detail-score">
                     <div class="round-score board-line"><span>3</span></div>
-                    <div class="board-line"><span><i class="fa-solid fa-xmark"></i></span></div>
-                    <div><span>&nbsp;</span></div>
+                    <div class="board-line first-mark"><span><i class="fa-solid fa-xmark"></i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
                 </div>
-                <div class="detail-score">
+                <div id="set-4" class="detail-score">
                     <div class="round-score board-line"><span>4</span></div>
-                    <div class="board-line"><span><i class="fa-solid fa-xmark"></i></span></div>
-                    <div><span>&nbsp;</span></div>
+                    <div class="board-line first-mark"><span><i class="fa-solid fa-xmark"></i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
                 </div>
-                <div class="detail-score">
+                <div id="set-5" class="detail-score">
                     <div class="round-score board-line"><span>5</span></div>
-                    <div class="board-line"><span>&nbsp;</span></div>
-                    <div><span><i class="fa-solid fa-xmark"></i></span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</span></div>
+                    <div class="second-mark"><span><i class="fa-solid fa-xmark"></i></span></div>
                 </div>
-                <div class="detail-score">
+                <div id="set-6" class="detail-score">
                     <div class="round-score board-line"><span>6</span></div>
-                    <div class="board-line"><span><i class="fa-solid fa-xmark"></i></span></div>
-                    <div><span>&nbsp;</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
                 </div>
-                <div class="detail-score">
+                <div id="set-7" class="detail-score">
                     <div class="round-score board-line"><span>7</span></div>
-                    <div class="board-line"><span><i class="fa-solid fa-xmark"></i></span></div>
-                    <div><span>&nbsp;</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
                 </div>
-                <div class="detail-score">
+                <div id="set-8" class="detail-score">
                     <div class="round-score board-line"><span>8</span></div>
-                    <div class="board-line"><span>&nbsp;</span></div>
-                    <div><span><i class="fa-solid fa-xmark"></i></span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
                 </div>
-                <div class="detail-score">
+                <div id="set-9" class="detail-score">
                     <div class="round-score board-line"><span>9</span></div>
-                    <div class="board-line"><span><i class="fa-solid fa-xmark"></i></span></div>
-                    <div><span>&nbsp;</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
                 </div>
-                <div class="detail-score">
+                <div id="set-10" class="detail-score">
                     <div class="round-score board-line"><span>10</span></div>
-                    <div class="board-line"><span>&nbsp;</i></span></div>
-                    <div><span>&nbsp;</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
                 </div>
-                <div class="detail-score">
+                <div id="set-11" class="detail-score">
+                    <div class="round-score board-line"><span>11</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
+                </div>
+                <div id="set-12" class="detail-score">
+                    <div class="round-score board-line"><span>12</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
+                </div>
+                <div id="set-13" class="detail-score">
+                    <div class="round-score board-line"><span>13</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
+                </div>
+                <div id="set-14" class="detail-score">
+                    <div class="round-score board-line"><span>14</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
+                </div>
+                <div id="set-15" class="detail-score">
+                    <div class="round-score board-line"><span>15</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
+                </div>
+            </div>
+            <div class="score-board d-flex align-items-end">
+                <div class="name-board">
+                    <div class="board-line"><span>Nam Vũ</span></div>
+                    <div><span>Quảng Vũ</span></div>
+                </div>
+                <div class="general-score">
+                    <div class="board-line px-2"><span>Điểm</span></div>
+                    <div class="text-center board-line"><span class="first-total-score">6</span></div>
+                    <div class="text-center"><span class="second-total-score">3</span></div>
+                </div>
+                <div id="set-16" class="detail-score">
                     <div class="round-score board-line"><span>1</span></div>
-                    <div class="board-line"><span><i class="fa-solid fa-xmark"></i></span></div>
-                    <div><span>&nbsp;</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
                 </div>
-                <div class="detail-score">
+                <div id="set-17" class="detail-score">
                     <div class="round-score board-line"><span>2</span></div>
-                    <div class="board-line"><span>&nbsp;</span></div>
-                    <div><span><i class="fa-solid fa-xmark"></i></span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
                 </div>
-                <div class="detail-score">
+                <div id="set-18" class="detail-score">
                     <div class="round-score board-line"><span>3</span></div>
-                    <div class="board-line"><span><i class="fa-solid fa-xmark"></i></span></div>
-                    <div><span>&nbsp;</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
                 </div>
-                <div class="detail-score">
+                <div id="set-19" class="detail-score">
                     <div class="round-score board-line"><span>4</span></div>
-                    <div class="board-line"><span><i class="fa-solid fa-xmark"></i></span></div>
-                    <div><span>&nbsp;</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
                 </div>
-                <div class="detail-score">
+                <div id="set-20" class="detail-score">
                     <div class="round-score board-line"><span>5</span></div>
-                    <div class="board-line"><span>&nbsp;</span></div>
-                    <div><span><i class="fa-solid fa-xmark"></i></span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
                 </div>
-
+                <div id="set-21" class="detail-score">
+                    <div class="round-score board-line"><span>6</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
+                </div>
+                <div id="set-22" class="detail-score">
+                    <div class="round-score board-line"><span>7</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
+                </div>
+                <div id="set-23" class="detail-score">
+                    <div class="round-score board-line"><span>8</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
+                </div>
+                <div id="set-24" class="detail-score">
+                    <div class="round-score board-line"><span>9</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
+                </div>
+                <div id="set-25" class="detail-score">
+                    <div class="round-score board-line"><span>10</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
+                </div>
+                <div id="set-26" class="detail-score">
+                    <div class="round-score board-line"><span>11</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
+                </div>
+                <div id="set-27" class="detail-score">
+                    <div class="round-score board-line"><span>12</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
+                </div>
+                <div id="set-28" class="detail-score">
+                    <div class="round-score board-line"><span>13</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
+                </div>
+                <div id="set-29" class="detail-score">
+                    <div class="round-score board-line"><span>14</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
+                </div>
+                <div id="set-30" class="detail-score">
+                    <div class="round-score board-line"><span>15</span></div>
+                    <div class="board-line first-mark"><span>&nbsp;</i></span></div>
+                    <div class="second-mark"><span>&nbsp;</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="confirm-popup" class="confirm-popup d-none">
+    <div class="confirm-content">
+        <div class="confirm-title">
+            Kết thúc trận đấu.
+        </div>
+        <div class="d-flex justify-content-around">
+            <div class="exit-btn" style="width: 200px;">
+                Hủy
+            </div>
+            <div class="save-random" style="width: 200px;">
+                Kết thúc
             </div>
         </div>
     </div>
@@ -669,25 +843,347 @@
         });
     }
 
+    const winMatchBody.innerHTML = winBody;
+
+    var startBoxWidth = 0;
+    const lastMatchHeight = document.getElementById('match' + playerNumber / 2);
+    const matchTableElement = lastMatchHeight.querySelector('.match-raceTo');
+    matchTableElement.style.paddingBottom = '200px';
+
+    window.addEventListener('load', centerPosition);
+
+    function centerPosition() {
+        bracketTab.scrollLeft = loseMatchBody.offsetWidth - window.innerWidth / 2 + width / 2;
+    }
+
+    let currentZoom = 0.6;
+
+    let winerWidth;
+    let loserWidth;
+
+    const bracketContent = document.querySelector('.bracket-content');
+    const bracketTab = document.querySelector('.bracket-tab');
+    const zoomInBtn = document.querySelector('.zoom-in');
+    const zoomOutBtn = document.querySelector('.zoom-out');
+
+    zoomInBtn.removeEventListener
+    applyZoom();
+    function zoomIn() {
+        if (currentZoom <= 1.5) {
+            currentZoom += 0.1;
+            applyZoom();
+            zoomOutBtn.style.opacity = '1';
+            zoomOutBtn.classList.remove('no-hover');
+        } else {
+            zoomInBtn.style.opacity = '0.3';
+            zoomInBtn.classList.add('no-hover');
+        }
+    }
+
+    function zoomOut() {
+        if (currentZoom >= 0.4) {
+            currentZoom -= 0.1;
+            applyZoom();
+            zoomInBtn.style.opacity = '1';
+            zoomInBtn.classList.remove('no-hover');
+        } else {
+            zoomOutBtn.style.opacity = '0.3';
+            zoomOutBtn.classList.add('no-hover');
+        }
+    }
+
+    function applyZoom() {
+        winerWidth = ((roundNumber + 2) * width + (roundNumber + 0.5) * matchDistance) * currentZoom + leftRightSpace;
+        loserWidth = (finalSingleRound * (2 * width + 1.5 * matchDistance)) * currentZoom + leftRightSpace;
+        winMatchBody.style.width = winerWidth + 'px';
+        loseMatchBody.style.width = loserWidth + 'px';
+        bracketContent.style.transform = `scale(${currentZoom})`;
+        centerPosition();
+    }
+
+    const matchDisplay = document.querySelector('.match-display');
+    function scrollToElement(elementId) {
+        if (currentZoom !== 1) {
+            currentZoom = 1;
+            applyZoom();
+        }
+
+        matchDisplay.classList.add('d-none');
+        setTimeout(() => {
+
+            // Get the element to scroll to by its ID
+            const elementToScrollTo = document.getElementById('match' + elementId);
+            const elementRect = elementToScrollTo.getBoundingClientRect();
+            const parentRect = bracketContent.getBoundingClientRect();
+
+            let distanceToLeft = (elementRect.x - parentRect.x + width / 2 + startBoxWidth / 2) - window.innerWidth / 2;
+            let distanceToTop = elementRect.top - parentRect.top - window.innerHeight / 4;
+
+            bracketTab.scrollTo({
+                left: distanceToLeft,
+                top: distanceToTop,
+                behavior: 'smooth'
+            });
+
+            flashingBox(elementToScrollTo);
+        }, 250);
+    }
+
+    function flashingBox(element) {
+        let count = 0;
+        element.classList.add('flashing');
+        const interval = setInterval(() => {
+            if (count < 3) {
+                if (element.classList.contains('flashing')) {
+                    element.classList.remove('flashing');
+                } else {
+                    element.classList.add('flashing');
+                    count++;
+                }
+            } else {
+                clearInterval(interval);
+            }
+        }, 300);
+        setTimeout(() => {
+            element.classList.remove('flashing');
+        }, 3500);
+    }
+
+    //Handle full screen
+    const containerBracket = document.querySelector('.container-bracket');
+    const header = document.querySelector('header');
+    const screenSize = document.querySelector('.screen-size');
+    const body = document.querySelector('body');
+
+    function fullScreen() {
+        containerBracket.classList.add('full-screen');
+        screenSize.innerHTML = '<button class="zoom-in" onclick="minimized()">'
+            + '<i class="fa-solid fa-compress"></i>'
+            + '</button>';
+        header.classList.add('d-none');
+
+        if (body.requestFullscreen) {
+            body.requestFullscreen();
+        } else if (body.webkitRequestFullscreen) { /* Safari */
+            body.webkitRequestFullscreen();
+        } else if (body.msRequestFullscreen) { /* IE11 */
+            body.msRequestFullscreen();
+        }
+    }
+
+    function minimized() {
+        containerBracket.classList.remove('full-screen');
+        screenSize.innerHTML = '<button class="zoom-in" onclick="fullScreen()">'
+            + '<i class="fa-solid fa-expand"></i>'
+            + '</button>';
+        header.classList.remove('d-none');
+
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+            document.msExitFullscreen();
+        }
+    }
+
+    //Handle click choose table
+    const openTable = document.querySelector('.open-table');
+    const scheduleTable = document.querySelector('.schedule-table');
+
+    if (openTable !== null) {
+        openTable.addEventListener('click', onOffSearchBox);
+    }
+    if (scheduleTable !== null) {
+        scheduleTable.addEventListener('click', onOffSearchBox);
+    }
+
+    function onOffSearchBox() {
+        if (this.querySelector('.search-box') === null) {
+            removeSearchBox();
+            this.appendChild(createSearchBox());
+            handleClickTable();
+        } else {
+            removeSearchBox();
+        }
+    }
+
+    function createSearchBox() {
+        var searchBox = document.createElement('div');
+        searchBox.classList.add('search-box');
+
+        var input = document.createElement('input');
+        input.setAttribute('type', 'text');
+        input.addEventListener('click', handleInput);
+        searchBox.appendChild(input);
+
+        for (var i = 0; i < 3; i++) {
+            var playerContainer = document.createElement('div');
+            playerContainer.classList.add('player-name');
+
+            var span = document.createElement('span');
+            span.textContent = 'Bàn' + (i + 1);
+            playerContainer.appendChild(span);
+
+            searchBox.appendChild(playerContainer);
+            searchBox.addEventListener('click', (e) => {
+                e.stopPropagation();
+                removeSearchBox();
+            })
+        }
+        return searchBox;
+    }
+
+    //Handle input
+    function handleInput(e) {
+        e.stopPropagation();
+    }
+
+    function removeSearchBox() {
+        const searchBox = document.querySelector('.search-box');
+        if (searchBox !== null) {
+            searchBox.remove();
+        }
+    }
+
+    //close popup
+    const popup = document.querySelector('.match-close');
+    popup.addEventListener('click', () => {
+        matchDisplay.classList.add('d-none');
+    })
+
+    //open popup
+    const matchBoxList = document.querySelectorAll('.match-box');
+    matchBoxList.forEach(element => {
+        element.addEventListener('click', () => {
+            matchDisplay.classList.remove('d-none');
+        })
+    });
+
+    //Handle start popup
+    const startBtn = document.querySelector('.start-btn');
+    const startPopup = document.querySelector('.start-display');
+    const startCloseBtn = document.querySelector('.start-close');
+    const startOkBtn = document.querySelector('.ok-start');
+    const startCancleBtn = document.querySelector('.cancle-start');
+    const startTour = document.querySelector('.start-tour');
+    if (!startTour.classList.contains('d-none')) {
+        startBoxWidth = 300;
+    }
+
+    startBtn.addEventListener('click', () => {
+        startPopup.classList.remove('d-none');
+    });
+
+    startCloseBtn.addEventListener('click', () => {
+        startPopup.classList.add('d-none');
+    });
+
+    startCancleBtn.addEventListener('click', () => {
+        startPopup.classList.add('d-none');
+    });
+
+    startOkBtn.addEventListener('click', () => {
+        startTour.classList.add('d-none');
+        startPopup.classList.add('d-none');
+        startBoxWidth = 150;
+    })
+
+    //Handle click table
+    function handleClickTable() {
+        const tableList = document.querySelectorAll('.table-name .player-name');
+        tableList.forEach(table => {
+            table.addEventListener('click', () => {
+                let tableName = table.textContent;
+                const parent3 = table.parentNode.parentNode.parentNode;
+                const parent2 = table.parentNode.parentNode;
+                if (parent2.classList.contains('open-table')) {
+                    const nameInput = parent3.querySelector('.table-name');
+                    nameInput.textContent = tableName;
+                    const scheduleTable = document.querySelector('.schedule-table');
+                    var scheduleParent = scheduleTable.parentNode.parentNode;
+                    scheduleParent.classList.add('d-none');
+
+                    if (parent3.querySelector('.cancle-table') === null) {
+                        var removeOpen = document.createElement('div');
+                        removeOpen.classList.add('cancle-table', 'open');
+
+                        var removeIcon = document.createElement('i');
+                        removeIcon.classList.add('fa-solid', 'fa-xmark');
+                        removeOpen.appendChild(removeIcon);
+
+                        parent3.appendChild(removeOpen);
+
+                        removeOpen.addEventListener('click', () => {
+                            nameInput.textContent = 'Chọn bàn';
+                            scheduleParent.classList.remove('d-none');
+                            parent3.removeChild(removeOpen);
+                            removeBtnSaveAndStart();
+                        })
+                    }
+
+                    saveBtn.classList.add('d-none');
+                    if (startMatchBtn !== null) {
+                        startMatchBtn.classList.remove('d-none');
+                    }
+                } else {
+                    const nameInput = parent3.querySelector('.table-name');
+                    nameInput.textContent = tableName;
+                    const openTable = document.querySelector('.open-table');
+                    var openParent = openTable.parentNode;
+                    openParent.classList.add('d-none');
+
+                    if (parent3.querySelector('.cancle-table') === null) {
+                        var removeSchedule = document.createElement('div');
+                        removeSchedule.classList.add('cancle-table', 'schedule');
+
+                        var removeIcon = document.createElement('i');
+                        removeIcon.classList.add('fa-solid', 'fa-xmark');
+                        removeSchedule.appendChild(removeIcon);
+
+                        parent3.appendChild(removeSchedule);
+
+                        removeSchedule.addEventListener('click', () => {
+                            nameInput.textContent = 'Chọn bàn';
+                            openParent.classList.remove('d-none');
+                            parent3.removeChild(removeSchedule);
+                            removeBtnSaveAndStart();
+                        })
+                    }
+
+                    saveBtn.classList.remove('d-none');
+                    if (startMatchBtn !== null) {
+                        startMatchBtn.classList.add('d-none');
+                    }
+                }
+            });
+        });
+    }
+
     const playingElement = document.querySelectorAll('.playing-element');
     const startMatchBtn = document.querySelector('.start-match-btn');
     const saveBtn = document.querySelector('.save-btn');
 
     removeBtnSaveAndStart();
     function removeBtnSaveAndStart() {
-        startMatchBtn.classList.add('d-none');
+        if (startMatchBtn !== null) {
+            startMatchBtn.classList.add('d-none');
+        }
         saveBtn.classList.add('d-none');
     }
 
-    startMatchBtn.addEventListener('click', () => {
-        playingElement.forEach(element => {
-            element.classList.remove('d-none');
+    if (startMatchBtn !== null) {
+        startMatchBtn.addEventListener('click', () => {
+            // playingElement.forEach(element => {
+            //     element.classList.remove('d-none');
+            // })
+            // startMatchBtn.classList.add('d-none');
+            // saveBtn.classList.remove('d-none');
+            // const removeOpen = document.querySelector('.cancle-table');
+            // removeOpen.classList.add('d-none');
         })
-        startMatchBtn.classList.add('d-none');
-        saveBtn.classList.remove('d-none');
-        const removeOpen = document.querySelector('.cancle-table');
-        removeOpen.classList.add('d-none');
-    })
+    }
+
 
     playingElement.forEach(element => {
         element.classList.add('d-none');
