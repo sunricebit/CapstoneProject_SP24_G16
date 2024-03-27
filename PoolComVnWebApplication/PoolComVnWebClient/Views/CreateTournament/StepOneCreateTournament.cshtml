@@ -246,27 +246,23 @@
 
     knockoutOptions.disabled = true;
 
-    tourType.addEventListener('change', () => {
+    tourType.addEventListener('change', checkTourType)
+    checkTourType();
+    function checkTourType() {
         selectedOption = tourType.options[tourType.selectedIndex];
         isManyStageValue = selectedOption.getAttribute('isManyStage');
         knockoutOptions.disabled = !(isManyStageValue === 'true');
         isKnockoutOn = (isManyStageValue === 'true');
-        if (isManyStageValue === 'true') {
-            if (knockoutNumber.classList.contains('d-none')) {
-                knockoutNumber.classList.remove('d-none');
-            }
-        }
         isTourTypeSelected = true;
         if (isManyStageValue === 'false') {
-            if (!knockoutNumber.classList.contains('d-none')) {
-                knockoutNumber.classList.add('d-none');
-            }
             knockoutOptions.selectedValue = '2';
         }
         raceRoundHandle();
-    })
+    }
 
-    sizeBracket.addEventListener('change', () => {
+    sizeBracket.addEventListener('change', checkSizeBracket)
+    checkSizeBracket();
+    function checkSizeBracket() {
         if (isKnockoutOn === false) {
             knockoutOptions.disabled = false;
         }
@@ -286,7 +282,7 @@
         }
         isSizeBracketSelected = true;
         raceRoundHandle();
-    })
+    }
 
     knockoutOptions.addEventListener('change', raceRoundHandle);
 
