@@ -31,6 +31,7 @@ builder.Services.AddScoped<TournamentDAO>();
 builder.Services.AddScoped<TableDAO>();
 builder.Services.AddScoped<MatchDAO>();
 builder.Services.AddScoped<AddressDAO>();
+builder.Services.AddScoped<SoloMatchDAO>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddCors();
 // Add services to the container

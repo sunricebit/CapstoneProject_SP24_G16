@@ -621,16 +621,16 @@ namespace PoolComVnWebClient.Controllers
                 }
                 var ClubData = response2.Content.ReadAsStringAsync().Result;
                 var club = JsonConvert.DeserializeObject<ClubDTO>(ClubData);
-                var response3 = client.GetAsync($"{ApiUrl}/ClubPost/GetByClubId/{club.ClubId}").Result;
+                var response3 = client.GetAsync($"{ApiUrl}/SoloMatch/ByClub/{club.ClubId}").Result;
                 if (response3.StatusCode == HttpStatusCode.NotFound)
                 {
-                    ViewBag.ClubPost = null;
+                    ViewBag.SoloMatches = null;
                 }
                 else if (response3.IsSuccessStatusCode)
                 {
-                    var clubPostData = response3.Content.ReadAsStringAsync().Result;
-                    var clubPosts = JsonConvert.DeserializeObject<List<ClubPostDTO>>(clubPostData);
-                    ViewBag.ClubPost = clubPosts;
+                    var soloMatchData = response3.Content.ReadAsStringAsync().Result;
+                    var solomatches = JsonConvert.DeserializeObject<List<SoloMatchDTO>>(soloMatchData);
+                    ViewBag.SoloMatches = solomatches;
                 }
                 ViewBag.Club = club;
                 ViewBag.AccountEmail = email;
@@ -1158,9 +1158,75 @@ namespace PoolComVnWebClient.Controllers
                 return RedirectToAction("InternalServerError", "Error", new { message = ex.Message });
             }
         }
-        public IActionResult CreateSoloMatch()
+        public IActionResult CreateSoloMatch(int clubid)
         {
+            ViewBag.ClubId = clubid;
+            var response = client.GetAsync($"{ApiUrl}/Player").Result;
+            if (!response.IsSuccessStatusCode)
+            {
+                ModelState.AddModelError(string.Empty, "Không thể lấy danh sách người chơi.");
+                return View();
+            }
+            var PlayerData = response.Content.ReadAsStringAsync().Result;
+            var players = JsonConvert.DeserializeObject<List<PlayerDTO>>(PlayerData);
+            ViewBag.Players = players;
             return View();
         }
+        [HttpPost]
+        public async Task<IActionResult> CreateSoloMatches(SoloMatchDTO soloMatchDTO, IFormFile BannerFile,string player1,string player2)
+        {
+            var player1InSoloMatch = new PlayerInSoloMatchDTO();
+            var player2InSoloMatch = new PlayerInSoloMatchDTO();
+            soloMatchDTO.Status = 1;
+            if (BannerFile != null && BannerFile.Length > 0)
+            {
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(BannerFile.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase", fileName);
+
+                using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
+                {
+                    BannerFile.CopyTo(memoryStream);
+
+
+                }
+                var fileStream2 = new FileStream(filePath, FileMode.Open);
+                var downloadLink = await UploadFromFirebase(fileStream2, BannerFile.FileName, "SoloMatch", soloMatchDTO.Description, 1);
+                fileStream2.Close();
+                soloMatchDTO.Flyer = downloadLink;
+            }
+            
+            string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase");
+
+            try
+            {
+
+                string[] filePaths = Directory.GetFiles(directoryPath);
+                foreach (string filePath in filePaths)
+                {
+                    System.IO.File.Delete(filePath);
+                }
+
+                Console.WriteLine("All images in the directory have been deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while deleting images: {ex.Message}");
+            }
+            var response = await client.PostAsJsonAsync($"{ApiUrl}/SoloMatch", soloMatchDTO);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                int newSoloMatchId = JsonConvert.DeserializeObject<int>(responseBody);
+                player1InSoloMatch.SoloMatchId = newSoloMatchId;
+                player1InSoloMatch.PlayerId = int.Parse(player1);
+                player2InSoloMatch.SoloMatchId = newSoloMatchId;
+                player2InSoloMatch.PlayerId = int.Parse(player2);
+            }
+            
+            var responsePlayer1 = await client.PostAsJsonAsync($"{ApiUrl}/Player/AddPlayerToSoloMatch", player1InSoloMatch);
+            var responsePlayer2 = await client.PostAsJsonAsync($"{ApiUrl}/Player/AddPlayerToSoloMatch", player2InSoloMatch);
+            return RedirectToAction("CLubSoloMatch");
+        }
+
     }
 }

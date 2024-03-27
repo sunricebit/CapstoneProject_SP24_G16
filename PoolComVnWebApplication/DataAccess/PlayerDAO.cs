@@ -186,5 +186,11 @@ namespace DataAccess
                 throw e;
             }
         }
+
+        public void AddPlayerToSoloMatch(PlayerInSoloMatch playerInSoloMatch)
+        {
+            _context.PlayerInSoloMatches.Add(playerInSoloMatch);
+            _context.SaveChanges();
+        }
     }
 }
