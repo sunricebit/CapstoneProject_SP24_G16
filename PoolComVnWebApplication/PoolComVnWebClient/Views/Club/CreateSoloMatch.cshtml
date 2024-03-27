@@ -15,9 +15,9 @@
                             <span>Người chơi 1</span>
                         </div>
                         <input type="hidden" asp-for="ClubId" value="@ViewBag.ClubId" />
-                        <div id="playerInputContainer">
-                            <input class="input-content" type="text"  id="player1">
-                            <select id="suggestions-container" name="player1"></select>
+                        <div id="playerInputContainer" style="position: relative;">
+                            <input class="input-content" type="text" id="player1">
+                            <div id="suggestions-container" class="player-box" style="z-index: 90;"></div>
                         </div>
                     </div>
                     <div class="tour-input">
@@ -25,9 +25,9 @@
                             <span class="input-requir">*</span>
                             <span>Người chơi 2</span>
                         </div>
-                        <div id="playerInputContainer2">
-                            <input class="input-content" type="text"  id="player2">
-                            <select id="suggestions-container2" name="player2"></select>
+                        <div id="playerInputContainer2" style="position: relative;">
+                            <input class="input-content" type="text" id="player2">
+                            <div id="suggestions-container2" class="player-box"></div>
                         </div>
                     </div>
                     <div class="tour-input">
@@ -126,22 +126,51 @@
         var inputText = event.target.value.toLowerCase();
         var suggestions = players.filter(player => !player.playerName.toLowerCase().includes(inputText));
         displaySuggestions(suggestions, 'player1');
+        document.getElementById('suggestions-container').classList.remove('d-none'); 
+        document.getElementById('suggestions-container2').classList.add('d-none');
     });
 
     document.getElementById('player2').addEventListener('input', function (event) {
         var inputText = event.target.value.toLowerCase();
         var suggestions = filteredPlayers.filter(player => player.playerName.toLowerCase().includes(inputText));
         displaySuggestions2(suggestions, 'player2');
+        document.getElementById('suggestions-container2').classList.remove('d-none');
+        document.getElementById('suggestions-container').classList.add('d-none');
     });
         function displaySuggestions(suggestions, player) {
         var suggestionsContainer = document.getElementById('suggestions-container');
         if (suggestionsContainer) {
             suggestionsContainer.innerHTML = '';
             suggestions.forEach(function (player) {
-                var option = document.createElement('option'); 
-                option.value = player.playerId; 
-                option.textContent = player.playerName;
-                suggestionsContainer.appendChild(option);
+
+                var playerOption = document.createElement("div");
+                playerOption.className = "player-option";
+                
+
+                var playerIdInput = document.createElement("input");
+                playerIdInput.type = "hidden";
+                playerIdInput.value = player.playerId;
+                playerIdInput.className = "player-id";
+
+                var playerImg = document.createElement("div");
+                playerImg.className = "player-img";
+                playerImg.style.backgroundImage = "url('/images/VietNamFlag.png')";
+
+                var playerName = document.createElement("span");
+                playerName.textContent = player.playerName;
+
+                playerOption.appendChild(playerIdInput);
+                playerOption.appendChild(playerImg);
+                playerOption.appendChild(playerName);
+
+                suggestionsContainer.appendChild(playerOption);
+
+                playerOption.addEventListener('click',()=>{
+                    const parent = playerOption.parentNode.parentNode;
+                    const inputContent = parent.querySelector('.input-content');
+                    inputContent.value = playerName.textContent;
+                    suggestionsContainer.classList.add('d-none');
+                })
             });
         } else {
             console.error('Element with ID "suggestions-container" not found.');
@@ -152,10 +181,33 @@
         if (suggestionsContainer) {
             suggestionsContainer.innerHTML = ''; 
             suggestions.forEach(function (player) {
-                var option = document.createElement('option'); 
-                option.value = player.playerId;
-                option.textContent = player.playerName; 
-                suggestionsContainer.appendChild(option);
+                var playerOption = document.createElement("div");
+                playerOption.className = "player-option";
+
+                var playerIdInput = document.createElement("input");
+                playerIdInput.type = "hidden";
+                playerIdInput.value = player.playerId;
+                playerIdInput.className = "player-id";
+
+                var playerImg = document.createElement("div");
+                playerImg.className = "player-img";
+                playerImg.style.backgroundImage = "url('/images/VietNamFlag.png')";
+
+                var playerName = document.createElement("span");
+                playerName.textContent = player.playerName;
+
+                playerOption.appendChild(playerIdInput);
+                playerOption.appendChild(playerImg);
+                playerOption.appendChild(playerName);
+
+                suggestionsContainer.appendChild(playerOption);
+
+                playerOption.addEventListener('click', () => {
+                    const parent = playerOption.parentNode.parentNode;
+                    const inputContent = parent.querySelector('.input-content');
+                    inputContent.value = playerName.textContent;
+                    suggestionsContainer.classList.add('d-none');
+                })
             });
         } else {
             console.error('Element with ID "suggestions-container" not found.');
