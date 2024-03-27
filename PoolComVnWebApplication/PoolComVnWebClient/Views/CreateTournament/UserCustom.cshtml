@@ -194,4 +194,24 @@
             searchBox.remove();
         }
     }
+
+    //Handle back btn
+    const backBtn = document.querySelector('.back-btn');
+    const confirmPopup = document.querySelector('.confirm-popup');
+    const exitBtn = document.querySelector('.exit-btn');
+    const saveRandomBtn = document.querySelector('.save-random');
+
+    backBtn.addEventListener('click', showPopUpConfirm);
+
+    function showPopUpConfirm() {
+        confirmPopup.classList.remove('d-none');
+    }
+
+    exitBtn.addEventListener('click', () => {
+        window.location.href = 'stepFiveArrange.html';
+    });
+
+    saveRandomBtn.addEventListener('click', () => {
+        confirmPopup.classList.add('d-none');
+    });
 </script>

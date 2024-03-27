@@ -25,6 +25,9 @@
                 <span>Trở lại</span>
                 </a>
             </div>
+            <div class="club-menu" style="font-size: 28px;">
+                <i class="fa-solid fa-bars"></i>
+            </div>
             <div class="logo-image d-flex justify-content-center align-items-center">
                 <a href="">
                     <img src="~/images/logo.png" alt="PoolCom">
@@ -37,6 +40,10 @@
        
  
     <div class="club-dashboard-nav">
+        <a href="#" class="back-btn p-3">
+            <i class="fa-solid fa-chevron-left"></i>
+            <span>Trở lại</span>
+        </a>
         <div class="club-avt-bg d-flex justify-content-center">
             <div class="club-avt d-flex justify-content-center"
                  style="background-image: url('@(ViewBag.Club != null ? ViewBag.Club.Avatar : string.Empty)');">
@@ -117,5 +124,31 @@
    
 </body>
 
+<script>
+    //Handle nav menu click
+    const clubMenuBtn = document.querySelector('.club-menu');
+    const clubDashboardNav = document.querySelector('.club-dashboard-nav');
+    clubMenuBtn.addEventListener('click', () => {
+        if (clubDashboardNav.style.display == 'none') {
+            clubDashboardNav.style.display = 'block';
+        } else clubDashboardNav.style.display = 'none';
+    })
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth < 1290) {
+            clubDashboardNav.style.display = 'none';
+        } else {
+            clubDashboardNav.style.display = 'block';
+        }
+    })
+    resizeWindow();
+    function resizeWindow() {
+        if (window.innerWidth < 1290) {
+            clubDashboardNav.style.display = 'none';
+        } else {
+            clubDashboardNav.style.display = 'block';
+        }
+    }
+</script>
 
 </html>
