@@ -4456,7 +4456,7 @@ tr:not(:first-child).isFinish {
     position: fixed;
     overflow: auto;
     top: 50px;
-    left: 0;
+    right: 0;
     z-index: 98;
     height: calc(100vh - 50px);
     padding: 50px 2%;
