@@ -642,9 +642,34 @@ namespace PoolComVnWebClient.Controllers
                 }
                 else if (response3.IsSuccessStatusCode)
                 {
+                    var soloMatchInfoViewModel = new List<SoloMatchInfoViewModel>();
                     var soloMatchData = response3.Content.ReadAsStringAsync().Result;
                     var solomatches = JsonConvert.DeserializeObject<List<SoloMatchDTO>>(soloMatchData);
-                    ViewBag.SoloMatches = solomatches;
+                    foreach(var solomatch in solomatches)
+                    {
+                     var  responsePlayer = client.GetAsync($"{ApiUrl}/SoloMatch/GetPlayerForSoloMatch/{solomatch.SoloMatchId}").Result;
+                        var playersData = responsePlayer.Content.ReadAsStringAsync().Result;
+                        var players = JsonConvert.DeserializeObject<List<PlayerDTO>>(playersData);
+                        var player1 = players.FirstOrDefault();
+                        var player2 = players.Skip(1).FirstOrDefault();
+                        var soloMatchInfo = new SoloMatchInfoViewModel
+                        {
+                            SoloMatchId = solomatch.SoloMatchId,
+                            StartTime = solomatch.StartTime,
+                            GameTypeName = GetGameTypeName(solomatch.GameTypeId),
+                            ClubId = solomatch.ClubId,
+                            player1 = player1.PlayerName,
+                            player2 = player2.PlayerName,
+                            Description = solomatch.Description,
+                            Status = solomatch.Status,
+                            Flyer = solomatch.Flyer,
+                            RaceTo = solomatch.RaceTo,
+                            EndTime = solomatch.EndTime
+                        };
+                        soloMatchInfoViewModel.Add(soloMatchInfo);
+                    }    
+                   
+                    ViewBag.SoloMatches = soloMatchInfoViewModel;
                 }
                 ViewBag.Club = club;
                 ViewBag.AccountEmail = email;
@@ -685,10 +710,25 @@ namespace PoolComVnWebClient.Controllers
             }
 
         }
-
-        public IActionResult ClubSoloMatchDetail(int? id)
+        private string GetGameTypeName(int gameTypeId)
         {
-            if (id == null)
+            switch (gameTypeId)
+            {
+                case 1:
+                    return "8 Bi";
+                case 2:
+                    return "9 Bi";
+                case 3:
+                    return "10 Bi";
+                default:
+                    return "Unknown";
+            }
+        }
+
+        public IActionResult ClubSoloMatchDetail(int? id,int? clubid)
+        {
+            var soloMatchInfo = new SoloMatchInfoViewModel();
+            if (clubid == null)
             {
                 string email = HttpContext.Request.Cookies["Email"];
                 var response = client.GetAsync($"{ApiUrl}/Account/GetAccountByEmail/{email}").Result;
@@ -715,24 +755,44 @@ namespace PoolComVnWebClient.Controllers
                 }
                 var ClubData = response2.Content.ReadAsStringAsync().Result;
                 var club = JsonConvert.DeserializeObject<ClubDTO>(ClubData);
-                var response3 = client.GetAsync($"{ApiUrl}/ClubPost/GetByClubId/{club.ClubId}").Result;
+                var response3 = client.GetAsync($"{ApiUrl}/SoloMatch/{id}").Result;
                 if (response3.StatusCode == HttpStatusCode.NotFound)
                 {
                     ViewBag.ClubPost = null;
                 }
                 else if (response3.IsSuccessStatusCode)
                 {
-                    var clubPostData = response3.Content.ReadAsStringAsync().Result;
-                    var clubPosts = JsonConvert.DeserializeObject<List<ClubPostDTO>>(clubPostData);
-                    ViewBag.ClubPost = clubPosts;
+                    var SoloMatchData = response3.Content.ReadAsStringAsync().Result;
+                    var soloMatch = JsonConvert.DeserializeObject<SoloMatchDTO>(SoloMatchData);
+                    var responsePlayer = client.GetAsync($"{ApiUrl}/SoloMatch/GetPlayerForSoloMatch/{soloMatch.SoloMatchId}").Result;
+                    var playersData = responsePlayer.Content.ReadAsStringAsync().Result;
+                    var players = JsonConvert.DeserializeObject<List<PlayerDTO>>(playersData);
+                    var player1 = players.FirstOrDefault();
+                    var player2 = players.Skip(1).FirstOrDefault();
+                    ViewBag.Player1 = player1;
+                    ViewBag.Player2 = player2;
+
+                    soloMatchInfo.SoloMatchId = soloMatch.SoloMatchId;
+                    soloMatchInfo.StartTime = soloMatch.StartTime;
+                    soloMatchInfo.GameTypeName = GetGameTypeName(soloMatch.GameTypeId);
+                    soloMatchInfo.ClubId = soloMatch.ClubId;
+                    soloMatchInfo.player1 = player1.PlayerName;
+                    soloMatchInfo.player2 = player2.PlayerName;
+                    soloMatchInfo.Description = soloMatch.Description;
+                    soloMatchInfo.Status = soloMatch.Status;
+                    soloMatchInfo.Flyer = soloMatch.Flyer;
+                    soloMatchInfo.RaceTo = soloMatch.RaceTo;
+                    soloMatchInfo.EndTime = soloMatch.EndTime;
+                    
+                    
                 }
                 ViewBag.Club = club;
                 ViewBag.AccountEmail = email;
-                return View();
+                return View(soloMatchInfo);
             }
             else
             {
-                var response = client.GetAsync($"{ApiUrl}/Club/{id}").Result;
+                var response = client.GetAsync($"{ApiUrl}/Club/{clubid}").Result;
                 if (!response.IsSuccessStatusCode)
                 {
                     ModelState.AddModelError(string.Empty, "Không thể lấy thông tin câu lạc bộ.");
@@ -741,7 +801,7 @@ namespace PoolComVnWebClient.Controllers
                 var ClubData = response.Content.ReadAsStringAsync().Result;
                 var club = JsonConvert.DeserializeObject<ClubDTO>(ClubData);
                 ViewBag.Club = club;
-                var response2 = client.GetAsync($"{ApiUrl}/ClubPost/GetByClubId/{club.ClubId}").Result;
+                var response2 = client.GetAsync($"{ApiUrl}/SoloMatch/{id}").Result;
                 if (response2.StatusCode == HttpStatusCode.NotFound)
                 {
                     ViewBag.ClubPost = null;

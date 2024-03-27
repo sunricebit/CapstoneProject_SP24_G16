@@ -10,5 +10,6 @@
         public byte Status { get; set; }
         public string? Flyer { get; set; }
         public int? RaceTo { get; set; }
+        public DateTime? EndTime { get; set; }
     }
 }

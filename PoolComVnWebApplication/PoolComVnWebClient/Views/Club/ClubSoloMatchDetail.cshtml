@@ -1,28 +1,51 @@
 ﻿@{
     Layout = "~/Views/Shared/_BackBtnLayout.cshtml";
 }
-
+@{
+    var now = DateTime.Now;
+}
+@using PoolComVnWebClient.DTO;
+@model SoloMatchInfoViewModel;
 <div class="container-full mb-lg-0 mb-5" style="margin-top: 80px;">
     <div class="solo-detail row d-flex justify-content-around mx-0">
         <div class="match-detail col-10 col-lg-5 p-0 m-5 m-lg-0 mt-lg-2">
             <div class="match-header d-flex justify-content-between">
                 <div class="match-title">
-                    <span>Chạm <span id="race-to">11</span></span>
+                    <span>Chạm <span id="race-to">@Model.RaceTo</span></span>
                 </div>
-                <div class="game-type">9 bi</div>
+                <div class="game-type">@Model.GameTypeName</div>
             </div>
             <div style="overflow-y: auto; height: calc(100% - 44px)">
                 <div class="d-flex justify-content-between align-items-center" style="height: 24px;">
                     <div class="match-time">
-                        <span>13:20</span>
-                        <span> - 14:20</span>
-                        <span>22/02/2024</span>
+                        <span>@(((DateTime)Model.StartTime).ToString("HH:mm"))</span>
+                        <span> - </span>
+                        @if (Model.EndTime == null)
+                        {
+                            <span>Đang đánh</span>
+                        }
+                        else
+                        {
+                            <span>@(((DateTime)Model.EndTime).ToString("HH:mm"))</span>
+                        }
+                        <span> @(((DateTime)Model.StartTime).ToString("dd/MM/yyyy"))</span>
                     </div>
-                    <div class="match-complete">Đã xong</div>
+                    @if (Model.StartTime > now)
+                    {
+                        <div class="match-complete">Chưa bắt đầu</div>
+                    }
+                    else if (Model.EndTime == null)
+                    {
+                        <div class="match-complete">Đang đánh</div>
+                    }
+                    else
+                    {
+                        <div class="match-complete">Đã xong</div>
+                    }
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="match-rule">
-                        <i>Break box, phá luân phiên</i>
+                        <i>@Model.Description</i>
                     </div>
                 </div>
                 <div style="padding: 20px 50px; height: calc(100% - 56px);">
@@ -30,8 +53,8 @@
                         <!--khi load trận nào đã xong thêm class win đã thắng, thua nếu lose -->
                         <div class="details-player d-flex justify-content-between">
                             <span class="d-flex align-items-center">
-                                <img src="Image/VietNamFlag.png" alt="">
-                                <span class="px-2">Kiên máy xúc</span>
+                                <img src="https://flagsapi.com/VN/shiny/64.png" alt="">
+                                <span class="px-2">@Model.player1</span>
                             </span>
                             <span class="score-number first">6</span>
                             <input type="text" class="save-vari d-none" value="6">
@@ -60,8 +83,8 @@
                         <!--khi load trận nào đã xong thêm class win đã thắng, thua nếu lose -->
                         <div class="details-player d-flex justify-content-between mt-5">
                             <span class="d-flex align-items-center">
-                                <img src="Image/VietNamFlag.png" alt="">
-                                <span class="px-2">Kiên sành điệu</span>
+                                <img src="https://flagsapi.com/VN/shiny/64.png" alt="">
+                                <span class="px-2">@Model.player2</span>
                             </span>
                             <span class="score-number second">3</span>
                             <input type="text" class="save-vari d-none" value="3">
@@ -101,8 +124,8 @@
             <div class="details-body" style="height: calc(100% - 44px)">
                 <div class="score-board d-flex align-items-end ">
                     <div class="name-board">
-                        <div class="board-line"><span>Nam Vũ</span></div>
-                        <div><span>Quảng Vũ</span></div>
+                        <div class="board-line"><span>@Model.player1</span></div>
+                        <div><span>@Model.player2</span></div>
                     </div>
                     <div class="general-score">
                         <div class="board-line px-2"><span>Điểm</span></div>
@@ -162,8 +185,8 @@
                 </div>
                 <div class="score-board d-flex align-items-end ">
                     <div class="name-board">
-                        <div class="board-line"><span>Nam Vũ</span></div>
-                        <div><span>Quảng Vũ</span></div>
+                        <div class="board-line"><span>@Model.player1</span></div>
+                        <div><span>@Model.player2</span></div>
                     </div>
                     <div class="general-score">
                         <div class="board-line px-2"><span>Điểm</span></div>
@@ -223,8 +246,8 @@
                 </div>
                 <div class="score-board d-flex align-items-end ">
                     <div class="name-board">
-                        <div class="board-line"><span>Nam Vũ</span></div>
-                        <div><span>Quảng Vũ</span></div>
+                        <div class="board-line"><span>@Model.player1</span></div>
+                        <div><span>@Model.player2</span></div>
                     </div>
                     <div class="general-score">
                         <div class="board-line px-2"><span>Điểm</span></div>

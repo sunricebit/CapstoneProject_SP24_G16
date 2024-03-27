@@ -28,6 +28,34 @@ namespace PoolComVnWebAPI.Controllers
             var soloMatchDTO = MapToDTO(soloMatch);
             return soloMatchDTO;
         }
+        [HttpGet("GetPlayerForSoloMatch/{soloMatchId}")]
+        public ActionResult<List<PlayerDTO>> GetPlayer(int soloMatchId)
+        {
+            var players = _soloMatchDAO.GetPlayerForSoloMatch(soloMatchId);
+
+            if (players == null)
+            {
+                return NotFound();
+            }
+            var playerDTOs = new List<PlayerDTO>();
+            foreach(var player in players)
+            {
+                var playerDTO = new PlayerDTO
+                {
+                    PlayerId = player.PlayerId,
+                    PlayerName = player.PlayerName,
+                    CountryId = player.CountryId,
+                    Level = player.Level,
+                    UserId = player.UserId,
+                    TourId = player.TourId,
+                    PhoneNumber = player.PhoneNumber,
+                    Email = player.Email,
+                    IsPayed = player.IsPayed
+                };
+                playerDTOs.Add(playerDTO);
+            }
+            return Ok(playerDTOs);
+        }
 
         [HttpGet("ByClub/{clubID}")]
         public ActionResult<List<SoloMatchDTO>> GetAllSoloMatchByClubID(int clubID)
@@ -68,7 +96,8 @@ namespace PoolComVnWebAPI.Controllers
                 Description = soloMatch.Description,
                 Status = soloMatch.Status,
                 Flyer = soloMatch.Flyer,
-                RaceTo = soloMatch.RaceTo
+                RaceTo = soloMatch.RaceTo,
+                EndTime = soloMatch.EndTime
             };
         }
         private SoloMatch MapToEntity(SoloMatchDTO soloMatchDTO)
@@ -81,7 +110,8 @@ namespace PoolComVnWebAPI.Controllers
                 Description = soloMatchDTO.Description,
                 Status = soloMatchDTO.Status,
                 Flyer = soloMatchDTO.Flyer,
-                RaceTo = soloMatchDTO.RaceTo
+                RaceTo = soloMatchDTO.RaceTo,
+                EndTime = soloMatchDTO.EndTime
             };
         }
     }

@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,27 @@ namespace DataAccess
             {
                 throw e;
             }
+        }
+
+        public List<Player> GetPlayerForSoloMatch(int soloMatchId)
+        {
+            var soloMatch = _context.SoloMatches
+                .Include(sm => sm.PlayerInSoloMatches) 
+                    .ThenInclude(psm => psm.Player)   
+                .FirstOrDefault(sm => sm.SoloMatchId == soloMatchId);
+
+            if (soloMatch == null)
+            {
+                return null;
+            }
+            var playerList = new List<Player>();
+            foreach (var playerInMatch in soloMatch.PlayerInSoloMatches)
+            {
+                var player = playerInMatch.Player;
+                
+                playerList.Add(player);
+            }
+            return playerList;
         }
     }
 }

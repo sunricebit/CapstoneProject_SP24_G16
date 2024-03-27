@@ -440,6 +440,8 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.ClubId).HasColumnName("ClubID");
 
+                entity.Property(e => e.EndTime).HasColumnType("datetime");
+
                 entity.Property(e => e.Flyer).HasMaxLength(500);
 
                 entity.Property(e => e.GameTypeId).HasColumnName("GameTypeID");

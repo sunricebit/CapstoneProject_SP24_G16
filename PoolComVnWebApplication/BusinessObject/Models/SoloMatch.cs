@@ -18,6 +18,7 @@ namespace BusinessObject.Models
         public byte Status { get; set; }
         public string? Flyer { get; set; }
         public int? RaceTo { get; set; }
+        public DateTime? EndTime { get; set; }
 
         public virtual Club Club { get; set; } = null!;
         public virtual GameType GameType { get; set; } = null!;
