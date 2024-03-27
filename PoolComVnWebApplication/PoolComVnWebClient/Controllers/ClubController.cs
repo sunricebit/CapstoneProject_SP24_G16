@@ -33,6 +33,7 @@ namespace PoolComVnWebClient.Controllers
         public IActionResult Index(int? id, int? page, string searchQuery)
         {
             int pageNumber = page ?? 1;
+
             ViewBag.SearchQuery = searchQuery;
             if (id == null)
             {
@@ -209,7 +210,7 @@ namespace PoolComVnWebClient.Controllers
                     string link = await task;
                     return link;
                 }
-                 else
+                else
                 {
                     var task = new FirebaseStorage(
                    Bucket,
@@ -223,9 +224,9 @@ namespace PoolComVnWebClient.Controllers
                 .PutAsync(stream, cancellation.Token);
                     string link = await task;
                     return link;
-                }  
-             
-                   
+                }
+
+
 
 
             }
@@ -284,7 +285,7 @@ namespace PoolComVnWebClient.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> AddPost(ClubPostDTO ClubPostDTO, IFormFile BannerFile,int clubid)
+        public async Task<IActionResult> AddPost(ClubPostDTO ClubPostDTO, IFormFile BannerFile, int clubid)
         {
             ClubPostDTO.CreatedDate = DateTime.Now;
             ClubPostDTO.UpdatedDate = DateTime.Now;
@@ -351,7 +352,7 @@ namespace PoolComVnWebClient.Controllers
             }
         }
         [HttpGet]
-        public IActionResult ClubPostDetails(int id,int? clubid)
+        public IActionResult ClubPostDetails(int id, int? clubid)
         {
 
             if (clubid == null)
@@ -431,7 +432,7 @@ namespace PoolComVnWebClient.Controllers
 
                 if (response.IsSuccessStatusCode)
                 {
-                    
+
                     var jsonContent = response.Content.ReadAsStringAsync().Result;
                     var newsDetails = JsonConvert.DeserializeObject<ClubPostDTO>(jsonContent);
                     TempData["SuccessMessage"] = "Tạo mới bài viết" + newsDetails.Title + "thành công";
@@ -448,7 +449,7 @@ namespace PoolComVnWebClient.Controllers
                     return View();
                 }
             }
-           
+
         }
         [HttpPost]
         public async Task<IActionResult> UpdateClubPost(ClubPostDTO clubPostDTO, IFormFile BannerFile)
@@ -457,7 +458,7 @@ namespace PoolComVnWebClient.Controllers
             clubPostDTO.UpdatedDate = DateTime.Now;
             if (BannerFile != null && BannerFile.Length > 0)
             {
-                await DeleteFromFirebase(clubPostDTO.Title,clubPostDTO.Flyer);
+                await DeleteFromFirebase(clubPostDTO.Title, clubPostDTO.Flyer);
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(BannerFile.FileName);
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase", fileName);
 
@@ -634,16 +635,16 @@ namespace PoolComVnWebClient.Controllers
                 }
                 var ClubData = response2.Content.ReadAsStringAsync().Result;
                 var club = JsonConvert.DeserializeObject<ClubDTO>(ClubData);
-                var response3 = client.GetAsync($"{ApiUrl}/ClubPost/GetByClubId/{club.ClubId}").Result;
+                var response3 = client.GetAsync($"{ApiUrl}/SoloMatch/ByClub/{club.ClubId}").Result;
                 if (response3.StatusCode == HttpStatusCode.NotFound)
                 {
-                    ViewBag.ClubPost = null;
+                    ViewBag.SoloMatches = null;
                 }
                 else if (response3.IsSuccessStatusCode)
                 {
-                    var clubPostData = response3.Content.ReadAsStringAsync().Result;
-                    var clubPosts = JsonConvert.DeserializeObject<List<ClubPostDTO>>(clubPostData);
-                    ViewBag.ClubPost = clubPosts;
+                    var soloMatchData = response3.Content.ReadAsStringAsync().Result;
+                    var solomatches = JsonConvert.DeserializeObject<List<SoloMatchDTO>>(soloMatchData);
+                    ViewBag.SoloMatches = solomatches;
                 }
                 ViewBag.Club = club;
                 ViewBag.AccountEmail = email;
@@ -855,15 +856,15 @@ namespace PoolComVnWebClient.Controllers
             var responseWard = client.GetAsync($"{ApiUrl}/Address/getwardsBywardCode/{club.WardCode}").Result;
             var wardData = responseWard.Content.ReadAsStringAsync().Result;
             var ward = JsonConvert.DeserializeObject<WardDTO>(wardData);
-            
-            var responseDistrict = client.GetAsync($"{ApiUrl}/Address/GetdistrictsByDistrictCode/{ward.DistrictCode}").Result;        
+
+            var responseDistrict = client.GetAsync($"{ApiUrl}/Address/GetdistrictsByDistrictCode/{ward.DistrictCode}").Result;
             var districtData = responseDistrict.Content.ReadAsStringAsync().Result;
             var district = JsonConvert.DeserializeObject<DistrictDTO>(districtData);
 
             var responseProvince = client.GetAsync($"{ApiUrl}/Address/getProvincesByProvinceCode/{district.ProvinceCode}").Result;
             var provinceData = responseProvince.Content.ReadAsStringAsync().Result;
             var province = JsonConvert.DeserializeObject<ProvinceDTO>(provinceData);
-            
+
             ViewBag.Club = club;
             ViewBag.AccountEmail = email;
             ViewBag.Ward = ward;
@@ -872,11 +873,11 @@ namespace PoolComVnWebClient.Controllers
             return View(club);
         }
         [HttpPost]
-        public async Task<IActionResult> ClubDetails(ClubDTO ClubDTO, IFormFile BannerFile,string ward)
+        public async Task<IActionResult> ClubDetails(ClubDTO ClubDTO, IFormFile BannerFile, string ward)
         {
             if (BannerFile != null && BannerFile.Length > 0)
             {
-                await DeleteFromFirebase(ClubDTO.ClubName,ClubDTO.Avatar);
+                await DeleteFromFirebase(ClubDTO.ClubName, ClubDTO.Avatar);
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(BannerFile.FileName);
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase", fileName);
 
@@ -923,7 +924,7 @@ namespace PoolComVnWebClient.Controllers
                 ModelState.AddModelError(string.Empty, "Lỗi khi thêm tin tức.");
                 return View(ClubDTO);
             }
-        }    
+        }
 
         public IActionResult ClubTable(int? id)
         {
@@ -1023,7 +1024,7 @@ namespace PoolComVnWebClient.Controllers
                 var account = JsonConvert.DeserializeObject<AccountDTO>(AccountData);
                 ViewBag.AccountEmail = account.Email;
                 return View();
-                
+
             }
         }
 
@@ -1065,7 +1066,7 @@ namespace PoolComVnWebClient.Controllers
                 {
                     var TableData = response3.Content.ReadAsStringAsync().Result;
                     var tables = JsonConvert.DeserializeObject<List<TableDTO>>(TableData);
-                    
+
                     ViewBag.Table = tables;
                 }
                 ViewBag.Club = club;
@@ -1104,13 +1105,13 @@ namespace PoolComVnWebClient.Controllers
                 var account = JsonConvert.DeserializeObject<AccountDTO>(AccountData);
                 ViewBag.AccountEmail = account.Email;
                 return View();
-               
+
             }
         }
         [HttpPost("ImportTables")]
         public async Task<IActionResult> ImportTables(IFormFile ImportTables)
         {
-            
+
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
             try
             {
@@ -1171,9 +1172,75 @@ namespace PoolComVnWebClient.Controllers
                 return RedirectToAction("InternalServerError", "Error", new { message = ex.Message });
             }
         }
-        public IActionResult CreateSoloMatch()
+        public IActionResult CreateSoloMatch(int clubid)
         {
+            ViewBag.ClubId = clubid;
+            var response = client.GetAsync($"{ApiUrl}/Player").Result;
+            if (!response.IsSuccessStatusCode)
+            {
+                ModelState.AddModelError(string.Empty, "Không thể lấy danh sách người chơi.");
+                return View();
+            }
+            var PlayerData = response.Content.ReadAsStringAsync().Result;
+            var players = JsonConvert.DeserializeObject<List<PlayerDTO>>(PlayerData);
+            ViewBag.Players = players;
             return View();
         }
+        [HttpPost]
+        public async Task<IActionResult> CreateSoloMatches(SoloMatchDTO soloMatchDTO, IFormFile BannerFile,string player1,string player2)
+        {
+            var player1InSoloMatch = new PlayerInSoloMatchDTO();
+            var player2InSoloMatch = new PlayerInSoloMatchDTO();
+            soloMatchDTO.Status = 1;
+            if (BannerFile != null && BannerFile.Length > 0)
+            {
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(BannerFile.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase", fileName);
+
+                using (FileStream memoryStream = new FileStream(filePath, FileMode.Create))
+                {
+                    BannerFile.CopyTo(memoryStream);
+
+
+                }
+                var fileStream2 = new FileStream(filePath, FileMode.Open);
+                var downloadLink = await UploadFromFirebase(fileStream2, BannerFile.FileName, "SoloMatch", soloMatchDTO.Description, 1);
+                fileStream2.Close();
+                soloMatchDTO.Flyer = downloadLink;
+            }
+            
+            string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Firebase");
+
+            try
+            {
+
+                string[] filePaths = Directory.GetFiles(directoryPath);
+                foreach (string filePath in filePaths)
+                {
+                    System.IO.File.Delete(filePath);
+                }
+
+                Console.WriteLine("All images in the directory have been deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while deleting images: {ex.Message}");
+            }
+            var response = await client.PostAsJsonAsync($"{ApiUrl}/SoloMatch", soloMatchDTO);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                int newSoloMatchId = JsonConvert.DeserializeObject<int>(responseBody);
+                player1InSoloMatch.SoloMatchId = newSoloMatchId;
+                player1InSoloMatch.PlayerId = int.Parse(player1);
+                player2InSoloMatch.SoloMatchId = newSoloMatchId;
+                player2InSoloMatch.PlayerId = int.Parse(player2);
+            }
+            
+            var responsePlayer1 = await client.PostAsJsonAsync($"{ApiUrl}/Player/AddPlayerToSoloMatch", player1InSoloMatch);
+            var responsePlayer2 = await client.PostAsJsonAsync($"{ApiUrl}/Player/AddPlayerToSoloMatch", player2InSoloMatch);
+            return RedirectToAction("CLubSoloMatch");
+        }
+
     }
 }

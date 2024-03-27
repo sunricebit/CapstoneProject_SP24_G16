@@ -109,6 +109,28 @@ namespace PoolComVnWebAPI.Controllers
                 return StatusCode(500, $"Đã xảy ra lỗi khi thêm người chơi: {ex.Message}");
             }
         }
+        [HttpPost("AddPlayerToSoloMatch")]
+        public IActionResult AddPlayerToSoloMatch([FromBody] PlayerInSoloMatchDTO playerInSoloMatchDTO)
+        {
+            try
+            {
+                var playerInSoloMatch = new PlayerInSoloMatch
+                {
+                    SoloMatchId = playerInSoloMatchDTO.SoloMatchId,
+                    PlayerId = playerInSoloMatchDTO.PlayerId,
+                    Score = playerInSoloMatchDTO.Score,
+                    GameWin = playerInSoloMatchDTO.GameWin,
+                    IsWinner = playerInSoloMatchDTO.IsWinner
+                };
+                _playerDAO.AddPlayerToSoloMatch(playerInSoloMatch);
+                return Ok("Người chơi đã được thêm vào trận đấu đơn thành công.");
+            }
+            catch (Exception e)
+            {
+
+                return StatusCode(500, $"Lỗi server: {e.Message}");
+            }
+        }
 
         [HttpPost("AddPlayerToTournament")]
         public IActionResult AddPlayerToTournament([FromBody] List<PlayerDTO> playerDtos)

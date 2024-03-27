@@ -40,22 +40,22 @@
                         <th class="text-center w150">Giá giờ chơi</th>
                         <th class="w100 text-center">Hành động</th>
                     </tr>
-                  @foreach (var table in ViewBag.Table)
-               {    
-                    <tr>
-                        <td>@stt</td>
-                        <td>
-                            <div class="img-frame" style="background-image: url(@table.Image);"></div>
-                        </td>
-                        <td>@table.TagName</td>
-                        <td class="text-center">@table.TableName</td>
-                        <td class="text-center">@table.Size</td>
-                        <td class="text-center">@table.Price VNĐ / giờ</td>
-                        <td class="text-center">
-                            <a class="edit-btn"><i class="fa-solid fa-pencil p-2"></i></a>
-                            <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
-                        </td>
-                    </tr>
+                    @foreach (var table in ViewBag.Table)
+                    {
+                        <tr>
+                            <td>@stt</td>
+                            <td>
+                                <div class="img-frame" style="background-image: url(@table.Image);"></div>
+                            </td>
+                            <td>@table.TagName</td>
+                            <td class="text-center">@table.TableName</td>
+                            <td class="text-center">@table.Size</td>
+                            <td class="text-center">@table.Price VNĐ / giờ</td>
+                            <td class="text-center">
+                                <a class="edit-btn"><i class="fa-solid fa-pencil p-2"></i></a>
+                                <a href="#"><i class="fa-solid fa-trash-can p-2"></i></a>
+                            </td>
+                        </tr>
                         stt++;
                     }
                 </table>
