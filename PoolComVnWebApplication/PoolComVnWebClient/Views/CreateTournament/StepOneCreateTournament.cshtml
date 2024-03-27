@@ -5,7 +5,7 @@
 
 <div class="container-full">
     <input id="current-step" class="d-none" value="3" />
-    <input id="tour-id" class="d-none" value="3" />
+    <input id="tour-id" class="d-none" />
     <div class="create-tour d-flex justify-content-end">
 
         @if (ViewBag.Error != null)
@@ -246,27 +246,23 @@
 
     knockoutOptions.disabled = true;
 
-    tourType.addEventListener('change', () => {
+    tourType.addEventListener('change', checkTourType)
+    checkTourType();
+    function checkTourType() {
         selectedOption = tourType.options[tourType.selectedIndex];
         isManyStageValue = selectedOption.getAttribute('isManyStage');
         knockoutOptions.disabled = !(isManyStageValue === 'true');
         isKnockoutOn = (isManyStageValue === 'true');
-        if (isManyStageValue === 'true') {
-            if (knockoutNumber.classList.contains('d-none')) {
-                knockoutNumber.classList.remove('d-none');
-            }
-        }
         isTourTypeSelected = true;
         if (isManyStageValue === 'false') {
-            if (!knockoutNumber.classList.contains('d-none')) {
-                knockoutNumber.classList.add('d-none');
-            }
             knockoutOptions.selectedValue = '2';
         }
         raceRoundHandle();
-    })
+    }
 
-    sizeBracket.addEventListener('change', () => {
+    sizeBracket.addEventListener('change', checkSizeBracket)
+    checkSizeBracket();
+    function checkSizeBracket() {
         if (isKnockoutOn === false) {
             knockoutOptions.disabled = false;
         }
@@ -286,7 +282,7 @@
         }
         isSizeBracketSelected = true;
         raceRoundHandle();
-    })
+    }
 
     knockoutOptions.addEventListener('change', raceRoundHandle);
 

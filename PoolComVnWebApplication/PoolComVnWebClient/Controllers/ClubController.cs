@@ -30,10 +30,11 @@ namespace PoolComVnWebClient.Controllers
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             client.DefaultRequestHeaders.Accept.Add(contentType);
         }
-        public IActionResult Index(int? id, int? page)
+        public IActionResult Index(int? id, int? page, string searchQuery)
         {
             int pageNumber = page ?? 1;
 
+            ViewBag.SearchQuery = searchQuery;
             if (id == null)
             {
                 int pageSize = 5;
@@ -75,6 +76,12 @@ namespace PoolComVnWebClient.Controllers
                 {
                     var clubPostData = response3.Content.ReadAsStringAsync().Result;
                     var clubPosts = JsonConvert.DeserializeObject<List<ClubPostDTO>>(clubPostData);
+
+                    if (!string.IsNullOrEmpty(searchQuery))
+                    {
+                        clubPosts = clubPosts.Where(cp => cp.Title.Contains(searchQuery)).ToList();
+                    }
+
                     var paginatedClubPosts = PaginatedList<ClubPostDTO>.CreateAsync(clubPosts, pageNumber, pageSize);
                     ViewBag.ClubPost = clubPosts;
                     ViewBag.Club = club;
@@ -106,6 +113,12 @@ namespace PoolComVnWebClient.Controllers
                 {
                     var clubPostData = response2.Content.ReadAsStringAsync().Result;
                     var clubPosts = JsonConvert.DeserializeObject<List<ClubPostDTO>>(clubPostData);
+
+                    if (!string.IsNullOrEmpty(searchQuery))
+                    {
+                        clubPosts = clubPosts.Where(cp => cp.Title.Contains(searchQuery)).ToList();
+                    }
+
                     var paginatedClubPosts = PaginatedList<ClubPostDTO>.CreateAsync(clubPosts, pageNumber, pageSize);
                     ViewBag.ClubPost = clubPosts;
                     ViewBag.Club = club;
@@ -124,6 +137,7 @@ namespace PoolComVnWebClient.Controllers
             }
 
         }
+
         public IActionResult AddPost(int clubid)
         {
             string email = HttpContext.Request.Cookies["Email"];
