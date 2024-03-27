@@ -111,7 +111,7 @@ namespace DataAccess
         }
         public List<Club> GetAllClubs()
         {
-            return _context.Clubs.ToList();
+            return _context.Clubs.Include(c => c.Account).ToList();
         }
         public void UpdateClub(Club updatedClub)
         {

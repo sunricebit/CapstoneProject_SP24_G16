@@ -1,21 +1,24 @@
 ﻿@{
     Layout = "~/Views/Shared/_TournamentLayout.cshtml";
 }
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @using PoolComVnWebClient.DTO;
 @model ManagerDTO;
-
+@{
+    string email = HttpContextAccessor.HttpContext.Request.Cookies["Email"];
+}
 <div class="container-full">
     <div class="news-manage">
         <div class="manage-account d-flex">
             <button class="manager-account account active">Quản lí</button>
-            <button class="club-account account mx-2">Câu lạc bộ</button>
-            <button class="user-account account mx-2">Người chơi</button>
+            <button class="club-account account mx-2">Tài khoản Câu lạc bộ</button>
+            <button class="user-account account mx-2">Tài khoản thường</button>
         </div>
 
         <!-- Manager account Start-->
         <div class="manager-content">
             <div class="mt-5 d-flex justify-content-between">
-                <a href="" class="addBtn-account d-flex justify-content-center align-items-center m-0">
+                <a href="@Url.Action("CreateManageAccount", "Manager")" class="addBtn-account d-flex justify-content-center align-items-center m-0">
                     Tạo tài khoản
                     <i class="fa-solid fa-user-plus px-3"></i>
                 </a>
@@ -30,7 +33,7 @@
                 <table>
                     <tr>
                         <th class="news-id">#</th>
-                        <th class="text-center">Ảnh</th>
+@*                         <th class="text-center">Ảnh</th>*@                        
                         <th class="update-date">Email đăng kí</th>
                         <th class="text-center w150">Số điện thoại</th>
                         <th class="text-center w150">Loại tài khoản</th>
@@ -48,14 +51,35 @@
                     {
                         <tr>
                             <td>@account.AccountID</td>
-                            <td>
+                            @* <td>
                                 <div class="img-frame-account">
-                                    <img src="@account.Email" />
+                                    <img src="@account" />
                                 </div>
-                            </td>
+                            </td> *@
                             <td>@account.Email</td>
                             <td class="text-center">@account.PhoneNumber</td>
-                            <td class="text-center">@account.RoleID</td>
+                            <td class="text-center">
+                                @{
+                                    string role = "";
+                                    if (account.RoleID == 1)
+                                    {
+                                        role = "Admin";
+                                    }
+                                    else if (account.RoleID == 2)
+                                    {
+                                        role = "User";
+                                    }
+                                    else if (account.RoleID == 3)
+                                    {
+                                        role = "Business";
+                                    }
+                                    else
+                                    {
+                                        role = "Manager";
+                                    }
+                                }
+                                @role
+                            </td>
                             <td class="status">
                                 @if (account.Status)
                                 {
@@ -67,14 +91,21 @@
                                 }
                             </td>
                             <td class="text-center">
-                                @if (account.Status)
-                                {
-                                    <a href="#"><i class="ban-btn fa-solid fa-lock p-2"></i></a>
+                                @if(account.Email == email){
+                                    <div>Your Account</div>
                                 }
                                 else
                                 {
-                                    <a href="#"><i class="ban-btn fa-solid fa-lock-open p-2"></i></a>
+                                    @if (account.Status)
+                                    {
+                                        <a href="#"><i class="ban-btn fa-solid fa-lock p-2"></i></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#"><i class="ban-btn fa-solid fa-lock-open p-2"></i></a>
+                                    }
                                 }
+
                             </td>
                         </tr>
                     }
@@ -120,7 +151,7 @@
                                 <div class="img-frame-account" style="background-image:url('@club.Avatar')"></div>
                             </td>
                             <td>@club.ClubName</td>
-                            <td>@club.Avatar</td>
+                            <td>@club.AccountEmail</td>
                             <td class="text-center">@club.Phone</td>
                             <td class="text-center">@club.Address</td>
                             <td class="text-center">Câu lạc bộ</td>
@@ -168,7 +199,7 @@
                         <th class="w150">Tên</th>
                         <th class="w150">Email đăng kí</th>
                         <th class="text-center w150">Số điện thoại</th>
-                        <th class="text-center w150">Loại tài khoản</th>
+                        <th class="text-center w150">Địa chỉ</th>
                         <th class="text-center account-status w150">
                             Trạng thái
                             <i class="fa-solid fa-caret-down fa-flip"></i>
@@ -179,19 +210,17 @@
                         </th>
                         <th class="text-center w100">Hành động</th>
                     </tr>
-                    @foreach (var player in Model.Players)
+                    @foreach (var user in Model.Users)
                     {
                         <tr>
-                            <td>@player.PlayerId</td>
+                            <td>@user.UserId</td>
                             <td>
-                                <div class="img-frame-account">
-                                    <img src="@player.Level" />
-                                </div>
+                                <div class="img-frame-account" style="background-image:url('@user.Avatar')"></div>
                             </td>
-                            <td>@player.PlayerName</td>
-                            <td>@player.Email</td>
-                            <td class="text-center">@player.PhoneNumber</td>
-                            <td class="text-center">Người chơi</td>
+                            <td>@user.FullName</td>
+                            <td>@user.AccountEmail</td>
+                            <td class="text-center">@user.PhoneNumber</td>
+                            <td class="text-center">@user.Address</td>
                           @*  <td class="status">
                                 @if (player.IsPayed)
                                 {

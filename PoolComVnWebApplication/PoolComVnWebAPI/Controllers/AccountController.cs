@@ -40,6 +40,41 @@ namespace PoolComVnWebAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("GetManagerAccounts")]
+        public ActionResult<IEnumerable<AccountDTO>> GetManagerAccounts()
+        {
+            try
+            {
+                var managerAccounts = _accountDAO.GetAllManagerAccounts();
+                var managerAccountDTOs = new List<AccountDTO>();
+
+                foreach (var account in managerAccounts)
+                {
+                    var accountDTO = new AccountDTO
+                    {
+                        AccountID = account.AccountId,
+                        Email = account.Email ?? string.Empty, // Null-coalescing operator to handle null Email
+                        Password = account.Password ?? string.Empty, // Null-coalescing operator to handle null Password
+                        RoleID = account.RoleId,
+                        PhoneNumber = account.PhoneNumber ?? string.Empty, // Null-coalescing operator to handle null PhoneNumber
+                        verifyCode = account.VerifyCode ?? string.Empty, // Null-coalescing operator to handle null verifyCode
+                        Status = account.Status
+                    };
+
+                    managerAccountDTOs.Add(accountDTO);
+                }
+
+                return Ok(managerAccountDTOs);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
         [HttpGet("GetUserByAccount")]
         public ActionResult<UserDTO> GetUserByAccountId(int accountId)
         {
@@ -100,7 +135,8 @@ namespace PoolComVnWebAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
+        }    
+
         [HttpGet("GetAccountByEmail/{email}")]
         public ActionResult<AccountDTO> GetAccountByEmail(string email)
         {
@@ -258,6 +294,39 @@ namespace PoolComVnWebAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("CreateBusinessManagerAccount")]
+        public IActionResult CreateBusinessManagerAccount([FromBody] CreateManageAccountDTO businessManagerDTO)
+        {
+            try
+            {
+                // Kiểm tra xem các trường thông tin cần thiết đã được cung cấp hay chưa
+                if (string.IsNullOrEmpty(businessManagerDTO.Email) || string.IsNullOrEmpty(businessManagerDTO.NewPassword))
+                {
+                    return BadRequest("Email và mật khẩu là bắt buộc.");
+                }
+
+                // Kiểm tra xem email đã tồn tại trong hệ thống chưa
+                if (_accountDAO.IsEmailExist(businessManagerDTO.Email))
+                {
+                    return BadRequest("Email đã tồn tại.");
+                }
+                if (string.IsNullOrEmpty(businessManagerDTO.NewPassword) != string.IsNullOrEmpty(businessManagerDTO.ConfirmNewPassword))
+                {
+                    return BadRequest("Mật khẩu và xác nhận mật khẩu phải trùng nhau.");
+                }
+                _accountDAO.CreateAccountBusinessManager(businessManagerDTO.Email, businessManagerDTO.NewPassword);
+
+                // Trả về thông báo thành công
+                return Ok("Tạo tài khoản Business Manager thành công");
+            }
+            catch (Exception ex)
+            {
+                // Trả về thông báo lỗi nếu có lỗi xảy ra
+                return BadRequest($"Lỗi: {ex.Message}");
+            }
+        }
+
 
         [HttpPut("Ban/{id}")]
         public ActionResult ToggleBanAccount(int id)

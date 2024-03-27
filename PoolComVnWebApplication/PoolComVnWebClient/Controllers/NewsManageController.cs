@@ -99,10 +99,7 @@ namespace PoolComVnWebClient.Controllers
             }
         }
 
-        public IActionResult AddNews()
-        {
-            return View();
-        }
+     
         [HttpPost]
         public ActionResult UploadImage(List<IFormFile> files)
         {
@@ -204,6 +201,10 @@ namespace PoolComVnWebClient.Controllers
             {
                 Console.WriteLine("Exception occurred during deletion: {0}", ex);
             }
+        }
+        public IActionResult AddNews()
+        {
+            return View();
         }
 
         [HttpPost]

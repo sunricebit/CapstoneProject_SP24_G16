@@ -11,5 +11,9 @@
         public int AccountId { get; set; }
         public string? Address { get; set; }
         public string? WardCode { get; set; }
+        public string AccountEmail { get; set; }
+        public string PhoneNumber { get; set; }
+        public bool Status { get; set; }
+
     }
 }

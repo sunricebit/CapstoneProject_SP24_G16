@@ -3,6 +3,7 @@ using BusinessObject.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace DataAccess
 {
@@ -68,6 +69,30 @@ namespace DataAccess
             }
         }
 
+        /// <summary>
+        /// Register a new account Business manager.
+        /// </summary>
+        public void CreateAccountBusinessManager(string email, string pass)
+        {
+            try
+            {
+                Account account = new Account()
+                {
+                    Email = email,
+                    Password = BCrypt.Net.BCrypt.HashPassword(pass, Constant.SaltRound),
+                    RoleId = 4,
+                    PhoneNumber = "Default",
+                    Status = true,
+                };
+                _context.Accounts.Add(account);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
         public bool ChangePasswordAccount(string email, string oldPassword, string newPassword)
         {
             try
@@ -108,6 +133,22 @@ namespace DataAccess
             try
             {
                 return _context.Accounts.ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Failed to retrieve accounts: {e.Message}", e);
+            }
+        }
+
+        /// <summary>
+        /// Get all accounts with role= business manager from the database.
+        /// </summary>
+        public List<Account> GetAllManagerAccounts()
+        {
+            try
+            {
+                var accounts = _context.Accounts.Where(account => account.RoleId == 4).ToList();
+                return accounts;
             }
             catch (Exception e)
             {

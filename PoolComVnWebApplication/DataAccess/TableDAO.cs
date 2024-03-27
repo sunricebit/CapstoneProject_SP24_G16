@@ -45,6 +45,12 @@ namespace DataAccess
             return _context.Tables.ToList();
         }
 
+        public List<Table> SearchTables(string searchQuery)
+        {
+            searchQuery.ToLower();
+            return _context.Tables.Where(t => t.TableName.Contains(searchQuery)).ToList();
+        }
+
         // Update
         public void UpdateTable(Table updatedTable)
         {

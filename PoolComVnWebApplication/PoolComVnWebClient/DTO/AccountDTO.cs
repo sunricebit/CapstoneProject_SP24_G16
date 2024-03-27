@@ -1,7 +1,5 @@
 ﻿namespace PoolComVnWebClient.DTO
 {
-    
-    
         public class AccountDTO
         {
             public int AccountID { get; set; }

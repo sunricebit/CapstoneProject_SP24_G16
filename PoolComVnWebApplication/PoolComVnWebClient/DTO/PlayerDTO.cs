@@ -18,6 +18,6 @@ namespace PoolComVnWebClient.DTO
         public string? Email { get; set; }
         public bool? IsPayed { get; set; }
         public string? CountryName { get; set; }
-
+        public string? Avatar { get; set; }
     }
 }
