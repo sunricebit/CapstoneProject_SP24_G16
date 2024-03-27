@@ -1538,7 +1538,7 @@ footer {
 
 /* bracket.html */
 .flashing {
-    box-shadow: 0 0 10px 5px #dc2222;
+    box-shadow: 0 0 20px 10px #dc2222;
     transition: box-shadow 0.2s ease-in;
 }
 
@@ -2979,6 +2979,7 @@ tr:not(:first-child).isFinish {
         width: 80%;
         caret-color: #fff;
         color: #fff;
+        height: 36px;
     }
 
         .create-tour .tour-input .input-content::placeholder {
@@ -3475,6 +3476,37 @@ tr:not(:first-child).isFinish {
 
         .import-form input:hover {
             cursor: pointer;
+        }
+
+.create-tour .player-box {
+    position: absolute;
+    top: 36px;
+    left: 5px;
+    background: #fff;
+    width: calc(80% - 10px);
+}
+
+    .create-tour .player-box .player-option {
+        height: 32px;
+        line-height: 32px;
+        display: flex;
+        align-items: center;
+        border-bottom: #ccc solid 1px;
+        padding: 0 20px;
+    }
+
+        .create-tour .player-box .player-option:hover {
+            background: #9dd5c8;
+            cursor: pointer;
+        }
+
+        .create-tour .player-box .player-option .player-img {
+            height: 14px;
+            width: 21px;
+            margin-right: 10px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 3px;
         }
 
 
@@ -4168,7 +4200,7 @@ tr:not(:first-child).isFinish {
 }
 
 .match-display .edit-table .search-box {
-    width: 260px;
+    width: 300px;
     top: 30px;
     left: 5px;
 }
