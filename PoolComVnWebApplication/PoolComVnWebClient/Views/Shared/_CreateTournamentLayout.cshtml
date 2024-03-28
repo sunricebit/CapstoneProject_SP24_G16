@@ -19,6 +19,9 @@
                 <i class="fa-solid fa-chevron-left"></i>
                 <span>Trở lại</span>
             </div>
+            <div class="club-menu" style="font-size: 28px;">
+                <i class="fa-solid fa-bars"></i>
+            </div>
             <div class="logo-image d-flex justify-content-center align-items-center">
                 <a href="">
                     <img src="~/images/logo.png" alt="PoolCom">
@@ -29,39 +32,47 @@
         </nav>
     </header>
 
-    <div class="tour-step-nav">
-        <a class="tour-step">
-            <div class="step-number step-one">1</div>
-            <div class="step-title">Cài đặt</div>
-        </a>
-        <div class="step-network-line"></div>
-        <a class="tour-step disable">
-            <div class="step-number step-two">2</div>
-            <div class="step-title">Ảnh bìa</div>
-        </a>
-        <div class="step-network-line"></div>
-        <a class="tour-step disable">
-            <div class="step-number step-three">3</div>
-            <div class="step-title">Tạo giải</div>
-        </a>
-        <div class="step-network-line"></div>
-        <a class="tour-step disable">
-            <div class="step-number step-four">4</div>
-            <div class="step-title">Bàn đấu</div>
-        </a>
-        <div class="step-network-line"></div>
-        <a class="tour-step disable">
-            <div class="step-number step-five">5</div>
-            <div class="step-title">Người chơi</div>
-        </a>
-        <div class="step-network-line"></div>
-        <a class="tour-step disable">
-            <div class="step-number step-six">6</div>
-            <div class="step-title">Xếp trận</div>
-        </a>
+    <div class="tour-step-nav d-lg-flex d-none align-items-center">
+        <div>
+            <a class="tour-step">
+                <div class="step-number step-one">1</div>
+                <div class="step-title">Cài đặt</div>
+            </a>
+            <div class="step-network-line"></div>
+            <a class="tour-step disable">
+                <div class="step-number step-two">2</div>
+                <div class="step-title">Ảnh bìa</div>
+            </a>
+            <div class="step-network-line"></div>
+            <a class="tour-step disable">
+                <div class="step-number step-three">3</div>
+                <div class="step-title">Tạo giải</div>
+            </a>
+            <div class="step-network-line"></div>
+            <a class="tour-step disable">
+                <div class="step-number step-four">4</div>
+                <div class="step-title">Bàn đấu</div>
+            </a>
+            <div class="step-network-line"></div>
+            <a class="tour-step disable">
+                <div class="step-number step-five">5</div>
+                <div class="step-title">Người chơi</div>
+            </a>
+            <div class="step-network-line"></div>
+            <a class="tour-step disable">
+                <div class="step-number step-six">6</div>
+                <div class="step-title">Xếp trận</div>
+            </a>
+        </div>
     </div>
 
     @RenderBody()
+
+    <div class="creat-tour step d-flex justify-content-center align-items-center d-lg-none d-block">
+        <a href="" class="create-tour-btn d-flex justify-content-center align-items-center">
+            <i class="fa-solid fa-plus"></i>
+        </a>
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 </body>
 
@@ -106,6 +117,33 @@
         }
     }
 
+    //Handle show step for small screen
+    const stepShowBtn = document.querySelector('.creat-tour');
+    const stepBox = document.querySelector('.tour-step-nav');
+
+    window.addEventListener('resize', checkResize)
+    window.addEventListener('load', checkResize)
+
+    function checkResize() {
+        if (window.innerWidth < 992) {
+            stepBox.classList.add('small');
+        } else {
+            stepBox.classList.remove('small');
+        }
+    }
+
+    stepShowBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (stepBox.classList.contains('d-none')) {
+            stepBox.classList.remove('d-none');
+            stepBox.classList.add('d-flex');
+            stepShowBtn.querySelector('.create-tour-btn').style.transform = 'rotate(45deg)';
+        } else {
+            stepBox.classList.add('d-none');
+            stepBox.classList.remove('d-flex');
+            stepShowBtn.querySelector('.create-tour-btn').style.transform = 'rotate(0deg)';
+        }
+    })
 </script>
 
 </html>

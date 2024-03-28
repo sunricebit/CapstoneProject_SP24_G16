@@ -23,7 +23,7 @@
                         </div>
                     </div>
                 </div>
-                <a asp-action="UserDetails" asp-controller="User" sclass="edit-btn text-center col-6">
+                <a asp-action="UserDetails" asp-controller="User" class="edit-btn text-center col-6">
                     Sửa thông tin
                 </a>
             </div>
@@ -335,6 +335,12 @@
 </div>
 
 <script>
+    //Handle back btn
+    const backBtn = document.querySelector('.back-btn');
+    backBtn.addEventListener('click', ()=>{
+        window.location.href = '/home/index';
+    });
+
     const gameWin = document.getElementById('game-win');
     const gameLose = document.getElementById('game-lose');
     const chart = document.querySelector('.chart');
@@ -348,5 +354,6 @@
         + gameLosePercent + '%,#4bc0c0 ' + gameLosePercent + '%,#4bc0c0 100%)';
     document.getElementById('win-percent').textContent = '(' + (100 - gameLosePercent).toFixed(2) + '%)'
     document.getElementById('lose-percent').textContent = '(' + gameLosePercent.toFixed(2) + '%)'
+
 
 </script>

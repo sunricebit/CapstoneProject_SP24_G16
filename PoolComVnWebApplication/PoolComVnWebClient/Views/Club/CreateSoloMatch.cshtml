@@ -3,7 +3,7 @@
 }
 @model PoolComVnWebClient.DTO.SoloMatchDTO;
 
-<div class="dashboard-container container">
+<div class="dashboard-container">
     <div class="create-tour mt-0">
         <form asp-action="CreateSoloMatches" asp-controller="Club" method="post" enctype="multipart/form-data" class="create-tour-display">
             <div class="create-step-one">
@@ -37,8 +37,8 @@
                         </div>
                         <input class="input-content" type="number" asp-for="RaceTo" min="5" max="100">
                     </div>
-                    <div class="tour-input d-flex">
-                        <div class="tour-input-line">
+                    <div class="tour-input">
+                        <div class="tour-input-line" style="width:100%;">
                             <div class="input-title">
                                 <span class="input-requir">*</span>
                                 <span>Kiểu trò chơi</span>
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <div class="tour-input">
-                        <div class="input-title">
+                        <div class="input-title" style="height: auto; width:80%;">
                             <span>Mô tả (Sơ lược ngắn gọn về trận đấu. VD: chạm 21, break box, phá luân phiên)</span>
                         </div>
                         <input class="input-content" type="text" asp-for="Description" id="" />
@@ -71,7 +71,7 @@
                             <span>Ảnh bìa</span>
                         </div>
                         <div class="input-img">
-                            <div class="display-content">
+                            <div class="display-content" style="margin:20px 0;">
                                 <div class="upload-img auto">
                                     <input type="file" class="imageInput mt-1" name="BannerFile" accept="image/*" />
                                     <div class="upload-title d-flex align-items-center justify-content-center">
@@ -87,7 +87,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tour-input py-5">
+                    <div class="tour-input pb-5">
                         <button class="submit-btn" type="submit">Tạo trận đấu đối kháng</button>
                     </div>
                 </div>

@@ -540,7 +540,8 @@ footer {
     padding-right: 40px;
 }
 
-    .container-full .news-detail .news-detail-bg {
+    .container-full .news-detail .news-detail-bg,
+    .dashboard-container .news-detail .news-detail-bg {
         background-color: #ffffff79;
         padding: 40px;
         border-radius: 20px;
@@ -554,8 +555,9 @@ footer {
 
 .container-full .news-detail img,
 .dashboard-container .news-detail img,
-.dashboard-container .news-description ck-img {
+.dashboard-container .news-description .ck-img {
     max-width: 500px !important;
+    width: 100%;
     height: auto !important;
     background-position: center center;
     border-radius: 10px;
@@ -779,13 +781,16 @@ footer {
 .history-content .tour-item {
     padding: 10px;
     width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
     .tournament .tour-item .item-body,
     .history-content .tour-item .item-body {
         display: block;
         background: #eaeaea;
-        width: 300px;
+        max-width: 300px;
+        width: 100%;
         border-radius: 5px;
         position: relative;
         min-height: 460px;
@@ -860,7 +865,8 @@ footer {
 
 .tournament .tour-item .tour-image,
 .history-content .tour-item .tour-image {
-    width: 300px;
+    width: 100%;
+    max-width: 300px;
     height: 200px;
     overflow: hidden;
     background-position: center;
@@ -1144,7 +1150,8 @@ footer {
         cursor: pointer;
     }
 
-    .manage-nav .back-btn {
+    .manage-nav .back-btn,
+    .manage-nav .club-menu {
         width: 120px;
         position: absolute;
         top: 0;
@@ -1152,65 +1159,83 @@ footer {
         color: #fff;
         padding: 0 20px;
         font-weight: 600;
-    }
-
-        .manage-nav .back-btn a {
-            color: #fff;
-        }
-
-    .manage-nav .menu-body {
-        position: absolute;
-        top: 50px;
-        left: 0;
-        right: 0;
-        z-index: 99;
-        background: #455d64;
-        line-height: 50px;
-        transition: top 0.3s ease;
         display: none;
-        border-top: 1px #ccc solid;
     }
 
-        .manage-nav .menu-body .nav-body {
-            list-style: none;
-        }
+    .manage-nav .club-menu {
+        display: block;
+    }
 
-            .manage-nav .menu-body .nav-body a {
-                padding: 0 10px;
-                line-height: 50px;
-                width: 120px;
-                text-align: center;
-                margin: 0;
-                color: #fff;
-                font-weight: 600;
-            }
-
-                .manage-nav .menu-body .nav-body a:hover {
-                    font-style: italic;
-                    background-color: #00d9ff;
-                    color: #000;
-                }
-
-        .manage-nav .menu-body .general-nav {
-            display: none;
-        }
-
-        .manage-nav .menu-body .exchange-nav:hover {
+        .manage-nav .club-menu:hover {
             cursor: pointer;
+            color: #ddd;
         }
 
-            .manage-nav .menu-body .exchange-nav:hover i {
-                transition: transform 0.5s ease;
-                transform: rotateY(180deg);
+.club-dashboard-nav .back-btn {
+    padding: 0 20px;
+    font-weight: 600;
+    color: #000;
+    height: 56px;
+    display: block;
+}
+
+.manage-nav .back-btn a {
+    color: #fff;
+}
+
+.manage-nav .menu-body {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    background: #455d64;
+    line-height: 50px;
+    transition: top 0.3s ease;
+    display: none;
+    border-top: 1px #ccc solid;
+}
+
+    .manage-nav .menu-body .nav-body {
+        list-style: none;
+    }
+
+        .manage-nav .menu-body .nav-body a {
+            padding: 0 10px;
+            line-height: 50px;
+            width: 120px;
+            text-align: center;
+            margin: 0;
+            color: #fff;
+            font-weight: 600;
+        }
+
+            .manage-nav .menu-body .nav-body a:hover {
+                font-style: italic;
+                background-color: #00d9ff;
+                color: #000;
             }
 
-        .manage-nav .menu-body .exchange-nav {
-            width: 80px;
-            font-size: 24px;
-            padding: 0;
-            color: #fff;
-            background: #0b083a;
+    .manage-nav .menu-body .general-nav {
+        display: none;
+    }
+
+    .manage-nav .menu-body .exchange-nav:hover {
+        cursor: pointer;
+    }
+
+        .manage-nav .menu-body .exchange-nav:hover i {
+            transition: transform 0.5s ease;
+            transform: rotateY(180deg);
         }
+
+    .manage-nav .menu-body .exchange-nav {
+        width: 80px;
+        font-size: 24px;
+        padding: 0;
+        color: #fff;
+        background: #0b083a;
+    }
 
 .tour-manage-nav {
     background: #455d64;
@@ -2137,7 +2162,7 @@ tr:not(:first-child).isFinish {
 
 /* newsManage.html */
 .news-manage {
-    margin: 50px 50px;
+    margin: 50px;
 }
 
     .news-manage .manage-header {
@@ -2847,10 +2872,18 @@ tr:not(:first-child).isFinish {
 
 .tour-step-nav {
     position: fixed;
-    top: 100px;
-    left: 50px;
+    top: 0px;
     z-index: 5;
+    height: 100vh;
+    padding: 0 50px;
 }
+
+    .tour-step-nav.small {
+        background: #1c324d;
+        box-shadow: 0 0 10px 2px #fff;
+        right: 0px;
+        top: 0;
+    }
 
 .tour-step {
     display: flex;
@@ -2976,7 +3009,7 @@ tr:not(:first-child).isFinish {
         border: 1px solid #ddd;
         border-bottom: 3px solid #fff;
         padding: 5px 10px;
-        width: 80%;
+        width: 100%;
         caret-color: #fff;
         color: #fff;
         height: 36px;
@@ -3020,7 +3053,8 @@ tr:not(:first-child).isFinish {
         }
 
     .create-tour .tour-input .input-date {
-        width: 300px;
+        width: 80%;
+        max-width: 300px;
         padding: 5px 10px;
         border-radius: 5px;
         border: 1px #ccc solid;
@@ -3391,42 +3425,54 @@ tr:not(:first-child).isFinish {
         border-radius: 20px;
     }
 
-        .import-form .import-input.table {
-            max-width: 348px;
-        }
+.import-excel.table {
+    border-radius: 0;
+    border: none;
+    border-right: #fff 2px solid;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+}
 
-        .import-form .import-input span {
-            position: absolute;
-            width: 415px;
-            top: 0;
-            left: 0;
-            text-align: center;
-            line-height: 40px;
-            font-weight: 600;
-            z-index: 1;
-        }
+.import-form .import-input.table {
+    max-width: 188px;
+    border-radius: 0;
+    border-bottom-right-radius: 20px;
+    border-top-right-radius: 20px;
+}
 
-        .import-form .import-input.table span {
-            max-width: 348px;
-        }
+.import-form .import-input span {
+    position: absolute;
+    width: 415px;
+    top: 0;
+    left: 0;
+    text-align: center;
+    line-height: 40px;
+    font-weight: 600;
+    z-index: 1;
+}
 
-        .import-form .import-input:hover {
-            background: #fff;
-        }
+.import-form .import-input.table span {
+    max-width: 188px;
+}
 
-        .import-form .import-input input {
-            width: 415px;
-            opacity: 0;
-            height: 40px;
-            z-index: 2;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
+.import-form .import-input.table:hover {
+    background: #fff;
+    cursor: pointer;
+}
 
-        .import-form .import-input.table input {
-            max-width: 348px;
-        }
+.import-form .import-input input {
+    width: 415px;
+    opacity: 0;
+    height: 40px;
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.import-form .import-input.table input {
+    max-width: 188px;
+}
 
 .import-form {
     margin-top: 20px;
@@ -3669,7 +3715,8 @@ tr:not(:first-child).isFinish {
     }
 
         .back-btn-nav .back-btn:hover,
-        .manage-nav .back-btn:hover {
+        .manage-nav .back-btn:hover,
+        .club-dashboard-nav .back-btn:hover {
             font-size: 18px;
             cursor: pointer;
         }
@@ -3875,6 +3922,10 @@ tr:not(:first-child).isFinish {
         font-size: 20px;
         text-align: center;
     }
+
+        .confirm-popup .exit-btn a {
+            color: #fff;
+        }
 
         .confirm-popup .exit-btn:hover {
             background: #9c1515;
@@ -4521,53 +4572,68 @@ tr:not(:first-child).isFinish {
             font-size: 40px;
         }
 
-    .dashboard-container .creat-tour {
-        position: fixed;
-        bottom: 50px;
-        right: 50px;
-        background-color: #0b083ac9;
-        padding: 5px;
-        border-radius: 20px;
-        opacity: 0.7;
-        transition: opacity 0.5s ease;
-        z-index: 99;
+.creat-tour {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    background-color: #0b083ac9;
+    padding: 5px;
+    border-radius: 20px;
+    opacity: 0.7;
+    transition: opacity 0.5s ease;
+    z-index: 99;
+}
+
+    .creat-tour:hover {
+        opacity: 1;
+        background-color: #0b083a;
+        border: 1px solid #fff;
     }
 
-        .dashboard-container .creat-tour:hover {
-            opacity: 1;
-            background-color: #0b083a;
-            border: 1px solid #fff;
+        .creat-tour:hover .create-title {
+            display: block;
         }
 
-            .dashboard-container .creat-tour:hover .create-title {
-                display: block;
-            }
+    .creat-tour .create-tour-btn {
+        width: 50px;
+        height: 50px;
+        background-color: #35a9e8;
+        position: relative;
+        margin: 20px 5px;
+        border: none;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        transition: transform 0.3s ease;
+    }
 
-        .dashboard-container .creat-tour .create-tour-btn {
-            width: 50px;
-            height: 50px;
-            background-color: #35a9e8;
-            position: relative;
-            margin: 20px 5px;
-            border: none;
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            transition: transform 0.3s ease;
+    .creat-tour.step {
+        bottom: 10px;
+        right: 10px;
+    }
+
+        .creat-tour.step .create-tour-btn {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 5px;
+            width: 40px;
+            height: 40px;
+            clip-path: none;
+            border-radius: 5px;
         }
 
-            .dashboard-container .creat-tour .create-tour-btn:hover {
-                transform: scale(1.2);
-            }
+    .creat-tour .create-tour-btn:hover {
+        transform: scale(1.2);
+    }
 
-        .dashboard-container .creat-tour .create-title {
-            line-height: 60px;
-            color: #fff;
-            font-weight: 600;
-            padding: 0 20px;
-            display: none;
-        }
+    .creat-tour .create-title {
+        line-height: 60px;
+        color: #fff;
+        font-weight: 600;
+        padding: 0 20px;
+        display: none;
+    }
 
 /* clubSoloMatch.html */
 .schedule-item {
@@ -5116,7 +5182,7 @@ tr:not(:first-child).isFinish {
 
         .change-info .menu-info input[type='text'],
         .change-info .menu-info input[type='date'] {
-            width: 500px;
+            width: 100%;
             min-width: 300px;
             border: 2px solid #ccc;
             border-radius: 5px;
@@ -5366,6 +5432,31 @@ tr:not(:first-child).isFinish {
             font-size: 12px;
             min-width: 100px;
         }
+
+    .create-tour {
+        margin: 50px 10px;
+    }
+
+    .news-manage {
+        margin: 50px 10px;
+    }
+
+    .change-info {
+        margin: 100px 10px;
+    }
+
+    .tour-statistic {
+        padding: 0;
+    }
+
+        .tour-statistic .statistic-box {
+            width: calc(100% - 20px);
+            margin: 0 10px 30px;
+        }
+
+    .container-full .tour-info {
+        width: 100%;
+    }
 }
 
 /* Tablet: width >= 740px and width <1024 */
@@ -5392,6 +5483,14 @@ tr:not(:first-child).isFinish {
 
     .match-list {
         margin: 30px 20px;
+    }
+
+    .history-content .tour-item {
+        width: 50%;
+    }
+
+    .dashboard-container .item-content {
+        width: 50%;
     }
 }
 
@@ -5445,7 +5544,7 @@ tr:not(:first-child).isFinish {
     }
 
     .dashboard-container .item-content {
-        width: 50%;
+        width: 33.33%;
     }
 
     .user-profile {
@@ -5478,10 +5577,32 @@ tr:not(:first-child).isFinish {
     .schedule-item .item-more .item-more-image {
         width: 40%;
     }
+
+    .create-tour .tour-input .input-content,
+    .confirm-popup .tour-input .input-content {
+        width: 80%;
+    }
+
+    .history-content .tour-item {
+        width: 100%;
+    }
 }
 
-/*width>=1280px */
-@media only screen and (min-width: 1280px) {
+@media only screen and (min-width:740px) and (max-width: 992px) {
+    .tour-statistic .statistic-box {
+        margin: 0 auto 30px;
+        width: 90%;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .history-content .tour-item {
+        width: 50%;
+    }
+}
+
+/*width>=1290px */
+@media only screen and (min-width: 1290px) {
     .dashboard-container .item-content {
         width: 33.33%;
     }
@@ -5497,5 +5618,14 @@ tr:not(:first-child).isFinish {
     .dashboard-container {
         width: calc(100% - 300px);
         left: 300px;
+    }
+
+    .manage-nav .back-btn {
+        display: block;
+    }
+
+    .manage-nav .club-menu,
+    .club-dashboard-nav .back-btn {
+        display: none;
     }
 }
