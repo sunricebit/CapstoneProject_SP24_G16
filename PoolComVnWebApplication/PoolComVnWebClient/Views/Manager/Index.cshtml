@@ -47,7 +47,7 @@
                         </th>
                         <th class="w100 text-center">Hành động</th>
                     </tr>
-                    @foreach (var account in Model.Accounts)
+                    @foreach (var account in Model.PaginatedManagerAccounts.Items)
                     {
                         <tr>
                             <td>@account.AccountID</td>
@@ -110,7 +110,57 @@
                         </tr>
                     }
                 </table>
+               
             </div>
+            @{
+                // Định nghĩa ngưỡng cần hiển thị dấu "..."
+                int threshold = 1;
+
+                // Tính toán danh sách phân trang cần hiển thị
+                List<int> displayedPages = new List<int>();
+                bool showLeadingDots = false;
+                bool showTrailingDots = false;
+
+                for (int pageNum = 1; pageNum <= Model.PaginatedManagerAccounts.TotalPages; pageNum++)
+                {
+                    if (pageNum == 1 || pageNum == Model.PaginatedManagerAccounts.TotalPages || Math.Abs(pageNum - Model.PaginatedManagerAccounts.PageIndex) <= threshold)
+                    {
+                        displayedPages.Add(pageNum);
+                    }
+                    else if (pageNum < Model.PaginatedManagerAccounts.PageIndex - threshold && !showLeadingDots)
+                    {
+                        displayedPages.Add(-1); // Placeholder for leading dots
+                        showLeadingDots = true;
+                    }
+                    else if (pageNum > Model.PaginatedManagerAccounts.PageIndex + threshold && !showTrailingDots)
+                    {
+                        displayedPages.Add(-1); // Placeholder for trailing dots
+                        showTrailingDots = true;
+                    }
+                }
+
+                // Hàm JavaScript để chuyển đến trang
+                string goToPageFunction = "goToPage";
+
+                // Định dạng mã HTML cho phân trang
+                <div class="pagination d-flex justify-content-center align-items-center m-0">
+                    <div class="pagination-content d-flex justify-content-center align-items-center m-0">
+                        <div class="pagination-btn-big" onclick="prevPage()">Trước</div>
+                        @foreach (int pageNum in displayedPages)
+                        {
+                            if (pageNum == -1)
+                            {
+                                <div class="pagination-more">...</div>
+                            }
+                            else
+                            {
+                                <div class="pagination-btn @(pageNum == Model.PaginatedManagerAccounts.PageIndex ? "active" : "")" onclick="@($"{goToPageFunction}({pageNum}, '{@ViewBag.SearchQuery}')")">@pageNum</div>
+                            }
+                        }
+                        <div class="pagination-btn-big" onclick="nextPage()">Sau</div>
+                    </div>
+                </div>
+            }
         </div>
         <!-- Manager account End-->
         <!-- Club account Start-->
@@ -143,7 +193,7 @@
                         </th>
                         <th class="text-center w100">Hành động</th>
                     </tr>
-                    @foreach (var club in Model.Clubs)
+                    @foreach (var club in Model.PaginatedClubAccounts.Items)
                     {
                         <tr>
                             <td>@club.ClubId</td>
@@ -179,6 +229,55 @@
                     }
                 </table>
             </div>
+            @{
+                // Định nghĩa ngưỡng cần hiển thị dấu "..."
+                int thresholdClub = 1;
+
+                // Tính toán danh sách phân trang cần hiển thị
+                List<int> displayedPagesClub = new List<int>();
+                bool showLeadingDotsClub = false;
+                bool showTrailingDotsClub = false;
+
+                for (int pageNum = 1; pageNum <= Model.PaginatedClubAccounts.TotalPages; pageNum++)
+                {
+                    if (pageNum == 1 || pageNum == Model.PaginatedClubAccounts.TotalPages || Math.Abs(pageNum - Model.PaginatedClubAccounts.PageIndex) <= thresholdClub)
+                    {
+                        displayedPagesClub.Add(pageNum);
+                    }
+                    else if (pageNum < Model.PaginatedClubAccounts.PageIndex - thresholdClub && !showLeadingDotsClub)
+                    {
+                        displayedPagesClub.Add(-1); // Placeholder for leading dots
+                        showLeadingDotsClub = true;
+                    }
+                    else if (pageNum > Model.PaginatedClubAccounts.PageIndex + thresholdClub && !showTrailingDotsClub)
+                    {
+                        displayedPagesClub.Add(-1); // Placeholder for trailing dots
+                        showTrailingDotsClub = true;
+                    }
+                }
+
+                // Hàm JavaScript để chuyển đến trang
+                string goToPageFunctionClub = "goToClubPage";
+
+                // Định dạng mã HTML cho phân trang
+                <div class="pagination d-flex justify-content-center align-items-center m-0">
+                    <div class="pagination-content d-flex justify-content-center align-items-center m-0">
+                        <div class="pagination-btn-big" onclick="prevClubPage()">Trước</div>
+                        @foreach (int pageNum in displayedPagesClub)
+                        {
+                            if (pageNum == -1)
+                            {
+                                <div class="pagination-more">...</div>
+                            }
+                            else
+                            {
+                                <div class="pagination-btn @(pageNum == Model.PaginatedClubAccounts.PageIndex ? "active" : "")" onclick="@($"{goToPageFunctionClub}({pageNum}, '{@ViewBag.SearchQuery}')")">@pageNum</div>
+                            }
+                        }
+                        <div class="pagination-btn-big" onclick="nextClubPage()">Sau</div>
+                    </div>
+                </div>
+            }
         </div>
         <!-- Club account End-->
         <!-- User account Start-->
@@ -210,7 +309,7 @@
                         </th>
                         <th class="text-center w100">Hành động</th>
                     </tr>
-                    @foreach (var user in Model.Users)
+                    @foreach (var user in Model.PaginatedUserAccounts.Items)
                     {
                         <tr>
                             <td>@user.UserId</td>
@@ -221,8 +320,8 @@
                             <td>@user.AccountEmail</td>
                             <td class="text-center">@user.PhoneNumber</td>
                             <td class="text-center">@user.Address</td>
-                          @*  <td class="status">
-                                @if (player.IsPayed)
+                            <td class="status">
+                                @if (user.Status)
                                 {
                                     <div class="user-status isActive">Hoạt động</div>
                                 }
@@ -232,7 +331,7 @@
                                 }
                             </td>
                             <td class="text-center">
-                                @if (player.IsPayed)
+                                @if (user.Status)
                                 {
                                     <a href="#"><i class="ban-btn fa-solid fa-lock p-2"></i></a>
                                 }
@@ -240,14 +339,65 @@
                                 {
                                     <a href="#"><i class="ban-btn fa-solid fa-lock-open p-2"></i></a>
                                 }
-                            </td>*@
+                            </td>
                         </tr>
                     }
                 </table>
             </div>
+            <!-- Pagination -->
+            @{
+                // Định nghĩa ngưỡng cần hiển thị dấu "..."
+                int thresholdUser = 1;
+
+                // Tính toán danh sách phân trang cần hiển thị
+                List<int> displayedPagesUser = new List<int>();
+                bool showLeadingDotsUser = false;
+                bool showTrailingDotsUser = false;
+
+                for (int pageNum = 1; pageNum <= Model.PaginatedUserAccounts.TotalPages; pageNum++)
+                {
+                    if (pageNum == 1 || pageNum == Model.PaginatedUserAccounts.TotalPages || Math.Abs(pageNum - Model.PaginatedUserAccounts.PageIndex) <= thresholdUser)
+                    {
+                        displayedPagesUser.Add(pageNum);
+                    }
+                    else if (pageNum < Model.PaginatedUserAccounts.PageIndex - thresholdUser && !showLeadingDotsUser)
+                    {
+                        displayedPagesUser.Add(-1); // Placeholder for leading dots
+                        showLeadingDotsUser = true;
+                    }
+                    else if (pageNum > Model.PaginatedUserAccounts.PageIndex + thresholdUser && !showTrailingDotsUser)
+                    {
+                        displayedPagesUser.Add(-1); // Placeholder for trailing dots
+                        showTrailingDotsUser = true;
+                    }
+                }
+
+                // Hàm JavaScript để chuyển đến trang
+                string goToPageFunctionUser = "goToUserPage";
+
+                // Định dạng mã HTML cho phân trang
+                <div class="pagination d-flex justify-content-center align-items-center m-0">
+                    <div class="pagination-content d-flex justify-content-center align-items-center m-0">
+                        <div class="pagination-btn-big" onclick="prevUserPage()">Trước</div>
+                        @foreach (int pageNum in displayedPagesUser)
+                        {
+                            if (pageNum == -1)
+                            {
+                                <div class="pagination-more">...</div>
+                            }
+                            else
+                            {
+                                <div class="pagination-btn @(pageNum == Model.PaginatedUserAccounts.PageIndex ? "active" : "")" onclick="@($"{goToPageFunctionUser}({pageNum}, '{@ViewBag.SearchQuery}')")">@pageNum</div>
+                            }
+                        }
+                        <div class="pagination-btn-big" onclick="nextUserPage()">Sau</div>
+                    </div>
+                </div>
+            }
         </div>
         <!-- User account End -->
     </div>
+
 </div>
 
 <script>
@@ -323,4 +473,87 @@
             userContent.classList.add('d-none');
         }
     }
+
+    var currentPageManager = @Model.PaginatedManagerAccounts.PageIndex;
+    var currentPageClub = @Model.PaginatedClubAccounts.PageIndex;
+    var currentPageUser = @Model.PaginatedUserAccounts.PageIndex;
+
+    //phân trang quản lý
+    function prevPage() {
+        var searchQuery = '@ViewBag.SearchQuery';
+        if (currentPageManager > 1) {
+            goToPage(currentPageManager - 1, searchQuery);
+        }
+    }
+
+    function nextPage() {
+        var totalPages = @Model.PaginatedManagerAccounts.TotalPages;
+        var searchQuery = '@ViewBag.SearchQuery';
+        if (currentPageManager < totalPages) {
+            goToPage(currentPageManager + 1, searchQuery);
+        }
+    }
+
+
+    function goToPage(pageNum, searchQuery) {
+        var url = '@Url.Action("Index", "Manager")';
+        url += '?page=' + pageNum;
+        if (searchQuery) {
+            url += '&searchQuery=' + searchQuery;
+        }
+        window.location.href = url;
+    }
+
+    //phân trang club
+    function prevClubPage() {
+        var searchQuery = '@ViewBag.SearchQuery';
+        if (currentPageClub > 1) {
+            goToPage(currentPageClub - 1, searchQuery);
+        }
+    }
+
+    function nextClubPage() {
+        var totalPages = @Model.PaginatedClubAccounts.TotalPages;
+        var searchQuery = '@ViewBag.SearchQuery';
+        if (currentPageClub < totalPages) {
+            goToPage(currentPageClub + 1, searchQuery);
+        }
+    }
+
+
+    function goToClubPage(pageNum, searchQuery) {
+        var url = '@Url.Action("Index", "Manager")';
+        url += '?page=' + pageNum;
+        if (searchQuery) {
+            url += '&searchQuery=' + searchQuery;
+        }
+        window.location.href = url;
+    }
+
+
+    // phân trang user
+    function prevUserPage() {
+        var searchQuery = '@ViewBag.SearchQuery';
+        if (currentPageUser > 1) {
+            goToUserPage(currentPageUser - 1, searchQuery);
+        }
+    }
+
+    function nextUserPage() {
+        var totalPages = @Model.PaginatedUserAccounts.TotalPages;
+        var searchQuery = '@ViewBag.SearchQuery';
+        if (currentPageUser < totalPages) {
+            goToUserPage(currentPageUser + 1, searchQuery);
+        }
+    }
+
+    function goToUserPage(pageNum, searchQuery) {
+        var url = '@Url.Action("Index", "Manager")';
+        url += '?page=' + pageNum;
+        if (searchQuery) {
+            url += '&searchQuery=' + searchQuery;
+        }
+        window.location.href = url;
+    }
+
 </script>

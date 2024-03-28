@@ -17,8 +17,9 @@ namespace PoolComVnWebClient.Controllers
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             client.DefaultRequestHeaders.Accept.Add(contentType);
         }
-        public IActionResult Index()
+        public IActionResult Index(int? page, string searchQuery)
         {
+            var viewModel = new ManagerDTO();
             var responseManageAccount = client.GetAsync($"{ApiUrl}"+ "/Account/GetManagerAccounts").Result;
             var responseAccount = client.GetAsync($"{ApiUrl}" + "/Account").Result;
             var responseClub = client.GetAsync($"{ApiUrl}" + "/Club").Result;
@@ -26,19 +27,42 @@ namespace PoolComVnWebClient.Controllers
             if (responseManageAccount.IsSuccessStatusCode && responseClub.IsSuccessStatusCode 
                 && responseAccount.IsSuccessStatusCode && responseUser.IsSuccessStatusCode)
             {
-                var viewModel = new ManagerDTO();
+                int pageNumber = page ?? 1;
+                int pageSize = 6;
+                var jsonContentAccount = responseAccount.Content.ReadAsStringAsync().Result; 
+                var jsonContentManageAccount = responseManageAccount.Content.ReadAsStringAsync().Result;
+                var jsonContentClub = responseClub.Content.ReadAsStringAsync().Result;
+                var jsonContentUser = responseUser.Content.ReadAsStringAsync().Result;
 
-                //Lấy danh sách Account để hiển thị và lấy các trường liên quan cho club và user
-                var jsonContentAccount = responseAccount.Content.ReadAsStringAsync().Result;
                 var account = JsonConvert.DeserializeObject<IEnumerable<AccountDTO>>(jsonContentAccount);
 
-                //Lấy danh sách BusinessManageAccount để hiển thị
-                var jsonContentManageAccount = responseManageAccount.Content.ReadAsStringAsync().Result;
-                viewModel.Accounts = JsonConvert.DeserializeObject<IEnumerable<AccountDTO>>(jsonContentManageAccount);
 
-                //Lấy danh sách Club để hiển thị
-                var jsonContentClub = responseClub.Content.ReadAsStringAsync().Result;
-                viewModel.Clubs = JsonConvert.DeserializeObject<IEnumerable<ClubDTO>>(jsonContentClub);
+                viewModel.Accounts = JsonConvert.DeserializeObject<List<AccountDTO>>(jsonContentManageAccount);
+                viewModel.Clubs = JsonConvert.DeserializeObject<List<ClubDTO>>(jsonContentClub);
+                viewModel.Users = JsonConvert.DeserializeObject<List<UserDTO>>(jsonContentUser);
+
+                // Kiểm tra và lọc dữ liệu theo searchQuery nếu có
+                //if (!string.IsNullOrEmpty(searchQuery))
+                //{
+                //    manageAccountList = manageAccountList.Where(a => a.Email.Contains(searchQuery)).ToList();
+                //    clubList = clubList.Where(c => c.ClubName.Contains(searchQuery) || c.Address.Contains(searchQuery)).ToList();
+                //    userList = userList.Where(u => u.FullName.Contains(searchQuery)).ToList();
+                //}
+                //else
+                //{
+                //    return View();
+                //}
+                // Cập nhật dữ liệu trong viewModel
+                //viewModel.Accounts = manageAccountList;
+                //viewModel.Clubs = clubList;
+                //viewModel.Users = userList;
+
+                // Phân trang cho từng loại tài khoản
+                viewModel.PaginatedManagerAccounts = PaginatedList<AccountDTO>.CreateAsync(viewModel.Accounts, pageNumber, pageSize);
+                viewModel.PaginatedClubAccounts = PaginatedList<ClubDTO>.CreateAsync(viewModel.Clubs, pageNumber, pageSize);
+                viewModel.PaginatedUserAccounts = PaginatedList<UserDTO>.CreateAsync(viewModel.Users, pageNumber, pageSize);
+
+
                 foreach (var club in viewModel.Clubs)
                 {
                     var ownerAccount = account.FirstOrDefault(a => a.AccountID == club.AccountId);
@@ -47,10 +71,6 @@ namespace PoolComVnWebClient.Controllers
                         club.AccountEmail = ownerAccount.Email;
                     }
                 }
-
-                //Lấy danh sách User để hiển thị
-                var jsonContentUser = responseUser.Content.ReadAsStringAsync().Result;
-                viewModel.Users = JsonConvert.DeserializeObject<IEnumerable<UserDTO>>(jsonContentUser);
                 foreach (var user in viewModel.Users)
                 {
                     var ownerAccount = account.FirstOrDefault(a => a.AccountID == user.AccountId);
@@ -61,6 +81,7 @@ namespace PoolComVnWebClient.Controllers
                         user.Status = ownerAccount.Status;
                     }
                 }
+               
                 return View(viewModel);
             }
             else
